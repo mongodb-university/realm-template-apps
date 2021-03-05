@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4811CBF825F1CBEF00B2B67D /* EmailPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4811CBF725F1CBEF00B2B67D /* EmailPasswordViewController.swift */; };
 		48E6D84925F1970600EC40A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E6D84825F1970600EC40A5 /* AppDelegate.swift */; };
 		48E6D84B25F1970600EC40A5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E6D84A25F1970600EC40A5 /* SceneDelegate.swift */; };
-		48E6D84D25F1970600EC40A5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E6D84C25F1970600EC40A5 /* ViewController.swift */; };
+		48E6D84D25F1970600EC40A5 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E6D84C25F1970600EC40A5 /* WelcomeViewController.swift */; };
 		48E6D85025F1970600EC40A5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48E6D84E25F1970600EC40A5 /* Main.storyboard */; };
 		48E6D85225F1970800EC40A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48E6D85125F1970800EC40A5 /* Assets.xcassets */; };
 		48E6D85525F1970800EC40A5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48E6D85325F1970800EC40A5 /* LaunchScreen.storyboard */; };
@@ -37,10 +38,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4811CBF725F1CBEF00B2B67D /* EmailPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailPasswordViewController.swift; sourceTree = "<group>"; };
 		48E6D84525F1970600EC40A5 /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48E6D84825F1970600EC40A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		48E6D84A25F1970600EC40A5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		48E6D84C25F1970600EC40A5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		48E6D84C25F1970600EC40A5 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		48E6D84F25F1970600EC40A5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		48E6D85125F1970800EC40A5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		48E6D85425F1970800EC40A5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -105,7 +107,8 @@
 			children = (
 				48E6D84825F1970600EC40A5 /* AppDelegate.swift */,
 				48E6D84A25F1970600EC40A5 /* SceneDelegate.swift */,
-				48E6D84C25F1970600EC40A5 /* ViewController.swift */,
+				48E6D84C25F1970600EC40A5 /* WelcomeViewController.swift */,
+				4811CBF725F1CBEF00B2B67D /* EmailPasswordViewController.swift */,
 				48E6D84E25F1970600EC40A5 /* Main.storyboard */,
 				48E6D85125F1970800EC40A5 /* Assets.xcassets */,
 				48E6D85325F1970800EC40A5 /* LaunchScreen.storyboard */,
@@ -269,7 +272,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48E6D84D25F1970600EC40A5 /* ViewController.swift in Sources */,
+				48E6D84D25F1970600EC40A5 /* WelcomeViewController.swift in Sources */,
+				4811CBF825F1CBEF00B2B67D /* EmailPasswordViewController.swift in Sources */,
 				48E6D84925F1970600EC40A5 /* AppDelegate.swift in Sources */,
 				48E6D84B25F1970600EC40A5 /* SceneDelegate.swift in Sources */,
 			);
@@ -456,7 +460,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = mongodb.realm.App;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -474,7 +478,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = mongodb.realm.App;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
