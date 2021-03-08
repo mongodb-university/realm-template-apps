@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4811CBF825F1CBEF00B2B67D /* EmailPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4811CBF725F1CBEF00B2B67D /* EmailPasswordViewController.swift */; };
+		486192AA25F6BDDA0035619D /* Realm.plist in Resources */ = {isa = PBXBuildFile; fileRef = 486192A925F6BDDA0035619D /* Realm.plist */; };
+		4865DFBA25F863FB0022992E /* TasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4865DFB925F863FB0022992E /* TasksViewController.swift */; };
 		48E6D84925F1970600EC40A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E6D84825F1970600EC40A5 /* AppDelegate.swift */; };
 		48E6D84B25F1970600EC40A5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E6D84A25F1970600EC40A5 /* SceneDelegate.swift */; };
 		48E6D84D25F1970600EC40A5 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E6D84C25F1970600EC40A5 /* WelcomeViewController.swift */; };
@@ -38,7 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4811CBF725F1CBEF00B2B67D /* EmailPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailPasswordViewController.swift; sourceTree = "<group>"; };
+		486192A925F6BDDA0035619D /* Realm.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Realm.plist; sourceTree = "<group>"; };
+		4865DFB925F863FB0022992E /* TasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksViewController.swift; sourceTree = "<group>"; };
 		48E6D84525F1970600EC40A5 /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48E6D84825F1970600EC40A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		48E6D84A25F1970600EC40A5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -106,13 +108,14 @@
 			isa = PBXGroup;
 			children = (
 				48E6D84825F1970600EC40A5 /* AppDelegate.swift */,
-				48E6D84A25F1970600EC40A5 /* SceneDelegate.swift */,
-				48E6D84C25F1970600EC40A5 /* WelcomeViewController.swift */,
-				4811CBF725F1CBEF00B2B67D /* EmailPasswordViewController.swift */,
-				48E6D84E25F1970600EC40A5 /* Main.storyboard */,
 				48E6D85125F1970800EC40A5 /* Assets.xcassets */,
-				48E6D85325F1970800EC40A5 /* LaunchScreen.storyboard */,
 				48E6D85625F1970800EC40A5 /* Info.plist */,
+				48E6D85325F1970800EC40A5 /* LaunchScreen.storyboard */,
+				48E6D84E25F1970600EC40A5 /* Main.storyboard */,
+				486192A925F6BDDA0035619D /* Realm.plist */,
+				48E6D84A25F1970600EC40A5 /* SceneDelegate.swift */,
+				4865DFB925F863FB0022992E /* TasksViewController.swift */,
+				48E6D84C25F1970600EC40A5 /* WelcomeViewController.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 			files = (
 				48E6D85525F1970800EC40A5 /* LaunchScreen.storyboard in Resources */,
 				48E6D85225F1970800EC40A5 /* Assets.xcassets in Resources */,
+				486192AA25F6BDDA0035619D /* Realm.plist in Resources */,
 				48E6D85025F1970600EC40A5 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -273,7 +277,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				48E6D84D25F1970600EC40A5 /* WelcomeViewController.swift in Sources */,
-				4811CBF825F1CBEF00B2B67D /* EmailPasswordViewController.swift in Sources */,
+				4865DFBA25F863FB0022992E /* TasksViewController.swift in Sources */,
 				48E6D84925F1970600EC40A5 /* AppDelegate.swift in Sources */,
 				48E6D84B25F1970600EC40A5 /* SceneDelegate.swift in Sources */,
 			);
