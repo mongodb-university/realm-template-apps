@@ -1,0 +1,13 @@
+{
+    "config_version": 20200603,
+    "name": "todo-sync",
+    "location": "US-VA",
+    "deployment_model": "LOCAL",
+    "security": {},
+    "custom_user_data_config": {
+        "enabled": false
+    },
+    "sync": {
+        "development_mode_enabled": false
+    }
+}

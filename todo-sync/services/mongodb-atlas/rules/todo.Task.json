@@ -1,0 +1,38 @@
+{
+    "collection": "Task",
+    "database": "todo",
+    "roles": [
+        {
+            "name": "default",
+            "apply_when": {},
+            "insert": true,
+            "delete": true,
+            "search": true,
+            "additional_fields": {}
+        }
+    ],
+    "schema": {
+        "bsonType": "object",
+        "properties": {
+            "_id": {
+                "bsonType": "objectId"
+            },
+            "_partition": {
+                "bsonType": "string"
+            },
+            "status": {
+                "bsonType": "string"
+            },
+            "summary": {
+                "bsonType": "string"
+            }
+        },
+        "required": [
+            "_id",
+            "summary",
+            "status",
+            "_partition"
+        ],
+        "title": "Task"
+    }
+}
