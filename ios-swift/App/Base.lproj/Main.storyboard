@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xnd-Bc-wWG">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina6_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -13,15 +13,15 @@
             <objects>
                 <tableViewController storyboardIdentifier="tasks" id="pjw-Px-9T9" customClass="TasksViewController" customModule="App" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="MNG-az-HMe">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="jST-4j-Cin">
-                                <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                <rect key="frame" x="0.0" y="28" width="428" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jST-4j-Cin" id="1Aq-ws-ApW">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="428" height="43.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -44,14 +44,14 @@
             <objects>
                 <viewController storyboardIdentifier="welcome" id="ZPK-TW-HMe" customClass="WelcomeViewController" customModule="App" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="43p-xN-lM9">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="s3i-Ni-Pdx">
-                                <rect key="frame" x="0.0" y="288" width="414" height="534"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="s3i-Ni-Pdx">
+                                <rect key="frame" x="20" y="288" width="388" height="624"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Sync App" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y0T-B5-vII">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="388" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="EcG-oV-cqr"/>
                                         </constraints>
@@ -60,25 +60,25 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="9Gm-UM-var">
-                                        <rect key="frame" x="0.0" y="50" width="414" height="200"/>
+                                        <rect key="frame" x="0.0" y="50" width="388" height="200"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vgt-lt-hzk">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="34"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="388" height="34"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" textContentType="email"/>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nbn-5t-CN3">
-                                                <rect key="frame" x="0.0" y="56" width="414" height="34"/>
+                                                <rect key="frame" x="0.0" y="56" width="388" height="34"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gFT-jX-HYY">
-                                                <rect key="frame" x="0.0" y="114" width="414" height="30"/>
+                                                <rect key="frame" x="0.0" y="114" width="388" height="30"/>
                                                 <color key="backgroundColor" systemColor="systemFillColor"/>
                                                 <state key="normal" title="Create Account"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vOZ-34-4SZ" userLabel="Already have an account? Log in">
-                                                <rect key="frame" x="0.0" y="170" width="414" height="30"/>
+                                                <rect key="frame" x="0.0" y="170" width="388" height="30"/>
                                                 <state key="normal" title="Already have an account? Log In"/>
                                             </button>
                                         </subviews>
@@ -87,38 +87,34 @@
                                         </constraints>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Built with the MongoDB Realm Sync Template" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7j-na-j12">
-                                        <rect key="frame" x="0.0" y="250" width="414" height="284"/>
+                                        <rect key="frame" x="0.0" y="250" width="388" height="374"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="9Gm-UM-var" firstAttribute="leading" secondItem="s3i-Ni-Pdx" secondAttribute="leading" constant="20" symbolic="YES" id="7m2-DZ-iQN"/>
-                                    <constraint firstAttribute="trailing" secondItem="9Gm-UM-var" secondAttribute="trailing" constant="20" symbolic="YES" id="sCc-cc-ssD"/>
-                                </constraints>
                             </stackView>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="KPh-AG-mjK">
-                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="KPh-AG-mjK">
+                                <rect key="frame" x="195.66666666666666" y="394.66666666666669" width="37" height="37"/>
                             </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="9om-ui-G1g"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstAttribute="bottomMargin" secondItem="s3i-Ni-Pdx" secondAttribute="bottom" constant="-20" id="1d7-eG-dBX"/>
+                            <constraint firstItem="s3i-Ni-Pdx" firstAttribute="top" secondItem="9om-ui-G1g" secondAttribute="top" constant="200" id="33f-7T-zkF"/>
                             <constraint firstItem="KPh-AG-mjK" firstAttribute="centerX" secondItem="43p-xN-lM9" secondAttribute="centerX" id="5xu-LM-4BF"/>
-                            <constraint firstItem="s3i-Ni-Pdx" firstAttribute="leading" secondItem="43p-xN-lM9" secondAttribute="leading" id="BIS-ea-UX5"/>
-                            <constraint firstItem="9om-ui-G1g" firstAttribute="bottom" secondItem="s3i-Ni-Pdx" secondAttribute="bottom" constant="40" id="CXB-9g-G87"/>
-                            <constraint firstItem="s3i-Ni-Pdx" firstAttribute="top" relation="lessThanOrEqual" secondItem="43p-xN-lM9" secondAttribute="topMargin" constant="200" id="May-HY-6OS"/>
-                            <constraint firstItem="KPh-AG-mjK" firstAttribute="centerY" secondItem="43p-xN-lM9" secondAttribute="centerY" id="ZHl-or-qMd"/>
-                            <constraint firstAttribute="trailing" secondItem="s3i-Ni-Pdx" secondAttribute="trailing" id="kPm-sm-vkh"/>
-                            <constraint firstItem="s3i-Ni-Pdx" firstAttribute="top" secondItem="9om-ui-G1g" secondAttribute="top" constant="200" id="thN-oF-tw8"/>
+                            <constraint firstItem="9om-ui-G1g" firstAttribute="trailing" secondItem="s3i-Ni-Pdx" secondAttribute="trailing" constant="20" id="Rm7-eN-ovi"/>
+                            <constraint firstItem="s3i-Ni-Pdx" firstAttribute="centerX" secondItem="43p-xN-lM9" secondAttribute="centerX" id="Um3-gK-AYu"/>
+                            <constraint firstItem="KPh-AG-mjK" firstAttribute="centerY" secondItem="43p-xN-lM9" secondAttribute="centerY" constant="-50" id="ZHl-or-qMd"/>
+                            <constraint firstItem="s3i-Ni-Pdx" firstAttribute="leading" secondItem="9om-ui-G1g" secondAttribute="leading" constant="20" id="ZSH-Pi-ZYb"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="0LI-ZS-tEh"/>
                     <connections>
                         <outlet property="activityIndicator" destination="KPh-AG-mjK" id="pbU-H3-dIV"/>
+                        <outlet property="changeModeButton" destination="vOZ-34-4SZ" id="rc5-Kg-f3f"/>
                         <outlet property="emailField" destination="Vgt-lt-hzk" id="gyY-yg-OHb"/>
-                        <outlet property="modeChangeButton" destination="vOZ-34-4SZ" id="rc5-Kg-f3f"/>
                         <outlet property="passwordField" destination="nbn-5t-CN3" id="VOw-Lu-O3f"/>
                         <outlet property="submitButton" destination="gFT-jX-HYY" id="YJq-9K-B4M"/>
                         <segue destination="pjw-Px-9T9" kind="show" identifier="onAuthenticationComplete" id="YKB-YR-mE5"/>
@@ -134,7 +130,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xnd-Bc-wWG" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="LvL-wI-MXf">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="44" width="428" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
