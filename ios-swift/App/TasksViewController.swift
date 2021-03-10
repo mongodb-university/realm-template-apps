@@ -8,7 +8,7 @@ class TasksViewController: UITableViewController {
     }
 
     @objc func logOutButtonDidClick() {
-        let alertController = UIAlertController(title: "Log Out", message: "", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Log Out", message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Yes, Log Out", style: .destructive) { _ in
             print("Logging out...")
             realmApp.currentUser!.logOut { _ in

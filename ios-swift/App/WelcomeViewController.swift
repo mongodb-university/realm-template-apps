@@ -53,7 +53,8 @@ class WelcomeViewController: UIViewController {
         realmApp.emailPasswordAuth.registerUser(email: email, password: password) { error in
             DispatchQueue.main.async {
                 guard error == nil else {
-                    print("Signup failed: \(error!)")
+                    print("Account creation failed: \(error!)")
+                    self.reportError(error!)
                     return
                 }
                 self.signIn(email: email, password: password)
@@ -68,8 +69,8 @@ class WelcomeViewController: UIViewController {
                 self.activityIndicator.stopAnimating()
                 switch result {
                 case let .failure(error):
-                    // TODO: this is not a fatal error
-                    fatalError("Login failed: \(error.localizedDescription)")
+                    print("Failed to log in: \(error)")
+                    self.reportError(error)
                 case let .success(user):
                     self.onSignInComplete(user)
                 }
@@ -86,13 +87,21 @@ class WelcomeViewController: UIViewController {
                 self.activityIndicator.stopAnimating()
                 switch result {
                 case  let .failure(error):
-                    // TODO: this is not a fatal error
-                    fatalError("Login failed: \(error.localizedDescription)")
+                    print("Failed to open realm: \(error)")
+                    self.reportError(error)
                 case  .success:
                     // Realm fully loaded
                     self.performSegue(withIdentifier: "onAuthenticationComplete", sender: self)
                 }
             }
         }
+    }
+    
+    func reportError(_ error: Error) {
+        let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in
+            alertController.dismiss(animated: true)
+        }))
+        present(alertController, animated: true)
     }
 }
