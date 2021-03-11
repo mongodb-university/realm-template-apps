@@ -1,11 +1,15 @@
 import UIKit
 import RealmSwift
 
+/// TheTasksViewController presents the list of tasks and allows you to create new tasks, update
+/// completion status, and swipe to delete tasks.
 class TasksViewController: UITableViewController {
     @IBOutlet var logOutBarButtonItem: UIBarButtonItem!
     @IBOutlet var addTaskBarButtonItem: UIBarButtonItem!
 
-    lazy var realm = try! Realm()
+    /// Use the default realm. For a synced realm, the default realm configuration
+    /// should already be set to the user's sync configuration.
+    var realm = try! Realm()
     lazy var tasks = realm.objects(Task.self).sorted(byKeyPath: "_id")
     var notificationToken: NotificationToken?
 
