@@ -104,15 +104,6 @@ class WelcomeViewController: UIViewController {
             }
         }
     }
-    
-    /// Presents the user with an error alert.
-    func reportError(_ error: Error) {
-        let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in
-            alertController.dismiss(animated: true)
-        }))
-        present(alertController, animated: true)
-    }
 
     /// Turns on or off the activity indicator.
     func setLoading(_ loading: Bool) {
@@ -130,5 +121,16 @@ class WelcomeViewController: UIViewController {
     /// Sets the configuration to use when opening a realm for the given user.
     func setDefaultConfiguration(forUser user: User) {
         Realm.Configuration.defaultConfiguration = user.configuration(partitionValue: user.id)
+    }
+}
+
+extension UIViewController {
+    /// Presents the user with an error alert.
+    func reportError(_ error: Error) {
+        let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in
+            alertController.dismiss(animated: true)
+        }))
+        present(alertController, animated: true)
     }
 }

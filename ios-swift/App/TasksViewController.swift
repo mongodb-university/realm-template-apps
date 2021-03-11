@@ -77,7 +77,7 @@ class TasksViewController: UITableViewController {
                         with: .automatic)
                 })
             case let .error(error):
-                fatalError("Notification failed with error: \(error)")
+                self.reportError(error)
             }
         }
     }
