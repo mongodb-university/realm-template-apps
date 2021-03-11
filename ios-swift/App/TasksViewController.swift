@@ -5,15 +5,15 @@ class TasksViewController: UITableViewController {
     @IBOutlet var logOutBarButtonItem: UIBarButtonItem!
     @IBOutlet var addTaskBarButtonItem: UIBarButtonItem!
 
-    var realm: Realm!
+    lazy var realm = try! Realm()
+    lazy var tasks = realm.objects(Task.self).sorted(byKeyPath: "_id")
+    var notificationToken: NotificationToken?
 
     override func viewDidLoad() {
         logOutBarButtonItem.target = self
         logOutBarButtonItem.action = #selector(logOut)
         addTaskBarButtonItem.target = self
         addTaskBarButtonItem.action = #selector(addTask)
-        
-        realm = try! Realm()
     }
 
     @objc func logOut() {
@@ -54,5 +54,51 @@ class TasksViewController: UITableViewController {
 
         // Show the dialog.
         self.present(alertController, animated: true, completion: nil)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        notificationToken = tasks.observe { (changes) in
+            let tableView = self.tableView!
+            switch changes {
+            case .initial:
+                // Results are now populated and can be accessed without blocking the UI
+                tableView.reloadData()
+            case let .update(_, deletions, insertions, modifications):
+                // Query results have changed, so apply them to the UITableView.
+                tableView.performBatchUpdates({
+                    // It's important to be sure to always update a table in this order:
+                    // deletions, insertions, then updates. Otherwise, you could be unintentionally
+                    // updating at the wrong index.
+                    tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
+                        with: .automatic)
+                    tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
+                        with: .automatic)
+                    tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
+                        with: .automatic)
+                })
+            case let .error(error):
+                fatalError("Notification failed with error: \(error)")
+            }
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        notificationToken?.invalidate()
+    }
+
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tasks.count
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // This defines how the Tasks in the list look.
+        // We want the task name on the left and some indication of its status on the right.
+        let task = tasks[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") ?? UITableViewCell(style: .default, reuseIdentifier: "Cell")
+        cell.selectionStyle = .none
+        cell.textLabel?.text = task.summary
+        cell.accessoryType = task.isComplete ? UITableViewCell.AccessoryType.checkmark : UITableViewCell.AccessoryType.none
+        return cell
     }
 }
