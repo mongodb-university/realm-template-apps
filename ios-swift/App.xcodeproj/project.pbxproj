@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		485A3B2625FA958200B9FD48 /* realmApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485A3B2525FA958200B9FD48 /* realmApp.swift */; };
 		486192AA25F6BDDA0035619D /* Realm.plist in Resources */ = {isa = PBXBuildFile; fileRef = 486192A925F6BDDA0035619D /* Realm.plist */; };
 		4865DFBA25F863FB0022992E /* TasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4865DFB925F863FB0022992E /* TasksViewController.swift */; };
 		48E6D84925F1970600EC40A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E6D84825F1970600EC40A5 /* AppDelegate.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		485A3B2525FA958200B9FD48 /* realmApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = realmApp.swift; sourceTree = "<group>"; };
 		486192A925F6BDDA0035619D /* Realm.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Realm.plist; sourceTree = "<group>"; };
 		4865DFB925F863FB0022992E /* TasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksViewController.swift; sourceTree = "<group>"; };
 		48E6D84525F1970600EC40A5 /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -113,6 +115,7 @@
 				48E6D85325F1970800EC40A5 /* LaunchScreen.storyboard */,
 				48E6D84E25F1970600EC40A5 /* Main.storyboard */,
 				486192A925F6BDDA0035619D /* Realm.plist */,
+				485A3B2525FA958200B9FD48 /* realmApp.swift */,
 				48E6D84A25F1970600EC40A5 /* SceneDelegate.swift */,
 				4865DFB925F863FB0022992E /* TasksViewController.swift */,
 				48E6D84C25F1970600EC40A5 /* WelcomeViewController.swift */,
@@ -278,6 +281,7 @@
 			files = (
 				48E6D84D25F1970600EC40A5 /* WelcomeViewController.swift in Sources */,
 				4865DFBA25F863FB0022992E /* TasksViewController.swift in Sources */,
+				485A3B2625FA958200B9FD48 /* realmApp.swift in Sources */,
 				48E6D84925F1970600EC40A5 /* AppDelegate.swift in Sources */,
 				48E6D84B25F1970600EC40A5 /* SceneDelegate.swift in Sources */,
 			);

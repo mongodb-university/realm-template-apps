@@ -15,8 +15,9 @@ class WelcomeViewController: UIViewController {
         changeModeButton.addTarget(self, action: #selector(modeChangeButtonPressed), for: .touchUpInside)
         submitButton.addTarget(self, action: #selector(submitButtonPressed), for: .touchUpInside)
         // If a user is already looged in, go directly to the items screen
-        if realmApp.currentUser != nil {
-            self.performSegue(withIdentifier: "onAuthenticationComplete", sender: self)
+        if let user = realmApp.currentUser {
+            setDefaultConfiguration(forUser: user)
+            performSegue(withIdentifier: "onAuthenticationComplete", sender: self)
         }
     }
 
@@ -86,7 +87,7 @@ class WelcomeViewController: UIViewController {
     
     /// Called when sign in completes. Opens the realm asynchronously and navigates to the Tasks screen.
     func onSignInComplete(_ user: User) {
-        Realm.Configuration.defaultConfiguration = user.configuration(partitionValue: user.id)
+        setDefaultConfiguration(forUser: user)
 
         setLoading(true)
         Realm.asyncOpen { result in
@@ -96,7 +97,7 @@ class WelcomeViewController: UIViewController {
                 case  let .failure(error):
                     print("Failed to open realm: \(error)")
                     self.reportError(error)
-                case  .success:
+                case .success:
                     // Realm fully loaded
                     self.performSegue(withIdentifier: "onAuthenticationComplete", sender: self)
                 }
@@ -125,5 +126,9 @@ class WelcomeViewController: UIViewController {
         submitButton.isEnabled = !loading
         changeModeButton.isEnabled = !loading
     }
-
+    
+    /// Sets the configuration to use when opening a realm for the given user.
+    func setDefaultConfiguration(forUser user: User) {
+        Realm.Configuration.defaultConfiguration = user.configuration(partitionValue: user.id)
+    }
 }
