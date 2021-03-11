@@ -10,40 +10,72 @@
     </dependencies>
     <scenes>
         <!--Tasks-->
-        <scene sceneID="ifD-aa-gWX">
+        <scene sceneID="nn3-Cm-PfA">
             <objects>
-                <tableViewController storyboardIdentifier="tasks" id="pjw-Px-9T9" customClass="TasksViewController" customModule="App" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="MNG-az-HMe">
+                <viewController storyboardIdentifier="tasks" id="DNa-lX-BbF" customClass="TasksViewController" customModule="App" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="b3k-83-DY9">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qFm-jg-Wa6">
+                                <rect key="frame" x="0.0" y="88" width="428" height="492"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <view key="tableFooterView" contentMode="scaleToFill" id="pzs-CI-miC">
+                                    <rect key="frame" x="0.0" y="0.0" width="428" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                </view>
+                            </tableView>
+                            <view contentMode="scaleToFill" id="cbn-jY-7Zb">
+                                <rect key="frame" x="0.0" y="580" width="428" height="317"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log in with the same account on another device or simulator to see your list sync in real-time" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9F7-O1-yXl">
+                                        <rect key="frame" x="20.333333333333343" y="185.33333333333337" width="387.66666666666663" height="40.666666666666657"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Built with the MongoDB Realm Sync Template" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DXL-Gw-sSX">
+                                        <rect key="frame" x="114.00000000000001" y="266" width="200.33333333333337" height="11"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="9F7-O1-yXl" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cbn-jY-7Zb" secondAttribute="leading" id="7xg-KN-SB4"/>
+                                    <constraint firstAttribute="bottom" secondItem="DXL-Gw-sSX" secondAttribute="bottom" constant="40" id="F1V-ev-yVI"/>
+                                    <constraint firstItem="DXL-Gw-sSX" firstAttribute="centerX" secondItem="cbn-jY-7Zb" secondAttribute="centerX" id="QFh-Vh-MmF"/>
+                                    <constraint firstItem="9F7-O1-yXl" firstAttribute="centerX" secondItem="cbn-jY-7Zb" secondAttribute="centerX" id="TgQ-QP-74v"/>
+                                    <constraint firstItem="DXL-Gw-sSX" firstAttribute="top" secondItem="9F7-O1-yXl" secondAttribute="bottom" constant="40" id="jnU-Lx-ovY"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="9F7-O1-yXl" secondAttribute="trailing" id="xAo-Wl-RHs"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="3O8-CR-5i4"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="jST-4j-Cin">
-                                <rect key="frame" x="0.0" y="28" width="428" height="43.666667938232422"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jST-4j-Cin" id="1Aq-ws-ApW">
-                                    <rect key="frame" x="0.0" y="0.0" width="428" height="43.666667938232422"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="pjw-Px-9T9" id="TDr-Ib-bqX"/>
-                            <outlet property="delegate" destination="pjw-Px-9T9" id="PXm-Pd-wrE"/>
-                        </connections>
-                    </tableView>
+                        <constraints>
+                            <constraint firstItem="qFm-jg-Wa6" firstAttribute="top" secondItem="3O8-CR-5i4" secondAttribute="top" id="SVM-Hh-vqI"/>
+                            <constraint firstItem="3O8-CR-5i4" firstAttribute="trailing" secondItem="qFm-jg-Wa6" secondAttribute="trailing" id="WUy-x4-M0O"/>
+                            <constraint firstItem="qFm-jg-Wa6" firstAttribute="leading" secondItem="3O8-CR-5i4" secondAttribute="leading" id="wbp-jX-Af3"/>
+                            <constraint firstItem="cbn-jY-7Zb" firstAttribute="top" secondItem="qFm-jg-Wa6" secondAttribute="bottom" id="yZ4-wl-0FV"/>
+                        </constraints>
+                    </view>
                     <navigationItem key="navigationItem" title="Tasks" id="Wd3-eY-vER">
                         <barButtonItem key="leftBarButtonItem" title="Log Out" id="Xul-K0-nR1"/>
                         <barButtonItem key="rightBarButtonItem" title="Add" image="plus" catalog="system" style="plain" id="M0w-ye-Lsg"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="addTaskBarButtonItem" destination="M0w-ye-Lsg" id="bzO-MN-9NY"/>
-                        <outlet property="logOutBarButtonItem" destination="Xul-K0-nR1" id="T9L-SE-5jj"/>
+                        <outlet property="addTaskBarButtonItem" destination="M0w-ye-Lsg" id="Di7-wV-flf"/>
+                        <outlet property="logOutBarButtonItem" destination="Xul-K0-nR1" id="5GE-QY-iNu"/>
+                        <outlet property="tableView" destination="qFm-jg-Wa6" id="06s-Wl-yxP"/>
                     </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2b7-H3-yjn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="28V-wY-Xmd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2058" y="330"/>
+            <point key="canvasLocation" x="2081.7757009345792" y="329.80561555075599"/>
         </scene>
         <!--Welcome View Controller-->
         <scene sceneID="xaF-1l-45o">
@@ -123,7 +155,7 @@
                         <outlet property="emailField" destination="Vgt-lt-hzk" id="gyY-yg-OHb"/>
                         <outlet property="passwordField" destination="nbn-5t-CN3" id="VOw-Lu-O3f"/>
                         <outlet property="submitButton" destination="gFT-jX-HYY" id="YJq-9K-B4M"/>
-                        <segue destination="pjw-Px-9T9" kind="show" identifier="onAuthenticationComplete" id="YKB-YR-mE5"/>
+                        <segue destination="DNa-lX-BbF" kind="show" identifier="onAuthenticationComplete" id="GFA-JM-cKp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qeE-6u-Xbf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

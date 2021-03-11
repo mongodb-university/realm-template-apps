@@ -3,9 +3,10 @@ import RealmSwift
 
 /// TheTasksViewController presents the list of tasks and allows you to create new tasks, update
 /// completion status, and swipe to delete tasks.
-class TasksViewController: UITableViewController {
+class TasksViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet var logOutBarButtonItem: UIBarButtonItem!
     @IBOutlet var addTaskBarButtonItem: UIBarButtonItem!
+    @IBOutlet var tableView: UITableView!
 
     /// Use the default realm. For a synced realm, the default realm configuration
     /// should already be set to the user's sync configuration.
@@ -14,6 +15,8 @@ class TasksViewController: UITableViewController {
     var notificationToken: NotificationToken?
 
     override func viewDidLoad() {
+        tableView.delegate = self
+        tableView.dataSource = self
         logOutBarButtonItem.target = self
         logOutBarButtonItem.action = #selector(logOut)
         addTaskBarButtonItem.target = self
@@ -95,12 +98,12 @@ class TasksViewController: UITableViewController {
     }
 
     /// Returns the number of tasks in the realm.
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tasks.count
     }
 
     /// Defines the appearance of the task items in the list.
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let task = tasks[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") ?? UITableViewCell(style: .default, reuseIdentifier: "Cell")
         cell.selectionStyle = .none
@@ -114,7 +117,7 @@ class TasksViewController: UITableViewController {
     }
 
     /// Handles selecting an item to toggle its complete state.
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // User selected a task in the table.
         let task = tasks[indexPath.row]
         try! realm.write {
@@ -124,7 +127,7 @@ class TasksViewController: UITableViewController {
     }
 
     /// Handles swipe to delete.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else {
             return
         }
