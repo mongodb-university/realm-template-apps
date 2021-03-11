@@ -91,16 +91,14 @@ class WelcomeViewController: UIViewController {
 
         setLoading(true)
         Realm.asyncOpen { result in
-            DispatchQueue.main.async {
-                self.setLoading(false)
-                switch result {
-                case  let .failure(error):
-                    print("Failed to open realm: \(error)")
-                    self.reportError(error)
-                case .success:
-                    // Realm fully loaded
-                    self.performSegue(withIdentifier: "onAuthenticationComplete", sender: self)
-                }
+            self.setLoading(false)
+            switch result {
+            case  let .failure(error):
+                print("Failed to open realm: \(error)")
+                self.reportError(error)
+            case .success:
+                // Realm fully loaded
+                self.performSegue(withIdentifier: "onAuthenticationComplete", sender: self)
             }
         }
     }
