@@ -20,8 +20,8 @@
             "_partition": {
                 "bsonType": "string"
             },
-            "status": {
-                "bsonType": "string"
+            "isComplete": {
+                "bsonType": "boolean"
             },
             "summary": {
                 "bsonType": "string"
@@ -30,7 +30,7 @@
         "required": [
             "_id",
             "summary",
-            "status",
+            "isComplete",
             "_partition"
         ],
         "title": "Task"
