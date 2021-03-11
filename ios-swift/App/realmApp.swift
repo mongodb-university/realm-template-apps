@@ -1,4 +1,5 @@
 import RealmSwift
+import UIKit
 
 /// The global instance of the Realm app. Loads the app ID from the Realm.plist file.
 var realmApp: App = {
