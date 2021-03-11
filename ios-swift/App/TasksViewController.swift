@@ -101,4 +101,13 @@ class TasksViewController: UITableViewController {
         cell.accessoryType = task.isComplete ? UITableViewCell.AccessoryType.checkmark : UITableViewCell.AccessoryType.none
         return cell
     }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // User selected a task in the table.
+        let task = tasks[indexPath.row]
+        try! realm.write {
+            // Update the task's status.
+            task.isComplete = !task.isComplete
+        }
+    }
 }
