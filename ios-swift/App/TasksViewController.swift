@@ -16,6 +16,7 @@ class TasksViewController: UITableViewController {
         addTaskBarButtonItem.action = #selector(addTask)
     }
 
+    /// Prompts the user to confirm log out, then logs out and returns to the welcome view.
     @objc func logOut() {
         let alertController = UIAlertController(title: "Log Out", message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Yes, Log Out", style: .destructive) { _ in
@@ -31,6 +32,7 @@ class TasksViewController: UITableViewController {
         present(alertController, animated: true, completion: nil)
     }
     
+    /// Prompts the user for a new task summary, then adds the task to the realm.
     @objc func addTask() {
         let alertController = UIAlertController(title: "Add Task", message: nil, preferredStyle: .alert)
 
@@ -56,6 +58,7 @@ class TasksViewController: UITableViewController {
         self.present(alertController, animated: true, completion: nil)
     }
 
+    /// Observes the tasks in the realm.
     override func viewWillAppear(_ animated: Bool) {
         notificationToken = tasks.observe { (changes) in
             let tableView = self.tableView!
@@ -82,32 +85,51 @@ class TasksViewController: UITableViewController {
         }
     }
     
+    /// Stops observing the tasks in the realm when the view disappears.
     override func viewWillDisappear(_ animated: Bool) {
         notificationToken?.invalidate()
     }
 
-    
+    /// Returns the number of tasks in the realm.
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tasks.count
     }
 
+    /// Defines the appearance of the task items in the list.
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // This defines how the Tasks in the list look.
-        // We want the task name on the left and some indication of its status on the right.
         let task = tasks[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") ?? UITableViewCell(style: .default, reuseIdentifier: "Cell")
         cell.selectionStyle = .none
+        
+        // Show the task summary text on the left.
         cell.textLabel?.text = task.summary
+        
+        // Add a checkmark for complete tasks.
         cell.accessoryType = task.isComplete ? UITableViewCell.AccessoryType.checkmark : UITableViewCell.AccessoryType.none
         return cell
     }
 
+    /// Handles selecting an item to toggle its complete state.
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // User selected a task in the table.
         let task = tasks[indexPath.row]
         try! realm.write {
             // Update the task's status.
             task.isComplete = !task.isComplete
+        }
+    }
+
+    /// Handles swipe to delete.
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else {
+            return
+        }
+
+        let task = tasks[indexPath.row]
+
+        try! realm.write {
+            // Delete the Task.
+            realm.delete(task)
         }
     }
 }
