@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -32,8 +33,13 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Tasks" id="Wd3-eY-vER">
-                        <barButtonItem key="backBarButtonItem" title="Log Out" id="Xul-K0-nR1"/>
+                        <barButtonItem key="leftBarButtonItem" title="Log Out" id="Xul-K0-nR1"/>
+                        <barButtonItem key="rightBarButtonItem" title="Add" image="plus" catalog="system" style="plain" id="M0w-ye-Lsg"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="addTaskBarButtonItem" destination="M0w-ye-Lsg" id="bzO-MN-9NY"/>
+                        <outlet property="logOutBarButtonItem" destination="Xul-K0-nR1" id="T9L-SE-5jj"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2b7-H3-yjn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -59,7 +65,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="9Gm-UM-var">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="9Gm-UM-var">
                                         <rect key="frame" x="0.0" y="50" width="388" height="200"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vgt-lt-hzk">
@@ -68,12 +74,12 @@
                                                 <textInputTraits key="textInputTraits" textContentType="email"/>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nbn-5t-CN3">
-                                                <rect key="frame" x="0.0" y="56" width="388" height="34"/>
+                                                <rect key="frame" x="0.0" y="58" width="388" height="34"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gFT-jX-HYY">
-                                                <rect key="frame" x="0.0" y="114" width="388" height="30"/>
+                                                <rect key="frame" x="0.0" y="116" width="388" height="30"/>
                                                 <color key="backgroundColor" systemColor="systemFillColor"/>
                                                 <state key="normal" title="Create Account"/>
                                             </button>
@@ -144,6 +150,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="plus" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
