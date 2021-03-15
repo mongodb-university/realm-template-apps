@@ -46,9 +46,10 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
         // When the user clicks the add button, present them with a dialog to enter the task name.
         alertController.addAction(UIAlertAction(title: "Save", style: .default, handler: { _ in
             let textField = alertController.textFields![0] as UITextField
-
+            let text = textField.text
             // Create a new Task with the text that the user entered.
-            let task = Task(summary: textField.text ?? "New Task")
+            let summary = text == nil || text!.isEmpty ? "New Task" : text!
+            let task = Task(summary: summary)
 
             // Any writes to the Realm must occur in a write block.
             try! self.realm.write {
