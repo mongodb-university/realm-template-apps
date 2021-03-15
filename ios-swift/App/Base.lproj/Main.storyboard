@@ -19,24 +19,29 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qFm-jg-Wa6">
                                 <rect key="frame" x="0.0" y="88" width="428" height="492"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="492" id="2QS-L5-HUI"/>
+                                </constraints>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="pzs-CI-miC">
                                     <rect key="frame" x="0.0" y="0.0" width="428" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 </view>
                             </tableView>
-                            <view contentMode="scaleToFill" id="cbn-jY-7Zb">
-                                <rect key="frame" x="0.0" y="580" width="428" height="317"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cbn-jY-7Zb">
+                                <rect key="frame" x="0.0" y="588" width="428" height="304"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log in with the same account on another device or simulator to see your list sync in real-time" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9F7-O1-yXl">
-                                        <rect key="frame" x="20.333333333333343" y="185.33333333333337" width="387.66666666666663" height="40.666666666666657"/>
+                                        <rect key="frame" x="39" y="132" width="350" height="61"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="350" id="PHv-HU-Ewr"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Built with the MongoDB Realm Sync Template" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DXL-Gw-sSX">
-                                        <rect key="frame" x="114.00000000000001" y="266" width="200.33333333333337" height="11"/>
+                                        <rect key="frame" x="114.00000000000001" y="243" width="200.33333333333337" height="11"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -44,22 +49,23 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="9F7-O1-yXl" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="cbn-jY-7Zb" secondAttribute="leading" id="7xg-KN-SB4"/>
-                                    <constraint firstAttribute="bottom" secondItem="DXL-Gw-sSX" secondAttribute="bottom" constant="40" id="F1V-ev-yVI"/>
-                                    <constraint firstItem="DXL-Gw-sSX" firstAttribute="centerX" secondItem="cbn-jY-7Zb" secondAttribute="centerX" id="QFh-Vh-MmF"/>
-                                    <constraint firstItem="9F7-O1-yXl" firstAttribute="centerX" secondItem="cbn-jY-7Zb" secondAttribute="centerX" id="TgQ-QP-74v"/>
-                                    <constraint firstItem="DXL-Gw-sSX" firstAttribute="top" secondItem="9F7-O1-yXl" secondAttribute="bottom" constant="40" id="jnU-Lx-ovY"/>
-                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="9F7-O1-yXl" secondAttribute="trailing" id="xAo-Wl-RHs"/>
+                                    <constraint firstItem="9F7-O1-yXl" firstAttribute="centerX" secondItem="cbn-jY-7Zb" secondAttribute="centerX" id="Uqs-VS-GLt"/>
+                                    <constraint firstItem="DXL-Gw-sSX" firstAttribute="centerX" secondItem="cbn-jY-7Zb" secondAttribute="centerX" id="VAj-UV-OfD"/>
+                                    <constraint firstItem="DXL-Gw-sSX" firstAttribute="top" secondItem="9F7-O1-yXl" secondAttribute="bottom" constant="50" id="p8E-1V-2dP"/>
+                                    <constraint firstAttribute="bottom" secondItem="DXL-Gw-sSX" secondAttribute="bottom" constant="50" id="ra6-0e-g1l"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="3O8-CR-5i4"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="qFm-jg-Wa6" firstAttribute="top" secondItem="3O8-CR-5i4" secondAttribute="top" id="SVM-Hh-vqI"/>
-                            <constraint firstItem="3O8-CR-5i4" firstAttribute="trailing" secondItem="qFm-jg-Wa6" secondAttribute="trailing" id="WUy-x4-M0O"/>
-                            <constraint firstItem="qFm-jg-Wa6" firstAttribute="leading" secondItem="3O8-CR-5i4" secondAttribute="leading" id="wbp-jX-Af3"/>
-                            <constraint firstItem="cbn-jY-7Zb" firstAttribute="top" secondItem="qFm-jg-Wa6" secondAttribute="bottom" id="yZ4-wl-0FV"/>
+                            <constraint firstItem="qFm-jg-Wa6" firstAttribute="trailing" secondItem="cbn-jY-7Zb" secondAttribute="trailing" id="2oF-0Z-LdK"/>
+                            <constraint firstItem="qFm-jg-Wa6" firstAttribute="top" secondItem="3O8-CR-5i4" secondAttribute="top" id="76w-XD-iLw"/>
+                            <constraint firstItem="qFm-jg-Wa6" firstAttribute="leading" secondItem="cbn-jY-7Zb" secondAttribute="leading" id="MFj-H8-Qba"/>
+                            <constraint firstItem="cbn-jY-7Zb" firstAttribute="trailing" secondItem="3O8-CR-5i4" secondAttribute="trailing" id="ORX-qq-nqc"/>
+                            <constraint firstItem="cbn-jY-7Zb" firstAttribute="leading" secondItem="3O8-CR-5i4" secondAttribute="leading" id="gCD-0u-nUl"/>
+                            <constraint firstItem="cbn-jY-7Zb" firstAttribute="top" secondItem="qFm-jg-Wa6" secondAttribute="bottom" constant="8" symbolic="YES" id="jcC-3I-TBP"/>
+                            <constraint firstItem="3O8-CR-5i4" firstAttribute="bottom" secondItem="cbn-jY-7Zb" secondAttribute="bottom" id="ndD-3a-gIB"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Tasks" id="Wd3-eY-vER">
