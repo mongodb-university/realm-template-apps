@@ -7,6 +7,7 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBOutlet var logOutBarButtonItem: UIBarButtonItem!
     @IBOutlet var addTaskBarButtonItem: UIBarButtonItem!
     @IBOutlet var tableView: UITableView!
+    @IBOutlet var demoView: UIView?
 
     /// Use the default realm. For a synced realm, the default realm configuration
     /// should already be set to the user's sync configuration.
@@ -90,6 +91,7 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
             case let .error(error):
                 self.reportError(error)
             }
+            self.updateScrollIndicatorShadow()
         }
     }
     
@@ -139,5 +141,28 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
             // Delete the Task.
             realm.delete(task)
         }
+    }
+    
+    /// Turns on or off a shadow that indicates whether content is below the fold on the table view.
+    func updateScrollIndicatorShadow() {
+        guard let layer = demoView?.layer else {
+            return
+        }
+
+        // If the table doesn't have enough content, or the scroll position
+        // is already near the bottom, don't show the shadow.
+        if (tableView.contentSize.height < tableView.frame.height
+                || tableView.contentOffset.y >= tableView.contentSize.height - tableView.frame.height) {
+            layer.shadowOpacity = 0
+            return
+        }
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = 0.3
+        layer.shadowOffset = .zero
+        layer.shadowRadius = 5
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        updateScrollIndicatorShadow()
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xnd-Bc-wWG">
-    <device id="retina6_7" orientation="portrait" appearance="light"/>
+    <device id="ipad10_9rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -13,26 +13,26 @@
             <objects>
                 <viewController storyboardIdentifier="tasks" id="DNa-lX-BbF" customClass="TasksViewController" customModule="App" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="b3k-83-DY9">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <rect key="frame" x="0.0" y="0.0" width="820" height="1180"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qFm-jg-Wa6">
-                                <rect key="frame" x="0.0" y="88" width="428" height="492"/>
+                                <rect key="frame" x="0.0" y="50" width="820" height="492"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="492" id="2QS-L5-HUI"/>
                                 </constraints>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="pzs-CI-miC">
-                                    <rect key="frame" x="0.0" y="0.0" width="428" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="820" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 </view>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cbn-jY-7Zb">
-                                <rect key="frame" x="0.0" y="588" width="428" height="304"/>
+                                <rect key="frame" x="0.0" y="550" width="820" height="630"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log in with the same account on another device or simulator to see your list sync in real-time" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9F7-O1-yXl">
-                                        <rect key="frame" x="39" y="132" width="350" height="61"/>
+                                        <rect key="frame" x="235" y="438" width="350" height="61"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="350" id="PHv-HU-Ewr"/>
                                         </constraints>
@@ -41,7 +41,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Built with the MongoDB Realm Sync Template" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DXL-Gw-sSX">
-                                        <rect key="frame" x="114.00000000000001" y="243" width="200.33333333333337" height="11"/>
+                                        <rect key="frame" x="310" y="549" width="200" height="11"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -52,7 +52,7 @@
                                     <constraint firstItem="9F7-O1-yXl" firstAttribute="centerX" secondItem="cbn-jY-7Zb" secondAttribute="centerX" id="Uqs-VS-GLt"/>
                                     <constraint firstItem="DXL-Gw-sSX" firstAttribute="centerX" secondItem="cbn-jY-7Zb" secondAttribute="centerX" id="VAj-UV-OfD"/>
                                     <constraint firstItem="DXL-Gw-sSX" firstAttribute="top" secondItem="9F7-O1-yXl" secondAttribute="bottom" constant="50" id="p8E-1V-2dP"/>
-                                    <constraint firstAttribute="bottom" secondItem="DXL-Gw-sSX" secondAttribute="bottom" constant="50" id="ra6-0e-g1l"/>
+                                    <constraint firstAttribute="bottom" secondItem="DXL-Gw-sSX" secondAttribute="bottom" constant="70" id="ra6-0e-g1l"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -63,9 +63,9 @@
                             <constraint firstItem="qFm-jg-Wa6" firstAttribute="top" secondItem="3O8-CR-5i4" secondAttribute="top" id="76w-XD-iLw"/>
                             <constraint firstItem="qFm-jg-Wa6" firstAttribute="leading" secondItem="cbn-jY-7Zb" secondAttribute="leading" id="MFj-H8-Qba"/>
                             <constraint firstItem="cbn-jY-7Zb" firstAttribute="trailing" secondItem="3O8-CR-5i4" secondAttribute="trailing" id="ORX-qq-nqc"/>
+                            <constraint firstAttribute="bottom" secondItem="cbn-jY-7Zb" secondAttribute="bottom" id="af5-fh-p0h"/>
                             <constraint firstItem="cbn-jY-7Zb" firstAttribute="leading" secondItem="3O8-CR-5i4" secondAttribute="leading" id="gCD-0u-nUl"/>
                             <constraint firstItem="cbn-jY-7Zb" firstAttribute="top" secondItem="qFm-jg-Wa6" secondAttribute="bottom" constant="8" symbolic="YES" id="jcC-3I-TBP"/>
-                            <constraint firstItem="3O8-CR-5i4" firstAttribute="bottom" secondItem="cbn-jY-7Zb" secondAttribute="bottom" id="ndD-3a-gIB"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Tasks" id="Wd3-eY-vER">
@@ -74,6 +74,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addTaskBarButtonItem" destination="M0w-ye-Lsg" id="Di7-wV-flf"/>
+                        <outlet property="demoView" destination="cbn-jY-7Zb" id="EYJ-y7-lWh"/>
                         <outlet property="logOutBarButtonItem" destination="Xul-K0-nR1" id="5GE-QY-iNu"/>
                         <outlet property="tableView" destination="qFm-jg-Wa6" id="06s-Wl-yxP"/>
                     </connections>
@@ -87,35 +88,35 @@
             <objects>
                 <viewController storyboardIdentifier="welcome" id="ZPK-TW-HMe" customClass="WelcomeViewController" customModule="App" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="43p-xN-lM9">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <rect key="frame" x="0.0" y="0.0" width="820" height="1180"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Sync App" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y0T-B5-vII">
-                                <rect key="frame" x="163.66666666666666" y="288" width="100.66666666666666" height="20.333333333333314"/>
+                                <rect key="frame" x="359.5" y="250" width="101" height="20.5"/>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LXS-jR-Vft">
-                                <rect key="frame" x="20" y="328.33333333333337" width="388" height="269.33333333333337"/>
+                                <rect key="frame" x="20" y="290.5" width="780" height="599"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vgt-lt-hzk">
-                                        <rect key="frame" x="0.0" y="0.0" width="388" height="34"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="780" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" textContentType="email"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nbn-5t-CN3">
-                                        <rect key="frame" x="0.0" y="42" width="388" height="34"/>
+                                        <rect key="frame" x="0.0" y="42" width="780" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gFT-jX-HYY">
-                                        <rect key="frame" x="0.0" y="84" width="388" height="30"/>
+                                        <rect key="frame" x="0.0" y="84" width="780" height="30"/>
                                         <color key="backgroundColor" systemColor="systemFillColor"/>
                                         <state key="normal" title="Create Account"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vOZ-34-4SZ" userLabel="Already have an account? Log in">
-                                        <rect key="frame" x="0.0" y="122" width="388" height="30"/>
+                                        <rect key="frame" x="0.0" y="122" width="780" height="30"/>
                                         <state key="normal" title="Already have an account? Log In"/>
                                     </button>
                                 </subviews>
@@ -136,13 +137,13 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Built with the MongoDB Realm Sync Template" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7j-na-j12">
-                                <rect key="frame" x="20" y="831" width="388" height="11"/>
+                                <rect key="frame" x="20" y="1099" width="780" height="11"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="KPh-AG-mjK">
-                                <rect key="frame" x="195.66666666666666" y="394.66666666666669" width="37" height="37"/>
+                                <rect key="frame" x="391.5" y="521.5" width="37" height="37"/>
                             </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="9om-ui-G1g"/>
@@ -181,7 +182,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xnd-Bc-wWG" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="LvL-wI-MXf">
-                        <rect key="frame" x="0.0" y="44" width="428" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="820" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
