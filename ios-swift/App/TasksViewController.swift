@@ -157,9 +157,9 @@ class TasksViewController: UIViewController, UITableViewDataSource, UITableViewD
             return
         }
         layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = 0.3
+        layer.shadowOpacity = 0.5
         layer.shadowOffset = .zero
-        layer.shadowRadius = 5
+        layer.shadowRadius = 10
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
