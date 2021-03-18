@@ -1,0 +1,20 @@
+{
+  "web.basic.hello-world": {
+    "human_readable_name": "Web Basic Hello World",
+    "repo_url": "https://github.com/andrewzlchen/basic_app",
+    "backend_path": "backend",
+    "client_path": "reactjs",
+    "metadata_path": "reactjs/src/utils/",
+    "metadata_filename": "realm_config",
+    "file_format": "json"
+  },
+  "ios.swift.todo": {
+    "human_readable_name": "iOS Swift Interface Builder Todo App",
+    "repo_url": "https://github.com/mongodb-university/realm-template-apps",
+    "backend_path": "todo-sync",
+    "client_path": "ios-swift",
+    "metadata_path": "ios-swift/App",
+    "metadata_filename": "Realm",
+    "file_format": "plist"
+  }
+}
