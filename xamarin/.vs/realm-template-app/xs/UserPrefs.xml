@@ -1,0 +1,46 @@
+﻿<Properties StartupConfiguration="{B4C5F1D0-489C-4701-B50D-FB156DCF4A9C}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="realm-tutorial-dotnet/App.xaml.cs">
+    <Files>
+      <File FileName="realm-tutorial-dotnet.Android/MainActivity.cs" Line="20" Column="33" />
+      <File FileName="realm-tutorial-dotnet.iOS/AppDelegate.cs" Line="26" Column="50" />
+      <File FileName="realm-tutorial-dotnet/App.xaml" Line="4" Column="39" />
+      <File FileName="realm-tutorial-dotnet/App.xaml.cs" Line="13" Column="10" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="realm-template-app" expanded="True">
+            <Node name="realm-template-app" expanded="True">
+              <Node name="App.xaml" expanded="True">
+                <Node name="App.xaml.cs" selected="True" />
+              </Node>
+              <Node name="EditTaskPage.xaml" expanded="True" />
+              <Node name="LoginPage.xaml" expanded="True" />
+            </Node>
+            <Node name="realm-template-app.Android" expanded="True">
+              <Node name="References" expanded="True" />
+              <Node name="Packages" expanded="True" />
+              <Node name="Resources" expanded="True" />
+            </Node>
+            <Node name="realm-template-app.iOS" expanded="True">
+              <Node name="Resources" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.realm-template-app.Android PreferredExecutionTarget="Android.Pixel_3a_API_30_x86" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <DisabledProjects>
+    <String>realm-tutorial-dotnet.UWP/realm-tutorial-dotnet.UWP.csproj</String>
+  </DisabledProjects>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet/App.xaml.cs" relfile="realm-tutorial-dotnet/App.xaml.cs" line="20" column="1" />
+      <Breakpoint file="/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet/App.xaml.cs" relfile="realm-tutorial-dotnet/App.xaml.cs" line="37" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

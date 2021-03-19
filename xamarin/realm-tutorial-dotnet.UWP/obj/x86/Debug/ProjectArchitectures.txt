@@ -1,0 +1,1 @@
+C:\Users\caleb\source\repos\mongodb-university\realm-tutorial-dotnet\realm-tutorial-dotnet.UWP\realm-tutorial-dotnet.UWP.csproj;x86
