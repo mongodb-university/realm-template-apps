@@ -18,14 +18,13 @@ namespace RealmTemplateApp
         {
             appId = GetAppId();
             RealmApp = Realms.Sync.App.Create(appId);
-            if (App.RealmApp.CurrentUser == null)
-            {
-                MainPage = new NavigationPage(new LoginPage());
-            }
-            else
-            {
-                MainPage = new NavigationPage(new ProjectPage());
-            }
+
+            var navPage = App.RealmApp.CurrentUser == null ?
+                new NavigationPage(new LoginPage()) :
+                new NavigationPage(new TaskPage());
+
+            NavigationPage.SetHasBackButton(navPage, false);
+            MainPage = navPage;
         }
 
         private string GetAppId()

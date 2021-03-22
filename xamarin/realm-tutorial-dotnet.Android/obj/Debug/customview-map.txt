@@ -13,6 +13,7 @@ android.support.design.widget.CoordinatorLayout;/Users/caleb/repo/mongocaleb/rea
 android.support.design.widget.CoordinatorLayout;/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/lp/39/jl/res/layout/shellcontent.xml
 android.support.design.widget.TabLayout;/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/lp/39/jl/res/layout/rootlayout.xml
 android.support.design.widget.TabLayout;obj/Debug/res/layout/tabbar.xml
+android.support.design.widget.TabLayout;obj/Debug/res/layout/toolbar.xml
 android.support.v7.widget.RecyclerView;/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/lp/39/jl/res/layout/flyoutcontent.xml
 android.support.v7.widget.Toolbar;/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/lp/39/jl/res/layout/rootlayout.xml
 android.support.v7.widget.Toolbar;/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/lp/39/jl/res/layout/shellcontent.xml
@@ -29,6 +30,7 @@ external-path;/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tut
 foreground;obj/Debug/res/mipmap-anydpi-v26/icon.xml
 foreground;obj/Debug/res/mipmap-anydpi-v26/icon_round.xml
 FrameLayout;/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/lp/39/jl/res/layout/bottomtablayout.xml
+FrameLayout;obj/Debug/res/layout/toolbar.xml
 item;/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/lp/39/jl/res/values/styles.xml
 item;obj/Debug/res/values/styles.xml
 LinearLayout;/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/lp/39/jl/res/layout/bottomtablayout.xml

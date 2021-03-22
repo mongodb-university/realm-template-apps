@@ -5,22 +5,9 @@
     <StackLayout>
         <StackLayout Orientation="Horizontal">
             <Label Text="Name"/>
-        <Entry TextChanged="Name_Entry_Completed" x:Name="txtName"/>
-            </StackLayout>
-        <StackLayout Orientation="Horizontal">
-            <Label Text="Status"/>
-        <Picker SelectedIndexChanged="Status_Entry_Completed" x:Name="pickerStatus">
-            <Picker.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                  <x:String>Open</x:String>
-                  <x:String>InProgress</x:String>
-                  <x:String>Complete</x:String>
-                </x:Array>
-              </Picker.ItemsSource>
-            </Picker>
-            </StackLayout>
+            <Entry TextChanged="Name_Entry_Completed" x:Name="txtName"/>
+        </StackLayout>
         <Button Text="Save" Clicked="Save_Button_Clicked"/>
         <Button Text="Cancel" Clicked="Cancel_Button_Clicked"/>
     </StackLayout>
-
 </ContentPage>

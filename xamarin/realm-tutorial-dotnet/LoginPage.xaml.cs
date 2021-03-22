@@ -15,6 +15,14 @@ namespace RealmTemplateApp
             InitializeComponent();
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            txtEmail.Text = "";
+            txtPassword.Text = "";
+        }
+
+
         async void Login_Button_Clicked(object sender, EventArgs e)
         {
             await DoLogin();
@@ -27,8 +35,9 @@ namespace RealmTemplateApp
                 var user = await App.RealmApp.LogInAsync(Credentials.EmailPassword(email, password));
                 if (user != null)
                 {
-                    var projectPage = new ProjectPage();
-                    await Navigation.PushAsync(projectPage);
+                    var taskPage = new TaskPage();
+                    NavigationPage.SetHasBackButton(taskPage, false);
+                    await Navigation.PushAsync(taskPage);
                 }
                 else throw new Exception();
             }

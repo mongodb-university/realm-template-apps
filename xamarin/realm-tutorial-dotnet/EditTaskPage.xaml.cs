@@ -10,32 +10,14 @@ namespace RealmTemplateApp
         public Task TaskToEdit;
         private Realm realm;
         private string newName;
-        private string newStatus;
+        private bool newStatus;
 
         public EditTaskPage(Realm realm, Task task)
         {
             InitializeComponent();
             this.realm = realm;
             this.TaskToEdit = task;
-            txtName.Text = task.Name;
-            pickerStatus.SelectedIndex = SetIndex();
-        }
-
-        private int SetIndex()
-        {
-            switch (TaskToEdit.Status)
-            {
-                case "Open":
-                    return 0;
-
-                case "InProgress":
-                    return 1;
-
-                case "Closed":
-                    return 2;
-                default:
-                    return 0;
-            }
+            txtName.Text = task.Summary;
         }
 
         public event EventHandler<EventArgs> OperationCompeleted = delegate { };
@@ -47,20 +29,7 @@ namespace RealmTemplateApp
 
         void Status_Entry_Completed(object sender, EventArgs e)
         {
-
-            switch (((Picker)sender).SelectedIndex)
-            {
-                case 0:
-                    newStatus = Task.TaskStatus.Open.ToString();
-                    break;
-                case 1:
-                    newStatus = Task.TaskStatus.InProgress.ToString();
-                    break;
-                case 2:
-                    newStatus = Task.TaskStatus.Complete.ToString();
-                    break;
-            }
-
+            newStatus = ((CheckBox)sender).IsChecked;
         }
 
         async void Cancel_Button_Clicked(object sender, EventArgs e)
@@ -74,8 +43,8 @@ namespace RealmTemplateApp
         {
             realm.Write(() =>
             {
-                TaskToEdit.Name = newName;
-                TaskToEdit.Status = newStatus;
+                TaskToEdit.Summary = newName;
+                TaskToEdit.IsComplete = newStatus;
             });
             OperationCompeleted(this, EventArgs.Empty);
             await Navigation.PopAsync();

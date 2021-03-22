@@ -906,6 +906,21 @@
           "buildTransitive/Xamarin.Forms.props": {},
           "buildTransitive/Xamarin.Forms.targets": {}
         }
+      },
+      "realm-template-app/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "Realm": "10.0.0-beta.2",
+          "Xamarin.Essentials": "1.5.3.2",
+          "Xamarin.Forms": "4.8.0.1687"
+        },
+        "compile": {
+          "bin/placeholder/realm-template-app.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/realm-template-app.dll": {}
+        }
       }
     }
   },
@@ -2350,6 +2365,11 @@
         "xamarin.forms.4.8.0.1687.nupkg.sha512",
         "xamarin.forms.nuspec"
       ]
+    },
+    "realm-template-app/1.0.0": {
+      "type": "project",
+      "path": "../realm-tutorial-dotnet/realm-template-app.csproj",
+      "msbuildProject": "../realm-tutorial-dotnet/realm-template-app.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -2357,7 +2377,8 @@
       "Realm >= 10.0.0-beta.2",
       "Realm.Fody >= 10.0.0-beta.2",
       "Xamarin.Essentials >= 1.5.3.2",
-      "Xamarin.Forms >= 4.8.0.1687"
+      "Xamarin.Forms >= 4.8.0.1687",
+      "realm-template-app >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -2385,7 +2406,11 @@
       },
       "frameworks": {
         "monoandroid90": {
-          "projectReferences": {}
+          "projectReferences": {
+            "/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet/realm-template-app.csproj": {
+              "projectPath": "/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet/realm-template-app.csproj"
+            }
+          }
         }
       }
     },

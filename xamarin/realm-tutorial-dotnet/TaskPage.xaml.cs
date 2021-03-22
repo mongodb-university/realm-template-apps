@@ -5,6 +5,8 @@ using RealmTemplateApp.Models;
 using Realms;
 using Realms.Sync;
 using Xamarin.Forms;
+using System.ComponentModel;
+using AsyncTask = System.Threading.Tasks.Task;
 
 namespace RealmTemplateApp
 {
@@ -31,10 +33,7 @@ namespace RealmTemplateApp
             WaitingLayout.IsVisible = true;
             try
             {
-                var syncConfig = new SyncConfiguration(
-                    $"project={App.RealmApp.CurrentUser.Id }",
-                    App.RealmApp.CurrentUser);
-                taskRealm = await Realm.GetInstanceAsync(syncConfig);
+                taskRealm = await Realm.GetInstanceAsync();
                 SetUpTaskList();
             }
             catch (Exception ex)
@@ -48,7 +47,7 @@ namespace RealmTemplateApp
         {
             WaitingLayout.IsVisible = true;
             _tasks = new ObservableCollection<Task>(taskRealm.All<Task>().ToList());
-            listTasks.ItemsSource = MyTasks;
+            listTasks.ItemsSource = _tasks;
             WaitingLayout.IsVisible = false;
         }
 
@@ -77,14 +76,13 @@ namespace RealmTemplateApp
 
             if (taskRealm == null)
             {
-                var syncConfig = new SyncConfiguration($"project={App.RealmApp.CurrentUser.Id }", App.RealmApp.CurrentUser);
-                taskRealm = await Realm.GetInstanceAsync(syncConfig);
+                taskRealm = await Realm.GetInstanceAsync();
             }
 
             var newTask = new Task()
             {
-                Name = result,
-                Status = Task.TaskStatus.Open.ToString()
+                Summary = result,
+                IsComplete = false
             };
 
             taskRealm.Write(() =>
@@ -93,6 +91,33 @@ namespace RealmTemplateApp
             });
 
             MyTasks.Add(newTask);
+        }
+
+        void chkCompleted_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var isCompleteSwitch = (Switch)sender;
+            var changedTask = _tasks.FirstOrDefault(t => t.Id == isCompleteSwitch.AutomationId);
+            if (changedTask != null && e.PropertyName == "IsToggled")
+            {
+                taskRealm.Write(() =>
+                    {
+                        changedTask.IsComplete = isCompleteSwitch.IsToggled;
+                    });
+            }
+        }
+
+        async void Logout_Clicked(object sender, EventArgs e)
+        {
+            if (Navigation.NavigationStack.Count == 1)
+            {
+                var loginPage = new LoginPage();
+                NavigationPage.SetHasBackButton(loginPage, false);
+                await Navigation.PushAsync(loginPage);
+            }
+            else
+            {
+                await Navigation.PopToRootAsync();
+            }
         }
     }
 }

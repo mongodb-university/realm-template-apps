@@ -12,21 +12,11 @@ namespace RealmTemplateApp.Models
         [Required]
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
-        [MapTo("owner")]
-        public IList<Project> Owner { get; }
-
-        [MapTo("name")]
+        [MapTo("summary")]
         [Required]
-        public string Name { get; set; }
+        public string Summary { get; set; }
 
-        [MapTo("status")]
-        public string Status { get; set; }
-
-        public enum TaskStatus
-        {
-            Open,
-            InProgress,
-            Complete
-        }
+        [MapTo("isComplete")]
+        public bool IsComplete { get; set; }
     }
 }

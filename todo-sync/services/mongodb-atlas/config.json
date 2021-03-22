@@ -1,8 +1,9 @@
 {
     "name": "mongodb-atlas",
     "type": "mongodb-atlas",
+    "app-id":"templateapp-xwncq",
     "config": {
-        "clusterName": "Cluster0",
+        "clusterName": "RealmTasks",
         "readPreference": "primary",
         "sync": {
             "state": "enabled",
