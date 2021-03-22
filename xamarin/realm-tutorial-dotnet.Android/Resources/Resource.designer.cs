@@ -8393,6 +8393,9 @@ namespace RealmTemplateApp.Droid
 			// aapt resource value: 0x7F070076
 			public const int tooltip_frame_light = 2131165302;
 			
+			// aapt resource value: 0x7F070077
+			public const int trash = 2131165303;
+			
 			static Drawable()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -9335,6 +9338,9 @@ namespace RealmTemplateApp.Droid
 			
 			// aapt resource value: 0x7F0B0046
 			public const int Toolbar = 2131427398;
+			
+			// aapt resource value: 0x7F0B0047
+			public const int trashbin = 2131427399;
 			
 			static Layout()
 			{

@@ -92,11 +92,17 @@
 		<AndroidResource Include="Resources\mipmap-xxhdpi\launcher_foreground.png" />
 		<AndroidResource Include="Resources\mipmap-xxxhdpi\icon.png" />
 		<AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
+		<AndroidResource Include="Resources\layout\trashbin.png">
+		  <SubType></SubType>
+		  <Generator></Generator>
+		</AndroidResource>
+		<AndroidResource Include="Resources\drawable\trash.png">
+		  <SubType></SubType>
+		  <Generator></Generator>
+		</AndroidResource>
 		<AndroidResource Include="Resources\drawable\edit_btn.png">
-			<SubType>
-			</SubType>
-			<Generator>
-			</Generator>
+		  <SubType></SubType>
+		  <Generator></Generator>
 		</AndroidResource>
 	</ItemGroup>
 	<ItemGroup>

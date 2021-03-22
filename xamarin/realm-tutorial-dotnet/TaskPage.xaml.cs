@@ -3,10 +3,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using RealmTemplateApp.Models;
 using Realms;
-using Realms.Sync;
 using Xamarin.Forms;
 using System.ComponentModel;
-using AsyncTask = System.Threading.Tasks.Task;
 
 namespace RealmTemplateApp
 {
@@ -45,24 +43,20 @@ namespace RealmTemplateApp
 
         private void SetUpTaskList()
         {
-            WaitingLayout.IsVisible = true;
-            _tasks = new ObservableCollection<Task>(taskRealm.All<Task>().ToList());
-            listTasks.ItemsSource = _tasks;
-            WaitingLayout.IsVisible = false;
+            if (_tasks != null || _tasks.Count == 0)
+            {
+                WaitingLayout.IsVisible = true;
+                _tasks = new ObservableCollection<Task>(taskRealm.All<Task>().ToList());
+                listTasks.ItemsSource = _tasks;
+                WaitingLayout.IsVisible = false;
+            }
         }
 
         async void TextCell_Tapped(object sender, ItemTappedEventArgs e)
         {
             var task = e.Item as Task;
             var editTaskPage = new EditTaskPage(taskRealm, task);
-            editTaskPage.OperationCompeleted += EditTaskPage_OperationCompeleted;
             await Navigation.PushAsync(editTaskPage);
-        }
-
-        private void EditTaskPage_OperationCompeleted(object sender, EventArgs e)
-        {
-            (sender as EditTaskPage).OperationCompeleted -= EditTaskPage_OperationCompeleted;
-            SetUpTaskList();
         }
 
         async void Button_Clicked(object sender, EventArgs e)
@@ -118,6 +112,30 @@ namespace RealmTemplateApp
             {
                 await Navigation.PopToRootAsync();
             }
+        }
+
+        async void btnDelete_Clicked(object sender, EventArgs e)
+        {
+            var item = (Image)sender;
+            var taskToDelete = _tasks.FirstOrDefault(t => t.Id == item.AutomationId);
+            var result = await DisplayAlert("Delete Task",
+                $"Are you sure you want to delete \"{taskToDelete.Summary}\"?",
+                "Yes", "No");
+
+            if (result == false) return;
+
+            taskRealm.Write(() =>
+            {
+                taskRealm.Remove(taskToDelete);
+            });
+
+            SetUpTaskList();
+        }
+
+        void chkCompleted_Toggled(object sender, ToggledEventArgs e)
+        {
+            var isCompleteSwitch = (Switch)sender;
+            var changedTask = _tasks.FirstOrDefault(t => t.Id == isCompleteSwitch.AutomationId);
         }
     }
 }

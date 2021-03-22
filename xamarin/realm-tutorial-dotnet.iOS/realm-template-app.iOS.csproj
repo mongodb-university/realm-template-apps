@@ -116,6 +116,10 @@
 		</ImageAsset>
 		<ImageAsset Include="Assets.xcassets\edit_btn.imageset\Contents.json" />
 		<ImageAsset Include="Assets.xcassets\edit_btn.imageset\edit_btn.png" />
+		<ImageAsset Include="Assets.xcassets\trash.imageset\29.png" />
+		<ImageAsset Include="Assets.xcassets\trash.imageset\40.png" />
+		<ImageAsset Include="Assets.xcassets\trash.imageset\Contents.json" />
+		<ImageAsset Include="Assets.xcassets\trash.imageset\trash.png" />
 	</ItemGroup>
 	<ItemGroup>
 		<Reference Include="System" />
@@ -140,6 +144,7 @@
 	<Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 	<ItemGroup>
 		<Folder Include="Assets.xcassets\edit_btn.imageset\" />
+		<Folder Include="Assets.xcassets\trash.imageset\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\realm-tutorial-dotnet\realm-template-app.csproj">

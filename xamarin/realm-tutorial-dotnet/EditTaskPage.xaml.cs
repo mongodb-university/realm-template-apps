@@ -10,7 +10,6 @@ namespace RealmTemplateApp
         public Task TaskToEdit;
         private Realm realm;
         private string newName;
-        private bool newStatus;
 
         public EditTaskPage(Realm realm, Task task)
         {
@@ -27,11 +26,6 @@ namespace RealmTemplateApp
             newName = ((Entry)sender).Text;
         }
 
-        void Status_Entry_Completed(object sender, EventArgs e)
-        {
-            newStatus = ((CheckBox)sender).IsChecked;
-        }
-
         async void Cancel_Button_Clicked(object sender, EventArgs e)
         {
             OperationCompeleted(this, EventArgs.Empty);
@@ -44,7 +38,7 @@ namespace RealmTemplateApp
             realm.Write(() =>
             {
                 TaskToEdit.Summary = newName;
-                TaskToEdit.IsComplete = newStatus;
+                TaskToEdit.IsComplete = TaskToEdit.IsComplete; // no change here
             });
             OperationCompeleted(this, EventArgs.Empty);
             await Navigation.PopAsync();

@@ -52,7 +52,6 @@
 /Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/res/mipmap-xxhdpi/launcher_foreground.png
 /Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/res/mipmap-xxxhdpi/icon.png
 /Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/res/mipmap-xxxhdpi/launcher_foreground.png
-/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/res/drawable/edit_btn.png
 /Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/uploadflags.txt
 /Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/resolvedassemblies.hash
 /Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/android/assets/FormsViewGroup.dll
@@ -495,3 +494,6 @@
 /Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/stamp/_GenerateJavaStubs.stamp
 /Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/stamp/_GeneratePackageManagerJava.stamp
 /Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/stamp/_ResolveLibraryProjectImports.stamp
+/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/res/layout/trashbin.png
+/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/res/drawable/trash.png
+/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.Android/obj/Debug/res/drawable/edit_btn.png

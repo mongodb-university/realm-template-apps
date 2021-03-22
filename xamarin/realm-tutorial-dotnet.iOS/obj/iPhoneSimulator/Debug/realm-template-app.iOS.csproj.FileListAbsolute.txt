@@ -57,9 +57,9 @@
 /Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.iOS/obj/iPhoneSimulator/Debug/realm-template-app.iOS.csproj.CopyComplete
 /Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.iOS/obj/iPhoneSimulator/Debug/RealmDotnetTutorial.iOS.exe
 /Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.iOS/obj/iPhoneSimulator/Debug/RealmDotnetTutorial.iOS.pdb
-/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.iOS/obj/iPhoneSimulator/Debug/actool/_PartialAppManifest.items
-/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.iOS/obj/iPhoneSimulator/Debug/actool/_BundleResourceWithLogicalName.items
-/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.iOS/obj/iPhoneSimulator/Debug/ibtool/_BundleResourceWithLogicalName.items
-/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.iOS/obj/iPhoneSimulator/Debug/coremlc/_PartialAppManifest.items
-/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.iOS/obj/iPhoneSimulator/Debug/coremlc/_BundleResourceWithLogicalName.items
-/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.iOS/obj/iPhoneSimulator/Debug/optimized/
+/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.iOS/obj/iPhoneSimulator/Debug/device-builds/ipod touch (7th generation)-14.4/actool/_PartialAppManifest.items
+/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.iOS/obj/iPhoneSimulator/Debug/device-builds/ipod touch (7th generation)-14.4/actool/_BundleResourceWithLogicalName.items
+/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.iOS/obj/iPhoneSimulator/Debug/device-builds/ipod touch (7th generation)-14.4/ibtool/_BundleResourceWithLogicalName.items
+/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.iOS/obj/iPhoneSimulator/Debug/device-builds/ipod touch (7th generation)-14.4/coremlc/_PartialAppManifest.items
+/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.iOS/obj/iPhoneSimulator/Debug/device-builds/ipod touch (7th generation)-14.4/coremlc/_BundleResourceWithLogicalName.items
+/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.iOS/obj/iPhoneSimulator/Debug/device-builds/ipod touch (7th generation)-14.4/optimized/

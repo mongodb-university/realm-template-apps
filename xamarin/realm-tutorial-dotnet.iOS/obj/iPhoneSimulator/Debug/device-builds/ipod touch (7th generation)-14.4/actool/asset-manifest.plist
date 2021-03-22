@@ -32,6 +32,25 @@
 		<dict>
 			<key>affected-items</key>
 			<array>
+				<string>./trash.imageset/[watch][][&lt;=145][2x][][][][][][][dark][][][][2d][(null)]</string>
+				<string>./trash.imageset/[watch][][&lt;=145][2x][][][][][][][light][][][][2d][(null)]</string>
+				<string>./trash.imageset/[watch][][&gt;145][2x][][][][][][][dark][][][][2d][(null)]</string>
+				<string>./trash.imageset/[watch][][&gt;145][2x][][][][][][][light][][][][2d][(null)]</string>
+				<string>./trash.imageset/[watch][][][2x][][][][][][][dark][][][][2d][(null)]</string>
+				<string>./trash.imageset/[watch][][][2x][][][][][][][light][][][][2d][(null)]</string>
+				<string>./trash.imageset/[watch][][][][][][][][][][dark][][][][2d][(null)]</string>
+				<string>./trash.imageset/[watch][][][][][][][][][][light][][][][2d][(null)]</string>
+			</array>
+			<key>catalog</key>
+			<string>/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.iOS/obj/iPhoneSimulator/Debug/device-builds/ipod touch (7th generation)-14.4/actool/cloned-assets/Assets.xcassets</string>
+			<key>message</key>
+			<string>The image set "trash" has 8 unassigned children.</string>
+			<key>type</key>
+			<string>Ambiguous Content</string>
+		</dict>
+		<dict>
+			<key>affected-items</key>
+			<array>
 				<string>./edit_btn.imageset/[watch][][&lt;=145][2x][][][][][][][dark][][][][2d][(null)]</string>
 				<string>./edit_btn.imageset/[watch][][&lt;=145][2x][][][][][][][light][][][][2d][(null)]</string>
 				<string>./edit_btn.imageset/[watch][][&gt;145][2x][][][][][][][dark][][][][2d][(null)]</string>
@@ -45,6 +64,25 @@
 			<string>/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.iOS/obj/iPhoneSimulator/Debug/device-builds/ipod touch (7th generation)-14.4/actool/cloned-assets/Assets.xcassets</string>
 			<key>message</key>
 			<string>The image set "edit_btn" has 8 unassigned children.</string>
+			<key>type</key>
+			<string>Ambiguous Content</string>
+		</dict>
+		<dict>
+			<key>affected-items</key>
+			<array>
+				<string>./trash.imageset/[watch][][&lt;=145][2x][][][][][][][dark][][][][2d][(null)]</string>
+				<string>./trash.imageset/[watch][][&lt;=145][2x][][][][][][][light][][][][2d][(null)]</string>
+				<string>./trash.imageset/[watch][][&gt;145][2x][][][][][][][dark][][][][2d][(null)]</string>
+				<string>./trash.imageset/[watch][][&gt;145][2x][][][][][][][light][][][][2d][(null)]</string>
+				<string>./trash.imageset/[watch][][][2x][][][][][][][dark][][][][2d][(null)]</string>
+				<string>./trash.imageset/[watch][][][2x][][][][][][][light][][][][2d][(null)]</string>
+				<string>./trash.imageset/[watch][][][][][][][][][][dark][][][][2d][(null)]</string>
+				<string>./trash.imageset/[watch][][][][][][][][][][light][][][][2d][(null)]</string>
+			</array>
+			<key>catalog</key>
+			<string>/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet.iOS/obj/iPhoneSimulator/Debug/device-builds/ipod touch (7th generation)-14.4/actool/cloned-assets/Assets.xcassets</string>
+			<key>message</key>
+			<string>The image set "trash" has 8 unassigned children.</string>
 			<key>type</key>
 			<string>Ambiguous Content</string>
 		</dict>

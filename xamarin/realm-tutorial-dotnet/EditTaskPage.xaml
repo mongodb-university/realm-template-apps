@@ -4,10 +4,13 @@
              x:Class="RealmTemplateApp.EditTaskPage">
     <StackLayout>
         <StackLayout Orientation="Horizontal">
-            <Label Text="Name"/>
-            <Entry TextChanged="Name_Entry_Completed" x:Name="txtName"/>
+            <Label Padding="10" Text="Name" HorizontalOptions="Start" FontSize="18" VerticalOptions="Center"/>
+            <Entry TextChanged="Name_Entry_Completed" x:Name="txtName" VerticalOptions="Center" HorizontalOptions="EndAndExpand" WidthRequest="300"/>
         </StackLayout>
-        <Button Text="Save" Clicked="Save_Button_Clicked"/>
-        <Button Text="Cancel" Clicked="Cancel_Button_Clicked"/>
+        <StackLayout Orientation="Horizontal">
+            <Label WidthRequest="100" HorizontalOptions="Start"/>
+            <Button CornerRadius="5" Text="Save" Clicked="Save_Button_Clicked" WidthRequest="100" HorizontalOptions="Center" BackgroundColor="CadetBlue"/>
+            <Button  CornerRadius="5" Text="Cancel" Clicked="Cancel_Button_Clicked" WidthRequest="100" HorizontalOptions="End"/>
+        </StackLayout>
     </StackLayout>
 </ContentPage>

@@ -23,16 +23,23 @@
             </StackLayout>
             <Frame BorderColor="Black" >
                 <StackLayout Orientation="Vertical" Margin="5" >
-
                     <ScrollView>
                         <ListView x:Name="listTasks" ItemTapped="TextCell_Tapped">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
-                                        <Grid Padding="0,0,100,0">
-                                            <Label Text="{Binding Summary}" TextColor="Black" Grid.Column="0"></Label>
+                                        <Grid Padding="0,0,10,0">
+                                            <Label Text="{Binding Summary}" TextColor="Black" Grid.Column="0" VerticalOptions="Center"></Label>
                                             <Switch x:Name="chkCompleted" IsToggled="{Binding IsComplete}" Grid.Column="1"
-                                                PropertyChanged="chkCompleted_PropertyChanged" AutomationId="{Binding Id}"/>
+                                                Toggled="chkCompleted_Toggled" AutomationId="{Binding Id}"/>
+                                            <StackLayout Grid.Column="2" VerticalOptions="Center">
+                                                <Image WidthRequest="20" HeightRequest="20" x:Name="btnDelete" Source="trash.png"
+                                                           Aspect="AspectFit" AutomationId="{Binding Id}" >
+                                                    <Image.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="btnDelete_Clicked"/>
+                                                    </Image.GestureRecognizers>
+                                                </Image>
+                                            </StackLayout>
                                         </Grid>
                                     </ViewCell>
                                 </DataTemplate>

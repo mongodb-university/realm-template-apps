@@ -4592,6 +4592,7 @@ public final class R {
     public static final int notify_panel_notification_icon_bg=0x7f070074;
     public static final int tooltip_frame_dark=0x7f070075;
     public static final int tooltip_frame_light=0x7f070076;
+    public static final int trash=0x7f070077;
   }
   public static final class id {
     public static final int ALT=0x7f080000;
@@ -4897,6 +4898,7 @@ public final class R {
     public static final int support_simple_spinner_dropdown_item=0x7f0b0044;
     public static final int tabbar=0x7f0b0045;
     public static final int toolbar=0x7f0b0046;
+    public static final int trashbin=0x7f0b0047;
   }
   public static final class mipmap {
     public static final int icon=0x7f0c0000;

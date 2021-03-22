@@ -1,18 +1,11 @@
-﻿<Properties StartupConfiguration="{B4C5F1D0-489C-4701-B50D-FB156DCF4A9C}|Default">
+﻿<Properties StartupConfiguration="{D320EEC8-1164-4D46-9000-B49DCED3957C}|Default">
   <MonoDevelop.Ide.ItemProperties.realm-template-app.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.281DF8B4-BAB1-42D4-95C8-C8BECDCEE7E9" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="realm-tutorial-dotnet/LoginPage.xaml.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="realm-tutorial-dotnet/TaskPage.xaml.cs">
     <Files>
-      <File FileName="realm-tutorial-dotnet/TaskPage.xaml.cs" Line="113" Column="1" />
-      <File FileName="realm-tutorial-dotnet/TaskPage.xaml" Line="25" Column="62" />
-      <File FileName="realm-tutorial-dotnet/App.xaml" Line="1" Column="1" />
-      <File FileName="realm-tutorial-dotnet/Models/Task.cs" Line="20" Column="1" />
-      <File FileName="realm-tutorial-dotnet/EditTaskPage.xaml.cs" Line="20" Column="41" />
-      <File FileName="realm-tutorial-dotnet/EditTaskPage.xaml" Line="14" Column="1" />
-      <File FileName="realm-tutorial-dotnet.Android/MainActivity.cs" Line="16" Column="1" />
-      <File FileName="realm-tutorial-dotnet.Android/Resources/layout/Toolbar.xml" Line="6" Column="42" />
-      <File FileName="realm-tutorial-dotnet/LoginPage.xaml.cs" Line="17" Column="11" />
-      <File FileName="realm-tutorial-dotnet/App.xaml.cs" Line="26" Column="14" />
-      <File FileName="realm-tutorial-dotnet/LoginPage.xaml" Line="11" Column="35" />
+      <File FileName="realm-tutorial-dotnet/TaskPage.xaml" Line="32" Column="83" />
+      <File FileName="realm-tutorial-dotnet/TaskPage.xaml.cs" Line="84" Column="1" />
+      <File FileName="realm-tutorial-dotnet/EditTaskPage.xaml" Line="12" Column="44" />
+      <File FileName="realm-tutorial-dotnet/EditTaskPage.xaml.cs" Line="41" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -22,13 +15,14 @@
               <Node name="Models" expanded="True" />
               <Node name="App.xaml" expanded="True" />
               <Node name="EditTaskPage.xaml" expanded="True" />
-              <Node name="LoginPage.xaml" expanded="True">
-                <Node name="LoginPage.xaml.cs" selected="True" />
+              <Node name="LoginPage.xaml" expanded="True" />
+              <Node name="TaskPage.xaml" expanded="True">
+                <Node name="TaskPage.xaml.cs" selected="True" />
               </Node>
-              <Node name="TaskPage.xaml" expanded="True" />
             </Node>
             <Node name="realm-template-app.Android" expanded="True">
               <Node name="Resources" expanded="True">
+                <Node name="drawable" expanded="True" />
                 <Node name="layout" expanded="True" />
               </Node>
             </Node>
@@ -49,10 +43,9 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet/TaskPage.xaml.cs" relfile="realm-tutorial-dotnet/TaskPage.xaml.cs" line="70" column="1" />
-      <Breakpoint file="/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet/TaskPage.xaml.cs" relfile="realm-tutorial-dotnet/TaskPage.xaml.cs" line="118" column="1" />
-      <Breakpoint file="/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet/TaskPage.xaml.cs" relfile="realm-tutorial-dotnet/TaskPage.xaml.cs" line="113" column="1" />
-      <Breakpoint file="/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet/TaskPage.xaml.cs" relfile="realm-tutorial-dotnet/TaskPage.xaml.cs" line="90" column="1" />
+      <Breakpoint file="/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet/TaskPage.xaml.cs" relfile="realm-tutorial-dotnet/TaskPage.xaml.cs" line="84" column="1" />
+      <Breakpoint file="/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet/TaskPage.xaml.cs" relfile="realm-tutorial-dotnet/TaskPage.xaml.cs" line="95" column="1" />
+      <Breakpoint file="/Users/caleb/repo/mongocaleb/realm-template-apps/xamarin/realm-tutorial-dotnet/EditTaskPage.xaml.cs" relfile="realm-tutorial-dotnet/EditTaskPage.xaml.cs" line="41" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />

@@ -983,6 +983,7 @@ int drawable notification_tile_bg 0x7f070073
 int drawable notify_panel_notification_icon_bg 0x7f070074
 int drawable tooltip_frame_dark 0x7f070075
 int drawable tooltip_frame_light 0x7f070076
+int drawable trash 0x7f070077
 int id ALT 0x7f080000
 int id CTRL 0x7f080001
 int id FUNCTION 0x7f080002
@@ -1280,6 +1281,7 @@ int layout shellcontent 0x7f0b0043
 int layout support_simple_spinner_dropdown_item 0x7f0b0044
 int layout tabbar 0x7f0b0045
 int layout toolbar 0x7f0b0046
+int layout trashbin 0x7f0b0047
 int mipmap icon 0x7f0c0000
 int mipmap icon_round 0x7f0c0001
 int mipmap launcher_foreground 0x7f0c0002
