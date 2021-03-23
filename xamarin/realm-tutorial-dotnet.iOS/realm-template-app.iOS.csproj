@@ -119,7 +119,9 @@
 		<ImageAsset Include="Assets.xcassets\trash.imageset\29.png" />
 		<ImageAsset Include="Assets.xcassets\trash.imageset\40.png" />
 		<ImageAsset Include="Assets.xcassets\trash.imageset\Contents.json" />
-		<ImageAsset Include="Assets.xcassets\trash.imageset\trash.png" />
+		<ImageAsset Include="Assets.xcassets\trash.imageset\80.png" />
+		<ImageAsset Include="Assets.xcassets\trash.imageset\120.png" />
+		<ImageAsset Include="Assets.xcassets\trash.imageset\40-1.png" />
 	</ItemGroup>
 	<ItemGroup>
 		<Reference Include="System" />

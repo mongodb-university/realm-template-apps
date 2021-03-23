@@ -59,7 +59,7 @@ namespace RealmTemplateApp
             await Navigation.PushAsync(editTaskPage);
         }
 
-        async void Button_Clicked(object sender, EventArgs e)
+        async void Edit_Button_Clicked(object sender, EventArgs e)
         {
             string result = await DisplayPromptAsync("New Task", "Enter the Task Name");
 
@@ -114,7 +114,7 @@ namespace RealmTemplateApp
             }
         }
 
-        async void btnDelete_Clicked(object sender, EventArgs e)
+        async void Delete_Clicked(object sender, EventArgs e)
         {
             var item = (Image)sender;
             var taskToDelete = _tasks.FirstOrDefault(t => t.Id == item.AutomationId);
