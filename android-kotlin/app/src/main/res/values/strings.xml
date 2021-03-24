@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">App</string>
-    <string name="app_id">App</string>
+    <string name="app_id">todo-sync-tmikv</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -10,7 +10,8 @@
     <string name="already_have_account">Already have an account? Log in</string>
     <string name="does_not_have_account">Don\'t have an account? Create account</string>
     <string name="welcome">"Welcome !"</string>
+    <!---->
     <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_password">Not a valid password</string>
     <string name="login_failed">"Login failed"</string>
 </resources>
