@@ -18,6 +18,7 @@ class ItemsActivity : AppCompatActivity() {
         if (user == null) {
             startActivity(Intent(this, LoginActivity::class.java))
         }
+        logoutButton = findViewById(R.id.button_log_out)
         logoutButton.isEnabled = true
         logoutButton.setOnClickListener{ (logout()) }
     }

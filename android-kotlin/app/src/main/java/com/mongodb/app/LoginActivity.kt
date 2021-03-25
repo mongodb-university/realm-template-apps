@@ -101,8 +101,7 @@ class LoginActivity : AppCompatActivity() {
                 // re-enable the buttons after user registration returns a result
                 loginButton.isEnabled = true
                 if (!it.isSuccess) {
-                    onLoginFailed(it.error.message ?: "An error occurred.")
-                    Log.e(TAG(), "Error: ${it.error}")
+                    onLoginFailed( "Error: ${it.error}")
                 } else {
                     Log.i(TAG(), "Successfully registered user.")
                     // when the account has been created successfully, log in to the account
@@ -116,7 +115,7 @@ class LoginActivity : AppCompatActivity() {
                 // re-enable the buttons after user login returns a result
                 loginButton.isEnabled = true
                 if (!it.isSuccess) {
-                    onLoginFailed(it.error.message ?: "An error occurred.")
+                    onLoginFailed( "Error: ${it.error}")
                 } else {
                     onLoginSuccess()
                 }

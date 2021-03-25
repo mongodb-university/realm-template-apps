@@ -26,7 +26,7 @@ class TemplateApp: Application() {
         super.onCreate()
         Realm.init(this)
          myApp = App(
-            AppConfiguration.Builder(getString(R.string.app_id))
+            AppConfiguration.Builder(getString(R.string.mongodb_realm_app_id))
                 .build())
 
         // Enable more logging in debug mode
@@ -34,6 +34,6 @@ class TemplateApp: Application() {
             RealmLog.setLevel(LogLevel.ALL)
         }
 
-        Log.v(TAG(), "Initialized the Realm App configuration for: ${ myApp.configuration.appId}")
+        Log.v(TAG(), "Initialized the Realm App configuration for: ${myApp.configuration.appId}")
     }
 }
