@@ -13,22 +13,22 @@ class ItemsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_items)
-        if (myApp.currentUser() == null) {
+        if (realmApp.currentUser() == null) {
             startActivity(Intent(this, LoginActivity::class.java))
         }
         logoutButton = findViewById(R.id.button_log_out)
         logoutButton.isEnabled = true
-        logoutButton.setOnClickListener{ (logout()) }
+        logoutButton.setOnClickListener{ (logOut()) }
     }
 
-    private fun logout() {
+    private fun logOut() {
         // while this operation completes, disable the button to logout
         logoutButton.isEnabled = false
-        myApp.currentUser()?.logOutAsync {
+        realmApp.currentUser()?.logOutAsync {
             // re-enable the button after user registration returns a result
             logoutButton.isEnabled = true
             if (it.isSuccess) {
-                myApp.removeUser(myApp.currentUser())
+                realmApp.removeUser(realmApp.currentUser())
                 Log.v(TAG(), "user logged out")
                 startActivity(Intent(this, LoginActivity::class.java))
             } else {

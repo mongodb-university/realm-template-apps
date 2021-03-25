@@ -43,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
         if (isCreateUserMode) {
             registerUser(username, password)
         } else {
-           login(username, password)
+            logIn(username, password)
         }
     }
 
@@ -54,13 +54,13 @@ class LoginActivity : AppCompatActivity() {
         // while this operation completes, disable the button to login or create a new account
         loginButton.isEnabled = false
         // register a user using the Realm App
-        myApp.emailPassword.registerUserAsync(username, password) {
+        realmApp.emailPassword.registerUserAsync(username, password) {
             // re-enable the button after user registration returns a result
             loginButton.isEnabled = true
             if (it.isSuccess) {
                 // when the account has been created successfully, log in to the account
                 Log.i(TAG(), "Successfully registered user.")
-                login(username, password)
+                logIn(username, password)
             } else {
                 displayErrorMessage( "Error: ${it.error}")
             }
@@ -70,9 +70,11 @@ class LoginActivity : AppCompatActivity() {
     /**
      *  Authenticate a user
      */
-    private fun login(username: String, password: String) {
+    private fun logIn(username: String, password: String) {
+        // while this operation completes, disable the button to login or create a new account
+        loginButton.isEnabled = false
         val creds = Credentials.emailPassword(username, password)
-        myApp.loginAsync(creds) {
+        realmApp.loginAsync(creds) {
             // re-enable the buttons after user login returns a result
             loginButton.isEnabled = true
             if (it.isSuccess) {
@@ -99,7 +101,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
-     *  Log an error and propagate it to the user
+     *  Log an error and present it to the user
      */
     private fun displayErrorMessage(errorMsg: String) {
         Log.e(TAG(), errorMsg)

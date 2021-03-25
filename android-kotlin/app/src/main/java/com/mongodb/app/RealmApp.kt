@@ -9,13 +9,11 @@ import io.realm.log.RealmLog
 import io.realm.mongodb.App
 import io.realm.mongodb.AppConfiguration
 
-lateinit var myApp: App
+lateinit var realmApp: App
 
 // global Kotlin extension that resolves to the short version
 // of the name of the current class. Used for labelling logs.
 inline fun <reified T> T.TAG(): String = T::class.java.simpleName
-const val PARTITION_EXTRA_KEY = "PARTITION"
-const val PROJECT_NAME_EXTRA_KEY = "PROJECT NAME"
 
 /*
 * TemplateApp: Sets up the template Realm App and enables Realm-specific logging in debug mode.
@@ -25,7 +23,7 @@ class TemplateApp: Application() {
     override fun onCreate() {
         super.onCreate()
         Realm.init(this)
-         myApp = App(
+         realmApp = App(
             AppConfiguration.Builder(getString(R.string.mongodb_realm_app_id))
                 .build())
 
@@ -34,6 +32,6 @@ class TemplateApp: Application() {
             RealmLog.setLevel(LogLevel.ALL)
         }
 
-        Log.v(TAG(), "Initialized the Realm App configuration for: ${myApp.configuration.appId}")
+        Log.v(TAG(), "Initialized the Realm App configuration for: ${realmApp.configuration.appId}")
     }
 }
