@@ -9,6 +9,7 @@ namespace RealmTemplateApp
     {
         private string email;
         private string password;
+        private bool login;
 
         public LoginPage()
         {
@@ -20,12 +21,19 @@ namespace RealmTemplateApp
             base.OnAppearing();
             txtEmail.Text = "";
             txtPassword.Text = "";
+            login = false;
         }
 
-
-        async void Login_Button_Clicked(object sender, EventArgs e)
+        async void Main_Button_Clicked(object sender, EventArgs e)
         {
-            await DoLogin();
+            if (login)
+            {
+                await DoLogin();
+            }
+            else
+            {
+                await RegisterUser();
+            }
         }
 
         private async AsyncTask DoLogin()
@@ -45,11 +53,6 @@ namespace RealmTemplateApp
             {
                 await DisplayAlert("Login Failed", ex.Message, "OK");
             }
-        }
-
-        async void Register_Button_CLicked(object sender, EventArgs e)
-        {
-            await RegisterUser();
         }
 
         private async AsyncTask RegisterUser()
@@ -73,6 +76,23 @@ namespace RealmTemplateApp
         void Password_Entry_Completed(object sender, EventArgs e)
         {
             password = ((Entry)sender).Text;
+        }
+
+        void Switcher_Tapped(object sender, EventArgs e)
+        {
+            var label = (Label)sender;
+            if (login)
+            {
+                label.Text = "Already have an account? Log In";
+                main_button.Text = "Create a New Account";
+            }
+            else
+            {
+                label.Text = "Don't have an account? Create an Account";
+                main_button.Text = "Log In";
+            }
+
+            login = !login;
         }
 
     }
