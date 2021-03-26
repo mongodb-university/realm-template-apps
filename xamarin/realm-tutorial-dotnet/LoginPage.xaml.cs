@@ -46,6 +46,7 @@ namespace RealmTemplateApp
                 await DisplayAlert("Login Failed", ex.Message, "OK");
             }
         }
+
         async void Register_Button_CLicked(object sender, EventArgs e)
         {
             await RegisterUser();

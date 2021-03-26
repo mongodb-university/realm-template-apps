@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="RealmTemplateApp.TaskPage">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="RealmTemplateApp.TaskPage"
+             xmlns:local="clr-namespace:RealmTemplateApp">
     <NavigationPage.TitleView>
         <StackLayout Orientation="Horizontal">
             <Button x:Name="Logout" TextColor="#000" CornerRadius="5" Text="Log out" HorizontalOptions="Start" WidthRequest="100" 
@@ -9,7 +10,7 @@
         </StackLayout>
     </NavigationPage.TitleView>
     <ContentPage.Content>
-        <AbsoluteLayout>
+        <AbsoluteLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
             <StackLayout x:Name="WaitingLayout"
             AbsoluteLayout.LayoutBounds="0,0,1,1"
             AbsoluteLayout.LayoutFlags="All"
@@ -51,9 +52,15 @@
                     </ListView>
                 </ScrollView>
             </Frame>
+            <Frame AbsoluteLayout.LayoutFlags="PositionProportional"
+            AbsoluteLayout.LayoutBounds="0.5,0.95" >
+                <local:FooterView/>
+            </Frame>
+
             <Button AbsoluteLayout.LayoutFlags="PositionProportional"  
-            AbsoluteLayout.LayoutBounds="0.95,0.95,60,60" 
+            AbsoluteLayout.LayoutBounds="0.95,0.8,50,50" 
             Clicked="Edit_Button_Clicked" ImageSource="edit_btn.png"/>
         </AbsoluteLayout>
+
     </ContentPage.Content>
 </ContentPage>
