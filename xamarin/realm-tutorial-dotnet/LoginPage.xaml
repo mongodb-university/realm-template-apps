@@ -7,8 +7,8 @@
     </NavigationPage.TitleView>
     <StackLayout>
 
-        <Entry x:Name="txtEmail" Placeholder="Email" TextChanged="Email_Entry_Completed"/>
-        <Entry x:Name="txtPassword" Placeholder="Password" IsPassword="True" TextChanged="Password_Entry_Completed"/>
+        <Entry x:Name="txtEmail" Placeholder="Email" TextChanged="Email_Entry_Completed" IsTextPredictionEnabled="False" Keyboard="Plain"/>
+        <Entry x:Name="txtPassword" Placeholder="Password" IsPassword="True" TextChanged="Password_Entry_Completed" IsTextPredictionEnabled="False" Keyboard="Plain" />
         <Button Text="Log In" Clicked="Login_Button_Clicked"/>
         <Button Text="Create New Account" Clicked="Register_Button_CLicked"/>
     </StackLayout>
