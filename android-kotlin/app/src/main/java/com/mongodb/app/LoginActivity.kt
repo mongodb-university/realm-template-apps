@@ -27,11 +27,9 @@ class LoginActivity : AppCompatActivity() {
 
         loginButton = findViewById(R.id.button_create_login)
         loginButton.setOnClickListener { onLoginButtonClicked() }
-        loginButton.isEnabled = true
 
         accountExistsToggleButton = findViewById(R.id.button_existing_account)
         accountExistsToggleButton.setOnClickListener { toggleCreateUserMode() }
-        accountExistsToggleButton.isEnabled = true
     }
 
     /**
