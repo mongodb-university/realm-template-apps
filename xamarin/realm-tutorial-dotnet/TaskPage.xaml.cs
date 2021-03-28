@@ -104,6 +104,7 @@ namespace RealmTemplateApp
         {
             if (Navigation.NavigationStack.Count == 1)
             {
+                await App.RealmApp.CurrentUser.LogOutAsync();
                 var loginPage = new LoginPage();
                 NavigationPage.SetHasBackButton(loginPage, false);
                 await Navigation.PushAsync(loginPage);
