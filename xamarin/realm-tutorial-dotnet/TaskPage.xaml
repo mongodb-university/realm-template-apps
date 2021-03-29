@@ -22,13 +22,13 @@
                 VerticalOptions="CenterAndExpand"
                 Color="Black"/>
             </StackLayout>
-            <Frame BorderColor="Black" >
+            <Frame BorderColor="Black" HorizontalOptions="StartAndExpand" Margin="-20,0,0,0">
                 <ScrollView>
-                    <ListView x:Name="listTasks" ItemTapped="TextCell_Tapped">
+                    <ListView x:Name="listTasks">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <Grid Padding="0,0,15,0">
+                                    <Grid Padding="10,0,15,0" BackgroundColor="#ceF">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="4*"/>
                                             <ColumnDefinition Width="1*"/>
@@ -59,7 +59,7 @@
 
             <Button AbsoluteLayout.LayoutFlags="PositionProportional"  
             AbsoluteLayout.LayoutBounds="0.95,0.8,50,50" 
-            Clicked="Edit_Button_Clicked" ImageSource="edit_btn.png"/>
+            Clicked="New_Button_Clicked" ImageSource="edit_btn.png"/>
         </AbsoluteLayout>
 
     </ContentPage.Content>

@@ -10,7 +10,7 @@
             <Entry x:Name="txtEmail" Placeholder="Email" TextChanged="Email_Entry_Completed" IsTextPredictionEnabled="False" Keyboard="Plain"/>
             <Entry x:Name="txtPassword" Placeholder="Password" IsPassword="True" TextChanged="Password_Entry_Completed" IsTextPredictionEnabled="False" Keyboard="Plain" />
             <Button x:Name="main_button" Text="Create a New Account" Clicked="Main_Button_Clicked"/>
-            <Label x:Name="switcher" HorizontalOptions="Center" Text="Already have an account? Log In" TextColor="Blue" TextDecorations="Underline">
+            <Label x:Name="switcher" FontSize="16" HorizontalOptions="Center" Text="Already have an account? Log In" TextColor="Blue" TextDecorations="Underline">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Tapped="Switcher_Tapped" />
                 </Label.GestureRecognizers>

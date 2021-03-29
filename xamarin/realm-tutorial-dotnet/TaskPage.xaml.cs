@@ -52,14 +52,7 @@ namespace RealmTemplateApp
             }
         }
 
-        async void TextCell_Tapped(object sender, ItemTappedEventArgs e)
-        {
-            var task = e.Item as Task;
-            var editTaskPage = new EditTaskPage(taskRealm, task);
-            await Navigation.PushAsync(editTaskPage);
-        }
-
-        async void Edit_Button_Clicked(object sender, EventArgs e)
+        async void New_Button_Clicked(object sender, EventArgs e)
         {
             string result = await DisplayPromptAsync("New Task", "Enter the Task Name");
 

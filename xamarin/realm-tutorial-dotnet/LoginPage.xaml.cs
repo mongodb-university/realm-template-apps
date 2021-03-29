@@ -79,12 +79,14 @@ namespace RealmTemplateApp
             var label = (Label)sender;
             if (login)
             {
+                label.FontSize = 16;
                 label.Text = "Already have an account? Log In";
                 main_button.Text = "Create a New Account";
             }
             else
             {
-                label.Text = "Don't have an account? Create an Account";
+                label.FontSize = 14;
+                label.Text = "Don't have an account? Create One";
                 main_button.Text = "Log In";
             }
 
