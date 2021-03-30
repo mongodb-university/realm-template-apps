@@ -1,6 +1,7 @@
 ﻿using Xamarin.Forms;
 using System.IO;
 using System.Xml;
+using System;
 
 namespace RealmTemplateApp
 {
@@ -16,15 +17,27 @@ namespace RealmTemplateApp
 
         protected override void OnStart()
         {
-            appId = GetAppId();
-            RealmApp = Realms.Sync.App.Create(appId);
+            try
+            {
+                appId = GetAppId();
+                RealmApp = Realms.Sync.App.Create(appId);
 
-            var navPage = App.RealmApp.CurrentUser == null ?
-                new NavigationPage(new LoginPage()) :
-                new NavigationPage(new TaskPage());
+                var navPage = App.RealmApp.CurrentUser == null ?
+                    new NavigationPage(new LoginPage()) :
+                    new NavigationPage(new TaskPage());
 
-            NavigationPage.SetHasBackButton(navPage, false);
-            MainPage = navPage;
+                NavigationPage.SetHasBackButton(navPage, false);
+                MainPage = navPage;
+            }
+            catch (NullReferenceException nre)
+            {
+                // A NullReferenceException occurs if:
+                // 1. the config file does not exist, or
+                // 2. the config does not contain an "app-id" element.
+
+                // If the app-id value is incorrect, we handle that
+                // in the Login page.
+            }
         }
 
         private string GetAppId()
