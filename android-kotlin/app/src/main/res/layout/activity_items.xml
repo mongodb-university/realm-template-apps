@@ -6,26 +6,41 @@
     android:layout_height="match_parent"
     tools:context=".ItemsActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/items_list"
-        android:layout_width="411dp"
-        android:layout_height="533dp"
-        android:background="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/task_menu"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintBottom_toTopOf="@+id/items_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/items_list"
+        android:layout_width="410dp"
+        android:layout_height="555dp"
+        android:background="@null"
+        app:layout_constraintBottom_toTopOf="@+id/syncRealTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.775" />
+
     <Button
         android:id="@+id/button_log_out"
         android:layout_width="96dp"
         android:layout_height="47dp"
         android:layout_gravity="start"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:elevation="5dp"
         android:text="@string/log_out"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/white"
@@ -41,12 +56,12 @@
         android:layout_margin="16dp"
         android:contentDescription="Add an item"
         android:src="@drawable/ic_baseline_add_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.915"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.684" />
+        app:layout_constraintBottom_toBottomOf="@+id/items_list"
+        app:layout_constraintTop_toTopOf="@+id/items_list"
+        app:layout_constraintEnd_toEndOf="@+id/items_list"
+        app:layout_constraintStart_toStartOf="@+id/items_list"
+        app:layout_constraintHorizontal_bias="0.954"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/syncRealTime"

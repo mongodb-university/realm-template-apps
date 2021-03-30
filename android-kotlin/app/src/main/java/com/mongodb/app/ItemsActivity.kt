@@ -2,11 +2,15 @@ package com.mongodb.app
 
 import android.app.AlertDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +23,7 @@ import io.realm.mongodb.sync.SyncConfiguration
 class ItemsActivity : AppCompatActivity() {
     private lateinit var logoutButton: Button
     private lateinit var fab: FloatingActionButton
+    private lateinit var toolbar: Toolbar
     private lateinit var adapter: ItemAdapter
     private lateinit var recyclerView: RecyclerView
     private var userRealm: Realm? = null
@@ -35,10 +40,10 @@ class ItemsActivity : AppCompatActivity() {
             val partition = realmApp.currentUser().toString()
 
             // Initialize a connection to a realm containing all of the Items in this project
-            val config = SyncConfiguration.Builder(user!!, partition).build()
+            val config = SyncConfiguration.Builder(user, partition).build()
 
             // Sync all realm changes via a new instance, and when that instance has been successfully created connect it to an on-screen list (a recycler view)
-            Realm.getInstanceAsync(config, object: Realm.Callback() {
+            Realm.getInstanceAsync(config, object : Realm.Callback() {
                 override fun onSuccess(realm: Realm) {
                     // since this realm should live exactly as long as this activity, assign the realm to a member variable
                     this@ItemsActivity.userRealm = realm
@@ -62,6 +67,44 @@ class ItemsActivity : AppCompatActivity() {
         fab.setOnClickListener { (addItem()) }
 
         recyclerView = findViewById(R.id.items_list)
+    }
+
+    // Ensure the user realm closes when the activity ends.
+    override fun onDestroy() {
+        super.onDestroy()
+        userRealm?.close()
+        recyclerView.adapter = null
+    }
+    override fun onStop() {
+        super.onStop()
+        realmApp.currentUser().run {
+            userRealm?.close()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.task_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val user = realmApp.currentUser()
+        return when (item.itemId) {
+            R.id.action_logout -> {
+                user?.logOutAsync {
+                    if (it.isSuccess) {
+                        Log.v(TAG(), "user logged out")
+                        startActivity(Intent(this, LoginActivity::class.java))
+                    } else {
+                        Log.e(TAG(), "log out failed! Error: ${it.error}")
+                    }
+                }
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
     }
 
     /**
@@ -110,6 +153,7 @@ class ItemsActivity : AppCompatActivity() {
         dialog.setView(input)
         dialog.setTitle("Add Item")
         dialog.show()
+        input.requestFocus()
     }
 
     private fun setUpRecyclerView(realm: Realm, user: User?, partition: String) {

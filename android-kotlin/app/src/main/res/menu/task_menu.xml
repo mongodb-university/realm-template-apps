@@ -6,9 +6,7 @@
         android:id="@+id/action_logout"
         android:enabled="true"
         android:orderInCategory="100"
-        android:text="@string/log_out"
         android:title="@string/log_out"
-        android:visible="true"
-        android:textColor="@color/white"
-        app:showAsAction="always" />
+        android:text="@string/log_out"
+        app:showAsAction="always"/>
 </menu>
