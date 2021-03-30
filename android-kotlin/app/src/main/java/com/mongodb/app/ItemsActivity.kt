@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.WindowManager
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -20,10 +20,9 @@ import io.realm.kotlin.where
 import io.realm.mongodb.User
 import io.realm.mongodb.sync.SyncConfiguration
 
+
 class ItemsActivity : AppCompatActivity() {
-    private lateinit var logoutButton: Button
     private lateinit var fab: FloatingActionButton
-    private lateinit var toolbar: Toolbar
     private lateinit var adapter: ItemAdapter
     private lateinit var recyclerView: RecyclerView
     private var userRealm: Realm? = null
@@ -59,14 +58,16 @@ class ItemsActivity : AppCompatActivity() {
         if (realmApp.currentUser() == null) {
             startActivity(Intent(this, LoginActivity::class.java))
         }
-        logoutButton = findViewById(R.id.button_log_out)
-        logoutButton.setOnClickListener { (logOut()) }
 
         fab = findViewById(R.id.floating_action_button)
         fab.isEnabled = true
         fab.setOnClickListener { (addItem()) }
 
         recyclerView = findViewById(R.id.items_list)
+
+        val toolbar = findViewById<View>(R.id.task_menu) as Toolbar
+        setSupportActionBar(toolbar)
+        toolbar.showOverflowMenu()
     }
 
     // Ensure the user realm closes when the activity ends.
@@ -87,12 +88,16 @@ class ItemsActivity : AppCompatActivity() {
         return true
     }
 
+    /**
+     *  Logs out the user and brings them back to the login screen.
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val user = realmApp.currentUser()
         return when (item.itemId) {
             R.id.action_logout -> {
                 user?.logOutAsync {
                     if (it.isSuccess) {
+                        realmApp.removeUser(realmApp.currentUser())
                         Log.v(TAG(), "user logged out")
                         startActivity(Intent(this, LoginActivity::class.java))
                     } else {
@@ -103,25 +108,6 @@ class ItemsActivity : AppCompatActivity() {
             }
             else -> {
                 super.onOptionsItemSelected(item)
-            }
-        }
-    }
-
-    /**
-     *  Logs out the user and brings them back to the login screen.
-     */
-    private fun logOut() {
-        // while this operation completes, disable the button to logout
-        logoutButton.isEnabled = false
-        realmApp.currentUser()?.logOutAsync {
-            // re-enable the button after user registration returns a result
-            logoutButton.isEnabled = true
-            if (it.isSuccess) {
-                realmApp.removeUser(realmApp.currentUser())
-                Log.v(TAG(), "user logged out")
-                startActivity(Intent(this, LoginActivity::class.java))
-            } else {
-                Log.e(TAG(), "log out failed! Error: ${it.error}")
             }
         }
     }

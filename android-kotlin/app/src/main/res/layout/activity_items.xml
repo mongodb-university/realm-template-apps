@@ -9,10 +9,10 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/task_menu"
         android:layout_width="match_parent"
-        android:layout_height="49dp"
+        android:layout_height="55dp"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintBottom_toTopOf="@+id/items_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -22,31 +22,15 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/items_list"
-        android:layout_width="410dp"
-        android:layout_height="555dp"
+        android:layout_width="414dp"
+        android:layout_height="470dp"
         android:background="@null"
         app:layout_constraintBottom_toTopOf="@+id/syncRealTime"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.775" />
-
-    <Button
-        android:id="@+id/button_log_out"
-        android:layout_width="96dp"
-        android:layout_height="47dp"
-        android:layout_gravity="start"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:elevation="5dp"
-        android:text="@string/log_out"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/white"
-        app:backgroundTint="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintVertical_bias="0.939" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button"
