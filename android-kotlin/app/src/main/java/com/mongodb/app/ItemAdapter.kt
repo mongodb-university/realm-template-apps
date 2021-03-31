@@ -13,8 +13,8 @@ import io.realm.mongodb.sync.SyncConfiguration
 import org.bson.types.ObjectId
 
 /**
- * ItemAdapter: extends the Realm-provided RealmRecyclerViewAdapter to provide
- * data for a RecyclerView to display Realm objects on screen to a user.
+ * Extends the Realm-provided RealmRecyclerViewAdapter to provide data
+ * for a RecyclerView to display Realm objects on screen to a user.
  */
 internal class ItemAdapter(data: OrderedRealmCollection<Item>, val user: io.realm.mongodb.User, private val partition: String) : RealmRecyclerViewAdapter<Item, ItemAdapter.ItemViewHolder?>(data, true) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
