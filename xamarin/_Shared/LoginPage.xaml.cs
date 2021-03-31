@@ -76,21 +76,20 @@ namespace RealmTemplateApp
 
         void Switcher_Tapped(object sender, EventArgs e)
         {
+            isLoggingIn = !isLoggingIn;
             var label = (Label)sender;
             if (isLoggingIn)
             {
-                label.FontSize = 16;
-                label.Text = "Already have an account? Log In";
-                main_button.Text = "Create a New Account";
+                label.FontSize = 14;
+                main_button.Text = "Log In";
+                label.Text = "Don't have an account? Create One";
             }
             else
             {
-                label.FontSize = 14;
-                label.Text = "Don't have an account? Create One";
-                main_button.Text = "Log In";
+                label.FontSize = 16;
+                main_button.Text = "Create a New Account";
+                label.Text = "Already have an account? Log In";
             }
-
-            isLoggingIn = !isLoggingIn;
         }
 
     }
