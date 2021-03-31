@@ -41,7 +41,7 @@
                                             <Image WidthRequest="30" x:Name="btnDelete" Source="trash.png"
                                                       VerticalOptions="CenterAndExpand" Aspect="AspectFit" AutomationId="{Binding Id}" >
                                                 <Image.GestureRecognizers>
-                                                    <TapGestureRecognizer Tapped="Delete_Clicked"/>
+                                                    <TapGestureRecognizer Tapped="Delete_Clicked" CommandParameter="{Binding .}"/>
                                                 </Image.GestureRecognizers>
                                             </Image>
                                         </StackLayout>

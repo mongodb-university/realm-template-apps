@@ -6,6 +6,7 @@ using Realms;
 using Xamarin.Forms;
 using System.ComponentModel;
 using Realms.Sync;
+using System.Collections.Generic;
 
 namespace RealmTemplateApp
 {
@@ -13,44 +14,36 @@ namespace RealmTemplateApp
     {
         private Realm taskRealm;
         private User user;
-        private ObservableCollection<Task> _tasks = new ObservableCollection<Task>();
-
-        public ObservableCollection<Task> MyTasks
-        {
-            get
-            {
-                return _tasks;
-            }
-        }
+        private IEnumerable<Task> _tasks;
 
         public TaskPage()
         {
             InitializeComponent();
+            user = App.RealmApp.CurrentUser;
+            var config = new SyncConfiguration(user.Id.ToString(), user);
+            taskRealm = Realm.GetInstance(config);
         }
 
         protected override async void OnAppearing()
         {
-            user = App.RealmApp.CurrentUser;
+            base.OnAppearing();
             WaitingLayout.IsVisible = true;
             try
             {
-                var config = new SyncConfiguration(user.Id.ToString(), user);
-                taskRealm = await Realm.GetInstanceAsync(config);
                 SetUpTaskList();
             }
             catch (Exception ex)
             {
                 await DisplayAlert("Error Fetching Tasks", ex.Message, "OK");
             }
-            base.OnAppearing();
         }
 
         private void SetUpTaskList()
         {
-            if (_tasks != null || _tasks.Count == 0)
+            if (_tasks == null || _tasks.Count() == 0)
             {
                 WaitingLayout.IsVisible = true;
-                _tasks = new ObservableCollection<Task>(taskRealm.All<Task>().ToList());
+                _tasks = taskRealm.All<Task>();
                 listTasks.ItemsSource = _tasks;
                 WaitingLayout.IsVisible = false;
             }
@@ -65,11 +58,6 @@ namespace RealmTemplateApp
                 return;
             }
 
-            if (taskRealm == null)
-            {
-                taskRealm = await Realm.GetInstanceAsync();
-            }
-
             var newTask = new Task()
             {
                 Partition = user.Id.ToString(),
@@ -81,8 +69,6 @@ namespace RealmTemplateApp
             {
                 taskRealm.Add(newTask);
             });
-
-            MyTasks.Add(newTask);
         }
 
         void chkCompleted_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -100,9 +86,9 @@ namespace RealmTemplateApp
 
         async void Logout_Clicked(object sender, EventArgs e)
         {
+            await App.RealmApp.CurrentUser.LogOutAsync();
             if (Navigation.NavigationStack.Count == 1)
             {
-                await App.RealmApp.CurrentUser.LogOutAsync();
                 var loginPage = new LoginPage();
                 NavigationPage.SetHasBackButton(loginPage, false);
                 await Navigation.PushAsync(loginPage);
@@ -115,8 +101,7 @@ namespace RealmTemplateApp
 
         async void Delete_Clicked(object sender, EventArgs e)
         {
-            var item = (Image)sender;
-            var taskToDelete = _tasks.FirstOrDefault(t => t.Id == item.AutomationId);
+            var taskToDelete = (e as TappedEventArgs).Parameter as Task;
             var result = await DisplayAlert("Delete Task",
                 $"Are you sure you want to delete \"{taskToDelete.Summary}\"?",
                 "Yes", "No");
@@ -127,8 +112,6 @@ namespace RealmTemplateApp
             {
                 taskRealm.Remove(taskToDelete);
             });
-
-            SetUpTaskList();
         }
 
         void chkCompleted_Toggled(object sender, ToggledEventArgs e)
