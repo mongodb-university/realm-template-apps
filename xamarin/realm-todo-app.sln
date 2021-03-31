@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "realm-template-app", "realm-tutorial-dotnet\realm-template-app.csproj", "{591F0966-56AF-40FF-B50E-746104588E70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_Shared", "_Shared\_Shared.csproj", "{591F0966-56AF-40FF-B50E-746104588E70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "realm-template-app.Android", "realm-tutorial-dotnet.Android\realm-template-app.Android.csproj", "{B4C5F1D0-489C-4701-B50D-FB156DCF4A9C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Android", "Android\Android.csproj", "{B4C5F1D0-489C-4701-B50D-FB156DCF4A9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "realm-tutorial-dotnet.UWP", "realm-tutorial-dotnet.UWP\realm-tutorial-dotnet.UWP.csproj", "{0BF3BEBB-41D9-4826-A88E-AAC8B7754AFE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWP", "UWP\UWP.csproj", "{0BF3BEBB-41D9-4826-A88E-AAC8B7754AFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "realm-template-app.iOS", "realm-tutorial-dotnet.iOS\realm-template-app.iOS.csproj", "{D320EEC8-1164-4D46-9000-B49DCED3957C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOS", "iOS\iOS.csproj", "{D320EEC8-1164-4D46-9000-B49DCED3957C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

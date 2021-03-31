@@ -9,7 +9,7 @@ namespace RealmTemplateApp
     {
         private string email;
         private string password;
-        private bool login;
+        private bool isLoggingIn;
 
         public LoginPage()
         {
@@ -21,12 +21,12 @@ namespace RealmTemplateApp
             base.OnAppearing();
             txtEmail.Text = "";
             txtPassword.Text = "";
-            login = false;
+            isLoggingIn = false;
         }
 
         async void Main_Button_Clicked(object sender, EventArgs e)
         {
-            if (login)
+            if (isLoggingIn)
             {
                 await DoLogin();
             }
@@ -77,7 +77,7 @@ namespace RealmTemplateApp
         void Switcher_Tapped(object sender, EventArgs e)
         {
             var label = (Label)sender;
-            if (login)
+            if (isLoggingIn)
             {
                 label.FontSize = 16;
                 label.Text = "Already have an account? Log In";
@@ -90,7 +90,7 @@ namespace RealmTemplateApp
                 main_button.Text = "Log In";
             }
 
-            login = !login;
+            isLoggingIn = !isLoggingIn;
         }
 
     }

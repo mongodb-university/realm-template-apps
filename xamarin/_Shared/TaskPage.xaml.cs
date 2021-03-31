@@ -5,12 +5,14 @@ using RealmTemplateApp.Models;
 using Realms;
 using Xamarin.Forms;
 using System.ComponentModel;
+using Realms.Sync;
 
 namespace RealmTemplateApp
 {
     public partial class TaskPage : ContentPage
     {
         private Realm taskRealm;
+        private User user;
         private ObservableCollection<Task> _tasks = new ObservableCollection<Task>();
 
         public ObservableCollection<Task> MyTasks
@@ -28,10 +30,12 @@ namespace RealmTemplateApp
 
         protected override async void OnAppearing()
         {
+            user = App.RealmApp.CurrentUser;
             WaitingLayout.IsVisible = true;
             try
             {
-                taskRealm = await Realm.GetInstanceAsync();
+                var config = new SyncConfiguration(user.Id.ToString(), user);
+                taskRealm = await Realm.GetInstanceAsync(config);
                 SetUpTaskList();
             }
             catch (Exception ex)
@@ -68,6 +72,7 @@ namespace RealmTemplateApp
 
             var newTask = new Task()
             {
+                Partition = user.Id.ToString(),
                 Summary = result,
                 IsComplete = false
             };

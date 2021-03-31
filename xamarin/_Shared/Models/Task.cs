@@ -12,6 +12,10 @@ namespace RealmTemplateApp.Models
         [Required]
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
+        [MapTo("_partition")]
+        [Required]
+        public string Partition { get; set; }
+
         [MapTo("summary")]
         [Required]
         public string Summary { get; set; }
