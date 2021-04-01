@@ -36,7 +36,7 @@
                                         </Grid.ColumnDefinitions>
                                         <Label Text="{Binding Summary}" TextColor="Black" Grid.Column="0" VerticalOptions="Center"></Label>
                                         <Switch x:Name="chkCompleted" IsToggled="{Binding IsComplete}" Grid.Column="1" VerticalOptions="Center"
-                                                Toggled="chkCompleted_Toggled" AutomationId="{Binding Id}"/>
+                                               AutomationId="{Binding Id}"/>
                                         <StackLayout Grid.Column="2" VerticalOptions="Center">
                                             <Image WidthRequest="30" x:Name="btnDelete" Source="trash.png"
                                                       VerticalOptions="CenterAndExpand" Aspect="AspectFit" AutomationId="{Binding Id}" >

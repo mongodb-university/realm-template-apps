@@ -24,7 +24,7 @@ namespace RealmTemplateApp
             isLoggingIn = false;
         }
 
-        async void Main_Button_Clicked(object sender, EventArgs e)
+        private async void Main_Button_Clicked(object sender, EventArgs e)
         {
             if (isLoggingIn)
             {
@@ -69,17 +69,17 @@ namespace RealmTemplateApp
             }
         }
 
-        void Email_Entry_Completed(object sender, EventArgs e)
+        private void Email_Entry_Completed(object sender, EventArgs e)
         {
             email = ((Entry)sender).Text;
         }
 
-        void Password_Entry_Completed(object sender, EventArgs e)
+        private void Password_Entry_Completed(object sender, EventArgs e)
         {
             password = ((Entry)sender).Text;
         }
 
-        void Switcher_Tapped(object sender, EventArgs e)
+        private void Switcher_Tapped(object sender, EventArgs e)
         {
             isLoggingIn = !isLoggingIn;
             var label = (Label)sender;

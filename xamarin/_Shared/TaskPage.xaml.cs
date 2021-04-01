@@ -49,7 +49,7 @@ namespace RealmTemplateApp
             }
         }
 
-        async void New_Button_Clicked(object sender, EventArgs e)
+        private async void New_Button_Clicked(object sender, EventArgs e)
         {
             string result = await DisplayPromptAsync("New Task", "Enter the Task Name");
 
@@ -71,7 +71,7 @@ namespace RealmTemplateApp
             });
         }
 
-        void chkCompleted_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void chkCompleted_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var isCompleteSwitch = (Switch)sender;
             var changedTask = _tasks.FirstOrDefault(t => t.Id == isCompleteSwitch.AutomationId);
@@ -84,7 +84,7 @@ namespace RealmTemplateApp
             }
         }
 
-        async void Logout_Clicked(object sender, EventArgs e)
+        private async void Logout_Clicked(object sender, EventArgs e)
         {
             await App.RealmApp.CurrentUser.LogOutAsync();
             if (Navigation.NavigationStack.Count == 1)
@@ -99,7 +99,7 @@ namespace RealmTemplateApp
             }
         }
 
-        async void Delete_Clicked(object sender, EventArgs e)
+        private async void Delete_Clicked(object sender, EventArgs e)
         {
             var taskToDelete = (e as TappedEventArgs).Parameter as Task;
             var result = await DisplayAlert("Delete Task",
@@ -112,12 +112,6 @@ namespace RealmTemplateApp
             {
                 taskRealm.Remove(taskToDelete);
             });
-        }
-
-        void chkCompleted_Toggled(object sender, ToggledEventArgs e)
-        {
-            var isCompleteSwitch = (Switch)sender;
-            var changedTask = _tasks.FirstOrDefault(t => t.Id == isCompleteSwitch.AutomationId);
         }
     }
 }
