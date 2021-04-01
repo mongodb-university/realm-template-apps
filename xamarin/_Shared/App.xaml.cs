@@ -29,14 +29,16 @@ namespace RealmTemplateApp
                 NavigationPage.SetHasBackButton(navPage, false);
                 MainPage = navPage;
             }
-            catch (NullReferenceException nre)
+            catch (Exception e)
             {
                 // A NullReferenceException occurs if:
                 // 1. the config file does not exist, or
                 // 2. the config does not contain an "app-id" element.
 
                 // If the app-id value is incorrect, we handle that
-                // in the Login page.
+                // exception in the Login page.
+
+                throw e;
             }
         }
 
