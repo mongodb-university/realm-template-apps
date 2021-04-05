@@ -28,19 +28,24 @@ internal class ItemAdapter(data: OrderedRealmCollection<Item>, val user: io.real
         holder.name.text = obj?.name
 
         holder.itemView.setOnClickListener {
+            deleteItem(holder.id!!)
+            //TODO: implement popup menu with delete option rather than just deleting
+            /*
             run {
                 val popup = PopupMenu(holder.itemView.context, holder.menu)
                 val menu = popup.menu
-                menu.add(0, -1  , Menu.NONE, "Delete Item")
+                val deleteCode = -1
+                menu.add(0, deleteCode, Menu.NONE, "Delete Item")
                 popup.setOnMenuItemClickListener { menuItem: MenuItem? ->
                     when (menuItem!!.itemId) {
-                        -1 -> {
+                        deleteCode -> {
                             deleteItem(holder.id!!)
                         }
                     }
                     true
                 }
             }
+             */
         }
     }
 
@@ -48,8 +53,6 @@ internal class ItemAdapter(data: OrderedRealmCollection<Item>, val user: io.real
      *  Allows the user to delete an item from the realm.
      */
     private fun deleteItem(id: ObjectId) {
-        val user = realmApp.currentUser()
-        val partition = user!!.id
         val config = SyncConfiguration.Builder(user, partition).build()
 
         val realm: Realm = Realm.getInstance(config)
