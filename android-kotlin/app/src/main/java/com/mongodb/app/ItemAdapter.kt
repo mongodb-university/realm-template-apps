@@ -1,6 +1,7 @@
 package com.mongodb.app
 
 import android.view.*
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.OrderedRealmCollection
@@ -9,7 +10,6 @@ import io.realm.RealmRecyclerViewAdapter
 import io.realm.kotlin.where
 import io.realm.mongodb.sync.SyncConfiguration
 import org.bson.types.ObjectId
-
 
 /**
  * Extends the Realm-provided RealmRecyclerViewAdapter to provide data
@@ -28,7 +28,19 @@ internal class ItemAdapter(data: OrderedRealmCollection<Item>, val user: io.real
         holder.name.text = obj?.name
 
         holder.itemView.setOnClickListener {
-            deleteItem(holder.id!!)
+            run {
+                val popup = PopupMenu(holder.itemView.context, holder.menu)
+                val menu = popup.menu
+                menu.add(0, -1  , Menu.NONE, "Delete Item")
+                popup.setOnMenuItemClickListener { menuItem: MenuItem? ->
+                    when (menuItem!!.itemId) {
+                        -1 -> {
+                            deleteItem(holder.id!!)
+                        }
+                    }
+                    true
+                }
+            }
         }
     }
 
@@ -51,6 +63,7 @@ internal class ItemAdapter(data: OrderedRealmCollection<Item>, val user: io.real
     internal inner class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var name: TextView = view.findViewById(R.id.name)
         var id: ObjectId? = null
+        var menu: TextView = view.findViewById(R.id.menu)
     }
 
 }

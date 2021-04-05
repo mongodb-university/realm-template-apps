@@ -18,7 +18,6 @@ import io.realm.Realm
 import io.realm.kotlin.where
 import io.realm.mongodb.sync.SyncConfiguration
 
-
 class ItemsActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private var userRealm: Realm? = null

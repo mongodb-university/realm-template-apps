@@ -24,10 +24,10 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:text="@string/more"
-        android:textSize="20sp"
+        android:textSize="32sp"
         android:textAppearance="?android:textAppearanceLarge"
         tools:ignore="RelativeOverlap,RtlSymmetry"
         android:layout_alignParentRight="true"
-        android:paddingRight="16dp" />
+        android:paddingRight="32dp" />
 </RelativeLayout>
 
