@@ -10,6 +10,7 @@ import io.realm.kotlin.where
 import io.realm.mongodb.sync.SyncConfiguration
 import org.bson.types.ObjectId
 
+
 /**
  * Extends the Realm-provided RealmRecyclerViewAdapter to provide data
  * for a RecyclerView to display Realm objects on screen to a user.
@@ -23,15 +24,11 @@ internal class ItemAdapter(data: OrderedRealmCollection<Item>, val user: io.real
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val obj: Item? = getItem(position)
-        holder.item = obj
+        holder.id = obj?._id
         holder.name.text = obj?.name
 
-        //TODO: how to call this? I'm getting the error:
-        // io.realm.exceptions.RealmException: Running transactions on the UI thread has been disabled. It can be enabled by setting 'RealmConfiguration.Builder.allowWritesOnUiThread(true)'.
-        // It also doesn't make intuitive sense for deleteItem to be here and addItem to be in the ItemsActivity.
-        // Perhaps I should make an interface that handles database transactions and then implement it in both the adapter and the activity?
         holder.itemView.setOnClickListener {
-            deleteItem(holder.item?._id!!)
+            deleteItem(holder.id!!)
         }
     }
 
@@ -44,8 +41,7 @@ internal class ItemAdapter(data: OrderedRealmCollection<Item>, val user: io.real
         val config = SyncConfiguration.Builder(user, partition).build()
 
         val realm: Realm = Realm.getInstance(config)
-        // not async because deleteItem should execute on a background thread
-        realm.executeTransaction {
+        realm.executeTransactionAsync {
             val item = it.where<Item>().equalTo("_id", id).findFirst()
             item?.deleteFromRealm()
         }
@@ -54,6 +50,7 @@ internal class ItemAdapter(data: OrderedRealmCollection<Item>, val user: io.real
 
     internal inner class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var name: TextView = view.findViewById(R.id.name)
-        var item: Item? = null
+        var id: ObjectId? = null
     }
+
 }
