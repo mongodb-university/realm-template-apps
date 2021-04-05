@@ -28,24 +28,19 @@ internal class ItemAdapter(data: OrderedRealmCollection<Item>, val user: io.real
         holder.name.text = obj?.name
 
         holder.itemView.setOnClickListener {
-            deleteItem(holder.id!!)
-            //TODO: implement popup menu with delete option rather than just deleting
-            /*
-            run {
-                val popup = PopupMenu(holder.itemView.context, holder.menu)
-                val menu = popup.menu
-                val deleteCode = -1
-                menu.add(0, deleteCode, Menu.NONE, "Delete Item")
-                popup.setOnMenuItemClickListener { menuItem: MenuItem? ->
-                    when (menuItem!!.itemId) {
-                        deleteCode -> {
-                            deleteItem(holder.id!!)
-                        }
+            val popup = PopupMenu(holder.itemView.context, holder.menu)
+            val menu = popup.menu
+            val deleteCode = -1
+            menu.add(0, deleteCode, Menu.NONE, "Delete")
+            popup.setOnMenuItemClickListener { menuItem: MenuItem? ->
+                when (menuItem!!.itemId) {
+                    deleteCode -> {
+                        deleteItem(holder.id!!)
                     }
-                    true
                 }
+                true
             }
-             */
+            popup.show()
         }
     }
 
