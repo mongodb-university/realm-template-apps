@@ -9,10 +9,20 @@
     android:layout_margin="1dp"
     android:padding="8dp">
 
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:onClick="onCheckboxClicked" />
+
     <TextView
         android:id="@+id/name"
-        android:layout_width="match_parent"
+        android:layout_width="274dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginLeft="18dp"
+        android:layout_toEndOf="@+id/checkbox"
+        android:layout_toRightOf="@+id/checkbox"
         android:padding="1dp"
         android:textColor="#000000"
         android:textSize="18sp"
@@ -20,14 +30,19 @@
 
     <TextView
         android:id="@+id/popup_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="45dp"
+        android:layout_height="32dp"
         android:layout_alignParentTop="true"
-        android:text="@string/more"
-        android:textSize="24sp"
-        android:textAppearance="?android:textAppearanceLarge"
-        tools:ignore="RelativeOverlap,RtlSymmetry"
         android:layout_alignParentRight="true"
-        android:paddingRight="32dp" />
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="0dp"
+        android:layout_toEndOf="@+id/name"
+        android:layout_toRightOf="@+id/name"
+        android:paddingRight="32dp"
+        android:text="@string/more"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textSize="24sp"
+        tools:ignore="RelativeOverlap,RtlSymmetry" />
 </RelativeLayout>
 

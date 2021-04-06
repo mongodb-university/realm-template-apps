@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.CheckBox
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -121,6 +122,20 @@ class ItemsActivity : AppCompatActivity() {
         dialog.setTitle("Add Item")
         dialog.show()
         input.requestFocus()
+    }
+
+    fun onCheckboxClicked(view: View) {
+        if (view is CheckBox) {
+            val checked: Boolean = view.isChecked
+
+            when (view.id) {
+                R.id.checkbox -> {
+                    if (checked) {
+                    } else {
+                    }
+                }
+            }
+        }
     }
 
     /**
