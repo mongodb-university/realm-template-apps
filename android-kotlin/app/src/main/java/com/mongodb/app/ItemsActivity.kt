@@ -15,13 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.realm.Realm
+import io.realm.RealmConfiguration
 import io.realm.kotlin.where
 import io.realm.mongodb.sync.SyncConfiguration
-
 
 class ItemsActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private var userRealm: Realm? = null
+    private lateinit var config: RealmConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,11 +51,11 @@ class ItemsActivity : AppCompatActivity() {
         }
         else {
             val partition = user.id
-            val config = SyncConfiguration.Builder(user, partition).build()
+            config = SyncConfiguration.Builder(user, partition).build()
             Realm.getInstanceAsync(config, object : Realm.Callback() {
                 override fun onSuccess(realm: Realm) {
                     this@ItemsActivity.userRealm = realm
-                    val adapter = ItemAdapter(realm.where<Item>().sort("_id").findAll(), user, partition)
+                    val adapter = ItemAdapter(realm.where<Item>().sort("_id").findAll(), config)
                     recyclerView.layoutManager = LinearLayoutManager(this@ItemsActivity)
                     recyclerView.adapter = adapter
                     recyclerView.setHasFixedSize(true)
@@ -76,8 +77,8 @@ class ItemsActivity : AppCompatActivity() {
      *  Decides actions for all buttons on the task menu.
      *  When "log out" is tapped, logs out the user and brings them back to the login screen.
      */
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+    override fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
+        return when (menuItem.itemId) {
             R.id.action_logout -> {
                 realmApp.currentUser()?.logOutAsync {
                     if (it.isSuccess) {
@@ -90,16 +91,15 @@ class ItemsActivity : AppCompatActivity() {
                 true
             }
             else -> {
-                super.onOptionsItemSelected(item)
+                super.onOptionsItemSelected(menuItem)
             }
         }
     }
 
     /**
-     *  Allows the user to insert an item into the realm.
+     *  Creates a popup that allows the user to insert an item into the realm.
      */
     private fun addItem() {
-        // Create a dialog to enter an item name.
         val input = EditText(this)
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setMessage("Enter item name:")
