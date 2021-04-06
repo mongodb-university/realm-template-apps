@@ -7,7 +7,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.CheckBox
+import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -20,29 +20,44 @@ import io.realm.RealmConfiguration
 import io.realm.kotlin.where
 import io.realm.mongodb.sync.SyncConfiguration
 
-class ItemsActivity : AppCompatActivity() {
-    private lateinit var recyclerView: RecyclerView
-    private var userRealm: Realm? = null
+class TaskActivity : AppCompatActivity() {
+    private lateinit var userRealm: Realm
     private lateinit var config: RealmConfiguration
-    private lateinit var adapter: ItemAdapter
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_items)
+        setContentView(R.layout.activity_task)
 
         val toolbar = findViewById<View>(R.id.task_menu) as Toolbar
         setSupportActionBar(toolbar)
         toolbar.showOverflowMenu()
 
         val fab = findViewById<View>(R.id.floating_action_button) as FloatingActionButton
-        fab.setOnClickListener { (addItem()) }
+        fab.setOnClickListener { (onFabClicked()) }
 
-        recyclerView = findViewById(R.id.items_list)
+        recyclerView = findViewById(R.id.task_list)
+        recyclerView.layoutManager = LinearLayoutManager(this@TaskActivity)
+        recyclerView.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+            override fun onCreateViewHolder(
+                parent: ViewGroup,
+                viewType: Int
+            ): RecyclerView.ViewHolder {
+                TODO("Not yet implemented")
+            }
+            override fun getItemCount(): Int {
+                return 0
+            }
+            override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            }
+        }
+        recyclerView.setHasFixedSize(true)
+        recyclerView.addItemDecoration(DividerItemDecoration(this@TaskActivity, DividerItemDecoration.VERTICAL))
     }
 
     /**
      *  On start, open a realm with a partition ID equal to the user ID.
-     *  Query the realm for Item objects, sorted by a stable order that remains
+     *  Query the realm for Task objects, sorted by a stable order that remains
      *  consistent between runs, and display the collection using a recyclerView.
      */
     override fun onStart() {
@@ -56,12 +71,10 @@ class ItemsActivity : AppCompatActivity() {
             config = SyncConfiguration.Builder(user, partition).build()
             Realm.getInstanceAsync(config, object : Realm.Callback() {
                 override fun onSuccess(realm: Realm) {
-                    this@ItemsActivity.userRealm = realm
-                    adapter = ItemAdapter(realm.where<Item>().sort("_id").findAll(), config)
-                    recyclerView.layoutManager = LinearLayoutManager(this@ItemsActivity)
+                    this@TaskActivity.userRealm = realm
+                    val adapter = TaskAdapter(realm.where<Task>().sort("_id").findAll(), config)
+                    adapter.notifyDataSetChanged()
                     recyclerView.adapter = adapter
-                    recyclerView.setHasFixedSize(true)
-                    recyclerView.addItemDecoration(DividerItemDecoration(this@ItemsActivity, DividerItemDecoration.VERTICAL))
                 }
             })
         }
@@ -99,19 +112,21 @@ class ItemsActivity : AppCompatActivity() {
     }
 
     /**
-     *  Creates a popup that allows the user to insert an item into the realm.
+     *  Creates a popup that allows the user to insert a task into the realm.
      */
-    private fun addItem() {
+    private fun onFabClicked() {
         val input = EditText(this)
         val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setMessage("Enter item name:")
+        dialogBuilder.setMessage("Enter task name:")
                 .setCancelable(true)
                 .setPositiveButton("Create") { dialog, _ ->
                     run {
                         dialog.dismiss()
-                        val item = Item(input.text.toString())
+                        val task = Task()
+                        task._partition = realmApp.currentUser()!!.id
+                        task.summary = input.text.toString()
                         userRealm?.executeTransactionAsync { realm ->
-                            realm.insert(item)
+                            realm.insert(task)
                         }
                     }
                 }
@@ -120,7 +135,7 @@ class ItemsActivity : AppCompatActivity() {
                 }
         val dialog = dialogBuilder.create()
         dialog.setView(input)
-        dialog.setTitle("Add Item")
+        dialog.setTitle("Add Task")
         dialog.show()
         input.requestFocus()
     }

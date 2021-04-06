@@ -4,7 +4,6 @@ import android.view.*
 import android.widget.CheckBox
 import android.widget.PopupMenu
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.OrderedRealmCollection
 import io.realm.Realm
@@ -17,45 +16,45 @@ import org.bson.types.ObjectId
  * Extends the Realm-provided RealmRecyclerViewAdapter to provide data
  * for a RecyclerView to display Realm objects on screen to a user.
  */
-internal class ItemAdapter(data: OrderedRealmCollection<Item>, private val config: RealmConfiguration) : RealmRecyclerViewAdapter<Item, ItemAdapter.ItemViewHolder?>(data, true) {
+internal class TaskAdapter(data: OrderedRealmCollection<Task>, private val config: RealmConfiguration) : RealmRecyclerViewAdapter<Task, TaskAdapter.TaskViewHolder?>(data, true) {
 
-    internal inner class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    internal inner class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var id: ObjectId? = null
         var name: TextView = view.findViewById(R.id.name)
         var menu: TextView = view.findViewById(R.id.popup_menu)
         var checkbox: CheckBox = view.findViewById(R.id.checkbox)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val itemView: View = LayoutInflater.from(parent.context).inflate(R.layout.item_view, parent, false)
-        return ItemViewHolder(itemView)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
+        val taskView: View = LayoutInflater.from(parent.context).inflate(R.layout.task_view, parent, false)
+        return TaskViewHolder(taskView)
     }
 
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val obj: Item? = getItem(position)
-        holder.id = obj?._id
-        holder.name.text = obj?.name
-        holder.checkbox.isChecked = obj?.checked?:false
+    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+        val task: Task = getItem(position) ?: return
+        holder.id = task._id
+        holder.name.text = task.summary
+        holder.checkbox.isChecked = task.isComplete
         holder.checkbox.setOnClickListener { onCheckboxClicked(holder) }
         holder.menu.setOnClickListener { onMenuClicked(holder) }
     }
 
     /**
-     *  Allows a user to check and uncheck an item and updates its status in the realm.
+     *  Allows a user to check and uncheck a task and updates its status in the realm.
      */
-    private fun onCheckboxClicked(holder: ItemViewHolder) {
+    private fun onCheckboxClicked(holder: TaskViewHolder) {
         val realm: Realm = Realm.getInstance(config)
         realm.executeTransactionAsync {
-            val item = it.where<Item>().equalTo("_id", holder.id).findFirst()
-            item?.checked = holder.checkbox.isChecked
+            val task = it.where<Task>().equalTo("_id", holder.id).findFirst()
+            task?.isComplete = holder.checkbox.isChecked
         }
         realm.close()
     }
 
     /**
-     *  Creates a popup menu that allows the user to delete an item from the realm.
+     *  Creates a popup menu that allows the user to delete a task from the realm.
      */
-    private fun onMenuClicked(holder: ItemViewHolder) {
+    private fun onMenuClicked(holder: TaskViewHolder) {
         val popup = PopupMenu(holder.itemView.context, holder.menu)
         popup.menu.add(0, R.id.action_delete, Menu.NONE, "Delete")
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
@@ -63,8 +62,8 @@ internal class ItemAdapter(data: OrderedRealmCollection<Item>, private val confi
                 R.id.action_delete -> {
                     val realm: Realm = Realm.getInstance(config)
                     realm.executeTransactionAsync {
-                        val item = it.where<Item>().equalTo("_id", holder.id).findFirst()
-                        item?.deleteFromRealm()
+                        val task = it.where<Task>().equalTo("_id", holder.id).findFirst()
+                        task?.deleteFromRealm()
                     }
                     realm.close()
                 }

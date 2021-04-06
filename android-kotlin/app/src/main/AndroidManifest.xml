@@ -3,7 +3,7 @@
     package="com.mongodb.app">
 
     <application
-        android:name=".TemplateApp"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,7 +15,7 @@
             android:screenOrientation="nosensor">
         </activity>
         <activity
-            android:name="ItemsActivity"
+            android:name="TaskActivity"
             android:screenOrientation="nosensor"
             android:label="@string/app_name">
             <intent-filter>
