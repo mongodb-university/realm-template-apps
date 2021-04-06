@@ -13,24 +13,29 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_constraintBottom_toTopOf="@+id/task_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/task_list"
-        android:layout_width="414dp"
-        android:layout_height="470dp"
-        android:background="@null"
-        app:layout_constraintBottom_toTopOf="@+id/syncRealTime"
+    <TextView
+        android:id="@+id/to_do_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="560dp"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="2sp"
+        android:text="You have 0 To-Do Item(s)"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+        android:textColor="@color/dark_blue"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.086"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.939" />
+        app:layout_constraintTop_toBottomOf="@+id/task_menu"
+        app:layout_constraintVertical_bias="0.303" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button"
@@ -73,5 +78,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/task_list"
+        android:layout_width="match_parent"
+        android:layout_above="@id/builtWithSync"
+        android:layout_below="@id/to_do_count"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@null"
+        app:layout_constraintBottom_toTopOf="@+id/syncRealTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/to_do_count"
+        app:layout_constraintVertical_bias="0.502" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

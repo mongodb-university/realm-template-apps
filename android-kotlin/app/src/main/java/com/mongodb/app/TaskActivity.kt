@@ -31,7 +31,6 @@ class TaskActivity : AppCompatActivity() {
 
         val toolbar = findViewById<View>(R.id.task_menu) as Toolbar
         setSupportActionBar(toolbar)
-        toolbar.showOverflowMenu()
 
         val fab = findViewById<View>(R.id.floating_action_button) as FloatingActionButton
         fab.setOnClickListener { (onFabClicked()) }
@@ -72,9 +71,7 @@ class TaskActivity : AppCompatActivity() {
             Realm.getInstanceAsync(config, object : Realm.Callback() {
                 override fun onSuccess(realm: Realm) {
                     this@TaskActivity.userRealm = realm
-                    val adapter = TaskAdapter(realm.where<Task>().sort("_id").findAll(), config)
-                    adapter.notifyDataSetChanged()
-                    recyclerView.adapter = adapter
+                    recyclerView.adapter = TaskAdapter(realm.where<Task>().sort("_id").findAll(), config)
                 }
             })
         }
