@@ -35,7 +35,7 @@ export function WelcomeView({navigation, route}) {
   };
 
   // The onPressSignIn method uses the emailPassword authentication provider to log in.
-  const onPressSignIn = async (email, password) => {
+  const onPressSignIn = async () => {
     try {
       await signIn(email, password);
     } catch (error) {
@@ -57,7 +57,7 @@ export function WelcomeView({navigation, route}) {
 
   return (
     <SafeAreaProvider>
-      <View style={styles.welcomeWrapper}>
+      <View style={styles.viewWrapper}>
         <Text style={styles.title}>My Sync App</Text>
         <Input
           placeholder="email"
@@ -110,7 +110,7 @@ export function WelcomeView({navigation, route}) {
 }
 
 const styles = StyleSheet.create({
-  welcomeWrapper: {
+  viewWrapper: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',

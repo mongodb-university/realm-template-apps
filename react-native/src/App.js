@@ -25,7 +25,7 @@ const App = () => {
             name="Tasks"
             component={TasksView}
             options={{
-              headerLeft: function Header() {
+              headerLeft: () => {
                 return <Logout />;
               },
             }}

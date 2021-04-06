@@ -2,7 +2,6 @@ import * as React from 'react';
 import Realm from 'realm';
 import {Button, Alert} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {useAuth} from '../realms/auth/AuthProvider';
 import {appId} from '../realm';
 
 const app = new Realm.App(appId);
