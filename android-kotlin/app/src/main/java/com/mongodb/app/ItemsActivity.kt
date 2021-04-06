@@ -24,6 +24,7 @@ class ItemsActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private var userRealm: Realm? = null
     private lateinit var config: RealmConfiguration
+    private lateinit var adapter: ItemAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +57,7 @@ class ItemsActivity : AppCompatActivity() {
             Realm.getInstanceAsync(config, object : Realm.Callback() {
                 override fun onSuccess(realm: Realm) {
                     this@ItemsActivity.userRealm = realm
-                    val adapter = ItemAdapter(realm.where<Item>().sort("_id").findAll(), config)
+                    adapter = ItemAdapter(realm.where<Item>().sort("_id").findAll(), config)
                     recyclerView.layoutManager = LinearLayoutManager(this@ItemsActivity)
                     recyclerView.adapter = adapter
                     recyclerView.setHasFixedSize(true)
@@ -123,20 +124,6 @@ class ItemsActivity : AppCompatActivity() {
         dialog.show()
         input.requestFocus()
     }
-
-/*    fun onCheckboxClicked(view: View) {
-        if (view is CheckBox) {
-            val checked: Boolean = view.isChecked
-
-            when (view.id) {
-                R.id.checkbox -> {
-                    if (checked) {
-                    } else {
-                    }
-                }
-            }
-        }
-    }*/
 
     /**
      * Ensure the user realm closes when the activity ends.

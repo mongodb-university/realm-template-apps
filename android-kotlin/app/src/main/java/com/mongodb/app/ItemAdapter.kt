@@ -36,40 +36,43 @@ internal class ItemAdapter(data: OrderedRealmCollection<Item>, private val confi
         holder.id = obj?._id
         holder.name.text = obj?.name
         holder.checkbox.isChecked = obj?.checked?:false
-
-        /**
-         *  Allows a user to check and uncheck an item and updates its status in the realm.
-         */
-        holder.checkbox.setOnClickListener {
-            val realm: Realm = Realm.getInstance(config)
-            realm.executeTransactionAsync {
-                val item = it.where<Item>().equalTo("_id", holder.id).findFirst()
-                item?.checked = holder.checkbox.isChecked
-            }
-            realm.close()
-        }
-
-        /**
-         *  Creates a popup menu that allows the user to delete an item from the realm.
-         */
-        holder.menu.setOnClickListener {
-            val popup = PopupMenu(holder.itemView.context, holder.menu)
-            popup.menu.add(0, R.id.action_delete, Menu.NONE, "Delete")
-            popup.setOnMenuItemClickListener { menuItem: MenuItem ->
-                when (menuItem.itemId) {
-                    R.id.action_delete -> {
-                        val realm: Realm = Realm.getInstance(config)
-                        realm.executeTransactionAsync {
-                            val item = it.where<Item>().equalTo("_id", holder.id).findFirst()
-                            item?.deleteFromRealm()
-                        }
-                        realm.close()                    }
-                }
-                true
-            }
-            popup.show()
-        }
-
-
+        holder.checkbox.setOnClickListener { onCheckboxClicked(holder) }
+        holder.menu.setOnClickListener { onMenuClicked(holder) }
     }
+
+    /**
+     *  Allows a user to check and uncheck an item and updates its status in the realm.
+     */
+    private fun onCheckboxClicked(holder: ItemViewHolder) {
+        val realm: Realm = Realm.getInstance(config)
+        realm.executeTransactionAsync {
+            val item = it.where<Item>().equalTo("_id", holder.id).findFirst()
+            item?.checked = holder.checkbox.isChecked
+        }
+        realm.close()
+    }
+
+    /**
+     *  Creates a popup menu that allows the user to delete an item from the realm.
+     */
+    private fun onMenuClicked(holder: ItemViewHolder) {
+        val popup = PopupMenu(holder.itemView.context, holder.menu)
+        popup.menu.add(0, R.id.action_delete, Menu.NONE, "Delete")
+        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+                R.id.action_delete -> {
+                    val realm: Realm = Realm.getInstance(config)
+                    realm.executeTransactionAsync {
+                        val item = it.where<Item>().equalTo("_id", holder.id).findFirst()
+                        item?.deleteFromRealm()
+                    }
+                    realm.close()
+                }
+            }
+            true
+        }
+        popup.show()
+    }
+
+
 }
