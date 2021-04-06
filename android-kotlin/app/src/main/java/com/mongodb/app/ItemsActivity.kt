@@ -124,7 +124,7 @@ class ItemsActivity : AppCompatActivity() {
         input.requestFocus()
     }
 
-    fun onCheckboxClicked(view: View) {
+/*    fun onCheckboxClicked(view: View) {
         if (view is CheckBox) {
             val checked: Boolean = view.isChecked
 
@@ -136,7 +136,7 @@ class ItemsActivity : AppCompatActivity() {
                 }
             }
         }
-    }
+    }*/
 
     /**
      * Ensure the user realm closes when the activity ends.
