@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import io.realm.mongodb.Credentials
+
 /*
 * Launched whenever a user isn't already logged in. Allows a user to enter email
 * and password credentials to log in to an existing account or create a new account.
