@@ -1,24 +1,17 @@
 import React from 'react';
+import Realm from 'realm';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StyleSheet, Text, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-// import {Logout} from './components/Logout';
-// import {WelcomeView} from './views/WelcomeView';
-// import {TasksView} from './views/TasksView';
+import {Logout} from './Logout';
+import {WelcomeView} from './WelcomeView';
+import {TasksView} from './TasksView';
 
-const WelcomeView = () => {
-  return <Text>Welcome View</Text>;
-};
+import {appId} from '../realm';
 
-const TasksView = () => {
-  return <Text>Tasks View</Text>;
-};
-
-const Logout = () => {
-  return <Text>Logout</Text>;
-};
+const app = Realm.App.getApp(appId);
 
 const Stack = createStackNavigator();
 

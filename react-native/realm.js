@@ -1,3 +1,3 @@
 module.exports = {
-  appId: '<Your AppId>', // Replace with your App ID
+  appId: 'todo-sync-jkujb', // Replace with your App ID
 };
