@@ -8,7 +8,7 @@ import {appId} from '../realm';
 
 const app = new Realm.App(appId);
 
-Icon.loadFont(); // load FontFamily font
+Icon.loadFont(); // load FontAwesome font
 
 export function WelcomeView({navigation, route}) {
   const [email, setEmail] = useState('');

@@ -1,9 +1,7 @@
-import {BSON} from 'realm';
-
 const TaskSchema = {
   name: 'Task',
   properties: {
-    _id: {type: 'objectId', default: new BSON.ObjectID()},
+    _id: 'objectId',
     isComplete: {type: 'bool', default: false},
     summary: 'string',
   },

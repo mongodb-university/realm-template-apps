@@ -1,13 +1,18 @@
 import React, {useEffect, useState, useRef} from 'react';
 import Realm from 'realm';
+import {BSON} from 'realm';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StyleSheet, Text, View} from 'react-native';
 import {appId} from '../realm';
 import {Button, Overlay, ListItem} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import {CreateToDoPrompt} from './CreateToDoPrompt';
 import TaskSchema from './TaskSchema';
 
 const app = Realm.App.getApp(appId);
+
+Icon.loadFont(); // load MaterialIcons font
 
 export function TasksView({navigation, route}) {
   const [tasks, setTasks] = useState([]);
@@ -27,7 +32,7 @@ export function TasksView({navigation, route}) {
       schema: [TaskSchema],
       sync: {
         user: app.currentUser,
-        partitionValue: `user=${app.currentUser.id}`,
+        partitionValue: app.currentUser.id,
       },
     };
 
@@ -66,12 +71,13 @@ export function TasksView({navigation, route}) {
     };
   }, [navigation]);
 
-  const createTask = newTaskName => {
+  const createTask = summary => {
     const realm = realmReference.current;
     console.log(realmReference.isClosed);
     realm.write(() => {
       realm.create('Task', {
-        summary: newTaskName,
+        _id: new BSON.ObjectID(),
+        summary,
       });
     });
   };
@@ -89,7 +95,7 @@ export function TasksView({navigation, route}) {
     setCreateToDoOverlayVisible(!createToDoOverlayVisible);
   };
 
-  console.log('list of tasks', tasks);
+  console.log('list of tasks woah', JSON.stringify(tasks, null, 2));
   return (
     <SafeAreaProvider>
       <View style={styles.viewWrapper}>
@@ -102,15 +108,32 @@ export function TasksView({navigation, route}) {
         <Overlay
           isVisible={createToDoOverlayVisible}
           onBackdropPress={toggleCreateToDoOverlayVisible}>
-          <CreateToDoPrompt setNewTaskSummary={value => createTask(value)} />
+          <CreateToDoPrompt
+            setNewTaskSummary={value => {
+              toggleCreateToDoOverlayVisible();
+              createTask(value);
+            }}
+          />
         </Overlay>
         {tasks.map((task, i) => (
           <ListItem key={`${task._id}`} bottomDivider topDivider>
-            <ListItem.Title>{task.summary}</ListItem.Title>
+            <ListItem.Title style={styles.taskTitle}>
+              {task.summary}
+            </ListItem.Title>
             <ListItem.CheckBox
-              containerStyle={styles.taskCheckBox}
               checked={task.isComplete}
               onPress={() => toggleTaskIsComplete(task._id)}
+            />
+            <Button
+              type="clear"
+              icon={
+                <Icon
+                  name="times"
+                  size={12}
+                  color="#979797"
+                  onPress={() => null}
+                />
+              }
             />
           </ListItem>
         ))}
@@ -146,7 +169,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     margin: 5,
   },
-  taskCheckBox: {
-    marginLeft: 280,
+  taskTitle: {
+    minWidth: 275,
   },
 });
