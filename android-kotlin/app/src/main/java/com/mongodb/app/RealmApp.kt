@@ -16,7 +16,7 @@ lateinit var realmApp: App
 inline fun <reified T> T.TAG(): String = T::class.java.simpleName
 
 /*
-*  App: Sets up the Realm App and enables Realm-specific logging in debug mode.
+*  Sets up the Realm App and enables Realm-specific logging in debug mode.
 */
 class App: Application() {
 
