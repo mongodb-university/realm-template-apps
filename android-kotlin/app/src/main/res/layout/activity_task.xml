@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ItemsActivity">
+    tools:context=".TaskActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/task_menu"
@@ -13,24 +13,11 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_constraintBottom_toTopOf="@+id/items_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/items_list"
-        android:layout_width="414dp"
-        android:layout_height="470dp"
-        android:background="@null"
-        app:layout_constraintBottom_toTopOf="@+id/syncRealTime"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.939" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button"
@@ -38,12 +25,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-        android:contentDescription="Add an item"
+        android:contentDescription="Add a task"
         android:src="@drawable/ic_baseline_add_24"
-        app:layout_constraintBottom_toBottomOf="@+id/items_list"
-        app:layout_constraintTop_toTopOf="@+id/items_list"
-        app:layout_constraintEnd_toEndOf="@+id/items_list"
-        app:layout_constraintStart_toStartOf="@+id/items_list"
+        app:layout_constraintBottom_toBottomOf="@+id/task_list"
+        app:layout_constraintTop_toTopOf="@+id/task_list"
+        app:layout_constraintEnd_toEndOf="@+id/task_list"
+        app:layout_constraintStart_toStartOf="@+id/task_list"
         app:layout_constraintHorizontal_bias="0.954"
         app:layout_constraintVertical_bias="1.0" />
 
@@ -73,5 +60,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/task_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@id/builtWithSync"
+        android:layout_below="@+id/task_menu"
+        android:layout_weight="1"
+        android:background="@null"
+        app:layout_constraintBottom_toTopOf="@+id/syncRealTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/task_menu"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

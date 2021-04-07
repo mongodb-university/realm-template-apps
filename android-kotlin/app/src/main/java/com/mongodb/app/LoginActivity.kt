@@ -77,8 +77,8 @@ class LoginActivity : AppCompatActivity() {
             // re-enable the buttons after user login returns a result
             loginButton.isEnabled = true
             if (it.isSuccess) {
-                // on a successful login, open the items screen
-                startActivity(Intent(this, ItemsActivity::class.java))
+                // on a successful login, open the s screen
+                startActivity(Intent(this, TaskActivity::class.java))
             } else {
                 displayErrorMessage( "Error: ${it.error}")
             }
