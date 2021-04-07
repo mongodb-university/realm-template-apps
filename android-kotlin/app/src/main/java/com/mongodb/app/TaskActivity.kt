@@ -36,22 +36,9 @@ class TaskActivity : AppCompatActivity() {
         fab.setOnClickListener { (onFabClicked()) }
 
         recyclerView = findViewById(R.id.task_list)
-        recyclerView.layoutManager = LinearLayoutManager(this@TaskActivity)
-        recyclerView.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-            override fun onCreateViewHolder(
-                parent: ViewGroup,
-                viewType: Int
-            ): RecyclerView.ViewHolder {
-                // This can never be called
-                return object: RecyclerView.ViewHolder(parent.rootView) {}            }
-            override fun getItemCount(): Int {
-                return 0
-            }
-            override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            }
-        }
+        recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
-        recyclerView.addItemDecoration(DividerItemDecoration(this@TaskActivity, DividerItemDecoration.VERTICAL))
+        recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
     }
 
     /**
