@@ -3,7 +3,7 @@ import Realm from 'realm';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StyleSheet, Text, View} from 'react-native';
 import {appId} from '../realm';
-import {Button, Overlay} from 'react-native-elements';
+import {Button, Overlay, ListItem} from 'react-native-elements';
 import {CreateToDoPrompt} from './CreateToDoPrompt';
 import TaskSchema from './TaskSchema';
 
@@ -76,6 +76,14 @@ export function TasksView({navigation, route}) {
     });
   };
 
+  const toggleTaskIsComplete = _id => {
+    const realm = realmReference.current;
+    const task = realm.objectForPrimaryKey('Task', _id); // search for a realm object with a primary key that is an objectId
+    realm.write(() => {
+      task.isComplete = !task.isComplete;
+    });
+  };
+
   // toggleCreateToDoOverlayVisible toggles the model to add a to-do item
   const toggleCreateToDoOverlayVisible = () => {
     setCreateToDoOverlayVisible(!createToDoOverlayVisible);
@@ -96,6 +104,16 @@ export function TasksView({navigation, route}) {
           onBackdropPress={toggleCreateToDoOverlayVisible}>
           <CreateToDoPrompt setNewTaskSummary={value => createTask(value)} />
         </Overlay>
+        {tasks.map((task, i) => (
+          <ListItem key={`${task._id}`} bottomDivider topDivider>
+            <ListItem.Title>{task.summary}</ListItem.Title>
+            <ListItem.CheckBox
+              containerStyle={styles.taskCheckBox}
+              checked={task.isComplete}
+              onPress={() => toggleTaskIsComplete(task._id)}
+            />
+          </ListItem>
+        ))}
       </View>
       <View style={styles.footer}>
         <Text style={styles.footerText}>
@@ -127,5 +145,8 @@ const styles = StyleSheet.create({
     width: 150,
     borderRadius: 4,
     margin: 5,
+  },
+  taskCheckBox: {
+    marginLeft: 280,
   },
 });
