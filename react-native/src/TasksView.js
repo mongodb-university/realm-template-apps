@@ -82,6 +82,14 @@ export function TasksView({navigation, route}) {
     });
   };
 
+  const deleteTask = _id => {
+    const realm = realmReference.current;
+    const task = realm.objectForPrimaryKey('Task', _id); // search for a realm object with a primary key that is an objectId
+    realm.write(() => {
+      realm.delete(task);
+    });
+  };
+
   const toggleTaskIsComplete = _id => {
     const realm = realmReference.current;
     const task = realm.objectForPrimaryKey('Task', _id); // search for a realm object with a primary key that is an objectId
@@ -95,11 +103,9 @@ export function TasksView({navigation, route}) {
     setCreateToDoOverlayVisible(!createToDoOverlayVisible);
   };
 
-  console.log('list of tasks woah', JSON.stringify(tasks, null, 2));
   return (
     <SafeAreaProvider>
       <View style={styles.viewWrapper}>
-        <Text>Tasks Screen</Text>
         <Button
           title="+ ADD TO-DO"
           buttonStyle={styles.addToDoButton}
@@ -115,7 +121,7 @@ export function TasksView({navigation, route}) {
             }}
           />
         </Overlay>
-        {tasks.map((task, i) => (
+        {tasks.map(task => (
           <ListItem key={`${task._id}`} bottomDivider topDivider>
             <ListItem.Title style={styles.taskTitle}>
               {task.summary}
@@ -131,7 +137,7 @@ export function TasksView({navigation, route}) {
                   name="times"
                   size={12}
                   color="#979797"
-                  onPress={() => null}
+                  onPress={() => deleteTask(task._id)}
                 />
               }
             />
