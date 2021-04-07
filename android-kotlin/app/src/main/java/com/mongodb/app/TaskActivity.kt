@@ -9,12 +9,12 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.kotlin.where
@@ -32,7 +32,7 @@ class TaskActivity : AppCompatActivity() {
         val toolbar = findViewById<View>(R.id.task_menu) as Toolbar
         setSupportActionBar(toolbar)
 
-        val fab = findViewById<View>(R.id.floating_action_button) as FloatingActionButton
+        val fab = findViewById<View>(R.id.floating_action_button)
         fab.setOnClickListener { (onFabClicked()) }
 
         recyclerView = findViewById(R.id.task_list)
@@ -42,8 +42,8 @@ class TaskActivity : AppCompatActivity() {
                 parent: ViewGroup,
                 viewType: Int
             ): RecyclerView.ViewHolder {
-                TODO("Not yet implemented")
-            }
+                // This can never be called
+                return object: RecyclerView.ViewHolder(parent.rootView) {}            }
             override fun getItemCount(): Int {
                 return 0
             }
@@ -122,12 +122,12 @@ class TaskActivity : AppCompatActivity() {
                         val task = Task()
                         task._partition = realmApp.currentUser()!!.id
                         task.summary = input.text.toString()
-                        userRealm?.executeTransactionAsync { realm ->
+                        userRealm.executeTransactionAsync { realm ->
                             realm.insert(task)
                         }
                     }
                 }
-                .setNegativeButton("Cancel") { dialog, _ ->
+            .setNegativeButton("Cancel") { dialog, _ ->
                     dialog.cancel()
                 }
         val dialog = dialogBuilder.create()
@@ -142,7 +142,7 @@ class TaskActivity : AppCompatActivity() {
      */
     override fun onDestroy() {
         super.onDestroy()
-        userRealm?.close()
+        userRealm.close()
         recyclerView.adapter = null
     }
 

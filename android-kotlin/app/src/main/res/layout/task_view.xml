@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="274dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:layout_marginLeft="18dp"
@@ -30,16 +30,11 @@
 
     <TextView
         android:id="@+id/popup_menu"
-        android:layout_width="45dp"
-        android:layout_height="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="0dp"
-        android:layout_toEndOf="@+id/name"
-        android:layout_toRightOf="@+id/name"
-        android:paddingRight="32dp"
+        android:layout_marginRight="24dp"
         android:text="@string/more"
         android:textAppearance="?android:textAppearanceLarge"
         android:textSize="24sp"

@@ -26,7 +26,7 @@ internal class TaskAdapter(data: OrderedRealmCollection<Task>, private val confi
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        val taskView: View = LayoutInflater.from(parent.context).inflate(R.layout.task_view, parent, false)
+        val taskView = LayoutInflater.from(parent.context).inflate(R.layout.task_view, parent, false)
         return TaskViewHolder(taskView)
     }
 
@@ -72,6 +72,4 @@ internal class TaskAdapter(data: OrderedRealmCollection<Task>, private val confi
         }
         popup.show()
     }
-
-
 }
