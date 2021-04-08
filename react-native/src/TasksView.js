@@ -58,12 +58,11 @@ export function TasksView({navigation}) {
 
     // cleanup function to close realm after component unmounts
     return () => {
-      let realm = realmReference.current;
+      const realm = realmReference.current;
       // if the realm exists, close the realm
       if (realm) {
         realm.close();
-        // set the references to null so the realm can't be used after it is closed
-        realm = null;
+        // set the reference to null so the realm can't be used after it is closed
         realmReference.current = null;
         setTasks([]); // set the Tasks state to an empty array since the component is unmounting
       }
