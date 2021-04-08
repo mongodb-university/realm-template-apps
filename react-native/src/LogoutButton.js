@@ -11,13 +11,12 @@ export function LogoutButton() {
   const user = app.currentUser;
 
   // The signOut function calls the logOut function on the currently
-  // logged in user
+  // logged in user and then navigates to the welcome screen
   const signOut = () => {
-    if (user == null) {
-      console.warn("Not logged in, can't log out!");
-      return;
+    if (user) {
+      user.logOut();
     }
-    user.logOut();
+    navigation.popToTop();
   };
 
   return (
@@ -28,10 +27,7 @@ export function LogoutButton() {
           {
             text: 'Yes, Log Out',
             style: 'destructive',
-            onPress: () => {
-              signOut();
-              navigation.popToTop();
-            },
+            onPress: () => signOut(),
           },
           {text: 'Cancel', style: 'cancel'},
         ]);
