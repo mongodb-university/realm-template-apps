@@ -72,30 +72,39 @@ export function TasksView({navigation}) {
   // createTask() takes in a summary and then creates a Task object with that summary
   const createTask = summary => {
     const realm = realmReference.current;
-    realm.write(() => {
-      realm.create('Task', {
-        _id: new BSON.ObjectID(),
-        summary,
+    // if the realm exists, create a task
+    if (realm) {
+      realm.write(() => {
+        realm.create('Task', {
+          _id: new BSON.ObjectID(),
+          summary,
+        });
       });
-    });
+    }
   };
 
   // deleteTask() deletes a Task with a particular _id
   const deleteTask = _id => {
     const realm = realmReference.current;
-    const task = realm.objectForPrimaryKey('Task', _id); // search for a realm object with a primary key that is an objectId
-    realm.write(() => {
-      realm.delete(task);
-    });
+    // if the realm exists, get the Task with a particular _id and delete it
+    if (realm) {
+      const task = realm.objectForPrimaryKey('Task', _id); // search for a realm object with a primary key that is an objectId
+      realm.write(() => {
+        realm.delete(task);
+      });
+    }
   };
 
   // toggleTaskIsComplete() updates a Task with a particular _id to be 'completed'
   const toggleTaskIsComplete = _id => {
     const realm = realmReference.current;
-    const task = realm.objectForPrimaryKey('Task', _id); // search for a realm object with a primary key that is an objectId
-    realm.write(() => {
-      task.isComplete = !task.isComplete;
-    });
+    // if the realm exists, get the Task with a particular _id and update it's 'isCompleted' field
+    if (realm) {
+      const task = realm.objectForPrimaryKey('Task', _id); // search for a realm object with a primary key that is an objectId
+      realm.write(() => {
+        task.isComplete = !task.isComplete;
+      });
+    }
   };
 
   // toggleCreateToDoOverlayVisible toggles the visibility of the 'CreateToDoPrompt' Model in the UI
