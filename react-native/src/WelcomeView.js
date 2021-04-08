@@ -15,7 +15,7 @@ export function WelcomeView({navigation, route}) {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
 
-  // state values for toggable features of the UI
+  // state values for toggable visibility of features in the UI
   const [passwordHidden, setPasswordHidden] = useState(true);
   const [isInSignUpMode, setIsInSignUpMode] = useState(true);
 

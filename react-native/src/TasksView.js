@@ -3,20 +3,20 @@ import Realm from 'realm';
 import {BSON} from 'realm';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StyleSheet, Text, View} from 'react-native';
-import {appId} from '../realm';
 import {Button, Overlay, ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import {appId} from '../realm';
 import {CreateToDoPrompt} from './CreateToDoPrompt';
 import TaskSchema from './TaskSchema';
 
 const app = Realm.App.getApp(appId);
 
-Icon.loadFont(); // load MaterialIcons font
+Icon.loadFont(); // load FontAwesome font
 
-export function TasksView({navigation, route}) {
+export function TasksView({navigation}) {
   const [tasks, setTasks] = useState([]);
-  const [newTaskSummary, setNewTaskSummary] = useState(null);
+
+  // state value for toggable visibility of the 'CreateToDoPrompt' Model in the UI
   const [createToDoOverlayVisible, setCreateToDoOverlayVisible] = useState(
     false,
   );
@@ -26,7 +26,6 @@ export function TasksView({navigation, route}) {
   // state would.
   const realmReference = useRef(null);
 
-  // run after render
   useEffect(() => {
     const config = {
       schema: [TaskSchema],
@@ -38,13 +37,11 @@ export function TasksView({navigation, route}) {
 
     Realm.open(config)
       .then(realmInstance => {
-        console.log('realm opens!!');
         realmReference.current = realmInstance;
         // Get all Task items, sorted by name
         const sortedTasks = realmReference.current
           .objects('Task')
           .sorted('summary');
-        console.log('woah task', sortedTasks);
         // set the sorted Tasks to state as an array, so they can be rendered as a list
         setTasks([...sortedTasks]);
         // watch for changes to the Task collection, when tasks are created,
@@ -52,7 +49,6 @@ export function TasksView({navigation, route}) {
         // live Task objects, and then the Tasks in state will be updated to the
         // sortedTasks
         sortedTasks.addListener(() => {
-          console.log('something happened in the realm');
           setTasks([...sortedTasks]);
         });
       })
@@ -62,18 +58,21 @@ export function TasksView({navigation, route}) {
 
     // cleanup function to close realm after component unmounts
     return () => {
-      // if the realm exists in our realmReference, close the realm
-      if (realmReference.current) {
-        realmReference.current.close();
-        realmReference.current = null; // set the reference to null so it can't be used again
+      let realm = realmReference.current;
+      // if the realm exists, close the realm
+      if (realm) {
+        realm.close();
+        // set the references to null so the realm can't be used after it is closed
+        realm = null;
+        realmReference.current = null;
         setTasks([]); // set the Tasks state to an empty array since the component is unmounting
       }
     };
   }, [navigation]);
 
+  // createTask() takes in a summary and then creates a Task object with that summary
   const createTask = summary => {
     const realm = realmReference.current;
-    console.log(realmReference.isClosed);
     realm.write(() => {
       realm.create('Task', {
         _id: new BSON.ObjectID(),
@@ -82,6 +81,7 @@ export function TasksView({navigation, route}) {
     });
   };
 
+  // deleteTask() deletes a Task with a particular _id
   const deleteTask = _id => {
     const realm = realmReference.current;
     const task = realm.objectForPrimaryKey('Task', _id); // search for a realm object with a primary key that is an objectId
@@ -90,6 +90,7 @@ export function TasksView({navigation, route}) {
     });
   };
 
+  // toggleTaskIsComplete() updates a Task with a particular _id to be 'completed'
   const toggleTaskIsComplete = _id => {
     const realm = realmReference.current;
     const task = realm.objectForPrimaryKey('Task', _id); // search for a realm object with a primary key that is an objectId
@@ -98,7 +99,7 @@ export function TasksView({navigation, route}) {
     });
   };
 
-  // toggleCreateToDoOverlayVisible toggles the model to add a to-do item
+  // toggleCreateToDoOverlayVisible toggles the visibility of the 'CreateToDoPrompt' Model in the UI
   const toggleCreateToDoOverlayVisible = () => {
     setCreateToDoOverlayVisible(!createToDoOverlayVisible);
   };
