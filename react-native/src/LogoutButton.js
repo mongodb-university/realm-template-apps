@@ -6,7 +6,7 @@ import {appId} from '../realm';
 
 const app = new Realm.App(appId);
 
-export function Logout() {
+export function LogoutButton() {
   const navigation = useNavigation();
   const user = app.currentUser;
 

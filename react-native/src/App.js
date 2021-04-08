@@ -4,7 +4,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import {Logout} from './Logout';
+import {LogoutButton} from './LogoutButton';
 import {WelcomeView} from './WelcomeView';
 import {TasksView} from './TasksView';
 
@@ -21,7 +21,7 @@ const App = () => {
             component={TasksView}
             options={{
               headerLeft: () => {
-                return <Logout />;
+                return <LogoutButton />;
               },
             }}
           />
