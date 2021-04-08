@@ -31,7 +31,7 @@ export function TasksView({navigation}) {
       schema: [TaskSchema],
       sync: {
         user: app.currentUser,
-        partitionValue: app.currentUser.id,
+        partitionValue: app.currentUser?.id,
       },
     };
 
