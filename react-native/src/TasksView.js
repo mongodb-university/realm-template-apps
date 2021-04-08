@@ -44,7 +44,7 @@ export function TasksView({navigation}) {
           .sorted('summary');
         // set the sorted Tasks to state as an array, so they can be rendered as a list
         setTasks([...sortedTasks]);
-        // watch for changes to the Task collection, when tasks are created,
+        // watch for changes to the Task collection. When tasks are created,
         // modified or deleted the 'sortedTasks' variable will update with the new
         // live Task objects, and then the Tasks in state will be updated to the
         // sortedTasks
