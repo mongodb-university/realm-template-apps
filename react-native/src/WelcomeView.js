@@ -15,26 +15,24 @@ export function WelcomeView({navigation, route}) {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
 
-  // togglable state values for the UI
+  // state values for toggable features of the UI
   const [passwordHidden, setPasswordHidden] = useState(true);
   const [isInSignUpMode, setIsInSignUpMode] = useState(true);
 
   useEffect(() => {
-    console.log('do user be existing - WelcomeView??', user?.profile);
-    // If there is a user logged in, go to the Tasks page.
     if (user) {
-      navigation.navigate('Tasks');
+      navigation.navigate('Tasks'); // if there is a logged in user, navigate to the Tasks Screen
     }
   }, [user, navigation]);
 
-  // The signIn function uses the emailPassword authentication provider to log in.
+  // signIn() uses the emailPassword authentication provider to log in
   const signIn = async () => {
     const creds = Realm.Credentials.emailPassword(email, password);
-    const newUser = await app.logIn(creds);
-    setUser(newUser);
+    const loggedInUser = await app.logIn(creds);
+    setUser(loggedInUser);
   };
 
-  // The onPressSignIn method uses the emailPassword authentication provider to log in.
+  // onPressSignIn() uses the emailPassword authentication provider to log in
   const onPressSignIn = async () => {
     try {
       await signIn(email, password);
@@ -43,9 +41,7 @@ export function WelcomeView({navigation, route}) {
     }
   };
 
-  // The onPressSignUp method takes an email and password and uses the
-  // emailPassword authentication provider to register the user and then calls
-  // signIn to log in.
+  // onPressSignUp() registers the user and then calls signIn to log the user in
   const onPressSignUp = async () => {
     try {
       await app.emailPasswordAuth.registerUser(email, password);

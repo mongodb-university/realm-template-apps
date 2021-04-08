@@ -1,5 +1,4 @@
 import React from 'react';
-import Realm from 'realm';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StyleSheet, Text, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
@@ -8,10 +7,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {Logout} from './Logout';
 import {WelcomeView} from './WelcomeView';
 import {TasksView} from './TasksView';
-
-import {appId} from '../realm';
-
-const app = Realm.App.getApp(appId);
 
 const Stack = createStackNavigator();
 
