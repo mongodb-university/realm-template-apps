@@ -1,10 +1,12 @@
-import logo from './logo.svg';
-// <img src={logo} className="App-logo" alt="logo" />
+import { WelcomePage } from './WelcomePage';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
+      <WelcomePage>
+        
+      </WelcomePage>
     </div>
   );
 }
