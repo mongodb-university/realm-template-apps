@@ -4,7 +4,7 @@ import {Button, Alert} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {appId} from '../realm';
 
-const app = new Realm.App(appId);
+const app = Realm.App.getApp(appId);
 
 export function LogoutButton() {
   const navigation = useNavigation();

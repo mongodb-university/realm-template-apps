@@ -4,9 +4,16 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StyleSheet, Text, View, Alert} from 'react-native';
 import {Input, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {appId} from '../realm';
+import realmConfig from '../realm';
 
-const app = new Realm.App(appId);
+const appConfig = {
+  id: realmConfig.appId,
+};
+if (realmConfig.url) {
+  appConfig.url = realmConfig.url;
+}
+
+const app = new Realm.App(appConfig);
 
 Icon.loadFont(); // load FontAwesome font
 
