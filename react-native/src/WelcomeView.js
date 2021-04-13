@@ -6,6 +6,9 @@ import {Input, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import realmConfig from '../realm';
 
+if (!realmConfig.appId) {
+  throw 'Missing Realm App ID. Set your App ID in realm.json';
+}
 const appConfig = {
   id: realmConfig.appId,
 };

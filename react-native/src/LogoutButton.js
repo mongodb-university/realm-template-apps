@@ -4,6 +4,9 @@ import {Button, Alert} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {appId} from '../realm';
 
+if (!appId) {
+  throw 'Missing Realm App ID. Set your App ID in realm.json';
+}
 const app = Realm.App.getApp(appId);
 
 export function LogoutButton() {

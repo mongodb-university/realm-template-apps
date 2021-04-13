@@ -9,6 +9,9 @@ import {appId} from '../realm';
 import {CreateToDoPrompt} from './CreateToDoPrompt';
 import TaskSchema from './TaskSchema';
 
+if (!appId) {
+  throw 'Missing Realm App ID. Set your App ID in realm.json';
+}
 const app = Realm.App.getApp(appId);
 
 Icon.loadFont(); // load FontAwesome font
