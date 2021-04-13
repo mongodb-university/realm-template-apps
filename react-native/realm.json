@@ -1,3 +1,4 @@
 {
-  "appId": "<Your App ID>"
+  "app_id": "<Your App ID>",
+  "url": "http://localhost:8080"
 }
