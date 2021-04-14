@@ -41,19 +41,23 @@ export function TasksView({navigation}) {
     Realm.open(config)
       .then(realmInstance => {
         realmReference.current = realmInstance;
-        // Get all Task items, sorted by name
-        const sortedTasks = realmReference.current
-          .objects('Task')
-          .sorted('summary');
-        // set the sorted Tasks to state as an array, so they can be rendered as a list
-        setTasks([...sortedTasks]);
-        // watch for changes to the Task collection. When tasks are created,
-        // modified or deleted the 'sortedTasks' variable will update with the new
-        // live Task objects, and then the Tasks in state will be updated to the
-        // sortedTasks
-        sortedTasks.addListener(() => {
+        const realm = realmReference.current;
+        // if the realm exists, get all Task items and add a listener on the Task collection
+        if (realm) {
+          // Get all Task items, sorted by name
+          const sortedTasks = realmReference.current
+            .objects('Task')
+            .sorted('summary');
+          // set the sorted Tasks to state as an array, so they can be rendered as a list
           setTasks([...sortedTasks]);
-        });
+          // watch for changes to the Task collection. When tasks are created,
+          // modified or deleted the 'sortedTasks' variable will update with the new
+          // live Task objects, and then the Tasks in state will be updated to the
+          // sortedTasks
+          sortedTasks.addListener(() => {
+            setTasks([...sortedTasks]);
+          });
+        }
       })
       .catch(err => {
         console.log(`an error occurred opening the realm ${err}`);
@@ -70,7 +74,7 @@ export function TasksView({navigation}) {
         setTasks([]); // set the Tasks state to an empty array since the component is unmounting
       }
     };
-  }, [navigation]);
+  }, [realmReference, setTasks]);
 
   // createTask() takes in a summary and then creates a Task object with that summary
   const createTask = summary => {
