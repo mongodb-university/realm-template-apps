@@ -152,7 +152,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\_Shared\_Shared.csproj">
-	    <Name>_Shared</Name>
+	    <Name>Shared</Name>
 	  </ProjectReference>
 	</ItemGroup>
 </Project>

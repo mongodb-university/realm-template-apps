@@ -106,7 +106,10 @@ namespace RealmTemplateApp
                 $"Are you sure you want to delete \"{taskToDelete.Summary}\"?",
                 "Yes", "No");
 
-            if (result == false) return;
+            if (result == false)
+            {
+                return;
+            };
 
             taskRealm.Write(() =>
             {
