@@ -7,7 +7,7 @@
 }
 
 .App-logo {
-  height: 4vmin;
+  height: 6vmin;
   pointer-events: none;
 }
 
@@ -24,4 +24,21 @@
 .link-button:hover,
 .link-button:focus {
   text-decoration: none;
+}
+
+.auth-container {
+  padding-top: 0.35em;
+  padding-bottom: 0.35em;
+}
+
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }

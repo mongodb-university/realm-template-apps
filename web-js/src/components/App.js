@@ -1,14 +1,33 @@
-import { WelcomePage } from './WelcomePage';
-import './App.css';
+import { WelcomePage } from "./WelcomePage";
+import { RealmAppProvider, useRealmApp } from "./RealmApp";
+import "./App.css";
 
-function App() {
+export default function AppWithRealm() {
   return (
-    <div className="App">
-      <WelcomePage>
-        
-      </WelcomePage>
-    </div>
+    <RealmAppProvider appId="template-ihgiv">
+      <App />
+    </RealmAppProvider>
   );
 }
 
-export default App;
+function App() {
+  const { currentUser, logOut } = useRealmApp();
+  return (
+    <div className="App">
+      {currentUser ? (
+        <>
+          {"Logged In"}{" "}
+          <button
+            onClick={async () => {
+              await logOut();
+            }}
+          >
+            Logout
+          </button>
+        </>
+      ) : (
+        <WelcomePage />
+      )}
+    </div>
+  );
+}
