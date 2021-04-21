@@ -21,9 +21,9 @@ export function RealmAppProvider({ appId, children }) {
   );
 
   const logOut = React.useCallback(async () => {
-    await currentUser?.logOut();
+    await realmApp.currentUser?.logOut();
     setCurrentUser(realmApp.currentUser);
-  }, [currentUser, realmApp.currentUser]);
+  }, [realmApp.currentUser]);
 
   return (
     <RealmAppContext.Provider

@@ -1,7 +1,8 @@
 import { useTodoActions as useGraphqlTodoActions } from "./useTodoActions_graphql"
 import { useTodoActions as useMqlTodoActions } from "./useTodoActions_mql"
+import { useTodoActions as useLocalTodoActions } from "./useTodoActions_local"
 
-const KIND = "graphql"
+const KIND = "local"
 let useTodoActions;
 switch(KIND) {
   case "graphql": {
@@ -10,6 +11,10 @@ switch(KIND) {
   }
   case "mql": {
     useTodoActions = useMqlTodoActions
+    break;
+  }
+  case "local": {
+    useTodoActions = useLocalTodoActions
     break;
   }
   default: {

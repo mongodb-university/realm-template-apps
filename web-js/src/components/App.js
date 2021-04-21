@@ -16,7 +16,7 @@ function App() {
   const { currentUser, logOut } = useRealmApp();
   return (
     <div className="App">
-      <AppBar position="static" variant="dense">
+      <AppBar position="static">
         <Toolbar>
           <Typography className="app-bar-title" component="h1" variant="h5">
             My GraphQL App
