@@ -48,15 +48,7 @@ export function WelcomePage() {
 
   return (
     <Container maxWidth="sm">
-      <Typography
-        className="auth-container"
-        component="h1"
-        variant="h3"
-        align="center"
-      >
-        My GraphQL App
-      </Typography>
-      <Card className={"auth-card"} variant="outlined">
+      <Card className="auth-card" variant="outlined">
         <form
           className="auth-form"
           onSubmit={(e) => {
