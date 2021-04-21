@@ -26,6 +26,10 @@
   text-decoration: none;
 }
 
+.app-bar-title {
+  flex-grow: 1;
+}
+
 .auth-container {
   padding-top: 0.35em;
   padding-bottom: 0.35em;
