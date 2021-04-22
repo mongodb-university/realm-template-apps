@@ -59,11 +59,6 @@ export function TodoItemsPage() {
             />
           ))}
         </List>
-
-        {/* <Button onClick={todoActions.createTodo}>createTodo</Button>
-        <Button onClick={todoActions.saveTodo}>saveTodo</Button>
-        <Button onClick={todoActions.toggleTodo}>toggleTodo</Button>
-        <Button onClick={todoActions.deleteTodo}>deleteTodo</Button> */}
       </div>
     </Container>
   );

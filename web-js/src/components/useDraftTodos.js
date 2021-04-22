@@ -14,7 +14,7 @@ export function useDraftTodos() {
   const createDraftTodo = () => {
     const draftTodo = {
       _id: new Realm.BSON.ObjectID(),
-      summary: "asdf",
+      summary: "",
       isComplete: false,
     };
     setDrafts((d) => [...d, draftTodo]);

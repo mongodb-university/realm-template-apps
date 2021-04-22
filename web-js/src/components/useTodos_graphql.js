@@ -1,4 +1,11 @@
-export function useTodoActions(todos, setTodos) {
+import React from "react"
+
+export function useTodos() {
+  const [todos, setTodos] = React.useState([]);
+  React.useEffect(() => {
+    setTodos([])
+  }, [])
+
   const createTodo = () => {
     console.log("GRAPHQL::createTodo()")
   }
@@ -16,6 +23,7 @@ export function useTodoActions(todos, setTodos) {
   }
 
   return {
+    todos,
     createTodo,
     saveTodo,
     toggleTodo,

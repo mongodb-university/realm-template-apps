@@ -1,40 +1,25 @@
-import React from "react"
-// import { useRealmApp } from "./RealmApp";
-import { useTodoActions } from "./useTodoActions"
+import { useTodos as useGraphqlTodos } from "./useTodos_graphql"
+import { useTodos as useMqlTodos } from "./useTodos_mql"
+import { useTodos as useLocalTodos } from "./useTodos_local"
 
-export function useTodos() {
-  // const realmApp = useRealmApp();
-  const [todos, setTodos] = React.useState([
-    {
-      _id: "abcde",
-      _partition: "123",
-      summary: "Do the dishes",
-      isComplete: false,
-    },
-    {
-      _id: "efghi",
-      _partition: "123",
-      summary: "Buy groceries",
-      isComplete: false,
-    },
-    {
-      _id: "zxcv",
-      _partition: "123",
-      summary: "This is a longer one to see how things wrap.",
-      isComplete: false,
-    },
-  ])
-  
-  const {
-    saveTodo,
-    toggleTodo,
-    deleteTodo,
-  } = useTodoActions(todos, setTodos)
-
-  return {
-    todos,
-    saveTodo,
-    toggleTodo,
-    deleteTodo,
+const KIND = "local"
+let useTodos;
+switch(KIND) {
+  case "graphql": {
+    useTodos = useGraphqlTodos
+    break;
+  }
+  case "mql": {
+    useTodos = useMqlTodos
+    break;
+  }
+  case "local": {
+    useTodos = useLocalTodos
+    break;
+  }
+  default: {
+    throw new Error(`Invalid todo action kind: "${KIND}". Specifiy "graphql" or "mql" instead.`)
   }
 }
+
+export { useTodos };

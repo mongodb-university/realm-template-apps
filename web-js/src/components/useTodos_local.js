@@ -1,4 +1,34 @@
-export function useTodoActions(todos, setTodos) {
+import React from "react"
+
+export function useTodos() {
+  const fetchTodos = async () => {
+    return [
+      {
+        _id: "abcde",
+        _partition: "123",
+        summary: "Do the dishes",
+        isComplete: false,
+      },
+      {
+        _id: "efghi",
+        _partition: "123",
+        summary: "Buy groceries",
+        isComplete: false,
+      },
+      {
+        _id: "zxcv",
+        _partition: "123",
+        summary: "This is a longer one to see how things wrap.",
+        isComplete: false,
+      },
+    ]
+  }
+  
+  const [todos, setTodos] = React.useState([])
+  React.useEffect(() => {
+    fetchTodos().then(t => setTodos(t))
+  }, [])
+
   const saveTodo = async (todo) => {
     setTodos((t) => [...t, todo]);
   }
@@ -20,6 +50,7 @@ export function useTodoActions(todos, setTodos) {
   }
 
   return {
+    todos,
     saveTodo,
     toggleTodo,
     deleteTodo,
