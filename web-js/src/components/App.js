@@ -4,8 +4,7 @@ import { RealmAppProvider, useRealmApp } from "./RealmApp";
 import { AppBar, Toolbar, Button, Typography } from "@material-ui/core";
 import "./App.css";
 
-// const APP_ID = "template-ihgiv"
-export const APP_ID = "todo-sync-tmikv"
+export const APP_ID = process.env.REACT_APP_REALM_APP_ID
 
 export default function AppWithRealm() {
   return (
