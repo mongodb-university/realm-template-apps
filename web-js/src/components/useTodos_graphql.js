@@ -46,6 +46,8 @@ export function useTodos() {
     return mdb.db("todo").collection("Task");
   }, [realmApp.currentUser]);
   const [todos, setTodos] = React.useState([]);
+  
+  const [loading, setLoading] = React.useState(true);
   React.useEffect(() => {
     const fetchTodos = async () => {
       const { data } = await graphql.query({
@@ -102,6 +104,7 @@ export function useTodos() {
     fetchTodos().then((t) => {
       setTodos(t);
       watchTodos();
+      setLoading(false);
     });
   }, [taskCollection, graphql]);
 
@@ -152,6 +155,7 @@ export function useTodos() {
   };
 
   return {
+    loading,
     todos,
     saveTodo,
     toggleTodo,

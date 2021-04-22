@@ -9,6 +9,7 @@ export function useTodos() {
   }, [realmApp.currentUser]);
   const [todos, setTodos] = React.useState([]);
   
+  const [loading, setLoading] = React.useState(true);
   React.useEffect(() => {
     const fetchTodos = async () => {
       return await taskCollection.find({});
@@ -50,6 +51,7 @@ export function useTodos() {
     fetchTodos().then(t => {
       setTodos(t)
       watchTodos()
+      setLoading(false)
     })
   }, [taskCollection])
   
@@ -70,6 +72,7 @@ export function useTodos() {
   }
   
   return {
+    loading,
     todos,
     saveTodo,
     toggleTodo,

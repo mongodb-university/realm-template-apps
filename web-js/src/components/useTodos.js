@@ -2,9 +2,10 @@ import { useTodos as useGraphqlTodos } from "./useTodos_graphql"
 import { useTodos as useMqlTodos } from "./useTodos_mql"
 import { useTodos as useLocalTodos } from "./useTodos_local"
 
-const KIND = "graphql"
+const API_TYPE = process.env.REACT_APP_API_TYPE
+
 let useTodos;
-switch(KIND) {
+switch(API_TYPE) {
   case "graphql": {
     useTodos = useGraphqlTodos
     break;
@@ -18,7 +19,7 @@ switch(KIND) {
     break;
   }
   default: {
-    throw new Error(`Invalid todo action kind: "${KIND}". Specifiy "graphql" or "mql" instead.`)
+    throw new Error(`Invalid REACT_APP_API_TYPE: "${API_TYPE}". Specifiy "graphql", "mql", or "local" instead.`)
   }
 }
 
