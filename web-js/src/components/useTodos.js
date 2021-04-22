@@ -2,7 +2,7 @@ import { useTodos as useGraphqlTodos } from "./useTodos_graphql"
 import { useTodos as useMqlTodos } from "./useTodos_mql"
 import { useTodos as useLocalTodos } from "./useTodos_local"
 
-const KIND = "local"
+const KIND = "mql"
 let useTodos;
 switch(KIND) {
   case "graphql": {

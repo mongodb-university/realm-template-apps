@@ -1,6 +1,8 @@
 import React from "react"
 
 export function useTodos() {
+  const [todos, setTodos] = React.useState([])
+
   const fetchTodos = async () => {
     return [
       {
@@ -23,12 +25,11 @@ export function useTodos() {
       },
     ]
   }
-  
-  const [todos, setTodos] = React.useState([])
+
   React.useEffect(() => {
     fetchTodos().then(t => setTodos(t))
   }, [])
-
+  
   const saveTodo = async (todo) => {
     setTodos((t) => [...t, todo]);
   }

@@ -4,9 +4,12 @@ import { RealmAppProvider, useRealmApp } from "./RealmApp";
 import { AppBar, Toolbar, Button, Typography } from "@material-ui/core";
 import "./App.css";
 
+// const APP_ID = "template-ihgiv"
+const APP_ID = "todo-sync-tmikv"
+
 export default function AppWithRealm() {
   return (
-    <RealmAppProvider appId="template-ihgiv">
+    <RealmAppProvider appId={APP_ID}>
       <App />
     </RealmAppProvider>
   );
