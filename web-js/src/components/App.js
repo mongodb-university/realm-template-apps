@@ -5,7 +5,7 @@ import { AppBar, Toolbar, Button, Typography } from "@material-ui/core";
 import "./App.css";
 
 // const APP_ID = "template-ihgiv"
-const APP_ID = "todo-sync-tmikv"
+export const APP_ID = "todo-sync-tmikv"
 
 export default function AppWithRealm() {
   return (
