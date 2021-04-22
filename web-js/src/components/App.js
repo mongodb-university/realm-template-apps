@@ -16,21 +16,22 @@ export default function AppWithRealm() {
 }
 
 const API_TYPE = process.env.REACT_APP_API_TYPE
-const AppNames = {
-  "graphql": "My GraphQL App",
-  "mql": "My MQL App",
-  "local": "My Local App",
+const TitleCaseNames = {
+  "graphql": "GraphQL",
+  "mql": "MQL",
+  "local": "Local",
 }
-const AppName = AppNames[API_TYPE]
-if(!AppName) {
+export const ApiTypeName = TitleCaseNames[API_TYPE]
+if(!ApiTypeName) {
   throw new Error(`Invalid REACT_APP_API_TYPE: "${API_TYPE}". Specifiy "graphql", "mql", or "local" instead.`)
 }
+const AppName = `My ${ApiTypeName} App`
 
 function App() {
   const { currentUser, logOut } = useRealmApp();
   return (
     <div className="App">
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar>
           <Typography className="app-bar-title" component="h1" variant="h5">
             {AppName}

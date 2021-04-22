@@ -10,6 +10,7 @@ import {
   InputAdornment,
 } from "@material-ui/core";
 import { useRealmApp } from "./RealmApp";
+import { MoreInfoTemplateAndDocs } from './MoreInfo'
 
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -47,7 +48,7 @@ export function WelcomePage() {
   };
 
   return (
-    <Container className="main-container" maxWidth="sm">
+    <Container maxWidth="sm" className="main-container">
       <Card className="auth-card" variant="outlined">
         <form
           className="auth-form"
@@ -110,6 +111,7 @@ export function WelcomePage() {
           </button>
         </form>
       </Card>
+      <MoreInfoTemplateAndDocs />
     </Container>
   );
 }

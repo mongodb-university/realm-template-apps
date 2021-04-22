@@ -19,6 +19,7 @@ import ClearIcon from "@material-ui/icons/Clear";
 import { useTodos } from "./useTodos";
 import { useDraftTodos } from "./useDraftTodos";
 import { useShowLoader } from "./util-hooks";
+import { MoreInfoTemplateAndDocs, MoreInfoGraphiQL } from './MoreInfo'
 
 export function TodoItemsPage() {
   const { loading, todos, ...todoActions } = useTodos();
@@ -60,6 +61,8 @@ export function TodoItemsPage() {
           </List>
         </div>
       )}
+      <MoreInfoGraphiQL />
+      <MoreInfoTemplateAndDocs />
     </Container>
   );
 }

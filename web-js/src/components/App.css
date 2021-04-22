@@ -32,6 +32,9 @@
 
 .main-container {
   padding-top: 48px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 64px);
 }
 
 .todo-items-container {
