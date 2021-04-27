@@ -58,7 +58,7 @@ class TaskActivity : AppCompatActivity() {
             Realm.getInstanceAsync(config, object : Realm.Callback() {
                 override fun onSuccess(realm: Realm) {
                     this@TaskActivity.userRealm = realm
-                    recyclerView.adapter = TaskAdapter(realm.where<Task>().sort("_id").findAll(), config)
+                    recyclerView.adapter = TaskAdapter(realm.where<Task>().sort("id").findAllAsync(), config)
                 }
             })
         }
@@ -107,7 +107,6 @@ class TaskActivity : AppCompatActivity() {
                     run {
                         dialog.dismiss()
                         val task = Task()
-                        task._partition = realmApp.currentUser()!!.id
                         task.summary = input.text.toString()
                         userRealm.executeTransactionAsync { realm ->
                             realm.insert(task)

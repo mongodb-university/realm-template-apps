@@ -2,6 +2,7 @@ package com.mongodb.app
 
 import android.app.Application
 import android.util.Log
+import io.realm.BuildConfig
 
 import io.realm.Realm
 import io.realm.log.LogLevel
@@ -23,13 +24,11 @@ class App: Application() {
     override fun onCreate() {
         super.onCreate()
         Realm.init(this)
-         realmApp = App(
-            AppConfiguration.Builder(getString(R.string.mongodb_realm_app_id))
-                .build())
+        realmApp = App(getString(R.string.mongodb_realm_app_id))
 
         // Enable more logging in debug mode
         if (BuildConfig.DEBUG) {
-            RealmLog.setLevel(LogLevel.ALL)
+            RealmLog.setLevel(LogLevel.DEBUG)
         }
 
         Log.v(TAG(), "Initialized the Realm App configuration for: ${realmApp.configuration.appId}")

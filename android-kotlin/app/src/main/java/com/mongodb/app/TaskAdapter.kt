@@ -32,7 +32,7 @@ internal class TaskAdapter(data: OrderedRealmCollection<Task>, private val confi
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val task: Task = getItem(position) ?: return
-        holder.id = task._id
+        holder.id = task.id
         holder.name.text = task.summary
         holder.checkbox.isChecked = task.isComplete
         holder.checkbox.setOnClickListener { onCheckboxClicked(holder) }
@@ -45,7 +45,7 @@ internal class TaskAdapter(data: OrderedRealmCollection<Task>, private val confi
     private fun onCheckboxClicked(holder: TaskViewHolder) {
         val realm: Realm = Realm.getInstance(config)
         realm.executeTransactionAsync {
-            val task = it.where<Task>().equalTo("_id", holder.id).findFirst()
+            val task = it.where<Task>().equalTo("id", holder.id).findFirst()
             task?.isComplete = holder.checkbox.isChecked
         }
         realm.close()
@@ -62,7 +62,7 @@ internal class TaskAdapter(data: OrderedRealmCollection<Task>, private val confi
                 R.id.action_delete -> {
                     val realm: Realm = Realm.getInstance(config)
                     realm.executeTransactionAsync {
-                        val task = it.where<Task>().equalTo("_id", holder.id).findFirst()
+                        val task = it.where<Task>().equalTo("id", holder.id).findFirst()
                         task?.deleteFromRealm()
                     }
                     realm.close()
