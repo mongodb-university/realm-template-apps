@@ -15,13 +15,15 @@ import { MoreInfoTemplateAndDocs } from './MoreInfo'
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
+const toggleBoolean = input => !input
+
 export function WelcomePage() {
   const realmApp = useRealmApp();
   // Track whether the user is logging in or signing up for a new account
   const [isSignup, setIsSignup] = React.useState(false);
   const toggleIsSignup = () => {
     clearErrors();
-    setIsSignup((s) => !s);
+    setIsSignup(toggleBoolean);
   };
   // Authentication errors
   const noErrors = {
@@ -32,7 +34,7 @@ export function WelcomePage() {
   const clearErrors = () => setError(noErrors);
   // Manage password visibility
   const [showPassword, setShowPassword] = React.useState(false);
-  const toggleShowPassword = () => setShowPassword((s) => !s);
+  const toggleShowPassword = () => setShowPassword(toggleBoolean);
 
   const onFormSubmit = async ({ email, password }) => {
     clearErrors();

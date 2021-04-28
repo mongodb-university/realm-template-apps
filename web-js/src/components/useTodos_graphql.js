@@ -2,6 +2,7 @@ import React from "react";
 import { ApolloClient, gql, HttpLink, InMemoryCache } from "@apollo/client";
 import { APP_ID } from "./App";
 import { useRealmApp } from "./RealmApp";
+import { addValueAtIndex, updateValueAtIndex, removeValueAtIndex, getTodoIndex } from './utils'
 
 function useApolloClient() {
   const realmApp = useRealmApp();
@@ -41,13 +42,14 @@ function useApolloClient() {
 export function useTodos() {
   const realmApp = useRealmApp();
   const graphql = useApolloClient();
+  const [todos, setTodos] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  
   const taskCollection = React.useMemo(() => {
     const mdb = realmApp.currentUser.mongoClient("mongodb-atlas");
     return mdb.db("todo").collection("Task");
   }, [realmApp.currentUser]);
-  const [todos, setTodos] = React.useState([]);
   
-  const [loading, setLoading] = React.useState(true);
   React.useEffect(() => {
     const fetchTodos = async () => {
       const { data } = await graphql.query({
@@ -64,65 +66,80 @@ export function useTodos() {
       });
       return data.tasks
     };
-
+  
     const watchTodos = async () => {
       for await (const change of taskCollection.watch({ filter: {} })) {
-        const getTodoIndex = (todos) =>
-          todos.findIndex(
-            (t) => String(t._id) === String(change.documentKey._id)
-          );
         switch (change.operationType) {
           case "insert": {
-            setTodos((t) => [...t, change.fullDocument]);
+            setTodos(oldTodos => {
+              const idx = getTodoIndex(oldTodos, change.fullDocument) ?? oldTodos.length;
+              if(idx === oldTodos.length) {
+                return addValueAtIndex(oldTodos, idx, change.fullDocument)
+              } else {
+                return oldTodos
+              }
+            })
             break;
           }
           case "update":
           case "replace": {
-            setTodos((oldTodos) => {
-              const idx = getTodoIndex(oldTodos);
-              return [
-                ...oldTodos.slice(0, idx),
-                change.fullDocument,
-                ...oldTodos.slice(idx + 1),
-              ];
+            setTodos(oldTodos => {
+              const idx = getTodoIndex(oldTodos, change.fullDocument);
+              return updateValueAtIndex(oldTodos, idx, () => {
+                return change.fullDocument
+              })
             });
             break;
           }
           case "delete": {
-            setTodos((oldTodos) => {
-              const idx = getTodoIndex(oldTodos);
-              return [...oldTodos.slice(0, idx), ...oldTodos.slice(idx + 1)];
+            setTodos(oldTodos => {
+              const idx = getTodoIndex(oldTodos, { _id: change.documentKey._id });
+              if(idx >= 0) {
+                return removeValueAtIndex(oldTodos, idx)
+              } else {
+                return oldTodos
+              }
             });
             break;
           }
           default: {
             // change.operationType will always be one of the specified cases, so we should never hit this default
+            throw new Error(`Invalid change operation type: ${change.operationType}`)
           }
         }
       }
     };
-    fetchTodos().then((t) => {
-      setTodos(t);
+    fetchTodos().then((fetchedTodos) => {
+      setTodos(fetchedTodos);
       watchTodos();
       setLoading(false);
     });
   }, [taskCollection, graphql]);
-
+  
   const saveTodo = async (draftTodo) => {
-    draftTodo._partition = realmApp.currentUser.id;
-    await graphql.mutate({
-      mutation: gql`
-        mutation SaveTask($todo: TaskInsertInput!) {
-          insertOneTask(data: $todo) {
-            _id
-            _partition
-            isComplete
-            summary
-          }
+    if(draftTodo.summary) {
+      draftTodo._partition = realmApp.currentUser.id;
+      try {
+        await graphql.mutate({
+          mutation: gql`
+            mutation SaveTask($todo: TaskInsertInput!) {
+              insertOneTask(data: $todo) {
+                _id
+                _partition
+                isComplete
+                summary
+              }
+            }
+          `,
+          variables: { todo: draftTodo },
+        });
+      } catch (err) {
+        if (err.message.match(/^Duplicate key error/)) {
+          console.warn(`The following error means that we tried to insert a todo with the same _id as an existing todo. In this app we just catch the error and move on. In your app, you might want to debounce the save input or implement an additional loading state to avoid sending the request in the first place.`)
         }
-      `,
-      variables: { todo: draftTodo },
-    });
+        console.error(err)
+      }
+    }
   };
 
   const toggleTodo = async (todo) => {
@@ -140,7 +157,7 @@ export function useTodos() {
       variables: { taskId: todo._id },
     });
   };
-
+  
   const deleteTodo = async (todo) => {
     await graphql.mutate({
       mutation: gql`

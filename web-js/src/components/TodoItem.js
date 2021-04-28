@@ -15,6 +15,7 @@ export function TodoItem({ todo, todoActions }) {
       <ListItemIcon>
         <Checkbox
           edge="start"
+          color="primary"
           checked={todo.isComplete}
           onClick={() => {
             todoActions.toggleTodo(todo);

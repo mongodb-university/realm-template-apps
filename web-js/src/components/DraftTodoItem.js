@@ -33,10 +33,9 @@ export function DraftTodoItem({ todo, todoActions, draftTodoActions }) {
       <ListItemSecondaryAction>
         <Button
           variant="outlined"
-          color="secondary"
           size="small"
-          onClick={() => {
-            todoActions.saveTodo(todo)
+          onClick={async () => {
+            await todoActions.saveTodo(todo)
             draftTodoActions.deleteDraftTodo(todo)
           }}
         >

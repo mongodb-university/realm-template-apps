@@ -19,7 +19,7 @@ switch(API_TYPE) {
     break;
   }
   default: {
-    throw new Error(`Invalid REACT_APP_API_TYPE: "${API_TYPE}". Specifiy "graphql", "mql", or "local" instead.`)
+    throw new Error(`Invalid REACT_APP_API_TYPE: "${API_TYPE}". Specify "graphql", "mql", or "local" instead.`)
   }
 }
 

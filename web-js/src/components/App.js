@@ -1,6 +1,7 @@
 import { WelcomePage } from "./WelcomePage";
 import { TodoItemsPage } from "./TodoItemsPage";
 import { RealmAppProvider, useRealmApp } from "./RealmApp";
+import { ThemeProvider } from "./Theme";
 import { AppBar, Toolbar, Button, Typography } from "@material-ui/core";
 import "./App.css";
 
@@ -8,9 +9,11 @@ export const APP_ID = process.env.REACT_APP_REALM_APP_ID
 
 export default function AppWithRealm() {
   return (
-    <RealmAppProvider appId={APP_ID}>
-      <App />
-    </RealmAppProvider>
+    <ThemeProvider>
+      <RealmAppProvider appId={APP_ID}>
+        <App />
+      </RealmAppProvider>
+    </ThemeProvider>
   );
 }
 

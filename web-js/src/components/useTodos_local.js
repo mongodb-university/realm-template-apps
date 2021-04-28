@@ -1,6 +1,7 @@
 import { BSON } from "realm-web";
 import React from "react";
 import { useRealmApp } from "./RealmApp";
+import { addValueAtIndex, updateValueAtIndex, removeValueAtIndex } from './utils'
 
 const createExampleTodos = (userId = "60810749247a41a9809fba46") => [
   {
@@ -37,23 +38,27 @@ export function useTodos() {
     });
   }, [realmApp.currentUser.id]);
   
-  const saveTodo = async (todo) => {
-    setTodos((t) => [...t, todo]);
+  const getTodoIndex = (todos, todo) => todos.findIndex((t) => String(t._id) === String(todo._id));
+  const saveTodo = async (draftTodo) => {
+    if(draftTodo.summary) {
+      setTodos(oldTodos => {
+        const idx = oldTodos.length
+        return addValueAtIndex(oldTodos, idx, draftTodo)
+      })
+    }
   };
   const toggleTodo = async (todo) => {
     setTodos((oldTodos) => {
-      const idx = oldTodos.findIndex((t) => t._id === todo._id);
-      return [
-        ...oldTodos.slice(0, idx),
-        { ...oldTodos[idx], isComplete: !oldTodos[idx].isComplete },
-        ...oldTodos.slice(idx + 1),
-      ];
+      const idx = getTodoIndex(oldTodos, todo)
+      return updateValueAtIndex(oldTodos, idx, val => {
+        return { ...val, isComplete: val.isComplete }
+      })
     });
   };
   const deleteTodo = async (todo) => {
     setTodos((oldTodos) => {
-      const idx = oldTodos.findIndex((t) => t._id === todo._id);
-      return [...oldTodos.slice(0, idx), ...oldTodos.slice(idx + 1)];
+      const idx = getTodoIndex(oldTodos, todo)
+      return removeValueAtIndex(oldTodos, idx)
     });
   };
 
