@@ -1,3 +1,5 @@
+export const toggleBoolean = prev => !prev
+
 const isValidArrayIndex = (arr, idx) => {
   return !(idx < 0 || idx >= arr.length)
 }
@@ -10,6 +12,17 @@ export function addValueAtIndex(arr, idx, value) {
     ...arr.slice(0, idx),
     value,
     ...arr.slice(idx),
+  ];
+}
+
+export function replaceValueAtIndex(arr, idx, newValue) {
+  if(!isValidArrayIndex(arr, idx)) {
+    throw new Error(`Cannot replace value. Array index out of bounds.`)
+  }
+  return [
+    ...arr.slice(0, idx),
+    newValue,
+    ...arr.slice(idx + 1),
   ];
 }
 

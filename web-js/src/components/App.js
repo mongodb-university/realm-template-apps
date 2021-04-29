@@ -5,7 +5,7 @@ import { ThemeProvider } from "./Theme";
 import { AppBar, Toolbar, Button, Typography } from "@material-ui/core";
 import "./App.css";
 
-export const APP_ID = process.env.REACT_APP_REALM_APP_ID
+const APP_ID = process.env.REACT_APP_REALM_APP_ID
 
 export default function AppWithRealm() {
   return (

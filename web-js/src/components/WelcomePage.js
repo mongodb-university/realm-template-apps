@@ -13,8 +13,9 @@ import { useRealmApp } from "./RealmApp";
 import { MoreInfoTemplateAndDocs } from './MoreInfo'
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import { toggleBoolean } from "../utils";
 
-const toggleBoolean = input => !input
+
 
 export function WelcomePage() {
   const realmApp = useRealmApp();

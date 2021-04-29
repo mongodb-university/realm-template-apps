@@ -2,100 +2,105 @@ import React from "react";
 import { useRealmApp } from "../components/RealmApp";
 import {
   addValueAtIndex,
+  replaceValueAtIndex,
   updateValueAtIndex,
   removeValueAtIndex,
   getTodoIndex,
-} from "../components/utils";
+} from "../utils";
+import { useWatch } from "./useWatch";
+import { useCollection } from "./useCollection";
 
 export function useTodos() {
+  // Set up a list of todos in state
   const realmApp = useRealmApp();
   const [todos, setTodos] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+
+  // Get a client object for the todo task collection
+  const taskCollection = useCollection({
+    service: "mongodb-atlas",
+    db: "todo",
+    collection: "Task",
+  });
   
-  const taskCollection = React.useMemo(() => {
-    const mdb = realmApp.currentUser.mongoClient("mongodb-atlas");
-    return mdb.db("todo").collection("Task");
-  }, [realmApp.currentUser]);
-
+  // Fetch all todos on load and whenever our collection changes (e.g. if the current user changes)
   React.useEffect(() => {
-    const fetchTodos = async () => {
-      return await taskCollection.find({});
-    };
-
-    const watchTodos = async () => {
-      for await (const change of taskCollection.watch({ filter: {} })) {
-        const todo = change.fullDocument ?? change.documentKey;
-        switch (change.operationType) {
-          case "insert": {
-            setTodos((oldTodos) => {
-              const idx = getTodoIndex(oldTodos, todo) ?? oldTodos.length;
-              return addValueAtIndex(oldTodos, idx, todo);
-            });
-            break;
-          }
-          case "update":
-          case "replace": {
-            setTodos((oldTodos) => {
-              const idx = getTodoIndex(oldTodos, todo);
-              if (idx !== null) {
-                return updateValueAtIndex(oldTodos, idx, () => {
-                  return todo;
-                });
-              } else {
-                console.warn(
-                  `Received an UPDATE or REPLACE event for a todo that is not in state. Todo._id=${todo._id}`
-                );
-                return oldTodos;
-              }
-            });
-            break;
-          }
-          case "delete": {
-            setTodos((oldTodos) => {
-              const idx = getTodoIndex(oldTodos, todo);
-              console.log(oldTodos, todo, idx, idx !== null)
-              if (idx !== null) {
-                return removeValueAtIndex(oldTodos, idx);
-              } else {
-                console.warn(
-                  `Received a DELETE event for a todo that is not in state. Todo._id=${todo._id}`
-                );
-                return oldTodos;
-              }
-            });
-            break;
-          }
-          default: {
-            // change.operationType will always be one of the specified cases, so we should never hit this default
-            throw new Error(
-              `Invalid change operation type: ${change.operationType}`
-            );
-          }
-        }
-      }
-    };
-    fetchTodos().then((fetchedTodos) => {
+    taskCollection.find({}).then((fetchedTodos) => {
       setTodos(fetchedTodos);
-      watchTodos();
       setLoading(false);
     });
   }, [taskCollection]);
 
+  // Use a MongoDB change stream to reactively update state when operations succeed
+  useWatch(taskCollection, {
+    onInsert: (change) => {
+      setTodos((oldTodos) => {
+        if (loading) {
+          return oldTodos;
+        }
+        const idx =
+          getTodoIndex(oldTodos, change.fullDocument) ?? oldTodos.length;
+        if (idx === oldTodos.length) {
+          return addValueAtIndex(oldTodos, idx, change.fullDocument);
+        } else {
+          return oldTodos;
+        }
+      });
+    },
+    onUpdate: (change) => {
+      setTodos((oldTodos) => {
+        if (loading) {
+          return oldTodos;
+        }
+        const idx = getTodoIndex(oldTodos, change.fullDocument);
+        return updateValueAtIndex(oldTodos, idx, () => {
+          return change.fullDocument;
+        });
+      });
+    },
+    onReplace: (change) => {
+      setTodos((oldTodos) => {
+        if (loading) {
+          return oldTodos;
+        }
+        const idx = getTodoIndex(oldTodos, change.fullDocument);
+        return replaceValueAtIndex(oldTodos, idx, change.fullDocument);
+      });
+    },
+    onDelete: (change) => {
+      setTodos((oldTodos) => {
+        if (loading) {
+          return oldTodos;
+        }
+        const idx = getTodoIndex(oldTodos, { _id: change.documentKey._id });
+        if (idx >= 0) {
+          return removeValueAtIndex(oldTodos, idx);
+        } else {
+          return oldTodos;
+        }
+      });
+    },
+  });
+
+  // Given a draft todo, format it and then insert it
   const saveTodo = async (draftTodo) => {
-    console.log("saveTodo called")
+    console.log("saveTodo called");
     if (draftTodo.summary) {
       draftTodo._partition = realmApp.currentUser.id;
       try {
         await taskCollection.insertOne(draftTodo);
       } catch (err) {
         if (err.error.match(/^Duplicate key error/)) {
-          console.warn(`The following error means that we tried to insert a todo with the same _id as an existing todo. In this app we just catch the error and move on. In your app, you might want to debounce the save input or implement an additional loading state to avoid sending the request in the first place.`)
+          console.warn(
+            `The following error means that we tried to insert a todo with the same _id as an existing todo. In this app we just catch the error and move on. In your app, you might want to debounce the save input or implement an additional loading state to avoid sending the request in the first place.`
+          );
         }
-        console.error(err)
+        console.error(err);
       }
     }
   };
 
+  // Toggle whether or not a given todo is complete
   const toggleTodo = async (todo) => {
     await taskCollection.updateOne(
       { _id: todo._id },
@@ -103,6 +108,7 @@ export function useTodos() {
     );
   };
 
+  // Delete a given todo
   const deleteTodo = async (todo) => {
     await taskCollection.deleteOne({ _id: todo._id });
   };

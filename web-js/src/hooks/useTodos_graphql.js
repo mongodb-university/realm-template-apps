@@ -1,8 +1,15 @@
 import React from "react";
 import { ApolloClient, gql, HttpLink, InMemoryCache } from "@apollo/client";
-import { APP_ID } from "../components/App";
 import { useRealmApp } from "../components/RealmApp";
-import { addValueAtIndex, updateValueAtIndex, removeValueAtIndex, getTodoIndex } from '../components/utils'
+import {
+  addValueAtIndex,
+  replaceValueAtIndex,
+  updateValueAtIndex,
+  removeValueAtIndex,
+  getTodoIndex,
+} from "../utils";
+import { useWatch } from "./useWatch";
+import { useCollection } from "./useCollection";
 
 function useApolloClient() {
   const realmApp = useRealmApp();
@@ -11,14 +18,14 @@ function useApolloClient() {
   }
 
   const client = React.useMemo(() => {
-    const graphqlUri = `https://realm.mongodb.com/api/client/v2.0/app/${APP_ID}/graphql`;
+    const graphqlUri = `https://realm.mongodb.com/api/client/v2.0/app/${realmApp.id}/graphql`;
     // Local apps should use a local URI!
-    // const graphqlUri = `https://us-east-1.aws.stitch.mongodb.com/api/client/v2.0/app/${APP_ID}/graphql`
+    // const graphqlUri = `https://us-east-1.aws.stitch.mongodb.com/api/client/v2.0/app/${realmApp.id}/graphql`
     async function getValidAccessToken() {
       // An already logged in user's access token might be stale. To guarantee that the token is
       // valid, we refresh the user's custom data which also refreshes their access token.
       await realmApp.currentUser.refreshCustomData();
-      return realmApp.currentUser.accessToken
+      return realmApp.currentUser.accessToken;
     }
     return new ApolloClient({
       link: new HttpLink({
@@ -34,90 +41,95 @@ function useApolloClient() {
       }),
       cache: new InMemoryCache(),
     });
-  }, [realmApp.currentUser]);
+  }, [realmApp.currentUser, realmApp.id]);
 
   return client;
 }
 
 export function useTodos() {
+  // Get a graphql client and set up a list of todos in state
   const realmApp = useRealmApp();
   const graphql = useApolloClient();
   const [todos, setTodos] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   
-  const taskCollection = React.useMemo(() => {
-    const mdb = realmApp.currentUser.mongoClient("mongodb-atlas");
-    return mdb.db("todo").collection("Task");
-  }, [realmApp.currentUser]);
-  
+  // Fetch all todos on load and whenever our graphql client changes (i.e. either the current user OR App ID changes)
   React.useEffect(() => {
-    const fetchTodos = async () => {
-      const { data } = await graphql.query({
-        query: gql`
-          query FetchAllTasks {
-            tasks {
-              _id
-              _partition
-              isComplete
-              summary
-            }
-          }
-        `,
-      });
-      return data.tasks
-    };
-  
-    const watchTodos = async () => {
-      for await (const change of taskCollection.watch({ filter: {} })) {
-        switch (change.operationType) {
-          case "insert": {
-            setTodos(oldTodos => {
-              const idx = getTodoIndex(oldTodos, change.fullDocument) ?? oldTodos.length;
-              if(idx === oldTodos.length) {
-                return addValueAtIndex(oldTodos, idx, change.fullDocument)
-              } else {
-                return oldTodos
-              }
-            })
-            break;
-          }
-          case "update":
-          case "replace": {
-            setTodos(oldTodos => {
-              const idx = getTodoIndex(oldTodos, change.fullDocument);
-              return updateValueAtIndex(oldTodos, idx, () => {
-                return change.fullDocument
-              })
-            });
-            break;
-          }
-          case "delete": {
-            setTodos(oldTodos => {
-              const idx = getTodoIndex(oldTodos, { _id: change.documentKey._id });
-              if(idx >= 0) {
-                return removeValueAtIndex(oldTodos, idx)
-              } else {
-                return oldTodos
-              }
-            });
-            break;
-          }
-          default: {
-            // change.operationType will always be one of the specified cases, so we should never hit this default
-            throw new Error(`Invalid change operation type: ${change.operationType}`)
-          }
+    const query = gql`
+      query FetchAllTodos {
+        tasks {
+          _id
+          _partition
+          isComplete
+          summary
         }
       }
-    };
-    fetchTodos().then((fetchedTodos) => {
-      setTodos(fetchedTodos);
-      watchTodos();
+    `;
+    graphql.query({ query }).then(({ data }) => {
+      setTodos(data.tasks);
       setLoading(false);
     });
-  }, [taskCollection, graphql]);
+  }, [graphql]);
   
+  // Use a MongoDB change stream to reactively update state when operations succeed
+  const taskCollection = useCollection({
+    service: "mongodb-atlas",
+    db: "todo",
+    collection: "Task",
+  })
+  useWatch(taskCollection, {
+    onInsert: (change) => {
+      setTodos((oldTodos) => {
+        if(loading) {
+          return oldTodos
+        }
+        const idx =
+          getTodoIndex(oldTodos, change.fullDocument) ?? oldTodos.length;
+        if (idx === oldTodos.length) {
+          return addValueAtIndex(oldTodos, idx, change.fullDocument);
+        } else {
+          return oldTodos;
+        }
+      });
+    },
+    onUpdate: (change) => {
+      setTodos((oldTodos) => {
+        if(loading) {
+          return oldTodos
+        }
+        const idx = getTodoIndex(oldTodos, change.fullDocument);
+        return updateValueAtIndex(oldTodos, idx, () => {
+          return change.fullDocument;
+        });
+      });
+    },
+    onReplace: (change) => {
+      setTodos((oldTodos) => {
+        if(loading) {
+          return oldTodos
+        }
+        const idx = getTodoIndex(oldTodos, change.fullDocument);
+        return replaceValueAtIndex(oldTodos, idx, change.fullDocument);
+      });
+    },
+    onDelete: (change) => {
+      setTodos((oldTodos) => {
+        if(loading) {
+          return oldTodos
+        }
+        const idx = getTodoIndex(oldTodos, { _id: change.documentKey._id });
+        if (idx >= 0) {
+          return removeValueAtIndex(oldTodos, idx);
+        } else {
+          return oldTodos;
+        }
+      });
+    },
+  });
+  
+  // Given a draft todo, format it and then insert it with a mutation
   const saveTodo = async (draftTodo) => {
-    if(draftTodo.summary) {
+    if (draftTodo.summary) {
       draftTodo._partition = realmApp.currentUser.id;
       try {
         await graphql.mutate({
@@ -135,13 +147,16 @@ export function useTodos() {
         });
       } catch (err) {
         if (err.message.match(/^Duplicate key error/)) {
-          console.warn(`The following error means that we tried to insert a todo with the same _id as an existing todo. In this app we just catch the error and move on. In your app, you might want to debounce the save input or implement an additional loading state to avoid sending the request in the first place.`)
+          console.warn(
+            `The following error means that we tried to insert a todo with the same _id as an existing todo. In this app we just catch the error and move on. In your app, you might want to debounce the save input or implement an additional loading state to avoid sending the request in the first place.`
+          );
         }
-        console.error(err)
+        console.error(err);
       }
     }
   };
-
+  
+  // Toggle whether or not a given todo is complete
   const toggleTodo = async (todo) => {
     await graphql.mutate({
       mutation: gql`
@@ -158,6 +173,7 @@ export function useTodos() {
     });
   };
   
+  // Delete a given todo
   const deleteTodo = async (todo) => {
     await graphql.mutate({
       mutation: gql`
@@ -170,7 +186,7 @@ export function useTodos() {
       variables: { taskId: todo._id },
     });
   };
-
+  
   return {
     loading,
     todos,

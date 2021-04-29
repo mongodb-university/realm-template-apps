@@ -1,5 +1,7 @@
 import React from "react";
 
+// By default we won't do anything for a change event unless the caller passed in a change handler
+// for the change event type.
 const noop = () => {};
 const defaultChangeHandlers = {
   onInsert: noop,
@@ -8,9 +10,21 @@ const defaultChangeHandlers = {
   onDelete: noop,
 };
 
+/**
+ * Opens/manages a change stream and calls provided change handlers for a given MongoDB collection.
+ * @param {Realm.Services.MongoDB.MongoDBCollection<T>} collection - A MongoDB collection client object.
+ * @param {Object} changeHandlers - A set of callback functions to call in response to changes.
+ * @param {(change: Realm.Services.MongoDB.InsertEvent<T>) => void} changeHandlers.onInsert
+ * @param {(change: Realm.Services.MongoDB.UpdateEvent<T>) => void} changeHandlers.onUpdate
+ * @param {(change: Realm.Services.MongoDB.ReplaceEvent<T>) => void} changeHandlers.onReplace
+ * @param {(change: Realm.Services.MongoDB.DeleteEvent<T>) => void} changeHandlers.onDelete
+ */
 export function useWatch(collection, changeHandlers) {
   const filter = React.useMemo(() => ({}), []);
   const handlers = { ...defaultChangeHandlers, ...changeHandlers };
+  // We copy the handlers into a ref so that we can always call the latest version of each handler
+  // without causing a re-render when the callbacks change. This can prevent infinite render loops
+  // that would otherwise happen if the caller doesn't memoize their change handler functions.
   const handlersRef = React.useRef(handlers);
   React.useEffect(() => {
     handlersRef.current = {
@@ -25,7 +39,7 @@ export function useWatch(collection, changeHandlers) {
     handlers.onReplace,
     handlers.onDelete,
   ]);
-
+  // Set up a MongoDB change stream that calls the provided change handler callbacks.
   React.useEffect(() => {
     const watchTodos = async () => {
       for await (const change of collection.watch({ filter })) {
