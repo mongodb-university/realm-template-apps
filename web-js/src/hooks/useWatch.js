@@ -14,10 +14,10 @@ const defaultChangeHandlers = {
  * Opens/manages a change stream and calls provided change handlers for a given MongoDB collection.
  * @param {Realm.Services.MongoDB.MongoDBCollection<T>} collection - A MongoDB collection client object.
  * @param {Object} changeHandlers - A set of callback functions to call in response to changes.
- * @param {(change: Realm.Services.MongoDB.InsertEvent<T>) => void} changeHandlers.onInsert
- * @param {(change: Realm.Services.MongoDB.UpdateEvent<T>) => void} changeHandlers.onUpdate
- * @param {(change: Realm.Services.MongoDB.ReplaceEvent<T>) => void} changeHandlers.onReplace
- * @param {(change: Realm.Services.MongoDB.DeleteEvent<T>) => void} changeHandlers.onDelete
+ * @param {(change: Realm.Services.MongoDB.InsertEvent<T>) => void} [changeHandlers.onInsert] - A change handler callback that receives an Insert event.
+ * @param {(change: Realm.Services.MongoDB.UpdateEvent<T>) => void} [changeHandlers.onUpdate] - A change handler callback that receives an Update event.
+ * @param {(change: Realm.Services.MongoDB.ReplaceEvent<T>) => void} [changeHandlers.onReplace] - A change handler callback that receives a Replace event.
+ * @param {(change: Realm.Services.MongoDB.DeleteEvent<T>) => void} [changeHandlers.onDelete] - A change handler callback that receives a Delete event.
  */
 export function useWatch(collection, changeHandlers) {
   const filter = React.useMemo(() => ({}), []);
