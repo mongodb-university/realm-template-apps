@@ -9,9 +9,9 @@ import {
 import AddIcon from "@material-ui/icons/Add";
 import { TodoItem } from './TodoItem'
 import { DraftTodoItem } from './DraftTodoItem'
-import { useTodos } from "./useTodos";
-import { useDraftTodos } from "./useDraftTodos";
-import { useShowLoader } from "./util-hooks";
+import { useTodos } from "../hooks/useTodos";
+import { useDraftTodos } from "../hooks/useDraftTodos";
+import { useShowLoader } from "../hooks/util-hooks";
 import { MoreInfoTemplateAndDocs, MoreInfoGraphiQL } from './MoreInfo'
 
 const API_TYPE = process.env.REACT_APP_API_TYPE;

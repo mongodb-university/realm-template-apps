@@ -1,11 +1,11 @@
 import React from "react";
-import { useRealmApp } from "./RealmApp";
+import { useRealmApp } from "../components/RealmApp";
 import {
   addValueAtIndex,
   updateValueAtIndex,
   removeValueAtIndex,
   getTodoIndex,
-} from "./utils";
+} from "../components/utils";
 
 export function useTodos() {
   const realmApp = useRealmApp();

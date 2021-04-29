@@ -1,8 +1,8 @@
 import React from "react";
 import { ApolloClient, gql, HttpLink, InMemoryCache } from "@apollo/client";
-import { APP_ID } from "./App";
-import { useRealmApp } from "./RealmApp";
-import { addValueAtIndex, updateValueAtIndex, removeValueAtIndex, getTodoIndex } from './utils'
+import { APP_ID } from "../components/App";
+import { useRealmApp } from "../components/RealmApp";
+import { addValueAtIndex, updateValueAtIndex, removeValueAtIndex, getTodoIndex } from '../components/utils'
 
 function useApolloClient() {
   const realmApp = useRealmApp();

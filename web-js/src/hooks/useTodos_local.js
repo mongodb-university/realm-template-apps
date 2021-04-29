@@ -1,7 +1,7 @@
-import { BSON } from "realm-web";
 import React from "react";
-import { useRealmApp } from "./RealmApp";
-import { addValueAtIndex, updateValueAtIndex, removeValueAtIndex } from './utils'
+import { BSON } from "realm-web"
+import { useRealmApp } from "../components/RealmApp";
+import { addValueAtIndex, updateValueAtIndex, removeValueAtIndex } from '../components/utils'
 
 const createExampleTodos = (userId = "60810749247a41a9809fba46") => [
   {

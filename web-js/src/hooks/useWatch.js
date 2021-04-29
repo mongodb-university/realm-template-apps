@@ -1,14 +1,5 @@
 import React from "react";
 
-
-// type Handler = (v: number) => void
-// interface Handlers {
-//   onInsert: Handler;
-//   onUpdate: Handler;
-//   onReplace: Handler;
-//   onDelete: Handler;
-// }
-
 const noop = () => {};
 const defaultChangeHandlers = {
   onInsert: noop,
@@ -16,6 +7,7 @@ const defaultChangeHandlers = {
   onReplace: noop,
   onDelete: noop,
 };
+
 export function useWatch(collection, changeHandlers) {
   const filter = React.useMemo(() => ({}), []);
   const handlers = { ...defaultChangeHandlers, ...changeHandlers };

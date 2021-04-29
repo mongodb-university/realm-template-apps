@@ -11,7 +11,6 @@ import {
 } from "@material-ui/core";
 import { useRealmApp } from "./RealmApp";
 import { MoreInfoTemplateAndDocs } from './MoreInfo'
-
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
