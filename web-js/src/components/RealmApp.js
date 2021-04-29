@@ -11,7 +11,7 @@ export function RealmAppProvider({ appId, children }) {
   }, [appId]);
   // Store the app's current user in state and wrap the built-in auth functions to modify this state
   const [currentUser, setCurrentUser] = React.useState(realmApp.currentUser);
-
+  // Wrap the base logIn function to save the logged in user in state
   const logIn = React.useCallback(
     async (credentials) => {
       await realmApp.logIn(credentials);
@@ -19,21 +19,28 @@ export function RealmAppProvider({ appId, children }) {
     },
     [realmApp]
   );
-
+  // Wrap the current user's logOut function to remove the logged out user from state
   const logOut = React.useCallback(async () => {
     await realmApp.currentUser?.logOut();
     setCurrentUser(realmApp.currentUser);
   }, [realmApp.currentUser]);
-
+  
+  // Override the App's currentUser & logIn properties + include the app-level logout function
+  const realmAppContext = React.useMemo(() => {
+    return { ...realmApp, currentUser, logIn, logOut }
+  }, [realmApp, currentUser, logIn, logOut])
+  
   return (
-    <RealmAppContext.Provider
-      value={{ ...realmApp, currentUser, logIn, logOut }}
-    >
+    <RealmAppContext.Provider value={realmAppContext}>
       {children}
     </RealmAppContext.Provider>
   );
 }
 
 export function useRealmApp() {
-  return React.useContext(RealmAppContext);
+  const realmApp = React.useContext(RealmAppContext);
+  if(!realmApp) {
+    throw new Error(`No Realm App found. Make sure to call useRealmApp() inside of a <RealmAppProvider />.`)
+  }
+  return realmApp
 }

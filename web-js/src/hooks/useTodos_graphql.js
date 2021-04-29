@@ -148,7 +148,7 @@ export function useTodos() {
       } catch (err) {
         if (err.message.match(/^Duplicate key error/)) {
           console.warn(
-            `The following error means that we tried to insert a todo with the same _id as an existing todo. In this app we just catch the error and move on. In your app, you might want to debounce the save input or implement an additional loading state to avoid sending the request in the first place.`
+            `The following error means that we tried to insert a todo multiple times (i.e. an existing todo has the same _id). In this app we just catch the error and move on. In your app, you might want to debounce the save input or implement an additional loading state to avoid sending the request in the first place.`
           );
         }
         console.error(err);
