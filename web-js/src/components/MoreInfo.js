@@ -1,5 +1,7 @@
+import path from "path";
 import { ApiTypeName } from './App'
 import { Container, Link } from "@material-ui/core";
+import { url as realmAppUrl } from "../realm.json"
 
 export function MoreInfo({ children }) {
   return (
@@ -17,10 +19,11 @@ export function MoreInfoTemplateAndDocs() {
   )
 }
 
+const graphiqlUrl = path.join(realmAppUrl, "/graphql/explore")
 export function MoreInfoGraphiQL() {
   return (
     <MoreInfo>
-      <span>Try some queries in the <Link target="_blank" href="https://docs.mongodb.com/realm">GraphiQL console</Link></span>
+      <span>Try some queries in the <Link target="_blank" href={graphiqlUrl}>GraphiQL Explorer</Link></span>
     </MoreInfo>
   )
 }

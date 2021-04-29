@@ -38,11 +38,12 @@ REACT_APP_API_TYPE="graphql"
 
 ### 3. Specify Your Realm App ID
 
-This app looks in the `appId` field of `realm.json` to find your Realm App ID.
+Specify your template App ID and URL in the `appId` and `url` fields of `realm.json`:
 
 ```json
 {
-  "appId": "<Your Template App ID>"
+  "appId": "<Your Template App ID>",
+  "url": "<App Base URL>"
 }
 ```
 
