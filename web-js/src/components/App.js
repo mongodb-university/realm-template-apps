@@ -4,13 +4,12 @@ import { RealmAppProvider, useRealmApp } from "./RealmApp";
 import { ThemeProvider } from "./Theme";
 import { AppBar, Toolbar, Button, Typography } from "@material-ui/core";
 import "./App.css";
-
-const APP_ID = process.env.REACT_APP_REALM_APP_ID
+import { appId } from "../realm.json"
 
 export default function AppWithRealm() {
   return (
     <ThemeProvider>
-      <RealmAppProvider appId={APP_ID}>
+      <RealmAppProvider appId={appId}>
         <App />
       </RealmAppProvider>
     </ThemeProvider>
