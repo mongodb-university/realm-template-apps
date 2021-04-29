@@ -21,23 +21,32 @@ cd realm-template-apps/web-js
 npm install
 ```
 
-### 2. Define `.env` Values
+### 2. Define the API Type
 
-Open the `.env` file and define the following values:
+This app is built to use a pluggable backend API that conforms to the useTodo() hook interface. You
+can either use a pure MQL implementation or use your app's GraphQL API.
 
-- `REACT_APP_API_TYPE`: `"graphql"` or `"mql"`
-- `REACT_APP_REALM_APP_ID`: Your template [App ID](https://docs.mongodb.com/realm/get-started/find-your-project-or-app-id/)
+Open the `.env` file and specify either `"graphql"` or `"mql"` for `REACT_APP_API_TYPE`:
 
 ```shell
 REACT_APP_API_TYPE="graphql"
 # REACT_APP_API_TYPE="mql"
-REACT_APP_REALM_APP_ID="todo-sync-tmikv"
 ```
 
 > 💡 **Restart to Change Environment Values**
 > The app only sources `.env` values once. If you change a value while the app is running, the app continues to use the value that was defined when it started.
 
-### 3. Run the App
+### 3. Specify Your Realm App ID
+
+This app looks in the `appId` field of `realm.json` to find your Realm App ID.
+
+```json
+{
+  "appId": "<Your Template App ID>"
+}
+```
+
+### 4. Run the App
 
 ```
 npm run start
