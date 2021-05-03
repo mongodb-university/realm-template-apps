@@ -1,6 +1,6 @@
 import { green, purple, orange, red } from "@material-ui/core/colors";
 
-export default {
+export const colors = {
   green: {
     ...green,
     500: "#09804C",

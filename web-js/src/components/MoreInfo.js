@@ -20,7 +20,7 @@ function MoreInfoItem({ children }) {
   )
 }
 
-function MoreInfoTemplateAndDocs() {
+export function MoreInfoTemplateAndDocs() {
   return (
     <MoreInfoItem>
       <span>Built with the MongoDB Realm {ApiTypeName} Template</span> | <Link target="_blank" href="https://docs.mongodb.com/realm">Docs</Link>

@@ -1,4 +1,6 @@
 import React from "react"
+import { Typography } from "@material-ui/core";
+
 // :state-start: development
 const API_TYPE = process.env.REACT_APP_API_TYPE;
 const TitleCaseNames = {

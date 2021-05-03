@@ -2,7 +2,8 @@ import {
   ThemeProvider as MuiThemeProvider,
   createMuiTheme,
 } from "@material-ui/core";
-import Colors from "../colors";
+import { colors } from "../colors";
+
 // :state-start: development
 const API_TYPE = process.env.REACT_APP_API_TYPE;
 let themeConfig;
@@ -10,8 +11,8 @@ switch (API_TYPE) {
   case "mql": {
     themeConfig = {
       palette: {
-        primary: Colors.green,
-        secondary: Colors.green,
+        primary: colors.green,
+        secondary: colors.green,
       },
     };
     break;
@@ -19,8 +20,8 @@ switch (API_TYPE) {
   case "graphql": {
     themeConfig = {
       palette: {
-        primary: Colors.purple,
-        secondary: Colors.purple,
+        primary: colors.purple,
+        secondary: colors.purple,
       },
     };
     break;
@@ -29,8 +30,8 @@ switch (API_TYPE) {
   case "local": {
     themeConfig = {
       palette: {
-        primary: Colors.orange,
-        secondary: Colors.red,
+        primary: colors.orange,
+        secondary: colors.red,
       },
     };
     break;
@@ -46,16 +47,16 @@ switch (API_TYPE) {
 // :state-uncomment-start: prod-mql
 // const themeConfig = {
 //   palette: {
-//     primary: Colors.green,
-//     secondary: Colors.green,
+//     primary: colors.green,
+//     secondary: colors.green,
 //   },
 // }
 // :state-uncomment-end:
 // :state-uncomment-start: prod-graphql
 // const themeConfig = {
 //   palette: {
-//     primary: Colors.purple,
-//     secondary: Colors.purple,
+//     primary: colors.purple,
+//     secondary: colors.purple,
 //   },
 // }
 // :state-uncomment-end:
