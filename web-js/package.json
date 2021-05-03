@@ -22,8 +22,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "generate:prod-mql": "npx bluehawk copy . --destination=../web-mql --state=prod-mql --ignore=\"useLiveQuery.ts\"",
-    "generate:prod-graphql": "npx bluehawk copy . --destination=../web-graphql --state=prod-graphql --ignore=\"useLiveQuery.ts\""
+    "generate:prod-mql": "npx bluehawk copy . --destination=../web-mql --state=prod-mql",
+    "generate:prod-graphql": "npx bluehawk copy . --destination=../web-graphql --state=prod-graphql",
+    "generate:prod": "npm run generate:prod-mql && npm run generate:prod-graphql"
   },
   "eslintConfig": {
     "extends": [
