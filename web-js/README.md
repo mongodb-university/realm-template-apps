@@ -9,7 +9,33 @@ The client allows you to connect over Realm's [GraphQL API](https://docs.mongodb
 > ⚛️ **Create React App**
 > This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## How To Build & Run the App
+## Generate Artifact Projects
+
+This project is used as a single source for multiple generated apps. We use
+[Bluehawk](https://github.com/mongodb-university/Bluehawk/) to generate the apps based on special
+comments in the code.
+
+To generate all of the artifact projects, run the following:
+
+```shell
+npm run generate:prod
+```
+
+You can also generate a specific artifact project:
+
+```shell
+npm run generate:prod-graphql
+```
+
+```shell
+npm run generate:prod-mql
+```
+
+
+> 🧰 **Tip: Install Dependencies to Run Artifact Projects**
+> Bluehawk does not include `node_modules` when you generate an artifact project. If you want to run the generated code, you'll need to run `npm install` first.
+
+## Build & Run the App in Development
 
 ### 1. Download & Install Dependencies
 
@@ -23,8 +49,7 @@ npm install
 
 ### 2. Define the API Type
 
-This app is built to use a pluggable backend API that conforms to the useTodo() hook interface. You
-can either use a pure MQL implementation or use your app's GraphQL API.
+This app is built to use a pluggable backend API that conforms to the useTodo() hook interface. You can either use a pure MQL implementation or use your app's GraphQL API. *Note that the artifact projects don't use a `.env` file - it's only for development!*
 
 Open the `.env` file and specify either `"graphql"` or `"mql"` for `REACT_APP_API_TYPE`:
 
