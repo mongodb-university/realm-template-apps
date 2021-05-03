@@ -1,20 +1,19 @@
+// :state-start: development
+import { ApiTypeName } from '../components/AppName'
 import { useTodos as useGraphqlTodos } from "./useTodos_graphql"
 import { useTodos as useMqlTodos } from "./useTodos_mql"
 import { useTodos as useLocalTodos } from "./useTodos_local"
-
-const API_TYPE = process.env.REACT_APP_API_TYPE
-
 let useTodos;
-switch(API_TYPE) {
-  case "graphql": {
+switch(ApiTypeName) {
+  case "GraphQL": {
     useTodos = useGraphqlTodos
     break;
   }
-  case "mql": {
+  case "MQL": {
     useTodos = useMqlTodos
     break;
   }
-  case "local": {
+  case "Local": {
     useTodos = useLocalTodos
     break;
   }
@@ -22,5 +21,11 @@ switch(API_TYPE) {
     throw new Error(`Invalid REACT_APP_API_TYPE: "${API_TYPE}". Specify "graphql", "mql", or "local" instead.`)
   }
 }
-
+// :state-end:
+// :state-uncomment-start: prod-mql
+import { useTodos } from "./useTodos_mql"
+// :state-uncomment-end:
+// :state-uncomment-start: prod-graphql
+import { useTodos } from "./useTodos_graphql"
+// :state-uncomment-end:
 export { useTodos };

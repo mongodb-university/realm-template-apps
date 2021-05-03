@@ -2,29 +2,16 @@ import {
   ThemeProvider as MuiThemeProvider,
   createMuiTheme,
 } from "@material-ui/core";
-import { green, purple, orange, red } from "@material-ui/core/colors";
-
+import Colors from "../colors";
+// :state-start: development
 const API_TYPE = process.env.REACT_APP_API_TYPE;
-
-const customGreen = {
-  ...green,
-  500: "#09804C",
-  A400: "#B9EACD",
-}
-
-const customPurple = {
-  ...purple,
-  500: "#6200EE",
-  A400: "#9795F9",
-}
-
 let themeConfig;
 switch (API_TYPE) {
   case "mql": {
     themeConfig = {
       palette: {
-        primary: customGreen,
-        secondary: customGreen,
+        primary: Colors.green,
+        secondary: Colors.green,
       },
     };
     break;
@@ -32,27 +19,47 @@ switch (API_TYPE) {
   case "graphql": {
     themeConfig = {
       palette: {
-        primary: customPurple,
-        secondary: customPurple,
+        primary: Colors.purple,
+        secondary: Colors.purple,
       },
     };
     break;
   }
+  // :state-start: development
   case "local": {
     themeConfig = {
       palette: {
-        primary: orange,
-        secondary: red,
+        primary: Colors.orange,
+        secondary: Colors.red,
       },
     };
     break;
   }
+  // :state-end:
   default: {
     throw new Error(
       `Invalid REACT_APP_API_TYPE: "${API_TYPE}". Specify "graphql", "mql", or "local" instead.`
     );
   }
 }
+// :state-end:
+// :state-uncomment-start: prod-mql
+// const themeConfig = {
+//   palette: {
+//     primary: Colors.green,
+//     secondary: Colors.green,
+//   },
+// }
+// :state-uncomment-end:
+// :state-uncomment-start: prod-graphql
+// const themeConfig = {
+//   palette: {
+//     primary: Colors.purple,
+//     secondary: Colors.purple,
+//   },
+// }
+// :state-uncomment-end:
+
 const theme = createMuiTheme(themeConfig);
 
 export function ThemeProvider({ children }) {

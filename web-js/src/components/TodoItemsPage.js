@@ -12,9 +12,7 @@ import { DraftTodoItem } from './DraftTodoItem'
 import { useTodos } from "../hooks/useTodos";
 import { useDraftTodos } from "../hooks/useDraftTodos";
 import { useShowLoader } from "../hooks/util-hooks";
-import { MoreInfoTemplateAndDocs, MoreInfoGraphiQL } from './MoreInfo'
-
-const API_TYPE = process.env.REACT_APP_API_TYPE;
+import { MoreInfo } from './MoreInfo'
 
 export function TodoItemsPage() {
   const { loading, todos, ...todoActions } = useTodos();
@@ -56,8 +54,7 @@ export function TodoItemsPage() {
           </List>
         </div>
       )}
-      {API_TYPE === "graphql" ? <MoreInfoGraphiQL /> : null}
-      <MoreInfoTemplateAndDocs />
+      <MoreInfo />
     </Container>
   );
 }
