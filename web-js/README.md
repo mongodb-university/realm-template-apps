@@ -35,7 +35,7 @@ npm run generate:prod-mql
 > 🧰 **Tip: Install Dependencies to Run Artifact Projects**
 > Bluehawk does not include `node_modules` when you generate an artifact project. If you want to run the generated code, you'll need to run `npm install` first.
 
-## Build & Run the App in Development Mode
+## Build & Run the Development App Locally
 
 ### 1. Download & Install Dependencies
 
