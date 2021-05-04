@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import MuiAlert from "@material-ui/lab/Alert";
 
 function Alert(props) {
@@ -32,7 +32,7 @@ export function useErrorAlert({ error, clearError, hideAfterMs }) {
         };
       }
     } else {
-      setShowErrorAlert(false)
+      setShowErrorAlert(false);
     }
   }, [error, clearErrorAlert, hideAfterMs]);
 

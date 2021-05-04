@@ -4,7 +4,7 @@ import { TodoItemsPage } from "./TodoItemsPage";
 import { RealmAppProvider, useRealmApp } from "./RealmApp";
 import { ThemeProvider } from "./Theme";
 import { AppName } from "./AppName";
-import { appId } from "../realm.json"
+import { appId } from "../realm.json";
 import "./App.css";
 
 export default function AppWithRealm() {

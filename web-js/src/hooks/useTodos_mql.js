@@ -22,7 +22,7 @@ export function useTodos() {
     db: "todo",
     collection: "Task",
   });
-  
+
   // Fetch all todos on load and whenever our collection changes (e.g. if the current user changes)
   React.useEffect(() => {
     taskCollection.find({}).then((fetchedTodos) => {

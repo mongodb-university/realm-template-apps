@@ -24,10 +24,13 @@ export function TodoItem({ todo, todoActions }) {
       </ListItemIcon>
       <ListItemText>{todo.summary}</ListItemText>
       <ListItemSecondaryAction>
-        <IconButton edge="end" size="small" 
+        <IconButton
+          edge="end"
+          size="small"
           onClick={() => {
-            todoActions.deleteTodo(todo)
-          }}>
+            todoActions.deleteTodo(todo);
+          }}
+        >
           <ClearIcon />
         </IconButton>
       </ListItemSecondaryAction>

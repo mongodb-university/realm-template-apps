@@ -35,8 +35,8 @@ export function DraftTodoItem({ todo, todoActions, draftTodoActions }) {
           variant="outlined"
           size="small"
           onClick={async () => {
-            await todoActions.saveTodo(todo)
-            draftTodoActions.deleteDraftTodo(todo)
+            await todoActions.saveTodo(todo);
+            draftTodoActions.deleteDraftTodo(todo);
           }}
         >
           Save
@@ -45,7 +45,7 @@ export function DraftTodoItem({ todo, todoActions, draftTodoActions }) {
           edge="end"
           size="small"
           onClick={() => {
-            draftTodoActions.deleteDraftTodo(todo)
+            draftTodoActions.deleteDraftTodo(todo);
           }}
         >
           <ClearIcon />

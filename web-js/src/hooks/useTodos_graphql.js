@@ -52,7 +52,7 @@ export function useTodos() {
   const graphql = useApolloClient();
   const [todos, setTodos] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
-  
+
   // Fetch all todos on load and whenever our graphql client changes (i.e. either the current user OR App ID changes)
   React.useEffect(() => {
     const query = gql`
@@ -70,18 +70,18 @@ export function useTodos() {
       setLoading(false);
     });
   }, [graphql]);
-  
+
   // Use a MongoDB change stream to reactively update state when operations succeed
   const taskCollection = useCollection({
     service: "mongodb-atlas",
     db: "todo",
     collection: "Task",
-  })
+  });
   useWatch(taskCollection, {
     onInsert: (change) => {
       setTodos((oldTodos) => {
-        if(loading) {
-          return oldTodos
+        if (loading) {
+          return oldTodos;
         }
         const idx =
           getTodoIndex(oldTodos, change.fullDocument) ?? oldTodos.length;
@@ -94,8 +94,8 @@ export function useTodos() {
     },
     onUpdate: (change) => {
       setTodos((oldTodos) => {
-        if(loading) {
-          return oldTodos
+        if (loading) {
+          return oldTodos;
         }
         const idx = getTodoIndex(oldTodos, change.fullDocument);
         return updateValueAtIndex(oldTodos, idx, () => {
@@ -105,8 +105,8 @@ export function useTodos() {
     },
     onReplace: (change) => {
       setTodos((oldTodos) => {
-        if(loading) {
-          return oldTodos
+        if (loading) {
+          return oldTodos;
         }
         const idx = getTodoIndex(oldTodos, change.fullDocument);
         return replaceValueAtIndex(oldTodos, idx, change.fullDocument);
@@ -114,8 +114,8 @@ export function useTodos() {
     },
     onDelete: (change) => {
       setTodos((oldTodos) => {
-        if(loading) {
-          return oldTodos
+        if (loading) {
+          return oldTodos;
         }
         const idx = getTodoIndex(oldTodos, { _id: change.documentKey._id });
         if (idx >= 0) {
@@ -126,7 +126,7 @@ export function useTodos() {
       });
     },
   });
-  
+
   // Given a draft todo, format it and then insert it with a mutation
   const saveTodo = async (draftTodo) => {
     if (draftTodo.summary) {
@@ -155,7 +155,7 @@ export function useTodos() {
       }
     }
   };
-  
+
   // Toggle whether or not a given todo is complete
   const toggleTodo = async (todo) => {
     await graphql.mutate({
@@ -172,7 +172,7 @@ export function useTodos() {
       variables: { taskId: todo._id },
     });
   };
-  
+
   // Delete a given todo
   const deleteTodo = async (todo) => {
     await graphql.mutate({
@@ -186,7 +186,7 @@ export function useTodos() {
       variables: { taskId: todo._id },
     });
   };
-  
+
   return {
     loading,
     todos,

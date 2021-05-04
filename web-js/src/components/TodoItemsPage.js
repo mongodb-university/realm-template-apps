@@ -8,11 +8,11 @@ import {
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import { useTodos } from "../hooks/useTodos";
-import { TodoItem } from './TodoItem'
+import { TodoItem } from "./TodoItem";
 import { useDraftTodos } from "../hooks/useDraftTodos";
-import { DraftTodoItem } from './DraftTodoItem'
+import { DraftTodoItem } from "./DraftTodoItem";
 import { useShowLoader } from "../hooks/util-hooks";
-import { MoreInfo } from './MoreInfo'
+import { MoreInfo } from "./MoreInfo";
 
 export function TodoItemsPage() {
   const { loading, todos, ...todoActions } = useTodos();
@@ -20,7 +20,11 @@ export function TodoItemsPage() {
   const showLoader = useShowLoader(loading, 200);
   return (
     <Container className="main-container" maxWidth="sm">
-      {loading ? (showLoader ? <LinearProgress /> : null) : (
+      {loading ? (
+        showLoader ? (
+          <LinearProgress />
+        ) : null
+      ) : (
         <div className="todo-items-container">
           <Typography component="p" variant="h5">
             {`You have ${todos.length} To-Do Item${

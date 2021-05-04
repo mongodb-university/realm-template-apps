@@ -13,4 +13,4 @@ export const colors = {
   },
   orange,
   red,
-}
+};

@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import * as Realm from "realm-web";
 
 export function useDraftTodos() {

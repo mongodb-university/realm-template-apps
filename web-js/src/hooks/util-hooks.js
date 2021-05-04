@@ -2,22 +2,24 @@ import React from "react";
 
 export function useTimeout(fn, ms) {
   React.useEffect(() => {
-    const timeout = setTimeout(() => { fn() }, ms)
-    return () => clearTimeout(timeout)
-  }, [fn, ms])
+    const timeout = setTimeout(() => {
+      fn();
+    }, ms);
+    return () => clearTimeout(timeout);
+  }, [fn, ms]);
 }
 
 export function useShowLoader(loading, delayMs) {
   const [showLoader, setShowLoader] = React.useState(false);
   useTimeout(() => {
-    if(loading) {
-      setShowLoader(true)
+    if (loading) {
+      setShowLoader(true);
     }
-  }, [delayMs])
+  }, [delayMs]);
   React.useEffect(() => {
-    if(!loading) {
-      setShowLoader(false)
+    if (!loading) {
+      setShowLoader(false);
     }
-  }, [loading])
-  return showLoader
+  }, [loading]);
+  return showLoader;
 }

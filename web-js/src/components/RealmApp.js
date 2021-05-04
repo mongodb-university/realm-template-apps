@@ -24,12 +24,12 @@ export function RealmAppProvider({ appId, children }) {
     await realmApp.currentUser?.logOut();
     setCurrentUser(realmApp.currentUser);
   }, [realmApp.currentUser]);
-  
+
   // Override the App's currentUser & logIn properties + include the app-level logout function
   const realmAppContext = React.useMemo(() => {
-    return { ...realmApp, currentUser, logIn, logOut }
-  }, [realmApp, currentUser, logIn, logOut])
-  
+    return { ...realmApp, currentUser, logIn, logOut };
+  }, [realmApp, currentUser, logIn, logOut]);
+
   return (
     <RealmAppContext.Provider value={realmAppContext}>
       {children}
@@ -39,8 +39,10 @@ export function RealmAppProvider({ appId, children }) {
 
 export function useRealmApp() {
   const realmApp = React.useContext(RealmAppContext);
-  if(!realmApp) {
-    throw new Error(`No Realm App found. Make sure to call useRealmApp() inside of a <RealmAppProvider />.`)
+  if (!realmApp) {
+    throw new Error(
+      `No Realm App found. Make sure to call useRealmApp() inside of a <RealmAppProvider />.`
+    );
   }
-  return realmApp
+  return realmApp;
 }
