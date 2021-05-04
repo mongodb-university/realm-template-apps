@@ -61,11 +61,8 @@ export function WelcomePage() {
           className="auth-form"
           onSubmit={(e) => {
             e.preventDefault();
-            function getFormValues(htmlFormElement) {
-              const formData = new FormData(htmlFormElement);
-              return Object.fromEntries(formData.entries());
-            }
-            const { email, password } = getFormValues(e.target);
+            const formData = new FormData(e.target);
+            const { email, password } = Object.fromEntries(formData.entries());
             onFormSubmit({ email, password });
           }}
         >
