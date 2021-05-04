@@ -7,10 +7,10 @@ import {
   LinearProgress,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import { TodoItem } from './TodoItem'
-import { DraftTodoItem } from './DraftTodoItem'
 import { useTodos } from "../hooks/useTodos";
+import { TodoItem } from './TodoItem'
 import { useDraftTodos } from "../hooks/useDraftTodos";
+import { DraftTodoItem } from './DraftTodoItem'
 import { useShowLoader } from "../hooks/util-hooks";
 import { MoreInfo } from './MoreInfo'
 

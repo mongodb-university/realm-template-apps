@@ -1,5 +1,7 @@
 import React from "react";
 import { ApolloClient, gql, HttpLink, InMemoryCache } from "@apollo/client";
+import { useWatch } from "./useWatch";
+import { useCollection } from "./useCollection";
 import { useRealmApp } from "../components/RealmApp";
 import {
   addValueAtIndex,
@@ -8,8 +10,6 @@ import {
   removeValueAtIndex,
   getTodoIndex,
 } from "../utils";
-import { useWatch } from "./useWatch";
-import { useCollection } from "./useCollection";
 
 function useApolloClient() {
   const realmApp = useRealmApp();

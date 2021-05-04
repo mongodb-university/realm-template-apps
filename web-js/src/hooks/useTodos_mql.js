@@ -1,4 +1,6 @@
 import React from "react";
+import { useWatch } from "./useWatch";
+import { useCollection } from "./useCollection";
 import { useRealmApp } from "../components/RealmApp";
 import {
   addValueAtIndex,
@@ -7,8 +9,6 @@ import {
   removeValueAtIndex,
   getTodoIndex,
 } from "../utils";
-import { useWatch } from "./useWatch";
-import { useCollection } from "./useCollection";
 
 export function useTodos() {
   // Set up a list of todos in state

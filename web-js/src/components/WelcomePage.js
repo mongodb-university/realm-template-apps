@@ -9,13 +9,12 @@ import {
   Typography,
   InputAdornment,
 } from "@material-ui/core";
-import { useRealmApp } from "./RealmApp";
-import { MoreInfoTemplateAndDocs } from './MoreInfo'
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import { useRealmApp } from "./RealmApp";
+import { MoreInfoTemplateAndDocs } from "./MoreInfo";
 import { toggleBoolean } from "../utils";
-
-
+import { useErrorAlert } from "../hooks/useErrorAlert";
 
 export function WelcomePage() {
   const realmApp = useRealmApp();
@@ -29,9 +28,16 @@ export function WelcomePage() {
   const noErrors = {
     email: null,
     password: null,
+    other: null,
   };
   const [error, setError] = React.useState(noErrors);
   const clearErrors = () => setError(noErrors);
+  const NonAuthErrorAlert = useErrorAlert({
+    error: error.other,
+    clearError: () => {
+      setError((prevError) => ({ ...prevError, other: null }));
+    },
+  });
   // Manage password visibility
   const [showPassword, setShowPassword] = React.useState(false);
   const toggleShowPassword = () => setShowPassword(toggleBoolean);
@@ -66,6 +72,7 @@ export function WelcomePage() {
           <Typography component="h2" variant="h4" gutterBottom>
             {isSignup ? "Sign Up" : "Log In"}
           </Typography>
+          <NonAuthErrorAlert />
           <TextField
             id="input-email"
             name="email"
@@ -95,7 +102,7 @@ export function WelcomePage() {
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
-              )
+              ),
             }}
           />
           <Button type="submit" variant="contained" color="primary">
@@ -118,29 +125,53 @@ export function WelcomePage() {
 }
 
 function handleAuthenticationError(err, setError) {
-  const { error, statusCode } = err
-  const errorType = error || statusCode;
-  switch (errorType) {
-    case "invalid username":
-      setError((prevErr) => ({ ...prevErr, email: "Invalid email address." }));
-      break;
-    case "invalid username/password":
-    case "invalid password":
-    case 401:
-      setError((err) => ({ ...err, password: "Incorrect password." }));
-      break;
-    case "name already in use":
-    case 409:
-      setError((err) => ({ ...err, email: "Email is already registered." }));
-      break;
-    case "password must be between 6 and 128 characters":
-    case 400:
-      setError((err) => ({
-        ...err,
-        password: "Password must be between 6 and 128 characters.",
-      }));
-      break;
-    default:
-      break;
+  const handleUnknownError = () => {
+    setError((prevError) => ({
+      ...prevError,
+      other: "Something went wrong. Try again in a little bit.",
+    }));
+    console.warn(
+      "Something went wrong with a Realm login or signup request. See the following error for details."
+    );
+    console.error(err);
+  };
+  if (err instanceof Realm.MongoDBRealmError) {
+    const { error, statusCode } = err;
+    const errorType = error || statusCode;
+    switch (errorType) {
+      case "invalid username":
+        setError((prevError) => ({
+          ...prevError,
+          email: "Invalid email address.",
+        }));
+        break;
+      case "invalid username/password":
+      case "invalid password":
+      case 401:
+        setError((prevError) => ({
+          ...prevError,
+          password: "Incorrect password.",
+        }));
+        break;
+      case "name already in use":
+      case 409:
+        setError((prevError) => ({
+          ...prevError,
+          email: "Email is already registered.",
+        }));
+        break;
+      case "password must be between 6 and 128 characters":
+      case 400:
+        setError((prevError) => ({
+          ...prevError,
+          password: "Password must be between 6 and 128 characters.",
+        }));
+        break;
+      default:
+        handleUnknownError();
+        break;
+    }
+  } else {
+    handleUnknownError();
   }
 }
