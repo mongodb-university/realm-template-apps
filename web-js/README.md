@@ -15,7 +15,8 @@ This project is used as a single source for multiple generated apps. We use
 [Bluehawk](https://github.com/mongodb-university/Bluehawk/) to generate the apps based on special
 comments in the code.
 
-To generate all of the artifact projects, run the following:
+To generate all of the artifact projects, run the following commands in your shell from the `web-js`
+project root:
 
 ```shell
 npm run generate:prod
@@ -31,11 +32,10 @@ npm run generate:prod-graphql
 npm run generate:prod-mql
 ```
 
-
 > 🧰 **Tip: Install Dependencies to Run Artifact Projects**
 > Bluehawk does not include `node_modules` when you generate an artifact project. If you want to run the generated code, you'll need to run `npm install` first.
 
-## Build & Run the App in Development
+## Build & Run the App in Development Mode
 
 ### 1. Download & Install Dependencies
 
