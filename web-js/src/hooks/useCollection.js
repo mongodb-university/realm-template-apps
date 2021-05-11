@@ -3,7 +3,7 @@ import { useRealmApp } from "../components/RealmApp";
 
 /**
  * Returns a MongoDB Collection client object
- * @template DocType extends Realm.Services.MongoDB
+ * @template DocType extends Realm.Services.MongoDB.Document
  * @param {Object} config - A description of the collection.
  * @param {string} [config.service="mongodb-atlas"] - The service name of the collection's linked cluster.
  * @param {string} config.db - The name of database that contains the collection.
