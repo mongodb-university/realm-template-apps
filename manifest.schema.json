@@ -1,7 +1,7 @@
 {
   "additionalProperties" : {
     "properties" : {
-       "human_readable_name" : {
+       "name" : {
           "type" : "string"
        },
        "repo_url" : {
@@ -31,7 +31,7 @@
     "type" : "object",
     "additionalProperties" : false,
     "required" : [
-       "human_readable_name",
+       "name",
        "repo_url",
        "backend_path",
        "client_path",
