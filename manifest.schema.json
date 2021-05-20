@@ -4,7 +4,10 @@
        "name" : {
           "type" : "string"
        },
-       "repo_url" : {
+       "repo_owner" : {
+          "type" : "string"
+       },
+       "repo_name" : {
           "type" : "string"
        },
        "file_format" : {
@@ -32,7 +35,8 @@
     "additionalProperties" : false,
     "required" : [
        "name",
-       "repo_url",
+       "repo_owner",
+       "repo_name",
        "backend_path",
        "client_path",
        "metadata_path",
