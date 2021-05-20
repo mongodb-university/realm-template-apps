@@ -14,5 +14,5 @@ var realmApp: App = {
     let appId = realmPropertyList["appId"]! as! String
     let baseUrl = realmPropertyList["baseUrl"]! as! String
     return App(id: appId,
-                  configuration: AppConfiguration(baseURL: baseUrl, transport: nil, localAppName: nil, localAppVersion: nil))
+               configuration: AppConfiguration(baseURL: baseUrl, transport: nil, localAppName: nil, localAppVersion: nil))
 }()
