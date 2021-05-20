@@ -12,5 +12,7 @@ var realmApp: App = {
     let data = NSData(contentsOfFile: path)! as Data
     let realmPropertyList = try! PropertyListSerialization.propertyList(from: data, format: nil) as! [String: Any]
     let appId = realmPropertyList["appId"]! as! String
-    return App(id: appId)
+    let baseUrl = realmPropertyList["baseUrl"]! as! String
+    return App(id: appId,
+                  configuration: AppConfiguration(baseURL: baseUrl, transport: nil, localAppName: nil, localAppVersion: nil))
 }()
