@@ -1,7 +1,8 @@
 {
   "ios.swift.todo": {
     "name": "iOS Swift Interface Builder Todo App",
-    "repo_url": "https://github.com/mongodb-university/realm-template-apps",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
     "backend_path": "todo-sync",
     "client_path": "ios-swift",
     "metadata_path": "ios-swift/App",
@@ -10,7 +11,8 @@
   },
   "android.kotlin.todo": {
     "name": "Android Kotlin Todo App",
-    "repo_url": "https://github.com/mongodb-university/realm-template-apps",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
     "backend_path": "todo-sync",
     "client_path": "android-kotlin",
     "metadata_path": "android-kotlin/app/src/main/res/values",
@@ -19,7 +21,8 @@
   },
   "react-native.todo": {
     "name": "React Native Todo App",
-    "repo_url": "https://github.com/mongodb-university/realm-template-apps",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
     "backend_path": "todo-sync",
     "client_path": "react-native",
     "metadata_path": "react-native",
@@ -28,7 +31,8 @@
   },
   "xamarin.todo": {
     "name": "Xamarin Todo App",
-    "repo_url": "https://github.com/mongodb-university/realm-template-apps",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
     "backend_path": "todo-sync",
     "client_path": "xamarin",
     "metadata_path": "xamarin/_Shared/",
