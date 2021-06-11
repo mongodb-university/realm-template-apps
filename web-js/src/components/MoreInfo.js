@@ -1,7 +1,7 @@
 import path from "path";
 import { Container, Link } from "@material-ui/core";
 import { API_TYPE_NAME } from "./AppName";
-import { url as realmAppUrl } from "../realm.json";
+import { appUrl } from "../realm.json";
 
 export function MoreInfo() {
   return (
@@ -33,7 +33,7 @@ export function MoreInfoTemplateAndDocs() {
   );
 }
 
-const graphiqlUrl = path.join(realmAppUrl, "/graphql/explore");
+const graphiqlUrl = path.join(appUrl, "/graphql/explore");
 function MoreInfoGraphiQL() {
   return (
     <MoreInfoItem>

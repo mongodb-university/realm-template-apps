@@ -1,4 +1,5 @@
 {
   "appId": "todo-sync-tmikv",
-  "url": "https://realm.mongodb.com/groups/5f60207f14dfb25d23101102/apps/5f6020d292050452b72032e2/"
+  "baseUrl": "https://realm.mongodb.com",
+  "appUrl": "https://realm.mongodb.com/groups/5f60207f14dfb25d23101102/apps/5f6020d292050452b72032e2/"
 }
