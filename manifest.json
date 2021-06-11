@@ -38,5 +38,25 @@
     "metadata_path": "xamarin/_Shared/",
     "metadata_filename": "app-config",
     "file_format": "xml"
+  },
+  "web.graphql.todo": {
+    "name": "Web (GraphQL) Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "todo-sync",
+    "client_path": "web-graphql",
+    "metadata_path": "web-graphql/src",
+    "metadata_filename": "realm",
+    "file_format": "json"
+  },
+  "web.mql.todo": {
+    "name": "Web (MQL) Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "todo-sync",
+    "client_path": "web-mql",
+    "metadata_path": "web-mql/src",
+    "metadata_filename": "realm",
+    "file_format": "json"
   }
 }
