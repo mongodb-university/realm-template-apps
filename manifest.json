@@ -1,21 +1,43 @@
 {
-  "web.basic.hello-world": {
-    "human_readable_name": "Web Basic Hello World",
-    "repo_url": "https://github.com/andrewzlchen/basic_app",
-    "backend_path": "backend",
-    "client_path": "reactjs",
-    "metadata_path": "reactjs/src/utils/",
-    "metadata_filename": "realm_config",
-    "file_format": "json"
-  },
   "ios.swift.todo": {
-    "human_readable_name": "iOS Swift Interface Builder Todo App",
-    "repo_url": "https://github.com/mongodb-university/realm-template-apps",
+    "name": "iOS Swift Interface Builder Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
     "backend_path": "todo-sync",
     "client_path": "ios-swift",
     "metadata_path": "ios-swift/App",
     "metadata_filename": "Realm",
     "file_format": "plist"
+  },
+  "android.kotlin.todo": {
+    "name": "Android Kotlin Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "todo-sync",
+    "client_path": "android-kotlin",
+    "metadata_path": "android-kotlin/app/src/main/res/values",
+    "metadata_filename": "realm",
+    "file_format": "xml"
+  },
+  "react-native.todo": {
+    "name": "React Native Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "todo-sync",
+    "client_path": "react-native",
+    "metadata_path": "react-native",
+    "metadata_filename": "realm",
+    "file_format": "json"
+  },
+  "xamarin.todo": {
+    "name": "Xamarin Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "todo-sync",
+    "client_path": "xamarin",
+    "metadata_path": "xamarin/_Shared/",
+    "metadata_filename": "app-config",
+    "file_format": "xml"
   },
   "web.graphql.todo": {
     "human_readable_name": "Web (GraphQL) Todo App",
