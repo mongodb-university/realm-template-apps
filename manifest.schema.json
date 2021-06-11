@@ -1,48 +1,35 @@
 {
-  "additionalProperties" : {
-    "properties" : {
-       "name" : {
-          "type" : "string"
-       },
-       "repo_owner" : {
-          "type" : "string"
-       },
-       "repo_name" : {
-          "type" : "string"
-       },
-       "file_format" : {
-          "enum" : [
-             "json",
-             "plist",
-             "xml"
-          ],
-          "type" : "string"
-       },
-       "backend_path" : {
-          "type" : "string"
-       },
-       "client_path" : {
-          "type" : "string"
-       },
-       "metadata_filename" : {
-          "type" : "string"
-       },
-       "metadata_path" : {
-          "type" : "string"
-       }
+  "additionalProperties": {
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "repo_owner": {
+        "type": "string"
+      },
+      "repo_name": {
+        "type": "string"
+      },
+      "file_format": {
+        "enum": ["json", "plist", "xml"],
+        "type": "string"
+      },
+      "backend_path": {
+        "type": "string"
+      },
+      "client_path": {
+        "type": "string"
+      },
+      "metadata_filename": {
+        "type": "string"
+      },
+      "metadata_path": {
+        "type": "string"
+      }
     },
-    "type" : "object",
-    "additionalProperties" : false,
-    "required" : [
-       "name",
-       "repo_owner",
-       "repo_name",
-       "backend_path",
-       "client_path",
-       "metadata_path",
-       "metadata_filename",
-       "file_format"
-    ]
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["name", "repo_owner", "repo_name", "backend_path"]
   },
-  "type" : "object"
+  "type": "object"
 }

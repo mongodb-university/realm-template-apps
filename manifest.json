@@ -38,5 +38,11 @@
     "metadata_path": "xamarin/_Shared/",
     "metadata_filename": "app-config",
     "file_format": "xml"
+  },
+  "triggers": {
+    "name": "Triggers Template",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "triggers"
   }
 }
