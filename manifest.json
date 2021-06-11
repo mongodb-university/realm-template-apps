@@ -40,8 +40,9 @@
     "file_format": "xml"
   },
   "web.graphql.todo": {
-    "human_readable_name": "Web (GraphQL) Todo App",
-    "repo_url": "https://github.com/mongodb-university/realm-template-apps",
+    "name": "Web (GraphQL) Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
     "backend_path": "todo-sync",
     "client_path": "web-graphql",
     "metadata_path": "web-graphql/src",
@@ -49,8 +50,9 @@
     "file_format": "json"
   },
   "web.mql.todo": {
-    "human_readable_name": "Web (MQL) Todo App",
-    "repo_url": "https://github.com/mongodb-university/realm-template-apps",
+    "name": "Web (MQL) Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
     "backend_path": "todo-sync",
     "client_path": "web-mql",
     "metadata_path": "web-mql/src",
