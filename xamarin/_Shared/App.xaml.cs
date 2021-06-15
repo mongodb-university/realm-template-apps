@@ -1,13 +1,15 @@
 ﻿using Xamarin.Forms;
 using System.IO;
-using System.Xml;
 using System;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace RealmTemplateApp
 {
     public partial class App : Application
     {
         private string appId;
+        private string baseUrl;
         public static Realms.Sync.App RealmApp;
 
         public App()
@@ -19,8 +21,8 @@ namespace RealmTemplateApp
         {
             try
             {
-                appId = GetAppId();
-                RealmApp = Realms.Sync.App.Create(appId);
+                var appConfiguration = LoadAppConfiguration();
+                RealmApp = Realms.Sync.App.Create(appConfiguration);
 
                 var navPage = App.RealmApp.CurrentUser == null ?
                     new NavigationPage(new LoginPage()) :
@@ -33,23 +35,30 @@ namespace RealmTemplateApp
             {
                 // A NullReferenceException occurs if:
                 // 1. the config file does not exist, or
-                // 2. the config does not contain an "app-id" element.
+                // 2. the config does not contain an "app_id" or "base_url" element.
 
-                // If the app-id value is incorrect, we handle that
+                // If the app_id value is incorrect, we handle that
                 // exception in the Login page.
 
                 throw e;
             }
         }
 
-        private string GetAppId()
+        private Realms.Sync.AppConfiguration LoadAppConfiguration()
         {
             using (Stream stream = this.GetType().Assembly.
-               GetManifestResourceStream("RealmTemplateApp." + "app-config.xml"))
+               GetManifestResourceStream("RealmTemplateApp." + "realm.json"))
+            using (StreamReader reader = new StreamReader(stream))
             {
-                XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.Load(stream);
-                return xmlDocument.GetElementsByTagName("app-id")[0].InnerText;
+                var json = reader.ReadToEnd();
+                var parsedJson = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                appId = parsedJson["app_id"];
+                baseUrl = parsedJson["base_url"];
+                var appConfiguration = new Realms.Sync.AppConfiguration(appId)
+                {
+                    BaseUri = new Uri(baseUrl)
+                };
+                return appConfiguration;
             }
         }
 
