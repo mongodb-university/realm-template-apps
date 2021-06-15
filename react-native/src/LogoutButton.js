@@ -1,17 +1,11 @@
 import * as React from 'react';
-import Realm from 'realm';
 import {Button, Alert} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {appId} from '../realm';
-
-if (!appId) {
-  throw 'Missing Realm App ID. Set your App ID in realm.json';
-}
-const app = Realm.App.getApp(appId);
+import {realmApp} from "./RealmApp";
 
 export function LogoutButton() {
   const navigation = useNavigation();
-  const user = app.currentUser;
+  const user = realmApp.currentUser;
 
   // The signOut function calls the logOut function on the currently
   // logged in user and then navigates to the welcome screen
@@ -38,3 +32,4 @@ export function LogoutButton() {
     />
   );
 }
+s

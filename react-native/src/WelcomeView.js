@@ -4,19 +4,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StyleSheet, Text, View, Alert} from 'react-native';
 import {Input, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import realmConfig from '../realm';
-
-if (!realmConfig.appId) {
-  throw 'Missing Realm App ID. Set your App ID in realm.json';
-}
-const appConfig = {
-  id: realmConfig.appId,
-};
-if (realmConfig.url) {
-  appConfig.url = realmConfig.url;
-}
-
-const app = new Realm.App(appConfig);
+import {realmApp} from "./RealmApp";
 
 Icon.loadFont(); // load FontAwesome font
 
@@ -38,7 +26,7 @@ export function WelcomeView({navigation, route}) {
   // signIn() uses the emailPassword authentication provider to log in
   const signIn = async () => {
     const creds = Realm.Credentials.emailPassword(email, password);
-    const loggedInUser = await app.logIn(creds);
+    const loggedInUser = await realmApp.logIn(creds);
     setUser(loggedInUser);
   };
 
@@ -54,7 +42,7 @@ export function WelcomeView({navigation, route}) {
   // onPressSignUp() registers the user and then calls signIn to log the user in
   const onPressSignUp = async () => {
     try {
-      await app.emailPasswordAuth.registerUser(email, password);
+      await realmApp.emailPasswordAuth.registerUser(email, password);
       signIn(email, password);
     } catch (error) {
       Alert.alert(`Failed to sign up: ${error.message}`);
