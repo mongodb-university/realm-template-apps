@@ -1,0 +1,20 @@
+{
+    "id": "60c25f901bacc44df60f1cb7",
+    "name": "trigger0",
+    "type": "DATABASE",
+    "config": {
+        "operation_types": [
+            "INSERT"
+        ],
+        "database": "db",
+        "collection": "items",
+        "service_name": "mongodb-atlas",
+        "match": {},
+        "project": {},
+        "full_document": true,
+        "full_document_before_change": false,
+        "unordered": false
+    },
+    "function_name": "updateCollectionView",
+    "disabled": false
+}

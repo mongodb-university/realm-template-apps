@@ -39,6 +39,12 @@
     "metadata_filename": "app-config",
     "file_format": "xml"
   },
+  "triggers": {
+    "name": "Triggers Template",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "triggers"
+  },
   "web.graphql.todo": {
     "name": "Web (GraphQL) Todo App",
     "repo_owner": "mongodb-university",
