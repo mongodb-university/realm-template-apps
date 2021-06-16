@@ -144,6 +144,9 @@
 		<PackageReference Include="Xamarin.Forms">
 		  <Version>4.8.0.1821</Version>
 		</PackageReference>
+		<PackageReference Include="Newtonsoft.Json">
+		  <Version>13.0.1</Version>
+		</PackageReference>
 	</ItemGroup>
 	<Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 	<ItemGroup>
@@ -151,8 +154,9 @@
 		<Folder Include="Assets.xcassets\trash.imageset\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\_Shared\_Shared.csproj">
+	  <ProjectReference Include="..\_Shared\Shared.csproj">
 	    <Name>Shared</Name>
+	    <Project>{591F0966-56AF-40FF-B50E-746104588E70}</Project>
 	  </ProjectReference>
 	</ItemGroup>
 </Project>
