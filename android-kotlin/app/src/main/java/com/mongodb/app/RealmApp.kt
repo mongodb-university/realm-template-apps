@@ -24,7 +24,10 @@ class App: Application() {
     override fun onCreate() {
         super.onCreate()
         Realm.init(this)
-        realmApp = App(getString(R.string.mongodb_realm_app_id))
+        realmApp = App(
+            AppConfiguration.Builder(getString(R.string.realm_app_id)))
+                .baseUrl(getString(R.string.realm_base_url)))
+                .build())
 
         // Enable more logging in debug mode
         if (BuildConfig.DEBUG) {
