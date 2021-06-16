@@ -4,7 +4,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StyleSheet, Text, View, Alert} from 'react-native';
 import {Input, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {realmApp} from "./RealmApp";
+import {realmApp} from './RealmApp';
 
 Icon.loadFont(); // load FontAwesome font
 

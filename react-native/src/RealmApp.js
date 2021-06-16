@@ -1,3 +1,4 @@
+import Realm from 'realm';
 import {app_id, base_url} from '../realm';
 
 if (!app_id) {
@@ -9,7 +10,7 @@ if (!base_url) {
 
 const appConfiguration = {
   id: app_id,
-  baseUrl: base_url
+  baseUrl: base_url,
 };
 
 export const realmApp = new Realm.App(appConfiguration);

@@ -7,7 +7,7 @@ import {Button, Overlay, ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {CreateToDoPrompt} from './CreateToDoPrompt';
 import TaskSchema from './TaskSchema';
-import {realmApp} from "./RealmApp";
+import {realmApp} from './RealmApp';
 
 Icon.loadFont(); // load FontAwesome font
 
