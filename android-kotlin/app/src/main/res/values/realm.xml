@@ -1,4 +1,4 @@
 <resources>
-  <string name="app_id">todo-sync-tmikv</string>
-  <string name="base_url">https://realm.mongodb.com</string>
+  <string name="realm_app_id">todo-sync-tmikv</string>
+  <string name="realm_base_url">https://realm.mongodb.com</string>
 </resources>

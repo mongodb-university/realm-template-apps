@@ -25,8 +25,8 @@ class App: Application() {
         super.onCreate()
         Realm.init(this)
         realmApp = App(
-            AppConfiguration.Builder(getString(R.string.realm_app_id)))
-                .baseUrl(getString(R.string.realm_base_url)))
+            AppConfiguration.Builder(getString(R.string.realm_app_id))
+                .baseUrl(getString(R.string.realm_base_url))
                 .build())
 
         // Enable more logging in debug mode
