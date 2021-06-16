@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Button, Alert} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {realmApp} from "./RealmApp";
+import {realmApp} from './RealmApp';
 
 export function LogoutButton() {
   const navigation = useNavigation();
@@ -32,4 +32,3 @@ export function LogoutButton() {
     />
   );
 }
-s
