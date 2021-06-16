@@ -36,8 +36,8 @@
     "backend_path": "todo-sync",
     "client_path": "xamarin",
     "metadata_path": "xamarin/_Shared/",
-    "metadata_filename": "app-config",
-    "file_format": "xml"
+    "metadata_filename": "realm",
+    "file_format": "json"
   },
   "triggers": {
     "name": "Triggers Template",
