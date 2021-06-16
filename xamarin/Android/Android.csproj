@@ -66,6 +66,9 @@
 		<PackageReference Include="Xamarin.Forms">
 		  <Version>4.8.0.1821</Version>
 		</PackageReference>
+		<PackageReference Include="Newtonsoft.Json">
+		  <Version>13.0.1</Version>
+		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="MainActivity.cs" />

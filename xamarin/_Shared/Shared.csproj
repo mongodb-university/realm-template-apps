@@ -19,6 +19,7 @@
     </PackageReference>
     <PackageReference Include="Realm" Version="10.1.2" />
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1821" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -30,6 +31,6 @@
     <None Remove="app-config.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="app-config.xml" />
+    <EmbeddedResource Include="realm.json" />
   </ItemGroup>
 </Project>
