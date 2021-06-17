@@ -1,4 +1,4 @@
 {
-  "app_id": "todo-sync-tmikv",
-  "base_url": "https://realm.mongodb.com"
+  "appId": "todo-sync-tmikv",
+  "baseUrl": "https://realm.mongodb.com"
 }
