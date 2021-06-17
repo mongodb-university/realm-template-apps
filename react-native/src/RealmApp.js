@@ -1,16 +1,16 @@
 import Realm from 'realm';
-import {app_id, base_url} from '../realm';
+import {appId, baseUrl} from '../realm';
 
-if (!app_id) {
-  throw 'Missing Realm App ID. Set app_id in realm.json';
+if (!appId) {
+  throw 'Missing Realm App ID. Set appId in realm.json';
 }
-if (!base_url) {
-  throw 'Missing Realm base URL. Set base_url in realm.json';
+if (!baseUrl) {
+  throw 'Missing Realm base URL. Set baseUrl in realm.json';
 }
 
 const appConfiguration = {
-  id: app_id,
-  baseUrl: base_url,
+  id: appId,
+  baseUrl,
 };
 
 export const realmApp = new Realm.App(appConfiguration);
