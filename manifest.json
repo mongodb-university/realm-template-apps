@@ -50,8 +50,8 @@
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
     "backend_path": "todo-sync",
-    "client_path": "web-graphql",
-    "metadata_path": "web-graphql/src",
+    "client_path": "generated/web-graphql",
+    "metadata_path": "generated/web-graphql/src",
     "metadata_filename": "realm",
     "file_format": "json"
   },
@@ -60,8 +60,8 @@
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
     "backend_path": "todo-sync",
-    "client_path": "web-mql",
-    "metadata_path": "web-mql/src",
+    "client_path": "generated/web-mql",
+    "metadata_path": "generated/web-mql/src",
     "metadata_filename": "realm",
     "file_format": "json"
   }
