@@ -5,14 +5,9 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StyleSheet, Text, View} from 'react-native';
 import {Button, Overlay, ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {appId} from '../realm';
 import {CreateToDoPrompt} from './CreateToDoPrompt';
 import TaskSchema from './TaskSchema';
-
-if (!appId) {
-  throw 'Missing Realm App ID. Set your App ID in realm.json';
-}
-const app = Realm.App.getApp(appId);
+import {realmApp} from './RealmApp';
 
 Icon.loadFont(); // load FontAwesome font
 
@@ -33,8 +28,8 @@ export function TasksView({navigation}) {
     const config = {
       schema: [TaskSchema],
       sync: {
-        user: app.currentUser,
-        partitionValue: app.currentUser?.id,
+        user: realmApp.currentUser,
+        partitionValue: realmApp.currentUser?.id,
       },
     };
 
