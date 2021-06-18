@@ -35,9 +35,9 @@ namespace RealmTemplateApp
             {
                 // A NullReferenceException occurs if:
                 // 1. the config file does not exist, or
-                // 2. the config does not contain an "app_id" or "base_url" element.
+                // 2. the config does not contain an "appId" or "baseUrl" element.
 
-                // If the app_id value is incorrect, we handle that
+                // If the appId value is incorrect, we handle that
                 // exception in the Login page.
 
                 throw e;
@@ -52,8 +52,8 @@ namespace RealmTemplateApp
             {
                 var json = reader.ReadToEnd();
                 var parsedJson = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-                appId = parsedJson["app_id"];
-                baseUrl = parsedJson["base_url"];
+                appId = parsedJson["appId"];
+                baseUrl = parsedJson["baseUrl"];
                 var appConfiguration = new Realms.Sync.AppConfiguration(appId)
                 {
                     BaseUri = new Uri(baseUrl)
