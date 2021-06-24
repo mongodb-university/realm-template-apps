@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "_Shared\Shared.csproj", "{591F0966-56AF-40FF-B50E-746104588E70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "realm-todo-dotnet", "realm-todo-dotnet\realm-todo-dotnet.csproj", "{591F0966-56AF-40FF-B50E-746104588E70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Android", "Android\Android.csproj", "{B4C5F1D0-489C-4701-B50D-FB156DCF4A9C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "realm-todo-android", "realm-todo-android\realm-todo-android.csproj", "{B4C5F1D0-489C-4701-B50D-FB156DCF4A9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOS", "iOS\iOS.csproj", "{D320EEC8-1164-4D46-9000-B49DCED3957C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "realm-todo-iOS", "realm-todo-iOS\realm-todo-iOS.csproj", "{D320EEC8-1164-4D46-9000-B49DCED3957C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

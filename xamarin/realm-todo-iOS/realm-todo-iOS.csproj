@@ -154,7 +154,7 @@
 		<Folder Include="Assets.xcassets\trash.imageset\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\_Shared\Shared.csproj">
+	  <ProjectReference Include="..\realm-todo-dotnet\realm-todo-dotnet.csproj">
 	    <Name>Shared</Name>
 	    <Project>{591F0966-56AF-40FF-B50E-746104588E70}</Project>
 	  </ProjectReference>
