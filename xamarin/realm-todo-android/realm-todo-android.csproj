@@ -114,9 +114,9 @@
 		<Folder Include="Resources\drawable\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\_Shared\Shared.csproj">
+	  <ProjectReference Include="..\realm-todo-dotnet\realm-todo-dotnet.csproj">
 	    <Project>{591F0966-56AF-40FF-B50E-746104588E70}</Project>
-	    <Name>Shared</Name>
+	    <Name>realm-todo-dotnet</Name>
 	  </ProjectReference>
 	</ItemGroup>
 	<Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
