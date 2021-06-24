@@ -9,19 +9,11 @@ namespace RealmTemplateApp
     {
         private string email;
         private string password;
-        private bool isLoggingIn;
+        private bool isLoggingIn = false;
 
         public LoginPage()
         {
             InitializeComponent();
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            txtEmail.Text = "";
-            txtPassword.Text = "";
-            isLoggingIn = false;
         }
 
         private async void Main_Button_Clicked(object sender, EventArgs e)
@@ -91,7 +83,7 @@ namespace RealmTemplateApp
             }
             else
             {
-                label.FontSize = 16;
+                label.FontSize = 14;
                 main_button.Text = "Create a New Account";
                 label.Text = "Already have an account? Log In";
             }

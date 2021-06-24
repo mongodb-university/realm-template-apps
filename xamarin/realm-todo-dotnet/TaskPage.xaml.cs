@@ -86,17 +86,19 @@ namespace RealmTemplateApp
 
         private async void Logout_Clicked(object sender, EventArgs e)
         {
+            // Ensure the realm is closed
+            taskRealm.Dispose();
             await App.RealmApp.CurrentUser.LogOutAsync();
-            if (Navigation.NavigationStack.Count == 1)
+
+            var root = Navigation.NavigationStack.First();
+            if (!(root is LoginPage))
             {
+                // App started with user logged in, so skipped the login page.
                 var loginPage = new LoginPage();
                 NavigationPage.SetHasBackButton(loginPage, false);
-                await Navigation.PushAsync(loginPage);
+                Navigation.InsertPageBefore(loginPage, root);
             }
-            else
-            {
-                await Navigation.PopToRootAsync();
-            }
+            await Navigation.PopToRootAsync();
         }
 
         private async void Delete_Clicked(object sender, EventArgs e)
