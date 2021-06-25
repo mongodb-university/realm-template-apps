@@ -24,7 +24,7 @@ namespace RealmTemplateApp
                 var appConfiguration = LoadAppConfiguration();
                 RealmApp = Realms.Sync.App.Create(appConfiguration);
 
-                var navPage = App.RealmApp.CurrentUser == null ?
+                var navPage = RealmApp.CurrentUser == null ?
                     new NavigationPage(new LoginPage()) :
                     new NavigationPage(new TaskPage());
 
