@@ -2,6 +2,7 @@ import React from "react";
 import { useWatch } from "./useWatch";
 import { useCollection } from "./useCollection";
 import { useRealmApp } from "../components/RealmApp";
+import { clusterName } from "../realm.json";
 import {
   addValueAtIndex,
   replaceValueAtIndex,
@@ -18,7 +19,7 @@ export function useTodos() {
 
   // Get a client object for the todo task collection
   const taskCollection = useCollection({
-    service: "mongodb-atlas",
+    clusterName,
     db: "todo",
     collection: "Task",
   });
