@@ -3,7 +3,7 @@ import * as Realm from "realm-web";
 import { baseUrl } from "../realm.json";
 
 function createRealmApp(id) {
-  return new Realm.App({ id, baseUrl })
+  return new Realm.App({ id, baseUrl });
 }
 
 const RealmAppContext = React.createContext(null);
