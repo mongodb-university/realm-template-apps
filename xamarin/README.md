@@ -9,7 +9,7 @@ Ensure realm-todo-dotnet/realm.json exists and contains the following properties
 
 ## Run the app
 
-- Open realm-todo-app.sln in Visual Studio.
+- Open `realm-todo-app.sln` in Visual Studio.
 - Wait for NuGet to sync dependencies.
 - Build & run the app.
 
@@ -44,4 +44,3 @@ Close the solution, and again answer yes to save changes to each file.
 
 When you reopen the solution, you will see that the namespace has changed;
 without any further changes, you should be able to rebuild and run the app.
-
