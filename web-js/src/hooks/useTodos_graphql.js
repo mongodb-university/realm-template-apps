@@ -4,7 +4,7 @@ import jwt_decode from "jwt-decode";
 import { useWatch } from "./useWatch";
 import { useCollection } from "./useCollection";
 import { useRealmApp } from "../components/RealmApp";
-import { clusterName } from "../realm.json";
+import { baseUrl, clusterName } from "../realm.json";
 import {
   addValueAtIndex,
   replaceValueAtIndex,
@@ -20,7 +20,7 @@ function useApolloClient() {
   }
 
   const client = React.useMemo(() => {
-    const graphqlUri = `https://realm.mongodb.com/api/client/v2.0/app/${realmApp.id}/graphql`;
+    const graphqlUri = `${baseUrl}/api/client/v2.0/app/${realmApp.id}/graphql`;
     // Local apps should use a local URI!
     // const graphqlUri = `https://us-east-1.aws.stitch.mongodb.com/api/client/v2.0/app/${realmApp.id}/graphql`
 
