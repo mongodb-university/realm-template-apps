@@ -21,7 +21,7 @@ export function useTodos() {
   const taskCollection = useCollection({
     clusterName,
     db: "todo",
-    collection: "Task",
+    collection: "task",
   });
 
   // Fetch all todos on load and whenever our collection changes (e.g. if the current user changes)
@@ -85,7 +85,6 @@ export function useTodos() {
 
   // Given a draft todo, format it and then insert it
   const saveTodo = async (draftTodo) => {
-    console.log("saveTodo called");
     if (draftTodo.summary) {
       draftTodo._partition = realmApp.currentUser.id;
       try {

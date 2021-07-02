@@ -4,7 +4,7 @@ import jwt_decode from "jwt-decode";
 import { useWatch } from "./useWatch";
 import { useCollection } from "./useCollection";
 import { useRealmApp } from "../components/RealmApp";
-import { clusterName } from "../realm.json";
+import { baseUrl, clusterName } from "../realm.json";
 import {
   addValueAtIndex,
   replaceValueAtIndex,
@@ -18,25 +18,25 @@ function useApolloClient() {
   if (!realmApp.currentUser) {
     throw new Error(`You must be logged in to Realm to call useApolloClient()`);
   }
-  
+
   const client = React.useMemo(() => {
-    const graphqlUri = `https://realm.mongodb.com/api/client/v2.0/app/${realmApp.id}/graphql`;
+    const graphqlUri = `${baseUrl}/api/client/v2.0/app/${realmApp.id}/graphql`;
     // Local apps should use a local URI!
     // const graphqlUri = `https://us-east-1.aws.stitch.mongodb.com/api/client/v2.0/app/${realmApp.id}/graphql`
-    
+
     async function getValidAccessToken() {
       // An already logged in user's access token might be expired. We decode the token and check its
       // expiration to find out whether or not their current access token is stale.
-      const { exp } = jwt_decode(realmApp.currentUser.accessToken)
+      const { exp } = jwt_decode(realmApp.currentUser.accessToken);
       const isExpired = Date.now() >= exp * 1000;
-      if(isExpired) {
+      if (isExpired) {
         // To manually refresh the user's expired access token, we refresh their custom data
         await realmApp.currentUser.refreshCustomData();
       }
       // The user's access token is now guaranteed to be valid (unless their account is disabled or deleted)
       return realmApp.currentUser.accessToken;
     }
-    
+
     return new ApolloClient({
       link: new HttpLink({
         uri: graphqlUri,
