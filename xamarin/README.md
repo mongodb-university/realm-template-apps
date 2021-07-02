@@ -1,4 +1,23 @@
-﻿## Changing the Namespace
+﻿# Xamarin C# Template App
+
+## Configuration
+
+Ensure realm-todo-dotnet/realm.json exists and contains the following properties:
+
+- **appId:** your Realm app ID, which can be found in the Realm app UI at https://realm.mongodb.com
+- **baseUrl:** the Realm backend URL. Should be https://realm.mongodb.com in most cases.
+
+## Run the app
+
+- Open realm-todo-app.sln in Visual Studio.
+- Wait for NuGet to sync dependencies.
+- Build & run the app.
+
+## Issues
+
+Please report issues with the template at https://github.com/mongodb-university/realm-template-apps/issues/new
+
+## Changing the Namespace
 
 This app's namespace is ``RealmTemplateApp``. You do not need to change it, but if
 you choose to, we offer these steps to help you with the process. Note that changing
