@@ -2,5 +2,5 @@
   "appId": "todo-sync-tmikv",
   "baseUrl": "https://realm.mongodb.com",
   "appUrl": "https://realm.mongodb.com/groups/5f60207f14dfb25d23101102/apps/5f6020d292050452b72032e2/",
-  "clusterName": "mongodb-atlas"
+  "dataSourceName": "mongodb-atlas"
 }
