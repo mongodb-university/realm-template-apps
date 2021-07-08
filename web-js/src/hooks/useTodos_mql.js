@@ -21,7 +21,7 @@ export function useTodos() {
   const taskCollection = useCollection({
     cluster: dataSourceName,
     db: "todo",
-    collection: "task",
+    collection: "Task",
   });
 
   // Fetch all todos on load and whenever our collection changes (e.g. if the current user changes)
