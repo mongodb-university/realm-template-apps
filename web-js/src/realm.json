@@ -1,6 +1,6 @@
 {
-  "appId": "todo-sync-tmikv",
+  "appId": "todo-web-ugpjd",
   "baseUrl": "https://realm.mongodb.com",
-  "appUrl": "https://realm.mongodb.com/groups/5f60207f14dfb25d23101102/apps/5f6020d292050452b72032e2/",
+  "appUrl": "https://realm.mongodb.com/groups/5b2ec426970199272441a214/apps/60edcd10cd04e238738cf950/",
   "dataSourceName": "mongodb-atlas"
 }

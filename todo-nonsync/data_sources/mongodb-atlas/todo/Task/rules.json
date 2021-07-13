@@ -5,7 +5,7 @@
     {
       "name": "owner",
       "apply_when": {
-        "%%partition": "%%user.id"
+        "%%root._partition": "%%user.id"
       },
       "insert": true,
       "delete": true,
