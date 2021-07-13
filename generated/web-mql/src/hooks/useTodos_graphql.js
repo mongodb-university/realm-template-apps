@@ -4,7 +4,7 @@ import jwt_decode from "jwt-decode";
 import { useWatch } from "./useWatch";
 import { useCollection } from "./useCollection";
 import { useRealmApp } from "../components/RealmApp";
-import { baseUrl, clusterName } from "../realm.json";
+import { baseUrl, dataSourceName } from "../realm.json";
 import {
   addValueAtIndex,
   replaceValueAtIndex,
@@ -83,7 +83,7 @@ export function useTodos() {
 
   // Use a MongoDB change stream to reactively update state when operations succeed
   const taskCollection = useCollection({
-    clusterName,
+    cluster: dataSourceName,
     db: "todo",
     collection: "Task",
   });
