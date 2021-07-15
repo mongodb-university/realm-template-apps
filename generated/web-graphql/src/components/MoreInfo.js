@@ -33,7 +33,7 @@ export function MoreInfoTemplateAndDocs() {
   );
 }
 
-const graphiqlUrl = path.join(appUrl, "/graphql/explore");
+const graphiqlUrl = new URL('/graphql/explore', appUrl).href
 function MoreInfoGraphiQL() {
   return (
     <MoreInfoItem>
