@@ -35,7 +35,7 @@
     "repo_name": "realm-template-apps",
     "backend_path": "todo-sync",
     "client_path": "xamarin",
-    "metadata_path": "xamarin/_Shared/",
+    "metadata_path": "xamarin/realm-todo-dotnet/",
     "metadata_filename": "realm",
     "file_format": "json"
   },
