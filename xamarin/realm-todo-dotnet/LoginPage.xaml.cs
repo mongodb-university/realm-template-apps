@@ -30,22 +30,17 @@ namespace RealmTemplateApp
 
         private async AsyncTask DoLogin()
         {
-            User user;
-            if (App.RealmApp.CurrentUser == null)
+            try
             {
-                try
-                {
-                    user = await App.RealmApp.LogInAsync(Credentials.EmailPassword(email, password));
-                }
-                catch (Exception ex)
-                {
-                    await DisplayAlert("Login Failed", ex.Message, "OK");
-                }
+                await App.RealmApp.LogInAsync(Credentials.EmailPassword(email, password));
+                var taskPage = new TaskPage();
+                NavigationPage.SetHasBackButton(taskPage, false);
+                await Navigation.PushAsync(taskPage);
             }
-
-            var taskPage = new TaskPage();
-            NavigationPage.SetHasBackButton(taskPage, false);
-            await Navigation.PushAsync(taskPage);
+            catch (Exception ex)
+            {
+                await DisplayAlert("Login Failed", ex.Message, "OK");
+            }
         }
 
         private async AsyncTask RegisterUser()
