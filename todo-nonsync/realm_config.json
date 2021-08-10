@@ -1,7 +1,6 @@
 {
     "config_version": 20210101,
     "name": "todo-web",
-    "location": "US-VA",
-    "deployment_model": "GLOBAL",
+    "deployment_model": "LOCAL",
     "environment": "development"
 }
