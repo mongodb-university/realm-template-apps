@@ -18,4 +18,4 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_bucket: ${{ secrets.AWS_BUCKET }}
           source_dir: ./zip
-          destination_dir: ""
+          destination_dir: realm-template-apps
