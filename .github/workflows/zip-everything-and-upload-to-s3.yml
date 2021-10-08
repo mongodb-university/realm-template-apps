@@ -11,10 +11,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: zip -r realm-template-apps.zip . -x ".git/*" ".github/*" ".DS_Store"
+      - run: pwd
+      - run: find .
       - uses: shallwefootball/s3-upload-action@master
         with:
           aws_key_id: ${{ secrets.AWS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_bucket: ${{ secrets.AWS_BUCKET }}
-          source_dir: "./realm-template-apps.zip"
-          destination_dir: "realm-template-apps.zip"
+          source_dir: ../realm-template-apps.zip
+          destination_dir: ""
