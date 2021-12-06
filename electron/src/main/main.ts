@@ -26,18 +26,6 @@ import Realm from 'realm';
 
 const realmApp = new Realm.App('myapp-zufnj');
 
-async function logInRealm() {
-  const emailPasswordUserCredentials = Realm.Credentials.emailPassword(
-    'benperlmutter96@gmail.com',
-    'abc123'
-  );
-  try {
-    const user = await realmApp.logIn(emailPasswordUserCredentials);
-    return user;
-  } catch (err) {
-    console.error('log in error is...', err);
-  }
-}
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -142,21 +130,16 @@ ipcMain.handle(
     _: Electron.IpcMainInvokeEvent,
     config: Realm.Configuration
   ): Promise<boolean | null> => {
-    console.log('user from main::', realmApp.currentUser);
-    console.log('data on main', config);
     if (!config?.sync?.user?.id) {
       // @ts-ignore
-      config.sync.user = await logInRealm();
+      config.sync.user = realmApp.currentUser;
     }
-    console.log('user', config?.sync?.user?.id);
     let res;
     try {
       await Realm.open(config);
       res = true;
     } catch (err) {
-      console.error(' main error is', err);
-      const errorRes = new Error(`Error resolving the ipcCall: ${event}`);
-      console.error(errorRes);
+      console.error('error in main process invoking `open-realm`', err);
       res = null;
     }
     return res;
