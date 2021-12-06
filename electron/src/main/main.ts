@@ -11,11 +11,20 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  shell,
+  ipcMain,
+  app as electronApp,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import Realm from 'realm';
+
+const realmApp = new Realm.App('myapp-zufnj');
 
 export default class AppUpdater {
   constructor() {
@@ -77,7 +86,8 @@ const createWindow = async () => {
     height: 728,
     icon: getAssetPath('icon.png'),
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+      contextIsolation: false,
     },
   });
 
@@ -112,9 +122,29 @@ const createWindow = async () => {
   new AppUpdater();
 };
 
-/**
- * Add event listeners...
- */
+ipcMain.handle('get-user-data-path', () => electronApp.getPath('userData'));
+
+ipcMain.handle(
+  'open-realm',
+  async (
+    _: Electron.IpcMainInvokeEvent,
+    config: Realm.Configuration
+  ): Promise<boolean | null> => {
+    if (!config?.sync?.user?.id) {
+      // @ts-ignore
+      config.sync.user = realmApp.currentUser;
+    }
+    let res;
+    try {
+      await Realm.open(config);
+      res = true;
+    } catch (err) {
+      console.error('error in main process invoking `open-realm`', err);
+      res = null;
+    }
+    return res;
+  }
+);
 
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
