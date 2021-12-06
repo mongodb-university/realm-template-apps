@@ -5,7 +5,7 @@ application using JavaScript and React.
 
 This application is based on [Electron React Boilerplate](https://electron-react-boilerplate.js.org/). You may want to refer to it's documentation if you're making changes to this project.
 
-# Getting Started
+## Getting Started
 
 Note: it is recommended to use a version Node JS `14.x.x`.
 This project has been noted to fail with other Node versions.

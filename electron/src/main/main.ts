@@ -142,6 +142,7 @@ ipcMain.handle(
     _: Electron.IpcMainInvokeEvent,
     config: Realm.Configuration
   ): Promise<boolean | null> => {
+    console.log('user from main::', realmApp.currentUser);
     console.log('data on main', config);
     if (!config?.sync?.user?.id) {
       // @ts-ignore
