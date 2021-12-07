@@ -29,3 +29,5 @@ npm-debug.log.*
 *.scss.d.ts
 
 mongodb-realm/
+.vscode/
+release/app/dist/
