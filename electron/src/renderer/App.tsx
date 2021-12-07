@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { MemoryRouter as Router, Switch, Route } from 'react-router-dom';
 import ObjectId from 'bson-objectid';
-import icon from '../../assets/icon.svg';
 import './App.css';
 import { openRealm, realmApp } from './realm';
 
@@ -22,9 +21,6 @@ const Hello = () => {
   }, []);
   return (
     <div>
-      <div className="Hello">
-        <img width="200px" alt="icon" src={icon} />
-      </div>
       <h1>electron-react-boilerplate</h1>
       <div className="Hello">
         <a
