@@ -11,8 +11,19 @@ class UserAuthentication {
       const user = await app.logIn(emailPasswordUserCredentials);
       return user;
     } catch (err) {
-      console.error('log in error is...', err);
-      return null;
+      return { err, isError: true };
+    }
+  }
+
+  static async signUp(email, password) {
+    try {
+      const user = await app.emailPasswordAuth.registerUser({
+        email,
+        password,
+      });
+      return user;
+    } catch (err) {
+      return { err, isError: true };
     }
   }
 

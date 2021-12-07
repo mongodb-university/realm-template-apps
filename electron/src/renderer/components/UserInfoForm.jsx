@@ -3,10 +3,14 @@ import { useState } from 'react';
 const UserInfoForm = ({ title, submitUserInfo }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await submitUserInfo(username, password);
+    const res = await submitUserInfo(username, password);
+    if (res?.isError) {
+      setError(res.err.message);
+    } else setError(null);
   };
   return (
     <div>
@@ -32,6 +36,7 @@ const UserInfoForm = ({ title, submitUserInfo }) => {
           <div>
             <button onClick={onSubmit}>{title}</button>
           </div>
+          <div>{error && <p>{error}</p>}</div>
         </form>
       </div>
     </div>

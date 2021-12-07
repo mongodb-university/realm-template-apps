@@ -48,8 +48,21 @@ const App = () => {
   }, [isLoggedIn]);
 
   const onLogIn = async (username, password) => {
-    const user = await Authentication.logIn(username, password);
-    if (user?.isLoggedIn) {
+    const res = await Authentication.logIn(username, password);
+    //checks if the response is an Error
+    if (res?.isError) {
+      return res;
+    } else {
+      setIsLoggedIn(true);
+      history.push('/todo');
+    }
+  };
+  const onSignUp = async (username, password) => {
+    const res = await Authentication.signUp(username, password);
+    //checks if the response is an Error
+    if (res?.isError) {
+      return res;
+    } else {
       setIsLoggedIn(true);
       history.push('/todo');
     }
@@ -62,7 +75,7 @@ const App = () => {
 
   return (
     <>
-      <Context.Provider value={{ onLogIn, isLoggedIn }}>
+      <Context.Provider value={{ onLogIn, onSignUp, isLoggedIn }}>
         <div>
           <Link to="/">
             <h1>Realm Todo</h1>
