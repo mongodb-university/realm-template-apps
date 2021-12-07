@@ -2,20 +2,21 @@ import Realm from 'realm';
 import app from './realmApp';
 
 class UserAuthentication {
-  static async logIn(): Promise<Realm.User | void> {
+  static async logIn(email, password) {
     const emailPasswordUserCredentials = Realm.Credentials.emailPassword(
-      'benperlmutter96@gmail.com',
-      'abc123'
+      email,
+      password
     );
     try {
       const user = await app.logIn(emailPasswordUserCredentials);
       return user;
     } catch (err) {
       console.error('log in error is...', err);
+      return null;
     }
   }
 
-  static async logOut(): Promise<void> {
+  static async logOut() {
     await app.currentUser?.logOut();
   }
 }
