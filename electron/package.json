@@ -228,7 +228,7 @@
     "electron-debug": "^3.2.0",
     "electron-log": "^4.4.1",
     "electron-updater": "^4.3.9",
-    "history": "4.x.x",
+    "history": "^4.10.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
