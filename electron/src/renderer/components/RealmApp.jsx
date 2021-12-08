@@ -6,9 +6,43 @@ import {
   useMemo,
 } from 'react';
 import Realm from 'realm';
+import { ipcRenderer } from 'electron';
+import path from 'path';
+import { Todo } from 'schemas';
 
 function createRealmApp(appId) {
   return new Realm.App(appId);
+}
+
+async function getUserDataPath() {
+  const userDataPath = await ipcRenderer.invoke('get-user-data-path');
+  return userDataPath;
+}
+
+async function openRealm(currentUser, schemas) {
+  const userDataPath = await getUserDataPath();
+  const config = {
+    schema: schemas, // predefined schema
+    path: path.join(userDataPath, 'my.realm'),
+    sync: {
+      user: currentUser, // TODO: this isn't being passed to main process properly.
+      partitionValue: currentUser?.id,
+    },
+  };
+
+  try {
+    const res = await ipcRenderer.invoke('open-realm', config);
+    if (res) {
+      const rendererConfig = { ...config, sync: true };
+      const realm = new Realm(rendererConfig);
+      return realm;
+    } else throw new Error("couldn't communicate with main process");
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error('failed to open realm', err.message);
+    }
+    return null;
+  }
 }
 
 const RealmAppContext = createContext(null);
@@ -17,6 +51,8 @@ function RealmAppProvider({ appId, children }) {
   // Store Realm.App in React state. If appId changes, all children will rerender
   // and use the new realmApp.
   const [realmApp, setRealmApp] = useState(createRealmApp(appId));
+  const [realmDb, setRealmDb] = useState(null);
+
   useEffect(() => {
     setRealmApp(createRealmApp(appId));
   }, [appId]);
@@ -28,8 +64,15 @@ function RealmAppProvider({ appId, children }) {
     async (username, password) => {
       const credentials = Realm.Credentials.emailPassword(username, password);
       try {
-        await realmApp.logIn(credentials);
+        const res = await ipcRenderer.invoke('log-in-user', {
+          username,
+          password,
+        });
+        console.log('res from ipc is...', res);
+        const user = await realmApp.logIn(credentials);
+        const realm = await openRealm(user, [Todo]);
         setCurrentUser(realmApp.currentUser);
+        setRealmDb(realm);
         return true;
       } catch (err) {
         return err;
@@ -45,7 +88,7 @@ function RealmAppProvider({ appId, children }) {
           email: username,
           password,
         });
-        setCurrentUser(realmApp.currentUser);
+        await logIn(username, password);
         return true;
       } catch (err) {
         return err;
@@ -57,7 +100,8 @@ function RealmAppProvider({ appId, children }) {
   // Wrap the current user's logOut function to remove the logged out user from state
   const logOut = useCallback(async () => {
     await currentUser?.logOut();
-    await realmApp.removeUser(currentUser);
+    if (realmDb) realmDb.close();
+    const res = await ipcRenderer.invoke('close-and-log-out');
     setCurrentUser(realmApp.currentUser);
   }, [realmApp, currentUser]);
 

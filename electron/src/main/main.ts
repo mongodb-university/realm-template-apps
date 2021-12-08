@@ -119,6 +119,22 @@ const createWindow = async () => {
 
 ipcMain.handle('get-user-data-path', () => electronApp.getPath('userData'));
 
+// @ts-ignore
+let currentUser = null;
+// @ts-ignore
+let realmDb = null;
+ipcMain.handle('log-in-user', async (_, { username, password }) => {
+  console.log('creds are', username, password);
+  const credentials = Realm.Credentials.emailPassword(username, password);
+  try {
+    currentUser = await realmApp.logIn(credentials);
+    console.log('current user on main is', currentUser);
+    return true;
+  } catch (err) {
+    return err;
+  }
+});
+
 ipcMain.handle(
   'open-realm',
   async (
@@ -127,7 +143,7 @@ ipcMain.handle(
   ): Promise<boolean | null> => {
     if (!config?.sync?.user?.id) {
       // @ts-ignore
-      config.sync.user = realmApp.currentUser;
+      config.sync.user = currentUser;
     }
     let res;
     try {
@@ -140,6 +156,14 @@ ipcMain.handle(
     return res;
   }
 );
+
+ipcMain.handle('close-and-log-out', () => {
+  console.log('close and log out');
+  // @ts-ignore
+  currentUser?.logOut();
+  // @ts-ignore
+  realmDb?.close();
+});
 
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
