@@ -20,11 +20,12 @@ import {
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import Realm from 'realm';
+import { appId } from '../realm.json';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import Realm from 'realm';
 
-const realmApp = new Realm.App('myapp-zufnj');
+const realmApp = new Realm.App(appId);
 
 export default class AppUpdater {
   constructor() {
