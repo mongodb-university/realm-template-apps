@@ -17,6 +17,10 @@ import { MoreInfo } from './MoreInfo';
 const TodoItemsPage = () => {
   const { loading, todos, ...todoActions } = useTodos();
   const { draftTodos, ...draftTodoActions } = useDraftTodos();
+  // TODO: examine if this is best practice for rerendering updated todos
+  // this is super inefficient as it stands now, causing all todos to rerender if
+  // one is updated. not sure what the best approach should be here.
+  const forceUpdateTodos = useForceUpdate();
   const showLoader = useShowLoader(loading, 200);
 
   // Delete later for non stubbed data todos
@@ -34,9 +38,7 @@ const TodoItemsPage = () => {
   return (
     <>
     <Container className="main-container" maxWidth="sm">
-      {/* TODO: replace below `false` with `loading` once the `useTodos` hook
-      is properly set up*/}
-      {false ? (
+      {loading ? (
         showLoader ? (
           <LinearProgress />
         ) : null
