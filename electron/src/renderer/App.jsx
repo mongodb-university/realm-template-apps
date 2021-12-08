@@ -8,6 +8,7 @@ import {
   useHistory,
   useLocation,
 } from 'react-router-dom';
+import { AppBar, Toolbar, Button, Typography } from "@material-ui/core";
 import './App.css';
 import { RealmAppProvider } from './components/RealmApp';
 import { appId } from '../realm.json';
@@ -34,6 +35,23 @@ const PrivateRoute = (props) => {
   );
 };
 
+function AppName() {
+  return (
+    <Typography className="app-bar-title" component="h1" variant="h5">
+      My App
+    </Typography>
+  );
+}
+
+function FooterInfo(){
+  return (<div className="footer-info">
+    <span>Built with the MongoDB Realm Electron Template</span> |{" "}
+      <Link target="_blank" href="https://docs.mongodb.com/realm">
+        Docs
+      </Link>
+    </div>)
+}
+
 const App = () => {
   const history = useHistory();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -57,12 +75,24 @@ const App = () => {
 
   return (
     <>
-      <div>
-        <Link to="/">
-          <h1>Realm Todo</h1>
-        </Link>
-        {currentUser?.isLoggedIn && <button onClick={onLogOut}>Log Out</button>}
-      </div>
+      <AppBar position="sticky">
+        <Toolbar>
+          <AppName />
+          {currentUser.isLoggedIn ? (
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={async () => {
+                await logOut();
+              }}
+            >
+              <Typography variant="button">Log Out</Typography>
+            </Button>
+          ) : null}
+        </Toolbar>
+      </AppBar>
+
+
       <Switch>
         <Route path="/" component={Welcome} exact />
         <Route path="/log-in" component={LogIn} />
@@ -80,6 +110,7 @@ const AppWithProvider = () => (
   <RealmAppProvider appId={appId}>
     <Router>
       <App />
+      <FooterInfo />
     </Router>
   </RealmAppProvider>
 );

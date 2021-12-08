@@ -17,6 +17,19 @@ const TodoItemsPage = () => {
   const { loading, todos, ...todoActions } = useTodos();
   const { draftTodos, ...draftTodoActions } = useDraftTodos();
   const showLoader = useShowLoader(loading, 200);
+
+  // Delete later for non stubbed data todos
+  if(todos.length < 1){
+    todos.push({
+      isComplete: false,
+      summary: "test summary"
+    })
+    todos.push({
+      isComplete: true,
+      summary: "test summary 2"
+    })
+  }
+
   return (
     <Container className="main-container" maxWidth="sm">
       {/* TODO: replace below `false` with `loading` once the `useTodos` hook
