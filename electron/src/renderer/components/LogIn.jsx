@@ -13,7 +13,6 @@ const LogIn = () => {
     if (res !== true) {
       return res;
     } else {
-      console.log('hello');
       history.push('/todo');
     }
   };
