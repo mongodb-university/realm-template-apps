@@ -54,12 +54,14 @@ const useTodos = () => {
   useEffect(() => {
     openTodoRealmCb();
 
-    return realmDb?.close();
+    return () => realmDb?.close();
   }, [currentUser?.id]);
 
   const fetchUserTodos = useCallback(() => {
+    setLoading(true);
     const todosCollection = realmDb.objects('Todo');
     setTodos(todosCollection);
+    setLoading(false);
     return todosCollection;
   }, [realmDb?.schema?.length]);
 
@@ -67,7 +69,6 @@ const useTodos = () => {
     if (realmDb) {
       const todosCollection = fetchUserTodos();
       const todosListener = todosCollection.addListener((collection) => {
-        console.log('collection is', collection);
         setTodos(collection);
       });
       // TODO: was trying to make this work with the `todosListener` variable declared
@@ -76,7 +77,9 @@ const useTodos = () => {
       // against the JS API. verify what's going on here.
       // the current implementation works fine. just less precise && would be good to figure
       // out why the other implementation doesn't work
-      return todosCollection?.removeAllListeners();
+      return () => {
+        todosCollection?.removeAllListeners();
+      };
     }
   }, [realmDb?.schema?.length]);
 
@@ -88,7 +91,7 @@ const useTodos = () => {
 
   const toggleTodo = async (todo) => {
     realmDb.write(() => {
-      todo.isComplete = true;
+      todo.isComplete = !todo.isComplete;
     });
   };
 
