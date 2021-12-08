@@ -4,7 +4,6 @@ import Context from './Context';
 
 const Welcome = () => {
   const { isLoggedIn } = useContext(Context);
-  console.log(isLoggedIn);
   return (
     <div>
       <div className="Hello"></div>

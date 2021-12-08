@@ -8,8 +8,8 @@ const UserInfoForm = ({ title, submitUserInfo }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     const res = await submitUserInfo(username, password);
-    if (res?.isError) {
-      setError(res.err.message);
+    if (res) {
+      setError(res.message);
     } else setError(null);
   };
   return (

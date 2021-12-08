@@ -9,18 +9,20 @@ import {
   useLocation,
 } from 'react-router-dom';
 import './App.css';
-import { realmApp, Authentication } from './realm';
+import { RealmAppProvider } from './components/RealmApp';
+import { appId } from '../realm.json';
 import Context from './components/Context';
 import LogIn from './components/LogIn';
 import SignUp from './components/SignUp';
 import Todo from './components/Todo';
 import Welcome from './components/Welcome';
+import useRealmApp from './hooks/useRealmApp';
 
 const PrivateRoute = (props) => {
   const location = useLocation();
-  const { isLoggedIn } = useContext(Context);
+  const { currentUser } = useRealmApp();
 
-  return isLoggedIn ? (
+  return currentUser?.isLoggedIn ? (
     <Route {...props} />
   ) : (
     <Redirect
@@ -35,60 +37,38 @@ const PrivateRoute = (props) => {
 const App = () => {
   const history = useHistory();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { logOut, currentUser } = useRealmApp();
 
   useEffect(() => {
-    console.log(realmApp.currentUser?.isLoggedIn);
-    setIsLoggedIn(!!realmApp.currentUser?.isLoggedIn);
-  }, [realmApp.currentUser?.isLoggedIn]);
+    currentUser?.isLoggedIn === true
+      ? setIsLoggedIn(true)
+      : setIsLoggedIn(false);
+  }, [currentUser?.isLoggedIn]);
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (currentUser?.isLoggedIn) {
       history.push('/todo');
     }
-  }, [isLoggedIn]);
-
-  const onLogIn = async (username, password) => {
-    const res = await Authentication.logIn(username, password);
-    //checks if the response is an Error
-    if (res?.isError) {
-      return res;
-    } else {
-      setIsLoggedIn(true);
-      history.push('/todo');
-    }
-  };
-  const onSignUp = async (username, password) => {
-    const res = await Authentication.signUp(username, password);
-    //checks if the response is an Error
-    if (res?.isError) {
-      return res;
-    } else {
-      setIsLoggedIn(true);
-      history.push('/todo');
-    }
-  };
+  }, [currentUser?.isLoggedIn]);
 
   const onLogOut = () => {
-    Authentication.logOut();
-    setIsLoggedIn(false);
+    logOut();
   };
 
   return (
     <>
-      <Context.Provider value={{ onLogIn, onSignUp, isLoggedIn }}>
-        <div>
-          <Link to="/">
-            <h1>Realm Todo</h1>
-          </Link>
-          {isLoggedIn && <button onClick={onLogOut}>Log Out</button>}
-        </div>
-        <Switch>
-          <Route path="/" component={Welcome} exact />
-          <Route path="/log-in" component={LogIn} />
-          <Route path="/sign-up" component={SignUp} />
-          <PrivateRoute path="/todo" component={Todo} />
-        </Switch>
-      </Context.Provider>
+      <div>
+        <Link to="/">
+          <h1>Realm Todo</h1>
+        </Link>
+        {currentUser?.isLoggedIn && <button onClick={onLogOut}>Log Out</button>}
+      </div>
+      <Switch>
+        <Route path="/" component={Welcome} exact />
+        <Route path="/log-in" component={LogIn} />
+        <Route path="/sign-up" component={SignUp} />
+        <PrivateRoute path="/todo" component={Todo} />
+      </Switch>
     </>
   );
 };
@@ -96,9 +76,11 @@ const App = () => {
 // defining Router in a separate component so that the App component
 // has access to the `useHistory` hook.
 // See https://stackoverflow.com/a/68173854/17093063
-const AppWithRouter = () => (
-  <Router>
-    <App />
-  </Router>
+const AppWithProvider = () => (
+  <RealmAppProvider appId={appId}>
+    <Router>
+      <App />
+    </Router>
+  </RealmAppProvider>
 );
-export default AppWithRouter;
+export default AppWithProvider;
