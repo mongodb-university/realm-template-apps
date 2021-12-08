@@ -8,7 +8,16 @@ import {
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 
-export function TodoItem({ todo, todoActions }) {
+export function TodoItem({ todo, todoActions, forceUpdateTodos }) {
+  const onToggleTodo = () => {
+    todoActions.toggleTodo(todo);
+    forceUpdateTodos();
+  };
+
+  const onDeleteTodo = () => {
+    todoActions.deleteTodo(todo);
+    forceUpdateTodos();
+  };
   return (
     <ListItem>
       <ListItemIcon>
@@ -16,20 +25,12 @@ export function TodoItem({ todo, todoActions }) {
           edge="start"
           color="primary"
           checked={todo.isComplete}
-          onClick={() => {
-            todoActions.toggleTodo(todo);
-          }}
+          onClick={onToggleTodo}
         />
       </ListItemIcon>
       <ListItemText>{todo.summary}</ListItemText>
       <ListItemSecondaryAction>
-        <IconButton
-          edge="end"
-          size="small"
-          onClick={() => {
-            todoActions.deleteTodo(todo);
-          }}
-        >
+        <IconButton edge="end" size="small" onClick={onDeleteTodo}>
           <ClearIcon />
         </IconButton>
       </ListItemSecondaryAction>
