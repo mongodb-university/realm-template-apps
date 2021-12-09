@@ -101,6 +101,7 @@ const createWindow = async () => {
 
   mainWindow.on('closed', () => {
     mainWindow = null;
+    realmDb?.close();
   });
 
   const menuBuilder = new MenuBuilder(mainWindow);
@@ -119,16 +120,16 @@ const createWindow = async () => {
 
 ipcMain.handle('get-user-data-path', () => electronApp.getPath('userData'));
 
-// @ts-ignore
-let currentUser = null;
-// @ts-ignore
-let realmDb = null;
+let currentUser: Realm.User | null = null;
+let realmDb: Realm | null = null;
+let realmDbConfig: Realm.Configuration | null = null;
+
 ipcMain.handle('log-in-user', async (_, { username, password }) => {
-  console.log('creds are', username, password);
+  console.log('logging in user. creds are', username, password);
   const credentials = Realm.Credentials.emailPassword(username, password);
   try {
     currentUser = await realmApp.logIn(credentials);
-    console.log('current user on main is', currentUser);
+    console.log('current user on main is', currentUser.id);
     return true;
   } catch (err) {
     return err;
@@ -141,13 +142,20 @@ ipcMain.handle(
     _: Electron.IpcMainInvokeEvent,
     config: Realm.Configuration
   ): Promise<boolean | null> => {
+    if (!currentUser) {
+      console.error('no current user. cannot open realm.');
+      return null;
+    }
     if (!config?.sync?.user?.id) {
+      console.log('opening realm with user', currentUser?.id);
       // @ts-ignore
       config.sync.user = currentUser;
     }
     let res;
     try {
-      await Realm.open(config);
+      realmDb = await Realm.open(config);
+      realmDbConfig = config;
+      console.log('opened realm');
       res = true;
     } catch (err) {
       console.error('error in main process invoking `open-realm`', err);
@@ -157,12 +165,14 @@ ipcMain.handle(
   }
 );
 
-ipcMain.handle('close-and-log-out', () => {
-  console.log('close and log out');
-  // @ts-ignore
-  currentUser?.logOut();
-  // @ts-ignore
+ipcMain.handle('close-and-log-out', async () => {
+  console.log('close and log out', currentUser?.id, realmDb);
   realmDb?.close();
+  await currentUser?.logOut();
+  if (realmDbConfig !== null) Realm.deleteFile(realmDbConfig);
+  currentUser = null;
+  realmDb = null;
+  realmDbConfig = null;
 });
 
 app.on('window-all-closed', () => {
@@ -171,6 +181,7 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+  realmDb?.close();
 });
 
 app

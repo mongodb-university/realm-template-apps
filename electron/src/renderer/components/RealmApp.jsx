@@ -20,6 +20,7 @@ async function getUserDataPath() {
 }
 
 async function openRealm(currentUser, schemas) {
+  if (!currentUser) return;
   const userDataPath = await getUserDataPath();
   const config = {
     schema: schemas, // predefined schema
@@ -58,20 +59,28 @@ function RealmAppProvider({ appId, children }) {
   }, [appId]);
   // Store the app's current user in state and wrap the built-in auth functions
   // to modify this state
-  const [currentUser, setCurrentUser] = useState(realmApp.currentUser);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    setCurrentUser(realmApp.currentUser);
+  }, [realmApp?.currentUser?.id]);
+
   // Wrap the base logIn function to save the logged in user in state
   const logIn = useCallback(
     async (username, password) => {
       const credentials = Realm.Credentials.emailPassword(username, password);
       try {
+        const user = await realmApp.logIn(credentials);
+        console.log(
+          'current user in renderer opening realm is ',
+          realmApp.currentUser.id
+        );
         const res = await ipcRenderer.invoke('log-in-user', {
           username,
           password,
         });
-        console.log('res from ipc is...', res);
-        const user = await realmApp.logIn(credentials);
         const realm = await openRealm(user, [Todo]);
-        setCurrentUser(realmApp.currentUser);
+        console.log('res from ipc is...', res);
         setRealmDb(realm);
         return true;
       } catch (err) {
@@ -99,10 +108,12 @@ function RealmAppProvider({ appId, children }) {
 
   // Wrap the current user's logOut function to remove the logged out user from state
   const logOut = useCallback(async () => {
+    console.log('logging out user in renderer is', currentUser.id);
+    realmDb?.close();
     await currentUser?.logOut();
-    if (realmDb) realmDb.close();
     const res = await ipcRenderer.invoke('close-and-log-out');
-    setCurrentUser(realmApp.currentUser);
+    setCurrentUser(null);
+    setRealmDb(null);
   }, [realmApp, currentUser]);
 
   // Override the App's currentUser & logIn properties + include the app-level logout function
