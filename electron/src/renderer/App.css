@@ -3,20 +3,12 @@
  *        See https://github.com/webpack-contrib/sass-loader#imports
  */
 body {
-  position: relative;
-  color: white;
-  height: 100vh;
-  background: linear-gradient(
-    200.96deg,
-    #fedc2a -29.09%,
-    #dd5789 51.77%,
-    #7a2c9e 129.35%
-  );
   font-family: sans-serif;
-  overflow-y: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background: #eee;
+}
+
+.MuiToolbar-root{
+  justify-content: space-between;
 }
 
 button {
@@ -54,9 +46,78 @@ a:hover {
   text-decoration: none;
 }
 
-.Hello {
+.footer-info{
+  background-color: white;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.MuiPaper-root{
+  margin-top: 20px;
+}
+
+
+.App-logo {
+  height: 6vmin;
+  pointer-events: none;
+}
+
+.link-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+.link-button:hover,
+.link-button:focus {
+  text-decoration: none;
+}
+
+.app-bar-title {
+  flex-grow: 1;
+}
+
+.main-container {
+  padding-top: 48px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  height: calc(100% - 64px);
+}
+
+.todo-items-container {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  margin: 20px 0;
+  justify-content: center;
+  gap: 24px;
+}
+
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+}
+.custom-sync-message-card{
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  bottom: 20%;
+}
+.custom-sync-message{
+  font-size: 14px;
+  text-align: center;
 }

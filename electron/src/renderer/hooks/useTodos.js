@@ -96,13 +96,11 @@ const useTodos = () => {
   };
 
   const deleteTodo = async (todo) => {
-    // TODO
     realmDb.write(() => {
       realmDb.delete(todo);
     });
   };
 
-  // TODO: figure out how to do refresh behavior for todos
   return {
     loading,
     todos,
