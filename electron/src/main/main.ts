@@ -120,7 +120,9 @@ const createWindow = async () => {
 
 ipcMain.handle('get-user-data-path', () => electronApp.getPath('userData'));
 
-let currentUser: Realm.User | null = null;
+let currentUser: Realm.User | null = realmApp.currentUser?.id
+  ? realmApp.currentUser
+  : null;
 let realmDb: Realm | null = null;
 let realmDbConfig: Realm.Configuration | null = null;
 

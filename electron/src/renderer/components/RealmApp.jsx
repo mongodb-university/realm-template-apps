@@ -62,7 +62,12 @@ function RealmAppProvider({ appId, children }) {
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    setCurrentUser(realmApp.currentUser);
+    if (realmApp?.currentUser) {
+      console.log('enter initialization use effect w current user');
+      console.log(realmApp?.currentUser);
+      setCurrentUser(realmApp.currentUser);
+      openAndSetRealm(realmApp.currentUser);
+    }
   }, [realmApp?.currentUser?.id]);
 
   // Wrap the base logIn function to save the logged in user in state
@@ -79,9 +84,8 @@ function RealmAppProvider({ appId, children }) {
           username,
           password,
         });
-        const realm = await openRealm(user, [Todo]);
+        await openAndSetRealm(user);
         console.log('res from ipc is...', res);
-        setRealmDb(realm);
         return true;
       } catch (err) {
         return err;
@@ -89,6 +93,12 @@ function RealmAppProvider({ appId, children }) {
     },
     [realmApp]
   );
+
+  const openAndSetRealm = async (user) => {
+    const realm = await openRealm(user, [Todo]);
+    setRealmDb(realm);
+    return realm;
+  };
 
   const signUp = useCallback(
     async (username, password) => {
