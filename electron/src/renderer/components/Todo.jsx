@@ -4,6 +4,7 @@ import {
   Typography,
   List,
   LinearProgress,
+  Card
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import useTodos from '../hooks/useTodos';
@@ -21,7 +22,9 @@ const TodoItemsPage = () => {
   // one is updated. not sure what the best approach should be here.
   const forceUpdateTodos = useForceUpdate();
   const showLoader = useShowLoader(loading, 200);
+
   return (
+    <>
     <Container className="main-container" maxWidth="sm">
       {loading ? (
         showLoader ? (
@@ -63,6 +66,13 @@ const TodoItemsPage = () => {
         </div>
       )}
     </Container>
+    <div className="custom-sync-message-card">
+      <p className="custom-sync-message">
+        Log in with the same account on another device or simulator to see your list sync in real-time
+      </p>
+    </div>
+
+    </>
   );
 };
 
