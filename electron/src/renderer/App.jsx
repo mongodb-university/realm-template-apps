@@ -8,7 +8,7 @@ import {
   useHistory,
   useLocation,
 } from 'react-router-dom';
-import { AppBar, Toolbar, Button, Typography } from "@material-ui/core";
+import { AppBar, Toolbar, Button, Typography } from '@material-ui/core';
 import './App.css';
 import { RealmAppProvider } from './components/RealmApp';
 import { appId } from '../realm.json';
@@ -39,18 +39,20 @@ const PrivateRoute = (props) => {
 function AppName() {
   return (
     <Typography className="app-bar-title" component="h1" variant="h5">
-      My App
+      Realm Electron Template
     </Typography>
   );
 }
 
-function FooterInfo(){
-  return (<div className="footer-info">
-    <span>Built with the MongoDB Realm Electron Template</span> |{" "}
+function FooterInfo() {
+  return (
+    <div className="footer-info">
+      <span>Built with the MongoDB Realm Electron Template</span> |{' '}
       <Link target="_blank" href="https://docs.mongodb.com/realm">
         Docs
       </Link>
-    </div>)
+    </div>
+  );
 }
 
 const App = () => {
@@ -92,7 +94,6 @@ const App = () => {
           ) : null}
         </Toolbar>
       </AppBar>
-
 
       <Switch>
         <Route path="/" component={WelcomePage} exact />
