@@ -18,6 +18,7 @@ import SignUp from './components/SignUp';
 import Todo from './components/Todo';
 import Welcome from './components/Welcome';
 import useRealmApp from './hooks/useRealmApp';
+import { WelcomePage } from './components/WelcomePage';
 
 const PrivateRoute = (props) => {
   const location = useLocation();
@@ -78,7 +79,7 @@ const App = () => {
       <AppBar position="sticky">
         <Toolbar>
           <AppName />
-          {currentUser.isLoggedIn ? (
+          {currentUser?.isLoggedIn ? (
             <Button
               variant="contained"
               color="secondary"
@@ -94,7 +95,7 @@ const App = () => {
 
 
       <Switch>
-        <Route path="/" component={Welcome} exact />
+        <Route path="/" component={WelcomePage} exact />
         <Route path="/log-in" component={LogIn} />
         <Route path="/sign-up" component={SignUp} />
         <PrivateRoute path="/todo" component={Todo} />

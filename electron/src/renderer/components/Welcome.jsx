@@ -6,9 +6,6 @@ const Welcome = () => {
   const { isLoggedIn } = useContext(Context);
   return (
     <div>
-      <div className="Hello"></div>
-      <h2>Welcome to Realm Todo</h2>
-      <p>A todo list app built with MongoDB Realm, Electron, and React</p>
       <div>
         {isLoggedIn ? (
           <Link to="/todo">
