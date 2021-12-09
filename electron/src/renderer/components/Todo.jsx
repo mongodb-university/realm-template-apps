@@ -4,6 +4,7 @@ import {
   Typography,
   List,
   LinearProgress,
+  Card
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import useTodos from '../hooks/useTodos';
@@ -31,6 +32,7 @@ const TodoItemsPage = () => {
   }
 
   return (
+    <>
     <Container className="main-container" maxWidth="sm">
       {/* TODO: replace below `false` with `loading` once the `useTodos` hook
       is properly set up*/}
@@ -73,6 +75,13 @@ const TodoItemsPage = () => {
         </div>
       )}
     </Container>
+    <div className="custom-sync-message-card">
+      <p className="custom-sync-message">
+        Log in with the same account on another device or simulator to see your list sync in real-time
+      </p>
+    </div>
+
+    </>
   );
 };
 

@@ -96,8 +96,6 @@ const App = () => {
 
       <Switch>
         <Route path="/" component={WelcomePage} exact />
-        <Route path="/log-in" component={LogIn} />
-        <Route path="/sign-up" component={SignUp} />
         <PrivateRoute path="/todo" component={Todo} />
       </Switch>
     </>

@@ -61,9 +61,6 @@ a:hover {
   margin-top: 20px;
 }
 
-.MuiTextField-root, .MuiButton-root{
-  width: 100%;
-}
 
 .App-logo {
   height: 6vmin;
@@ -113,4 +110,14 @@ a:hover {
 .auth-form {
   display: flex;
   flex-direction: column;
+}
+.custom-sync-message-card{
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  bottom: 20%;
+}
+.custom-sync-message{
+  font-size: 14px;
+  text-align: center;
 }
