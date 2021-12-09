@@ -20,11 +20,12 @@ import {
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import Realm from 'realm';
+import { appId } from '../realm.json';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import Realm from 'realm';
 
-const realmApp = new Realm.App('myapp-zufnj');
+const realmApp = new Realm.App(appId);
 
 export default class AppUpdater {
   constructor() {
@@ -35,12 +36,6 @@ export default class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
-
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
-});
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -106,6 +101,7 @@ const createWindow = async () => {
 
   mainWindow.on('closed', () => {
     mainWindow = null;
+    realmDb?.close();
   });
 
   const menuBuilder = new MenuBuilder(mainWindow);
@@ -124,19 +120,42 @@ const createWindow = async () => {
 
 ipcMain.handle('get-user-data-path', () => electronApp.getPath('userData'));
 
+let currentUser: Realm.User | null = null;
+let realmDb: Realm | null = null;
+let realmDbConfig: Realm.Configuration | null = null;
+
+ipcMain.handle('log-in-user', async (_, { username, password }) => {
+  console.log('logging in user. creds are', username, password);
+  const credentials = Realm.Credentials.emailPassword(username, password);
+  try {
+    currentUser = await realmApp.logIn(credentials);
+    console.log('current user on main is', currentUser.id);
+    return true;
+  } catch (err) {
+    return err;
+  }
+});
+
 ipcMain.handle(
   'open-realm',
   async (
     _: Electron.IpcMainInvokeEvent,
     config: Realm.Configuration
   ): Promise<boolean | null> => {
+    if (!currentUser) {
+      console.error('no current user. cannot open realm.');
+      return null;
+    }
     if (!config?.sync?.user?.id) {
+      console.log('opening realm with user', currentUser?.id);
       // @ts-ignore
-      config.sync.user = realmApp.currentUser;
+      config.sync.user = currentUser;
     }
     let res;
     try {
-      await Realm.open(config);
+      realmDb = await Realm.open(config);
+      realmDbConfig = config;
+      console.log('opened realm');
       res = true;
     } catch (err) {
       console.error('error in main process invoking `open-realm`', err);
@@ -146,12 +165,23 @@ ipcMain.handle(
   }
 );
 
+ipcMain.handle('close-and-log-out', async () => {
+  console.log('close and log out', currentUser?.id, realmDb);
+  realmDb?.close();
+  await currentUser?.logOut();
+  if (realmDbConfig !== null) Realm.deleteFile(realmDbConfig);
+  currentUser = null;
+  realmDb = null;
+  realmDbConfig = null;
+});
+
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
   if (process.platform !== 'darwin') {
     app.quit();
   }
+  realmDb?.close();
 });
 
 app
