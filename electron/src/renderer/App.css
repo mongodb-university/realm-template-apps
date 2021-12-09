@@ -46,19 +46,71 @@ a:hover {
   text-decoration: none;
 }
 
-.Hello {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
-}
-
 .footer-info{
   background-color: white;
   position: absolute;
-  padding: 50px;
   bottom: 0;
   left: 0;
   width: 100%;
   text-align: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.MuiPaper-root{
+  margin-top: 20px;
+}
+
+.MuiTextField-root, .MuiButton-root{
+  width: 100%;
+}
+
+.App-logo {
+  height: 6vmin;
+  pointer-events: none;
+}
+
+.link-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+.link-button:hover,
+.link-button:focus {
+  text-decoration: none;
+}
+
+.app-bar-title {
+  flex-grow: 1;
+}
+
+.main-container {
+  padding-top: 48px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 64px);
+}
+
+.todo-items-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
 }
