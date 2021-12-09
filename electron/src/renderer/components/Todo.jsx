@@ -23,18 +23,6 @@ const TodoItemsPage = () => {
   const forceUpdateTodos = useForceUpdate();
   const showLoader = useShowLoader(loading, 200);
 
-  // Delete later for non stubbed data todos
-  if(todos.length < 1){
-    todos.push({
-      isComplete: false,
-      summary: "test summary"
-    })
-    todos.push({
-      isComplete: true,
-      summary: "test summary 2"
-    })
-  }
-
   return (
     <>
     <Container className="main-container" maxWidth="sm">
