@@ -10,6 +10,7 @@ const LogIn = () => {
   const onLogIn = async (username, password) => {
     const res = await logIn(username, password);
     //checks if the response is an Error
+    console.log(res);
     if (res !== true) {
       return res;
     } else {
