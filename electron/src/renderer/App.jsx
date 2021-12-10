@@ -11,7 +11,7 @@ import {
 import { AppBar, Toolbar, Button, Typography } from '@material-ui/core';
 import './App.css';
 import { RealmAppProvider } from './components/RealmApp';
-import { appId } from '../realm.json';
+import { appId } from '../../realm.json';
 import Context from './components/Context';
 import LogIn from './components/LogIn';
 import SignUp from './components/SignUp';
@@ -48,9 +48,7 @@ function FooterInfo() {
   return (
     <div className="footer-info">
       <span>Built with the MongoDB Realm Electron Template</span> |{' '}
-      <Link target="_blank" href="https://docs.mongodb.com/realm">
-        Docs
-      </Link>
+      <a target="_blank" href="https://docs.mongodb.com/realm">Docs</a>
     </div>
   );
 }

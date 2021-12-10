@@ -21,7 +21,7 @@ import {
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import Realm from 'realm';
-import { appId } from '../realm.json';
+import { appId } from '../../realm.json';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 

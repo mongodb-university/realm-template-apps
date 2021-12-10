@@ -1,6 +1,5 @@
 import { Link, useHistory } from 'react-router-dom';
 import UserInfoForm from './UserInfoForm';
-import { Authentication } from '../realm';
 import useRealmApp from '../hooks/useRealmApp';
 
 const LogIn = () => {
