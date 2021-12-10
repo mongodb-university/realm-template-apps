@@ -13,8 +13,6 @@ import './App.css';
 import { RealmAppProvider } from './components/RealmApp';
 import { appId } from '../../realm.json';
 import Context from './components/Context';
-import LogIn from './components/LogIn';
-import SignUp from './components/SignUp';
 import Todo from './components/Todo';
 import Welcome from './components/Welcome';
 import useRealmApp from './hooks/useRealmApp';
