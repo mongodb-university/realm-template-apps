@@ -33,7 +33,13 @@ export function MoreInfoTemplateAndDocs() {
   );
 }
 
-const graphiqlUrl = new URL('/graphql/explore', appUrl).href
+function appendUrlPath(baseUrl, path) {
+  const fullPath = path.join(new URL(baseUrl).path, path);
+  return new URL(fullPath, baseUrl).href;
+}
+
+const graphiqlUrl = appendUrlPath(appUrl, "/graphql/explore");
+
 function MoreInfoGraphiQL() {
   return (
     <MoreInfoItem>
