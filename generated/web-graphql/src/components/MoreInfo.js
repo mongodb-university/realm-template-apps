@@ -33,8 +33,10 @@ export function MoreInfoTemplateAndDocs() {
   );
 }
 
-function appendUrlPath(baseUrl, path) {
-  const fullPath = path.join(new URL(baseUrl).path, path);
+function appendUrlPath(baseUrl, pathAddition) {
+  // "new URL" overrides any existing path, so we need to work around it
+  const baseUrlPath = new URL(baseUrl).pathname;
+  const fullPath = path.join(baseUrlPath, pathAddition);
   return new URL(fullPath, baseUrl).href;
 }
 
