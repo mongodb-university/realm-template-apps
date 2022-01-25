@@ -13,9 +13,15 @@
 		913D46522770E46A00ABE7D3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 913D46512770E46A00ABE7D3 /* Preview Assets.xcassets */; };
 		913D465A2770E60D00ABE7D3 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 913D46592770E60D00ABE7D3 /* Realm */; };
 		913D465C2770E60D00ABE7D3 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 913D465B2770E60D00ABE7D3 /* RealmSwift */; };
-		913D465E2770E7DF00ABE7D3 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913D465D2770E7DF00ABE7D3 /* Task.swift */; };
-		913D46602770E94500ABE7D3 /* TaskViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913D465F2770E94500ABE7D3 /* TaskViews.swift */; };
-		913D46622770F0C600ABE7D3 /* RealmViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913D46612770F0C600ABE7D3 /* RealmViews.swift */; };
+		913D465E2770E7DF00ABE7D3 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913D465D2770E7DF00ABE7D3 /* Todo.swift */; };
+		913D46602770E94500ABE7D3 /* NewTodo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913D465F2770E94500ABE7D3 /* NewTodo.swift */; };
+		913D46622770F0C600ABE7D3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913D46612770F0C600ABE7D3 /* LoginView.swift */; };
+		917097DC27A05EBC00F1D65B /* LogoutButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917097DB27A05EBC00F1D65B /* LogoutButton.swift */; };
+		917097DE27A05F0000F1D65B /* OpenRealmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917097DD27A05F0000F1D65B /* OpenRealmView.swift */; };
+		917097E027A05F3E00F1D65B /* TodoDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917097DF27A05F3E00F1D65B /* TodoDetail.swift */; };
+		917097E227A05F5A00F1D65B /* TodoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917097E127A05F5A00F1D65B /* TodoRow.swift */; };
+		917097E427A05F7E00F1D65B /* TodosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917097E327A05F7E00F1D65B /* TodosView.swift */; };
+		917097E627A05FA000F1D65B /* TodoList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917097E527A05FA000F1D65B /* TodoList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,9 +30,15 @@
 		913D464C2770E46800ABE7D3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		913D464E2770E46A00ABE7D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		913D46512770E46A00ABE7D3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		913D465D2770E7DF00ABE7D3 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
-		913D465F2770E94500ABE7D3 /* TaskViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViews.swift; sourceTree = "<group>"; };
-		913D46612770F0C600ABE7D3 /* RealmViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmViews.swift; sourceTree = "<group>"; };
+		913D465D2770E7DF00ABE7D3 /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
+		913D465F2770E94500ABE7D3 /* NewTodo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTodo.swift; sourceTree = "<group>"; };
+		913D46612770F0C600ABE7D3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		917097DB27A05EBC00F1D65B /* LogoutButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutButton.swift; sourceTree = "<group>"; };
+		917097DD27A05F0000F1D65B /* OpenRealmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenRealmView.swift; sourceTree = "<group>"; };
+		917097DF27A05F3E00F1D65B /* TodoDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoDetail.swift; sourceTree = "<group>"; };
+		917097E127A05F5A00F1D65B /* TodoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoRow.swift; sourceTree = "<group>"; };
+		917097E327A05F7E00F1D65B /* TodosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodosView.swift; sourceTree = "<group>"; };
+		917097E527A05FA000F1D65B /* TodoList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,12 +74,10 @@
 			isa = PBXGroup;
 			children = (
 				913D464A2770E46800ABE7D3 /* realm_template_apps_swiftuiApp.swift */,
-				913D464C2770E46800ABE7D3 /* ContentView.swift */,
 				913D464E2770E46A00ABE7D3 /* Assets.xcassets */,
 				913D46502770E46A00ABE7D3 /* Preview Content */,
-				913D465D2770E7DF00ABE7D3 /* Task.swift */,
-				913D465F2770E94500ABE7D3 /* TaskViews.swift */,
-				913D46612770F0C600ABE7D3 /* RealmViews.swift */,
+				913D465D2770E7DF00ABE7D3 /* Todo.swift */,
+				917097E727A0600000F1D65B /* Views */,
 			);
 			path = "realm-template-apps-swiftui";
 			sourceTree = "<group>";
@@ -78,6 +88,22 @@
 				913D46512770E46A00ABE7D3 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		917097E727A0600000F1D65B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				913D464C2770E46800ABE7D3 /* ContentView.swift */,
+				913D465F2770E94500ABE7D3 /* NewTodo.swift */,
+				913D46612770F0C600ABE7D3 /* LoginView.swift */,
+				917097DB27A05EBC00F1D65B /* LogoutButton.swift */,
+				917097DD27A05F0000F1D65B /* OpenRealmView.swift */,
+				917097DF27A05F3E00F1D65B /* TodoDetail.swift */,
+				917097E127A05F5A00F1D65B /* TodoRow.swift */,
+				917097E327A05F7E00F1D65B /* TodosView.swift */,
+				917097E527A05FA000F1D65B /* TodoList.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -157,11 +183,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				913D46622770F0C600ABE7D3 /* RealmViews.swift in Sources */,
+				917097E427A05F7E00F1D65B /* TodosView.swift in Sources */,
+				917097E627A05FA000F1D65B /* TodoList.swift in Sources */,
+				917097DE27A05F0000F1D65B /* OpenRealmView.swift in Sources */,
+				913D46622770F0C600ABE7D3 /* LoginView.swift in Sources */,
+				917097E227A05F5A00F1D65B /* TodoRow.swift in Sources */,
+				917097DC27A05EBC00F1D65B /* LogoutButton.swift in Sources */,
 				913D464D2770E46800ABE7D3 /* ContentView.swift in Sources */,
-				913D465E2770E7DF00ABE7D3 /* Task.swift in Sources */,
+				917097E027A05F3E00F1D65B /* TodoDetail.swift in Sources */,
+				913D465E2770E7DF00ABE7D3 /* Todo.swift in Sources */,
 				913D464B2770E46800ABE7D3 /* realm_template_apps_swiftuiApp.swift in Sources */,
-				913D46602770E94500ABE7D3 /* TaskViews.swift in Sources */,
+				913D46602770E94500ABE7D3 /* NewTodo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
