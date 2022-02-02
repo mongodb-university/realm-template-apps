@@ -14,7 +14,7 @@
 		913D465A2770E60D00ABE7D3 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 913D46592770E60D00ABE7D3 /* Realm */; };
 		913D465C2770E60D00ABE7D3 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 913D465B2770E60D00ABE7D3 /* RealmSwift */; };
 		913D465E2770E7DF00ABE7D3 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913D465D2770E7DF00ABE7D3 /* Todo.swift */; };
-		913D46602770E94500ABE7D3 /* NewTodo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913D465F2770E94500ABE7D3 /* NewTodo.swift */; };
+		913D46602770E94500ABE7D3 /* CreateTodo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913D465F2770E94500ABE7D3 /* CreateTodo.swift */; };
 		913D46622770F0C600ABE7D3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913D46612770F0C600ABE7D3 /* LoginView.swift */; };
 		917097DC27A05EBC00F1D65B /* LogoutButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917097DB27A05EBC00F1D65B /* LogoutButton.swift */; };
 		917097DE27A05F0000F1D65B /* OpenRealmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917097DD27A05F0000F1D65B /* OpenRealmView.swift */; };
@@ -22,6 +22,7 @@
 		917097E227A05F5A00F1D65B /* TodoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917097E127A05F5A00F1D65B /* TodoRow.swift */; };
 		917097E427A05F7E00F1D65B /* TodosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917097E327A05F7E00F1D65B /* TodosView.swift */; };
 		917097E627A05FA000F1D65B /* TodoList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917097E527A05FA000F1D65B /* TodoList.swift */; };
+		91DF3EEA27AAE18F0020D937 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DF3EE927AAE18F0020D937 /* ErrorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,7 +32,7 @@
 		913D464E2770E46A00ABE7D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		913D46512770E46A00ABE7D3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		913D465D2770E7DF00ABE7D3 /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
-		913D465F2770E94500ABE7D3 /* NewTodo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTodo.swift; sourceTree = "<group>"; };
+		913D465F2770E94500ABE7D3 /* CreateTodo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTodo.swift; sourceTree = "<group>"; };
 		913D46612770F0C600ABE7D3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		917097DB27A05EBC00F1D65B /* LogoutButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutButton.swift; sourceTree = "<group>"; };
 		917097DD27A05F0000F1D65B /* OpenRealmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenRealmView.swift; sourceTree = "<group>"; };
@@ -39,6 +40,7 @@
 		917097E127A05F5A00F1D65B /* TodoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoRow.swift; sourceTree = "<group>"; };
 		917097E327A05F7E00F1D65B /* TodosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodosView.swift; sourceTree = "<group>"; };
 		917097E527A05FA000F1D65B /* TodoList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoList.swift; sourceTree = "<group>"; };
+		91DF3EE927AAE18F0020D937 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,14 +96,15 @@
 			isa = PBXGroup;
 			children = (
 				913D464C2770E46800ABE7D3 /* ContentView.swift */,
-				913D465F2770E94500ABE7D3 /* NewTodo.swift */,
+				91DF3EE927AAE18F0020D937 /* ErrorView.swift */,
 				913D46612770F0C600ABE7D3 /* LoginView.swift */,
 				917097DB27A05EBC00F1D65B /* LogoutButton.swift */,
+				913D465F2770E94500ABE7D3 /* CreateTodo.swift */,
 				917097DD27A05F0000F1D65B /* OpenRealmView.swift */,
 				917097DF27A05F3E00F1D65B /* TodoDetail.swift */,
+				917097E527A05FA000F1D65B /* TodoList.swift */,
 				917097E127A05F5A00F1D65B /* TodoRow.swift */,
 				917097E327A05F7E00F1D65B /* TodosView.swift */,
-				917097E527A05FA000F1D65B /* TodoList.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -190,10 +193,11 @@
 				917097E227A05F5A00F1D65B /* TodoRow.swift in Sources */,
 				917097DC27A05EBC00F1D65B /* LogoutButton.swift in Sources */,
 				913D464D2770E46800ABE7D3 /* ContentView.swift in Sources */,
+				91DF3EEA27AAE18F0020D937 /* ErrorView.swift in Sources */,
 				917097E027A05F3E00F1D65B /* TodoDetail.swift in Sources */,
 				913D465E2770E7DF00ABE7D3 /* Todo.swift in Sources */,
 				913D464B2770E46800ABE7D3 /* realm_template_apps_swiftuiApp.swift in Sources */,
-				913D46602770E94500ABE7D3 /* NewTodo.swift in Sources */,
+				913D46602770E94500ABE7D3 /* CreateTodo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

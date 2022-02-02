@@ -1,5 +1,3 @@
-//let realmAppId = Bundle.main.object(forInfoDictionaryKey: "REALM_APP_ID") as? String
-
 import SwiftUI
 import RealmSwift
 

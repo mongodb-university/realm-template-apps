@@ -38,7 +38,7 @@ struct LoginView: View {
             .foregroundColor(.white)
             .clipShape(Capsule())
             Button("Create Account") {
-                // Button pressed, so create account and then login
+                // Button pressed, so create account and then log in
                 isLoggingIn = true
                 Task.init {
                     await signUp(email: email, password: password)

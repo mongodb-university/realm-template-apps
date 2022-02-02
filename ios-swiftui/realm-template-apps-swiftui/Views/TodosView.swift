@@ -8,14 +8,14 @@ struct TodosView: View {
     // all of the Todo objects in the realm.
     // You can append or delete todos directly from the collection.
     @ObservedResults(Todo.self) var todo
-    @State var addTodo = false
+    @State var creatingNewTodo = false
     @State var todoSummary = ""
     
     var body: some View {
         NavigationView {
             VStack {
-                if addTodo {
-                    NewTodo(addTodo: $addTodo)
+                if creatingNewTodo {
+                    CreateTodo(creatingNewTodo: $creatingNewTodo)
                 }
                 else {
                     TodoList()
@@ -24,7 +24,7 @@ struct TodosView: View {
             .navigationBarItems(leading: self.leadingBarButton,
                 trailing: HStack {
                     Button {
-                        addTodo = true
+                        creatingNewTodo = true
                     } label: {
                         Image(systemName: "plus")
                     }
