@@ -40,7 +40,7 @@ struct LoginView: View {
             Button("Create Account") {
                 // Button pressed, so create account and then log in
                 isLoggingIn = true
-                Task.init {
+                Task {
                     await signUp(email: email, password: password)
                     isLoggingIn = false
                 }
