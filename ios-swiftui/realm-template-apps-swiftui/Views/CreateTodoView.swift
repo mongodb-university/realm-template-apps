@@ -3,7 +3,7 @@ import RealmSwift
 
 /// Instantiate a new Todo object, let the user input a ``summary``, and then
 /// append it to the ``todos`` collection to add it to the Todo list.
-struct CreateTodo: View {
+struct CreateTodoView: View {
     // The ``todos`` ObservedResults collection is the
     // entire list of Todo items in the realm.
     @ObservedResults(Todo.self) var todos
@@ -14,7 +14,7 @@ struct CreateTodo: View {
     // We've passed in the ``creatingNewTodo`` variable
     // from the TodosView to know when the user is done
     // with the new Todo and we should return to the TodosView.
-    @Binding var creatingNewTodo: Bool
+    @Binding var isInCreateTodoView: Bool
 
     var body: some View {
         Form {
@@ -32,9 +32,9 @@ struct CreateTodo: View {
                     $todos.append(newTodo)
                     
                     // Now we're done with this view, so set the
-                    // ``creatingNewTodo`` variable to false to
+                    // ``isInCreateTodoView`` variable to false to
                     // return to the TodosView.
-                    creatingNewTodo = false
+                    isInCreateTodoView = false
                 }) {
                     HStack {
                         Spacer()
@@ -45,9 +45,9 @@ struct CreateTodo: View {
                 Button(action: {
                     // If the user cancels, we don't want to
                     // append the new object we created to the
-                    // task list, so we set the ``creatingNewTodo``
+                    // task list, so we set the ``isInCreateTodoView``
                     // value to false to return to the TodosView.
-                    creatingNewTodo = false
+                    isInCreateTodoView = false
                 }) {
                     HStack {
                         Spacer()

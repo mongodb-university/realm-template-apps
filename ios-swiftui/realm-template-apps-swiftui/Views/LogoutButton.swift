@@ -40,8 +40,6 @@ struct LogoutButton: View {
             print("Successfully logged user out")
         } catch {
             print("Failed to log user out: \(error.localizedDescription)")
-            // Realm returns an error when logout fails. Capture the error.
-            self.error = error
             // SwiftUI Alert requires the item it displays to be Identifiable.
             // Optional Error is not Identifiable.
             // Store the error as errorText in our Identifiable ErrorMessage struct,
