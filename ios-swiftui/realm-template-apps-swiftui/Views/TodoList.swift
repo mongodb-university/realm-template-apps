@@ -7,6 +7,7 @@ struct TodoList: View {
     // Deleting objects from the observed collection
     // deletes them from the realm.
     @ObservedResults(Todo.self) var todos
+    
     var body: some View {
         VStack {
             List {

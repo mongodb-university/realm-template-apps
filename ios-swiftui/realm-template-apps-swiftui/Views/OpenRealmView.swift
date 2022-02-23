@@ -8,7 +8,6 @@ struct OpenRealmView: View {
     @AsyncOpen(appId: realmAppId, partitionValue: "", timeout: 4000) var asyncOpen
        
     var body: some View {
-       
        switch asyncOpen {
        // Starting the Realm.asyncOpen process.
        // Show a progress view.
