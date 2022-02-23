@@ -5,7 +5,7 @@ import RealmSwift
 /// for the template apps.
 /// When you create your own Realm app, use your preferred method
 /// to store and access app configuration details.
-var theAppConfig = loadAppConfig()
+let theAppConfig = loadAppConfig()
 
 let realmApp = App(id: theAppConfig.appId, configuration: AppConfiguration(baseURL: theAppConfig.baseUrl, transport: nil, localAppName: nil, localAppVersion: nil))
 
