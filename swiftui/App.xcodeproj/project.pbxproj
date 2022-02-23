@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		913D464B2770E46800ABE7D3 /* realm_template_apps_swiftuiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913D464A2770E46800ABE7D3 /* realm_template_apps_swiftuiApp.swift */; };
+		912196BE27C6868100407648 /* Realm.plist in Resources */ = {isa = PBXBuildFile; fileRef = 912196BD27C6868100407648 /* Realm.plist */; };
+		913D464B2770E46800ABE7D3 /* realmApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913D464A2770E46800ABE7D3 /* realmApp.swift */; };
 		913D464D2770E46800ABE7D3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913D464C2770E46800ABE7D3 /* ContentView.swift */; };
 		913D464F2770E46A00ABE7D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 913D464E2770E46A00ABE7D3 /* Assets.xcassets */; };
 		913D46522770E46A00ABE7D3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 913D46512770E46A00ABE7D3 /* Preview Assets.xcassets */; };
@@ -26,8 +27,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		913D46472770E46800ABE7D3 /* realm-template-apps-swiftui.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "realm-template-apps-swiftui.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		913D464A2770E46800ABE7D3 /* realm_template_apps_swiftuiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = realm_template_apps_swiftuiApp.swift; sourceTree = "<group>"; };
+		912196BD27C6868100407648 /* Realm.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Realm.plist; sourceTree = "<group>"; };
+		913D46472770E46800ABE7D3 /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		913D464A2770E46800ABE7D3 /* realmApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = realmApp.swift; sourceTree = "<group>"; };
 		913D464C2770E46800ABE7D3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		913D464E2770E46A00ABE7D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		913D46512770E46A00ABE7D3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -59,7 +61,7 @@
 		913D463E2770E46800ABE7D3 = {
 			isa = PBXGroup;
 			children = (
-				913D46492770E46800ABE7D3 /* realm-template-apps-swiftui */,
+				913D46492770E46800ABE7D3 /* App */,
 				913D46482770E46800ABE7D3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -67,21 +69,22 @@
 		913D46482770E46800ABE7D3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				913D46472770E46800ABE7D3 /* realm-template-apps-swiftui.app */,
+				913D46472770E46800ABE7D3 /* App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		913D46492770E46800ABE7D3 /* realm-template-apps-swiftui */ = {
+		913D46492770E46800ABE7D3 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				913D464A2770E46800ABE7D3 /* realm_template_apps_swiftuiApp.swift */,
+				913D464A2770E46800ABE7D3 /* realmApp.swift */,
 				913D464E2770E46A00ABE7D3 /* Assets.xcassets */,
 				913D46502770E46A00ABE7D3 /* Preview Content */,
 				913D465D2770E7DF00ABE7D3 /* Todo.swift */,
 				917097E727A0600000F1D65B /* Views */,
+				912196BD27C6868100407648 /* Realm.plist */,
 			);
-			path = "realm-template-apps-swiftui";
+			path = App;
 			sourceTree = "<group>";
 		};
 		913D46502770E46A00ABE7D3 /* Preview Content */ = {
@@ -112,9 +115,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		913D46462770E46800ABE7D3 /* realm-template-apps-swiftui */ = {
+		913D46462770E46800ABE7D3 /* App */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 913D46552770E46A00ABE7D3 /* Build configuration list for PBXNativeTarget "realm-template-apps-swiftui" */;
+			buildConfigurationList = 913D46552770E46A00ABE7D3 /* Build configuration list for PBXNativeTarget "App" */;
 			buildPhases = (
 				913D46432770E46800ABE7D3 /* Sources */,
 				913D46442770E46800ABE7D3 /* Frameworks */,
@@ -124,13 +127,13 @@
 			);
 			dependencies = (
 			);
-			name = "realm-template-apps-swiftui";
+			name = App;
 			packageProductDependencies = (
 				913D46592770E60D00ABE7D3 /* Realm */,
 				913D465B2770E60D00ABE7D3 /* RealmSwift */,
 			);
 			productName = "realm-template-apps-swiftui";
-			productReference = 913D46472770E46800ABE7D3 /* realm-template-apps-swiftui.app */;
+			productReference = 913D46472770E46800ABE7D3 /* App.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -148,7 +151,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 913D46422770E46800ABE7D3 /* Build configuration list for PBXProject "realm-template-apps-swiftui" */;
+			buildConfigurationList = 913D46422770E46800ABE7D3 /* Build configuration list for PBXProject "App" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -164,7 +167,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				913D46462770E46800ABE7D3 /* realm-template-apps-swiftui */,
+				913D46462770E46800ABE7D3 /* App */,
 			);
 		};
 /* End PBXProject section */
@@ -176,6 +179,7 @@
 			files = (
 				913D46522770E46A00ABE7D3 /* Preview Assets.xcassets in Resources */,
 				913D464F2770E46A00ABE7D3 /* Assets.xcassets in Resources */,
+				912196BE27C6868100407648 /* Realm.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,7 +200,7 @@
 				91DF3EEA27AAE18F0020D937 /* ErrorView.swift in Sources */,
 				917097E027A05F3E00F1D65B /* TodoDetail.swift in Sources */,
 				913D465E2770E7DF00ABE7D3 /* Todo.swift in Sources */,
-				913D464B2770E46800ABE7D3 /* realm_template_apps_swiftuiApp.swift in Sources */,
+				913D464B2770E46800ABE7D3 /* realmApp.swift in Sources */,
 				913D46602770E94500ABE7D3 /* CreateTodoView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -327,7 +331,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"realm-template-apps-swiftui/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"App/Preview Content\"";
 				DEVELOPMENT_TEAM = T7AQ7795G8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -341,7 +345,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mongodb.realm-template-apps-swiftui";
+				PRODUCT_BUNDLE_IDENTIFIER = mongodb.realm.App;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -356,7 +360,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"realm-template-apps-swiftui/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"App/Preview Content\"";
 				DEVELOPMENT_TEAM = T7AQ7795G8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -370,7 +374,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mongodb.realm-template-apps-swiftui";
+				PRODUCT_BUNDLE_IDENTIFIER = mongodb.realm.App;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -381,7 +385,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		913D46422770E46800ABE7D3 /* Build configuration list for PBXProject "realm-template-apps-swiftui" */ = {
+		913D46422770E46800ABE7D3 /* Build configuration list for PBXProject "App" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				913D46532770E46A00ABE7D3 /* Debug */,
@@ -390,7 +394,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		913D46552770E46A00ABE7D3 /* Build configuration list for PBXNativeTarget "realm-template-apps-swiftui" */ = {
+		913D46552770E46A00ABE7D3 /* Build configuration list for PBXNativeTarget "App" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				913D46562770E46A00ABE7D3 /* Debug */,
