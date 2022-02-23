@@ -5,7 +5,7 @@ import RealmSwift
 struct OpenRealmView: View {
     // By leaving the `partitionValue` an empty string, we use the
     // `.environment(\.partitionValue, user.id)` passed in from the `ContentView`
-    @AsyncOpen(appId: appId, partitionValue: "", timeout: 4000) var asyncOpen
+    @AsyncOpen(appId: theAppConfig.appId, partitionValue: "", timeout: 4000) var asyncOpen
        
     var body: some View {
        switch asyncOpen {
