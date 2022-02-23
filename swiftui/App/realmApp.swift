@@ -18,9 +18,9 @@ func readRealmPlist() -> [String] {
 
 let realmPlistInfo: [String] = readRealmPlist()
 
-let realmAppId: String = realmPlistInfo[0]
+let appId: String = realmPlistInfo[0]
 let baseUrl: String = realmPlistInfo[1]
-let realmApp = App(id: realmAppId, configuration: AppConfiguration(baseURL: baseUrl, transport: nil, localAppName: nil, localAppVersion: nil))
+let realmApp = App(id: appId, configuration: AppConfiguration(baseURL: baseUrl, transport: nil, localAppName: nil, localAppVersion: nil))
 
 @main
 struct realmSwiftUIApp: SwiftUI.App {
