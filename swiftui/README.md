@@ -1,4 +1,4 @@
-# iOS Swift Template App
+# SwiftUI Template App
 
 This project uses Swift Package Manager (SPM) to load dependencies.
 
@@ -23,4 +23,3 @@ Ensure App/Realm.plist exists and contains the following properties:
 ## Issues
 
 Please report issues with the template at https://github.com/mongodb-university/realm-template-apps/issues/new
-

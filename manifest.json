@@ -9,6 +9,16 @@
     "metadata_filename": "Realm",
     "file_format": "plist"
   },
+  "swiftui.todo": {
+    "name": "SwiftUI Interface Builder Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "todo-sync",
+    "client_path": "swiftui",
+    "metadata_path": "swiftui/App",
+    "metadata_filename": "Realm",
+    "file_format": "plist"
+  },
   "android.kotlin.todo": {
     "name": "Android Kotlin Todo App",
     "repo_owner": "mongodb-university",
@@ -35,7 +45,7 @@
     "repo_name": "realm-template-apps",
     "backend_path": "todo-sync",
     "client_path": "xamarin",
-    "metadata_path": "xamarin/_Shared/",
+    "metadata_path": "xamarin/realm-todo-dotnet/",
     "metadata_filename": "realm",
     "file_format": "json"
   },
