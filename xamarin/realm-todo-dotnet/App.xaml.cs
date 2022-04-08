@@ -21,8 +21,8 @@ namespace RealmTemplateApp
         {
             try
             {
-                var appConfiguration = LoadAppConfiguration();
-                RealmApp = Realms.Sync.App.Create(appConfiguration);
+                var appId = LoadAppConfiguration();
+                RealmApp = Realms.Sync.App.Create(appId);
 
                 var navPage = RealmApp.CurrentUser == null ?
                     new NavigationPage(new LoginPage()) :
@@ -44,7 +44,7 @@ namespace RealmTemplateApp
             }
         }
 
-        private Realms.Sync.AppConfiguration LoadAppConfiguration()
+        private string LoadAppConfiguration()
         {
             using (Stream stream = this.GetType().Assembly.
                GetManifestResourceStream("RealmTemplateApp." + "realm.json"))
@@ -52,13 +52,7 @@ namespace RealmTemplateApp
             {
                 var json = reader.ReadToEnd();
                 var parsedJson = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-                appId = parsedJson["appId"];
-                baseUrl = parsedJson["baseUrl"];
-                var appConfiguration = new Realms.Sync.AppConfiguration(appId)
-                {
-                    BaseUri = new Uri(baseUrl)
-                };
-                return appConfiguration;
+                return parsedJson["appId"];
             }
         }
 

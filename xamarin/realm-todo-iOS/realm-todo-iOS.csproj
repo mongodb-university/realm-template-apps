@@ -132,17 +132,17 @@
 		<Reference Include="System.Numerics.Vectors" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+		<PackageReference Include="Xamarin.Essentials" Version="1.7.1" />
 		<PackageReference Include="Realm.Fody">
-			<Version>10.1.2</Version>
+			<Version>10.11.1</Version>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="Realm">
-			<Version>10.1.2</Version>
+			<Version>10.11.1</Version>
 		</PackageReference>
 		<PackageReference Include="Xamarin.Forms">
-		  <Version>4.8.0.1821</Version>
+		  <Version>5.0.0.2401</Version>
 		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json">
 		  <Version>13.0.1</Version>
@@ -155,7 +155,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\realm-todo-dotnet\realm-todo-dotnet.csproj">
-	    <Name>Shared</Name>
+	    <Name>realm-todo-dotnet</Name>
 	    <Project>{591F0966-56AF-40FF-B50E-746104588E70}</Project>
 	  </ProjectReference>
 	</ItemGroup>

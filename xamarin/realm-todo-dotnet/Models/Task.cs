@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using MongoDB.Bson;
 using Realms;
 
@@ -12,9 +11,9 @@ namespace RealmTemplateApp.Models
         [Required]
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
-        [MapTo("_partition")]
+        [MapTo("owner_id")]
         [Required]
-        public string Partition { get; set; }
+        public string OwnerId { get; set; }
 
         [MapTo("summary")]
         [Required]

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using RealmTemplateApp.Models;
 using Realms;
@@ -7,6 +6,7 @@ using Xamarin.Forms;
 using System.ComponentModel;
 using Realms.Sync;
 using System.Collections.Generic;
+using Realms.Sync.Exceptions;
 
 namespace RealmTemplateApp
 {
@@ -20,8 +20,18 @@ namespace RealmTemplateApp
         {
             InitializeComponent();
             user = App.RealmApp.CurrentUser;
-            var config = new SyncConfiguration(user.Id.ToString(), user);
+            var config = new FlexibleSyncConfiguration(user);
             taskRealm = Realm.GetInstance(config);
+
+            var subscriptions = taskRealm.Subscriptions;
+            subscriptions.Update(() =>
+            {
+                var defaultSubscription = taskRealm.All<Task>()
+                    .Where(t => t.OwnerId == user.Id);
+                subscriptions.Add(defaultSubscription);
+            });
+
+            Session.Error += SessionErrorHandler();
         }
 
         protected override async void OnAppearing()
@@ -44,9 +54,10 @@ namespace RealmTemplateApp
             {
                 WaitingLayout.IsVisible = true;
                 _tasks = taskRealm.All<Task>();
-                listTasks.ItemsSource = _tasks;
                 WaitingLayout.IsVisible = false;
             }
+
+            listTasks.ItemsSource = _tasks;
         }
 
         private async void New_Button_Clicked(object sender, EventArgs e)
@@ -60,7 +71,7 @@ namespace RealmTemplateApp
 
             var newTask = new Task()
             {
-                Partition = user.Id.ToString(),
+                OwnerId = user.Id.ToString(),
                 Summary = result,
                 IsComplete = false
             };
@@ -86,14 +97,16 @@ namespace RealmTemplateApp
 
         private async void Logout_Clicked(object sender, EventArgs e)
         {
-            // Ensure the realm is closed
+            // Ensure the realm is closed when the user logs out
             taskRealm.Dispose();
             await App.RealmApp.CurrentUser.LogOutAsync();
 
             var root = Navigation.NavigationStack.First();
             if (!(root is LoginPage))
             {
-                // App started with user logged in, so skipped the login page.
+                // The app started with user alerady logged in,
+                // so we skipped the login page initially. We
+                // now need it, so we create it.
                 var loginPage = new LoginPage();
                 NavigationPage.SetHasBackButton(loginPage, false);
                 Navigation.InsertPageBefore(loginPage, root);
@@ -117,6 +130,34 @@ namespace RealmTemplateApp
             {
                 taskRealm.Remove(taskToDelete);
             });
+        }
+
+        /// <summary>
+        /// Handle Sync errors that might occur. This is only a subset
+        /// of possible errors. See Realms.Sync.Exceptions.ErrorCode
+        /// for the complete enumeration.
+        /// </summary>
+        /// <returns></returns>
+        static EventHandler<ErrorEventArgs> SessionErrorHandler()
+        {
+            return (session, errorArgs) =>
+            {
+                var sessionException = (SessionException)errorArgs.Exception;
+                switch (sessionException.ErrorCode)
+                {
+                    case ErrorCode.AccessTokenExpired:
+                    case ErrorCode.BadUserAuthentication:
+                        // Ask user for credentials
+                        break;
+                    case ErrorCode.PermissionDenied:
+                        // Tell the user they don't have permissions to work with that Realm
+                        break;
+                    default:
+                        // We have another error. Check the application log for
+                        // details and/or add another `case` statement.
+                        break;
+                }
+            };
         }
     }
 }
