@@ -23,16 +23,7 @@ namespace RealmTemplateApp
             {
                 if (GetAppConfiguration())
                 {
-                    // :state-start: partition-based-sync
-                    var appConfiguration = new Realms.Sync.AppConfiguration(appId)
-                    {
-                        BaseUri = new Uri(baseUrl)
-                    };
-                    RealmApp = Realms.Sync.App.Create(appConfiguration);
-                    // :state-end:
-                    // :state-uncomment-start: flexible-sync
-                    // RealmApp = Realms.Sync.App.Create(appId);
-                    // :state-uncomment-end:flexible-sync
+                    RealmApp = Realms.Sync.App.Create(appId);
                     var navPage = RealmApp.CurrentUser == null ?
                         new NavigationPage(new LoginPage()) :
                         new NavigationPage(new TaskPage());
