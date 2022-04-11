@@ -21,25 +21,22 @@ namespace RealmTemplateApp
         {
             try
             {
-                if (GetAppConfiguration())
+                // :state-start: partition-based-sync
+                var appConfiguration = new Realms.Sync.AppConfiguration(appId)
                 {
-                    // :state-start: partition-based-sync
-                    var appConfiguration = new Realms.Sync.AppConfiguration(appId)
-                    {
-                        BaseUri = new Uri(baseUrl)
-                    };
-                    RealmApp = Realms.Sync.App.Create(appConfiguration);
-                    // :state-end:
-                    // :state-uncomment-start: flexible-sync
-                    // RealmApp = Realms.Sync.App.Create(appId);
-                    // :state-uncomment-end:flexible-sync
-                    var navPage = RealmApp.CurrentUser == null ?
-                        new NavigationPage(new LoginPage()) :
-                        new NavigationPage(new TaskPage());
+                    BaseUri = new Uri(baseUrl)
+                };
+                RealmApp = Realms.Sync.App.Create(appConfiguration);
+                // :state-end:
+                // :state-uncomment-start: flexible-sync
+                // RealmApp = Realms.Sync.App.Create(appId);
+                // :state-uncomment-end:flexible-sync
+                var navPage = RealmApp.CurrentUser == null ?
+                    new NavigationPage(new LoginPage()) :
+                    new NavigationPage(new TaskPage());
 
-                    NavigationPage.SetHasBackButton(navPage, false);
-                    MainPage = navPage;
-                }
+                NavigationPage.SetHasBackButton(navPage, false);
+                MainPage = navPage;
             }
             catch (Exception e)
             {
@@ -54,7 +51,7 @@ namespace RealmTemplateApp
             }
         }
 
-        private bool GetAppConfiguration()
+        private void LoadAppConfiguration()
         {
             try
             {
@@ -67,7 +64,6 @@ namespace RealmTemplateApp
                     appId = parsedJson["appId"];
                     baseUrl = parsedJson["baseUrl"];
                 }
-                return true;
             }
             catch (Exception ex)
             {

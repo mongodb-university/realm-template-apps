@@ -21,16 +21,13 @@ namespace RealmTemplateApp
         {
             try
             {
-                if (GetAppConfiguration())
-                {
-                    RealmApp = Realms.Sync.App.Create(appId);
-                    var navPage = RealmApp.CurrentUser == null ?
-                        new NavigationPage(new LoginPage()) :
-                        new NavigationPage(new TaskPage());
+                RealmApp = Realms.Sync.App.Create(appId);
+                var navPage = RealmApp.CurrentUser == null ?
+                    new NavigationPage(new LoginPage()) :
+                    new NavigationPage(new TaskPage());
 
-                    NavigationPage.SetHasBackButton(navPage, false);
-                    MainPage = navPage;
-                }
+                NavigationPage.SetHasBackButton(navPage, false);
+                MainPage = navPage;
             }
             catch (Exception e)
             {
@@ -45,7 +42,7 @@ namespace RealmTemplateApp
             }
         }
 
-        private bool GetAppConfiguration()
+        private void LoadAppConfiguration()
         {
             try
             {
@@ -58,7 +55,6 @@ namespace RealmTemplateApp
                     appId = parsedJson["appId"];
                     baseUrl = parsedJson["baseUrl"];
                 }
-                return true;
             }
             catch (Exception ex)
             {

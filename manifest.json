@@ -44,8 +44,8 @@
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
     "backend_path": "todo-sync",
-    "client_path": "xamarin",
-    "metadata_path": "xamarin/realm-todo-dotnet/",
+    "client_path": "generated/xamarin-partition-based-sync",
+    "metadata_path": "generated/xamarin-partition-based-sync/realm-todo-dotnet",
     "metadata_filename": "realm",
     "file_format": "json"
   },
