@@ -21,6 +21,7 @@ namespace RealmTemplateApp
         {
             try
             {
+                LoadAppConfiguration();
                 // :state-start: partition-based-sync
                 var appConfiguration = new Realms.Sync.AppConfiguration(appId)
                 {
