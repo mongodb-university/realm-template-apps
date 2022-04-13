@@ -1,7 +1,7 @@
 {
     "type": "flexible",
     "state": "enabled",
-    "development_mode_enabled": true,
+    "development_mode_enabled": false,
     "service_name": "mongodb-atlas",
     "database_name": "todo",
     "permissions": {
