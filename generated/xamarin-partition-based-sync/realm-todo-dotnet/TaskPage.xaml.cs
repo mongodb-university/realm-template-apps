@@ -20,20 +20,10 @@ namespace RealmTemplateApp
         {
             InitializeComponent();
             user = App.RealmApp.CurrentUser;
-            var config = new FlexibleSyncConfiguration(user);
+            var config = new SyncConfiguration(user.Id.ToString(), user);
             taskRealm = Realm.GetInstance(config);
-
-            var subscriptions = taskRealm.Subscriptions;
-            subscriptions.Update(() =>
-            {
-                var defaultSubscription = taskRealm.All<Task>()
-                    .Where(t => t.OwnerId == user.Id);
-                subscriptions.Add(defaultSubscription);
-            });
-
             Session.Error += SessionErrorHandler();
         }
-
         protected override async void OnAppearing()
         {
             base.OnAppearing();
@@ -71,7 +61,7 @@ namespace RealmTemplateApp
 
             var newTask = new Task()
             {
-                OwnerId = user.Id.ToString(),
+                Partition = user.Id.ToString(),
                 Summary = result,
                 IsComplete = false
             };

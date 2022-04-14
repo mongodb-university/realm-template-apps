@@ -21,6 +21,7 @@ namespace RealmTemplateApp
         {
             try
             {
+                LoadAppConfiguration();
                 var appConfiguration = new Realms.Sync.AppConfiguration(appId)
                 {
                     BaseUri = new Uri(baseUrl)
@@ -62,7 +63,7 @@ namespace RealmTemplateApp
             }
             catch (Exception ex)
             {
-                throw ex;
+                Console.WriteLine($"An error has occurred: {ex.Message}.");
             }
         }
 

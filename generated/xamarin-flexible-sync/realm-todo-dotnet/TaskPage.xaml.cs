@@ -22,18 +22,19 @@ namespace RealmTemplateApp
             user = App.RealmApp.CurrentUser;
             var config = new FlexibleSyncConfiguration(user);
             taskRealm = Realm.GetInstance(config);
-
-            var subscriptions = taskRealm.Subscriptions;
-            subscriptions.Update(() =>
-            {
-                var defaultSubscription = taskRealm.All<Task>()
-                    .Where(t => t.OwnerId == user.Id);
-                subscriptions.Add(defaultSubscription);
-            });
-
+            AddSubscriptionsToRealm();
             Session.Error += SessionErrorHandler();
         }
-
+        private void AddSubscriptionsToRealm()
+        {
+           var subscriptions = taskRealm.Subscriptions;
+           subscriptions.Update(() =>
+           {
+               var defaultSubscription = taskRealm.All<Task>()
+                   .Where(t => t.OwnerId == user.Id);
+               subscriptions.Add(defaultSubscription);
+           });
+        }
         protected override async void OnAppearing()
         {
             base.OnAppearing();

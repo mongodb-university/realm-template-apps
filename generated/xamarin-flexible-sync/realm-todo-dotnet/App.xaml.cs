@@ -21,6 +21,7 @@ namespace RealmTemplateApp
         {
             try
             {
+                LoadAppConfiguration();
                 RealmApp = Realms.Sync.App.Create(appId);
                 var navPage = RealmApp.CurrentUser == null ?
                     new NavigationPage(new LoginPage()) :
@@ -58,7 +59,7 @@ namespace RealmTemplateApp
             }
             catch (Exception ex)
             {
-                throw ex;
+                Console.WriteLine($"An error has occurred: {ex.Message}.");
             }
         }
 
