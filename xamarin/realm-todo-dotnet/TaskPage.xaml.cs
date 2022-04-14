@@ -20,20 +20,30 @@ namespace RealmTemplateApp
         {
             InitializeComponent();
             user = App.RealmApp.CurrentUser;
-            var config = new FlexibleSyncConfiguration(user);
+            // :state-start: partition-based-sync
+            var config = new SyncConfiguration(user.Id.ToString(), user);
+            // :state-end:
+            // :state-uncomment-start: flexible-sync
+            //var config = new FlexibleSyncConfiguration(user);
+            // :state-uncomment-end:flexible-sync
             taskRealm = Realm.GetInstance(config);
-
-            var subscriptions = taskRealm.Subscriptions;
-            subscriptions.Update(() =>
-            {
-                var defaultSubscription = taskRealm.All<Task>()
-                    .Where(t => t.OwnerId == user.Id);
-                subscriptions.Add(defaultSubscription);
-            });
-
+            // :state-uncomment-start: flexible-sync
+            //AddSubscriptionsToRealm();
+            // :state-uncomment-end:flexible-sync
             Session.Error += SessionErrorHandler();
         }
-
+        // :state-uncomment-start: flexible-sync
+        //private void AddSubscriptionsToRealm()
+        //{
+        //    var subscriptions = taskRealm.Subscriptions;
+        //    subscriptions.Update(() =>
+        //    {
+        //        var defaultSubscription = taskRealm.All<Task>()
+        //            .Where(t => t.OwnerId == user.Id);
+        //        subscriptions.Add(defaultSubscription);
+        //    });
+        //}
+        // :state-uncomment-end:flexible-sync
         protected override async void OnAppearing()
         {
             base.OnAppearing();
@@ -71,7 +81,12 @@ namespace RealmTemplateApp
 
             var newTask = new Task()
             {
-                OwnerId = user.Id.ToString(),
+                // :state-start: partition-based-sync
+                Partition = user.Id.ToString(),
+                // :state-end:
+                // :state-uncomment-start:flexible-sync
+                //OwnerId = user.Id.ToString(),
+                // :state-uncomment-end:flexible-sync
                 Summary = result,
                 IsComplete = false
             };

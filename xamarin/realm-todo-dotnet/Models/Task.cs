@@ -11,10 +11,16 @@ namespace RealmTemplateApp.Models
         [Required]
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
-        [MapTo("owner_id")]
+        // :state-start: partition-based-sync
+        [MapTo("_partition")]
         [Required]
-        public string OwnerId { get; set; }
-
+        public string Partition { get; set; }
+        // :state-end:
+        // :state-uncomment-start: flexible-sync
+        //[MapTo("owner_id")]
+        //[Required]
+        //public string OwnerId { get; set; }
+        // :state-uncomment-end:flexible-sync
         [MapTo("summary")]
         [Required]
         public string Summary { get; set; }

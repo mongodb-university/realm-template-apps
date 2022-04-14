@@ -68,7 +68,7 @@ namespace RealmTemplateApp
             }
             catch (Exception ex)
             {
-                throw ex;
+                Console.WriteLine($"An error has occurred: {ex.Message}.");
             }
         }
 
