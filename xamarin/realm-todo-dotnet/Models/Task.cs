@@ -8,8 +8,7 @@ namespace RealmTemplateApp.Models
     {
         [PrimaryKey]
         [MapTo("_id")]
-        [Required]
-        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
+        public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
 
         // :state-start: partition-based-sync
         [MapTo("_partition")]
