@@ -14,6 +14,7 @@ namespace RealmTemplateApp.Models
         [MapTo("owner_id")]
         [Required]
         public string OwnerId { get; set; }
+
         [MapTo("summary")]
         [Required]
         public string Summary { get; set; }

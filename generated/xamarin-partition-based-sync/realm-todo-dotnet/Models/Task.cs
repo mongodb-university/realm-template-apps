@@ -14,6 +14,7 @@ namespace RealmTemplateApp.Models
         [MapTo("_partition")]
         [Required]
         public string Partition { get; set; }
+
         [MapTo("summary")]
         [Required]
         public string Summary { get; set; }

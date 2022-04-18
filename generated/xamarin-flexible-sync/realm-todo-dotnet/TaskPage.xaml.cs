@@ -25,6 +25,7 @@ namespace RealmTemplateApp
             AddSubscriptionsToRealm();
             Session.Error += SessionErrorHandler();
         }
+
         private void AddSubscriptionsToRealm()
         {
            var subscriptions = taskRealm.Subscriptions;
@@ -35,6 +36,7 @@ namespace RealmTemplateApp
                subscriptions.Add(defaultSubscription);
            });
         }
+        
         protected override async void OnAppearing()
         {
             base.OnAppearing();
@@ -53,9 +55,7 @@ namespace RealmTemplateApp
         {
             if (_tasks == null || _tasks.Count() == 0)
             {
-                WaitingLayout.IsVisible = true;
                 _tasks = taskRealm.All<Task>();
-                WaitingLayout.IsVisible = false;
             }
 
             listTasks.ItemsSource = _tasks;
@@ -81,19 +81,6 @@ namespace RealmTemplateApp
             {
                 taskRealm.Add(newTask);
             });
-        }
-
-        private void chkCompleted_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            var isCompleteSwitch = (Switch)sender;
-            var changedTask = _tasks.FirstOrDefault(t => t.Id == isCompleteSwitch.AutomationId);
-            if (changedTask != null && e.PropertyName == "IsToggled")
-            {
-                taskRealm.Write(() =>
-                    {
-                        changedTask.IsComplete = isCompleteSwitch.IsToggled;
-                    });
-            }
         }
 
         private async void Logout_Clicked(object sender, EventArgs e)

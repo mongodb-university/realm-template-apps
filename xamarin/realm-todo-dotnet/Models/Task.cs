@@ -21,6 +21,7 @@ namespace RealmTemplateApp.Models
         //[Required]
         //public string OwnerId { get; set; }
         // :state-uncomment-end:flexible-sync
+
         [MapTo("summary")]
         [Required]
         public string Summary { get; set; }

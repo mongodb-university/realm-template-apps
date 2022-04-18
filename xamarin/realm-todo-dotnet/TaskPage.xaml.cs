@@ -21,7 +21,7 @@ namespace RealmTemplateApp
             InitializeComponent();
             user = App.RealmApp.CurrentUser;
             // :state-start: partition-based-sync
-            var config = new SyncConfiguration(user.Id.ToString(), user);
+            var config = new PartitionSyncConfiguration(user.Id.ToString(), user);
             // :state-end:
             // :state-uncomment-start: flexible-sync
             //var config = new FlexibleSyncConfiguration(user);
@@ -32,6 +32,7 @@ namespace RealmTemplateApp
             // :state-uncomment-end:flexible-sync
             Session.Error += SessionErrorHandler();
         }
+
         // :state-uncomment-start: flexible-sync
         //private void AddSubscriptionsToRealm()
         //{
@@ -43,6 +44,7 @@ namespace RealmTemplateApp
         //        subscriptions.Add(defaultSubscription);
         //    });
         //}
+        //
         // :state-uncomment-end:flexible-sync
         protected override async void OnAppearing()
         {
@@ -62,9 +64,7 @@ namespace RealmTemplateApp
         {
             if (_tasks == null || _tasks.Count() == 0)
             {
-                WaitingLayout.IsVisible = true;
                 _tasks = taskRealm.All<Task>();
-                WaitingLayout.IsVisible = false;
             }
 
             listTasks.ItemsSource = _tasks;
@@ -95,19 +95,6 @@ namespace RealmTemplateApp
             {
                 taskRealm.Add(newTask);
             });
-        }
-
-        private void chkCompleted_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            var isCompleteSwitch = (Switch)sender;
-            var changedTask = _tasks.FirstOrDefault(t => t.Id == isCompleteSwitch.AutomationId);
-            if (changedTask != null && e.PropertyName == "IsToggled")
-            {
-                taskRealm.Write(() =>
-                    {
-                        changedTask.IsComplete = isCompleteSwitch.IsToggled;
-                    });
-            }
         }
 
         private async void Logout_Clicked(object sender, EventArgs e)

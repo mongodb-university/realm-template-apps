@@ -3,6 +3,7 @@ using System.IO;
 using System;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace RealmTemplateApp
 {
@@ -30,7 +31,7 @@ namespace RealmTemplateApp
                 NavigationPage.SetHasBackButton(navPage, false);
                 MainPage = navPage;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 // A NullReferenceException occurs if:
                 // 1. the config file does not exist, or
@@ -39,7 +40,7 @@ namespace RealmTemplateApp
                 // If the appId value is incorrect, we handle that
                 // exception in the Login page.
 
-                throw e;
+                Debug.WriteLine(ex.ToString());
             }
         }
 
