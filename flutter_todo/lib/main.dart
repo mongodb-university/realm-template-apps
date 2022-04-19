@@ -6,7 +6,8 @@ import 'components/create_todo.dart';
 import './components/realm_provider.dart';
 
 void main() async {
-  runApp(const App());
+  runApp(Provider<RealmProvider>(
+      create: (context) => RealmProvider(), child: const App()));
 }
 
 class App extends StatelessWidget {
@@ -37,14 +38,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<RealmProvider>(
-        create: (context) => RealmProvider(),
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(widget.title),
-          ),
-          body: TodoList(),
-          floatingActionButton: const CreateTodo(),
-        ));
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: TodoList(),
+      floatingActionButton: const CreateTodo(),
+    );
   }
 }

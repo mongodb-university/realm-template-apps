@@ -34,8 +34,8 @@ class ModiftyTodoForm extends StatefulWidget {
 class _ModiftyTodoFormState extends State<ModiftyTodoForm> {
   final _formKey = GlobalKey<FormState>();
   late bool _isComplete;
-  String? _summary;
-  String? _id;
+  late String _summary;
+  late String _id;
 
   @override
   void initState() {
@@ -51,30 +51,29 @@ class _ModiftyTodoFormState extends State<ModiftyTodoForm> {
 
     final realmProvider = Provider.of<RealmProvider>(context);
     final realm = realmProvider.realm;
-    void _createTodo(String name) {
-      // realm.write(() {
-      //   final newTodo = Todo(name);
-      //   realm.add<Todo>(newTodo);
-      // });
-    }
 
-    void _update() {
-      print('updating with $_summary');
-      // var todo = realm.all<Todo>().query('_id == "${widget.todo._id}"');
-      // realm.write(() {
-      //   realm.up
-      // })
+    void _updateTodo() {
+      final id = widget.todo.id;
+      Todo todo = realm.query<Todo>('id == "$id"')[0];
+      realm.write(() {
+        todo.summary = _summary;
+        todo.isComplete = _isComplete;
+      });
     }
 
     void _deleteTodo() {
-      // todosModel.delete(widget.todo.id);
+      final id = widget.todo.id;
+      Todo todo = realm.query<Todo>('id == "$id"')[0];
+      realm.write(() {
+        realm.delete<Todo>(todo);
+      });
     }
 
+    // TODO: this has to be nullable for the code to compile.
     void handleTodoRadioChange(bool? value) {
-      print('changed value is $value');
-      // setState(() {
-      //   _status = value;
-      // });
+      setState(() {
+        _isComplete = value ?? false;
+      });
     }
 
     return Padding(
@@ -82,7 +81,7 @@ class _ModiftyTodoFormState extends State<ModiftyTodoForm> {
         child: Container(
           color: Colors.grey.shade100,
           height: 350,
-          padding: const EdgeInsets.only(left: 50, right: 50),
+          padding: const EdgeInsets.only(left: 30, right: 30),
           child: Center(
               child: Form(
             key: _formKey,
@@ -156,7 +155,7 @@ class _ModiftyTodoFormState extends State<ModiftyTodoForm> {
                           child: const Text('Update'),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              _update();
+                              _updateTodo();
                               Navigator.pop(context);
                             }
                           },
