@@ -15,19 +15,6 @@ class TodoList extends StatefulWidget {
 class _TodoListState extends State<TodoList> {
   late RealmResults<Todo> _todos;
 
-  void changeListenerCb(changes) {
-    setState(() {
-      _todos = changes.results;
-    });
-  }
-
-  @override
-  void dispose() async {
-    super.dispose();
-
-    await _todos.changes.listen(changeListenerCb).cancel();
-  }
-
   @override
   Widget build(BuildContext context) {
     // TODO: better to use Provider.of or Consumer?
