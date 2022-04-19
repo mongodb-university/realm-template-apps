@@ -15,29 +15,43 @@ class TodoList extends StatefulWidget {
 class _TodoListState extends State<TodoList> {
   late RealmResults<Todo> _todos;
 
+  void changeListenerCb(changes) {
+    setState(() {
+      _todos = changes.results;
+    });
+  }
+
+  @override
+  void dispose() async {
+    super.dispose();
+
+    await _todos.changes.listen(changeListenerCb).cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: better to use Provider.of or Consumer?
     final realmProvider = Provider.of<RealmProvider>(context);
     final realm = realmProvider.realm;
-    setState(() {
-      _todos = realm.all<Todo>();
-      _todos.changes.listen((changes) {
-        print('hello');
-        print(changes.results.length);
-        setState(() {
-          _todos = changes.results;
-        });
+
+    if (mounted) {
+      setState(() {
+        _todos = realm.all<Todo>();
       });
-    });
+    }
 
     return SizedBox(
       height: double.infinity,
-      child: ListView.builder(
-          itemCount: _todos.length,
-          itemBuilder: (_, i) {
-            final todo = _todos[i];
-            return _SingleTodoView(todo);
+      // TODO: understand why this works and if there's a better way to do it.
+      child: StreamBuilder(
+          stream: _todos.changes,
+          builder: (context, snapshot) {
+            return ListView.builder(
+                itemCount: _todos.length,
+                itemBuilder: (_, i) {
+                  final todo = _todos[i];
+                  return _SingleTodoView(todo);
+                });
           }),
     );
   }
