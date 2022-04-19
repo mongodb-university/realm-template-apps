@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/components/realm_provider.dart';
-import 'package:flutter_todo/db/schemas.dart';
+import 'package:flutter_todo/realm/schemas.dart';
 import 'package:uuid/uuid.dart';
 
 const uuid = Uuid();
@@ -43,6 +43,7 @@ class _CreateTodoFormState extends State<CreateTodoForm> {
   Widget build(BuildContext context) {
     TextTheme myTextTheme = Theme.of(context).textTheme;
     final todoEditingController = TextEditingController();
+    // TODO: better to use Provider.of or Consumer?
     return Consumer<RealmProvider>(
       builder: (context, realmProvider, child) {
         final realm = realmProvider.realm;

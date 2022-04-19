@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/components/realm_provider.dart';
-import 'package:flutter_todo/db/schemas.dart';
+import 'package:flutter_todo/realm/schemas.dart';
 
 class ModifyTodoButton extends StatelessWidget {
   final Todo todo;
@@ -49,6 +49,7 @@ class _ModiftyTodoFormState extends State<ModiftyTodoForm> {
   Widget build(BuildContext context) {
     TextTheme myTextTheme = Theme.of(context).textTheme;
 
+    // TODO: better to use Provider.of or Consumer?
     final realmProvider = Provider.of<RealmProvider>(context);
     final realm = realmProvider.realm;
 
@@ -70,6 +71,7 @@ class _ModiftyTodoFormState extends State<ModiftyTodoForm> {
     }
 
     // TODO: this has to be nullable for the code to compile.
+    // that's why it's `_isComplete = value ?? false;` with the nullish coalscing
     void handleTodoRadioChange(bool? value) {
       setState(() {
         _isComplete = value ?? false;

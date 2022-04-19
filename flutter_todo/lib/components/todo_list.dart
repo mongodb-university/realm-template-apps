@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_todo/components/realm_provider.dart';
 import 'package:realm/realm.dart';
 import 'modify_todo.dart';
-import 'package:flutter_todo/db/schemas.dart';
+import 'package:flutter_todo/realm/schemas.dart';
 
 class TodoList extends StatefulWidget {
   TodoList({Key? key}) : super(key: key);
@@ -17,6 +17,7 @@ class _TodoListState extends State<TodoList> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: better to use Provider.of or Consumer?
     final realmProvider = Provider.of<RealmProvider>(context);
     final realm = realmProvider.realm;
     setState(() {

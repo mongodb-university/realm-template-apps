@@ -3,7 +3,7 @@ import 'package:flutter_todo/components/realm_provider.dart';
 import 'package:provider/provider.dart';
 import 'components/todo_list.dart';
 import 'components/create_todo.dart';
-import './components/realm_provider.dart';
+import 'components/realm_provider.dart';
 
 void main() async {
   runApp(Provider<RealmProvider>(
@@ -12,8 +12,6 @@ void main() async {
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
 
   @override
   Widget build(BuildContext context) {
