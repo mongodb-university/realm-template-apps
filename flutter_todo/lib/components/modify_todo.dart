@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_todo/components/realm_provider.dart';
 import 'package:flutter_todo/realm/schemas.dart';
+import 'package:realm/realm.dart';
 
 class ModifyTodoButton extends StatelessWidget {
   final Todo todo;
@@ -12,10 +12,7 @@ class ModifyTodoButton extends StatelessWidget {
     void handlePressed() {
       showModalBottomSheet(
         context: context,
-        isScrollControlled: true,
-        builder: (BuildContext context) {
-          return ModiftyTodoForm(todo);
-        },
+        builder: (_) => ModifyTodoForm(todo),
       );
     }
 
@@ -23,55 +20,49 @@ class ModifyTodoButton extends StatelessWidget {
   }
 }
 
-class ModiftyTodoForm extends StatefulWidget {
+class ModifyTodoForm extends StatefulWidget {
   final Todo todo;
-  const ModiftyTodoForm(this.todo, {Key? key}) : super(key: key);
+  const ModifyTodoForm(this.todo, {Key? key}) : super(key: key);
 
   @override
-  _ModiftyTodoFormState createState() => _ModiftyTodoFormState();
+  _ModifyTodoFormState createState() => _ModifyTodoFormState();
 }
 
-class _ModiftyTodoFormState extends State<ModiftyTodoForm> {
+class _ModifyTodoFormState extends State<ModifyTodoForm> {
   final _formKey = GlobalKey<FormState>();
   late bool _isComplete;
   late String _summary;
-  late String _id;
 
   @override
   void initState() {
     super.initState();
     _summary = widget.todo.summary;
     _isComplete = widget.todo.isComplete;
-    _id = widget.todo.id;
   }
 
   @override
   Widget build(BuildContext context) {
     TextTheme myTextTheme = Theme.of(context).textTheme;
 
-    // TODO: better to use Provider.of or Consumer?
-    final realmProvider = Provider.of<RealmProvider>(context);
-    final realm = realmProvider.realm;
+    final realm = Provider.of<Realm>(context);
 
-    void _updateTodo() {
-      final id = widget.todo.id;
-      Todo todo = realm.query<Todo>('id == "$id"')[0];
+    void updateTodo() {
+      final todo = widget.todo;
       realm.write(() {
         todo.summary = _summary;
         todo.isComplete = _isComplete;
       });
     }
 
-    void _deleteTodo() {
-      final id = widget.todo.id;
-      Todo todo = realm.query<Todo>('id == "$id"')[0];
+    void deleteTodo() {
+      final todo = widget.todo;
       realm.write(() {
-        realm.delete<Todo>(todo);
+        realm.delete(todo);
       });
     }
 
     // TODO: this has to be nullable for the code to compile.
-    // that's why it's `_isComplete = value ?? false;` with the nullish coalscing
+    // that's why it's `_isComplete = value ?? false;` with the nullish coalescing
     void handleTodoRadioChange(bool? value) {
       setState(() {
         _isComplete = value ?? false;
@@ -79,13 +70,13 @@ class _ModiftyTodoFormState extends State<ModiftyTodoForm> {
     }
 
     return Padding(
-        padding: MediaQuery.of(context).viewInsets,
-        child: Container(
-          color: Colors.grey.shade100,
-          height: 350,
-          padding: const EdgeInsets.only(left: 30, right: 30),
-          child: Center(
-              child: Form(
+      padding: MediaQuery.of(context).viewInsets,
+      child: Container(
+        color: Colors.grey.shade100,
+        height: 350,
+        padding: const EdgeInsets.only(left: 30, right: 30),
+        child: Center(
+          child: Form(
             key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -134,20 +125,16 @@ class _ModiftyTodoFormState extends State<ModiftyTodoForm> {
                         margin: const EdgeInsets.symmetric(horizontal: 10),
                         child: ElevatedButton(
                             child: const Text('Cancel'),
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.grey)),
+                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.grey)),
                             onPressed: () => Navigator.pop(context)),
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 10),
                         child: ElevatedButton(
                             child: const Text('Delete'),
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.red)),
+                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
                             onPressed: () {
-                              _deleteTodo();
+                              deleteTodo();
                               Navigator.pop(context);
                             }),
                       ),
@@ -157,7 +144,7 @@ class _ModiftyTodoFormState extends State<ModiftyTodoForm> {
                           child: const Text('Update'),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              _updateTodo();
+                              updateTodo();
                               Navigator.pop(context);
                             }
                           },
@@ -168,7 +155,9 @@ class _ModiftyTodoFormState extends State<ModiftyTodoForm> {
                 ),
               ],
             ),
-          )),
-        ));
+          ),
+        ),
+      ),
+    );
   }
 }
