@@ -42,7 +42,7 @@ namespace RealmTemplateApp
             }
             catch (Exception ex)
             {
-                // A NullReferenceException occurs if:
+                // A Exception occurs if:
                 // 1. the config file does not exist, or
                 // 2. the config does not contain an "appId" or "baseUrl" element.
 
