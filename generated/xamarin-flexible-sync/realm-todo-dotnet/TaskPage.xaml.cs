@@ -40,7 +40,6 @@ namespace RealmTemplateApp
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            WaitingLayout.IsVisible = true;
             try
             {
                 SetUpTaskList();
@@ -53,7 +52,7 @@ namespace RealmTemplateApp
 
         private void SetUpTaskList()
         {
-            if (_tasks == null || _tasks.Count() == 0)
+            if (_tasks == null)
             {
                 _tasks = taskRealm.All<Task>();
             }
