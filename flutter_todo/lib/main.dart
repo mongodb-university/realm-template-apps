@@ -14,7 +14,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provider<Realm>(
       create: (_) => Realm(Configuration([Todo.schema])),
-      dispose: (_, r) => r.close(),
+      dispose: (_, realm) => realm.close(),
       child: MaterialApp(
         title: 'Flutter Todo',
         theme: ThemeData(
