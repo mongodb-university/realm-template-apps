@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'modify_todo.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 
@@ -32,11 +33,39 @@ class _SingleTodoView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        title: Text(todo.summary),
-        subtitle: todo.isComplete ? const Text('Completed') : const Text('Incomplete'),
-        trailing: ModifyTodoButton(todo),
+    return Slidable(
+      key: const ValueKey(0),
+      endActionPane: ActionPane(motion: ScrollMotion(), children: [
+        SlidableAction(
+          onPressed: (BuildContext context) {
+            print("ok");
+          },
+          flex: 2,
+          backgroundColor: Color(Colors.blue[500].hashCode),
+          foregroundColor: Colors.white,
+          icon: Icons.edit,
+          label: 'Change',
+        ),
+        SlidableAction(
+          onPressed: (BuildContext context) {
+            print("ok");
+          },
+          flex: 2,
+          backgroundColor: Color(Colors.red[600].hashCode),
+          foregroundColor: Colors.white,
+          icon: Icons.delete_forever,
+          label: 'Delete',
+        )
+      ]),
+      // actions: []
+      child: Card(
+        child: ListTile(
+          title: Text(todo.summary),
+          subtitle: todo.isComplete
+              ? const Text('Completed')
+              : const Text('Incomplete'),
+          trailing: ModifyTodoButton(todo),
+        ),
       ),
     );
   }
