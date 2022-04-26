@@ -3,21 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:realm/realm.dart';
 
-class ModifyTodoButton extends StatelessWidget {
-  final Todo todo;
-  const ModifyTodoButton(this.todo, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    void handlePressed() {
-      showModalBottomSheet(
-        context: context,
-        builder: (_) => ModifyTodoForm(todo),
-      );
-    }
-
-    return IconButton(icon: const Icon(Icons.edit), onPressed: handlePressed);
-  }
+void showModifyTodoModal(BuildContext context, Todo todo) {
+  showModalBottomSheet(
+    context: context,
+    builder: (_) => ModifyTodoForm(todo),
+  );
 }
 
 class ModifyTodoForm extends StatefulWidget {
@@ -125,14 +115,18 @@ class _ModifyTodoFormState extends State<ModifyTodoForm> {
                         margin: const EdgeInsets.symmetric(horizontal: 10),
                         child: ElevatedButton(
                             child: const Text('Cancel'),
-                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.grey)),
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.grey)),
                             onPressed: () => Navigator.pop(context)),
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 10),
                         child: ElevatedButton(
                             child: const Text('Delete'),
-                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.red)),
                             onPressed: () {
                               deleteTodo();
                               Navigator.pop(context);
