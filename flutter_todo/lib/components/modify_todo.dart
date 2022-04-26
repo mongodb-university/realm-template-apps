@@ -51,8 +51,6 @@ class _ModifyTodoFormState extends State<ModifyTodoForm> {
       });
     }
 
-    // TODO: this has to be nullable for the code to compile.
-    // that's why it's `_isComplete = value ?? false;` with the nullish coalescing
     void handleTodoRadioChange(bool? value) {
       setState(() {
         _isComplete = value ?? false;
