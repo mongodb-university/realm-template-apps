@@ -4,7 +4,7 @@ import 'package:realm/realm.dart';
 import 'todo_item.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 
-final _animationDuration = const Duration(milliseconds: 200);
+const _animationDuration = Duration(milliseconds: 300);
 
 class TodoList extends StatelessWidget {
   const TodoList({Key? key}) : super(key: key);
@@ -20,36 +20,44 @@ class TodoList extends StatelessWidget {
         builder: (context, snapshot) {
           final todos = snapshot.data?.results;
 
-          // TODO: i added this summary array so that when the animated list animates
+          // TODO: i had added this summary array so that when the animated list animates
           // out it creates a new todo for the deleted todo. this was done b/c
           // before when i was trying to access the todos[deletionIndex] realm
-          // was throwing an error as the todos[deletionIndex] was already deleted
+          // was throwing an error as the todos[deletionIndex] was already deleted.
+          // however even this approach isn't working as expected.
           // is there a better implementation here?
-          List<String> summaries = [];
-          todos?.forEach((todo) => summaries.add(todo.summary));
+          // List<String> summaries = [];
+          // todos?.forEach((todo) => summaries.add(todo.summary));
 
-          snapshot.data?.deleted.forEach((deletionIndex) {
-            _myListKey.currentState?.removeItem(deletionIndex,
-                (context, animation) {
-              return FadeTransition(
-                  opacity: animation,
-                  child: SizeTransition(
-                      sizeFactor: animation,
-                      child: AnimatedSwitcher(
-                          key: key,
-                          duration: _animationDuration,
-                          child:
-                              TodoItem(Todo('_', summaries[deletionIndex])))));
+          if (snapshot.hasData) {
+            snapshot.data?.deleted.forEach((deletionIndex) {
+              if (snapshot.data?.results.isNotEmpty == true) {
+                _myListKey.currentState?.removeItem(deletionIndex,
+                    (context, animation) {
+                  return FadeTransition(
+                      opacity: animation,
+                      child: SizeTransition(
+                          sizeFactor: animation,
+                          child: AnimatedSwitcher(
+                              key: key,
+                              duration: _animationDuration,
+                              // TODO: right now only 'Bye by' b/c i can't get it
+                              // to properly show the deleted item
+                              child: TodoItem(Todo('_', 'Bye bye')))));
+                  // child: TodoItem(Todo('_', summaries[deletionIndex])))));
+                });
+              }
             });
-          });
-          snapshot.data?.inserted.forEach((insertionIndex) =>
-              _myListKey.currentState?.insertItem(insertionIndex));
+            snapshot.data?.inserted.forEach((insertionIndex) =>
+                _myListKey.currentState?.insertItem(insertionIndex));
+          }
 
-          // TODO: how to avoid this?
-          // if i don't have this, then there's an error on page load
-          print(todos?.length);
-          if (todos?.length == null) {
-            return const SizedBox.shrink();
+          // TODO: can this if statement be avoided?
+          if (todos == null || todos.isEmpty) {
+            return Container(
+              padding: const EdgeInsets.only(top: 25),
+              child: const Center(child: Text("No Todos yet!")),
+            );
           }
           return AnimatedList(
               key: _myListKey,
@@ -62,7 +70,7 @@ class TodoList extends StatelessWidget {
                         child: AnimatedSwitcher(
                             key: key,
                             duration: _animationDuration,
-                            child: TodoItem(todos![index]))));
+                            child: TodoItem(todos[index]))));
               });
         });
   }
