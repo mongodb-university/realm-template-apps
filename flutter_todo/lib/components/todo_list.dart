@@ -4,6 +4,8 @@ import 'package:realm/realm.dart';
 import 'todo_item.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 
+final _animationDuration = const Duration(milliseconds: 200);
+
 class TodoList extends StatelessWidget {
   const TodoList({Key? key}) : super(key: key);
 
@@ -26,19 +28,26 @@ class TodoList extends StatelessWidget {
           List<String> summaries = [];
           todos?.forEach((todo) => summaries.add(todo.summary));
 
-          // TODO: right now, it looks like the Todo is deleting from the bottom
-          // of the list regardless of the actual location. how to fix?
           snapshot.data?.deleted.forEach((deletionIndex) {
-            _myListKey.currentState?.removeItem(
-                deletionIndex,
-                (context, animation) =>
-                    TodoItem(Todo('_', summaries[deletionIndex])));
+            _myListKey.currentState?.removeItem(deletionIndex,
+                (context, animation) {
+              return FadeTransition(
+                  opacity: animation,
+                  child: SizeTransition(
+                      sizeFactor: animation,
+                      child: AnimatedSwitcher(
+                          key: key,
+                          duration: _animationDuration,
+                          child:
+                              TodoItem(Todo('_', summaries[deletionIndex])))));
+            });
           });
           snapshot.data?.inserted.forEach((insertionIndex) =>
               _myListKey.currentState?.insertItem(insertionIndex));
 
           // TODO: how to avoid this?
           // if i don't have this, then there's an error on page load
+          print(todos?.length);
           if (todos?.length == null) {
             return const SizedBox.shrink();
           }
@@ -46,7 +55,14 @@ class TodoList extends StatelessWidget {
               key: _myListKey,
               initialItemCount: initTodos.length,
               itemBuilder: (context, index, animation) {
-                return TodoItem(todos![index]);
+                return FadeTransition(
+                    opacity: animation,
+                    child: SizeTransition(
+                        sizeFactor: animation,
+                        child: AnimatedSwitcher(
+                            key: key,
+                            duration: _animationDuration,
+                            child: TodoItem(todos![index]))));
               });
         });
   }

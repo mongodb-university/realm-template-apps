@@ -72,7 +72,6 @@ class _CreateTodoFormState extends State<CreateTodoForm> {
                 ),
                 TextFormField(
                   controller: todoEditingController,
-                  autofocus: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter some text';
