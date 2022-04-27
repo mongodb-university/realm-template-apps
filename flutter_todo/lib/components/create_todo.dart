@@ -13,8 +13,9 @@ class CreateTodo extends StatelessWidget {
   Widget build(BuildContext context) {
     void handlePressed() {
       showModalBottomSheet(
+        isScrollControlled: true,
         context: context,
-        builder: (_) => const CreateTodoForm(),
+        builder: (_) => Wrap(children: const [CreateTodoForm()]),
       );
     }
 
@@ -50,59 +51,66 @@ class _CreateTodoFormState extends State<CreateTodoForm> {
       });
     }
 
-    return Container(
-      color: Colors.grey.shade100,
-      height: 200,
-      padding: const EdgeInsets.only(left: 50, right: 50),
-      child: Center(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                'Create a New Todo',
-                style: myTextTheme.headline6,
-              ),
-              TextFormField(
-                controller: todoEditingController,
-                autofocus: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      child: ElevatedButton(
-                          child: const Text('Cancel'),
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.grey)),
-                          onPressed: () => Navigator.pop(context)),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      child: ElevatedButton(
-                        child: const Text('Create'),
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            createTodo(todoEditingController.text);
-                            Navigator.pop(context);
-                          }
-                        },
-                      ),
-                    ),
-                  ],
+    return Padding(
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: Container(
+        color: Colors.grey.shade100,
+        // height: 200,
+        padding:
+            const EdgeInsets.only(top: 25, bottom: 25, left: 50, right: 50),
+        child: Center(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  'Create a New Todo',
+                  style: myTextTheme.headline6,
                 ),
-              ),
-            ],
+                TextFormField(
+                  controller: todoEditingController,
+                  autofocus: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
+                        child: ElevatedButton(
+                            child: const Text('Cancel'),
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.grey)),
+                            onPressed: () => Navigator.pop(context)),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
+                        child: ElevatedButton(
+                          child: const Text('Create'),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              createTodo(todoEditingController.text);
+                              Navigator.pop(context);
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

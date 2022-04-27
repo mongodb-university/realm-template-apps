@@ -6,7 +6,8 @@ import 'package:realm/realm.dart';
 void showModifyTodoModal(BuildContext context, Todo todo) {
   showModalBottomSheet(
     context: context,
-    builder: (_) => ModifyTodoForm(todo),
+    isScrollControlled: true,
+    builder: (_) => Wrap(children: [ModifyTodoForm(todo)]),
   );
 }
 
@@ -58,11 +59,16 @@ class _ModifyTodoFormState extends State<ModifyTodoForm> {
     }
 
     return Padding(
-      padding: MediaQuery.of(context).viewInsets,
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Container(
         color: Colors.grey.shade100,
-        height: 350,
-        padding: const EdgeInsets.only(left: 30, right: 30),
+        padding: const EdgeInsets.only(
+          top: 25,
+          bottom: 25,
+          left: 30,
+          right: 30,
+        ),
         child: Center(
           child: Form(
             key: _formKey,
