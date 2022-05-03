@@ -33,7 +33,15 @@ export function MoreInfoTemplateAndDocs() {
   );
 }
 
-const graphiqlUrl = new URL('/graphql/explore', appUrl).href
+function appendUrlPath(baseUrl, pathAddition) {
+  // "new URL" overrides any existing path, so we need to work around it
+  const baseUrlPath = new URL(baseUrl).pathname;
+  const fullPath = path.join(baseUrlPath, pathAddition);
+  return new URL(fullPath, baseUrl).href;
+}
+
+const graphiqlUrl = appendUrlPath(appUrl, "/graphql/explore");
+
 function MoreInfoGraphiQL() {
   return (
     <MoreInfoItem>
