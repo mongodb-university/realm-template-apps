@@ -5,12 +5,11 @@ For bucket access, consult the Realm docs team.
 
 ## Adding a New Template App
 
-1. Add your project in its own subdirectory.
-   If you are basing your project off of
-   an existing project (for example, creating a Flexible-Sync version of a
+1. Add your project in its own subdirectory. If you are basing your project off
+   of an existing project (for example, creating a Flexible-Sync version of a
    partition-based app), consider using the Bluehawk `state` tags and using
-   Bluehawk to copy each app to its own subdirectory within the `/generated`
-   directory.
+   Bluehawk to copy each app to its own subdirectory within the
+   `generated` directory.
 
 2. Be sure your project uses a `realm.json` file to get the app id and
    base url info:
@@ -27,39 +26,59 @@ For bucket access, consult the Realm docs team.
    to your app (and its users) -- you just need to let the build trigger know
    where it is, which you do in the next step.
 
-3. Update the manifest.json file that lives in the root of this repo.
+3. Update the manifest.json file that lives in the root of this repo to add a
+   new object to the manifest. Each object has this shape:
 
    ```
-   "my.project.id": {
+   "<my.project.id>": { <-- change to your unique ID
     "name": "The.Title.Of.My.App",
     "repo_owner": "mongodb-university", <-- don't change
     "repo_name": "realm-template-apps", <-- don't change
     "backend_path": "see the notes below",
     "client_path": "my-project-subdirectory-name",
     "metadata_path": "path-to-the-directory-that-contains-your-realm.json-file",
-    "metadata_filename": "realm", <-- don't change
-    "file_format": "json" <-- don't change
+    "metadata_filename": "realm",
+    "file_format": "json"
    },
 
    ```
 
-   ### NOTES
+   Each key in the manifest is the unique ID of the template. No spaces are
+   allowed. Should ideally be somewhat typeable as users have the option of
+   manually pulling templates via the realm-cli (i.e. realm-cli pull
+   --template=some-template-id)
 
-   - The project id that you choose for the new template app can be anything you
-     want, but should ideally be somewhat typeable as users have the option of
-     manually pulling templates via the realm-cli
-     (ie: realm-cli pull --template=<templateId>)
+   - **name:** A friendly name. Presented in the UI or when listing available
+     templates from the CLI.
+   - **repo_owner, repo_name:** This repo's upstream. Just use mongodb-university
+     and realm-template-apps respectively.
+   - **backend_path:** The relative path from the root of this repo to the backend
+     app to import when instantiating the template.
+   - **client_path:** (optional). The relative path from the root of this repo to
+     the client app source directory to be copied when instantiating the
+     template.
 
-   - The `client-path` field points to the location in this repo where the Realm
-     backend app is defined. Many of the projects share the same backend app
-     (either todo-sync or todo-nonsync), while some require their own
-     this author knows not why).
+   metadata_path, metadata_filename, and file_format are all required if
+   client_path set. When Realm instantiates the template, it adds the generated
+   backend app ID (and base URL) to a file that the instantiated client then reads
+   to know which backend app to use.
 
-4. Coordinate with the product team about how they want the template app to be
-   shown in the UI.
+   - **metadata_path:** The relative path from the root of this repo to the
+     directory where your client reads the Realm metadata file.
+   - **metadata_filename:** The actual name of the Realm metadata file. Probably
+     "Realm" or "realm".
+   - **file_format:** One of "json", "xml", or "plist" -- whichever your client
+     knows how to read. Realm produces a metadata file with the given
+     file_format as file extension in the format specified.
 
-5. When you merge your branch, a Github action does the magic. Note the following:
+4. When you merge your branch, a Github action zips everything up and uploads to
+   an s3 bucket. Upon the next reload of App Services (usually around release
+   time but can be requested any time), App Services pulls the zip file down and
+   makes the templates within available to the CLI.
 
-   "When you merge your changes to the repo, the UI will _not_ expose this template
-   immediately, so you _should_ be safe to work on this template at your leisure.
-   However, people can create apps with this template via the `cli` once you merge."
+   The product team decides which templates actually show up in the UI.
+
+   In short: when you merge your changes to the repo, the UI will _not_ expose
+   this template immediately. You _should_ be safe to work on this template at
+   your leisure. However, people can create apps with this template via the
+   `cli` soon after you merge.
