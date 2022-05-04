@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo/realm/schemas.dart';
+import 'package:flutter_todo/components/todo_list.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'modify_todo.dart';
 
 class TodoItem extends StatelessWidget {
-  final Todo todo;
+  final TodoViewModel viewModel;
 
-  const TodoItem(this.todo, {Key? key}) : super(key: key);
+  const TodoItem(this.viewModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final realm = Provider.of<Realm>(context);
     void deleteItem() {
       realm.write(() {
-        realm.delete(todo);
+        realm.delete(viewModel.todo);
       });
     }
 
@@ -24,7 +24,7 @@ class TodoItem extends StatelessWidget {
       endActionPane: ActionPane(motion: ScrollMotion(), children: [
         SlidableAction(
           onPressed: (BuildContext context) {
-            showModifyTodoModal(context, todo);
+            showModifyTodoModal(context, viewModel.todo);
           },
           flex: 2,
           backgroundColor: Color(Colors.blue[500].hashCode),
@@ -46,19 +46,19 @@ class TodoItem extends StatelessWidget {
       // actions: []
       child: Card(
         child: ListTile(
-            title: Text(todo.summary),
-            subtitle: todo.isComplete
+            title: Text(viewModel.summary),
+            subtitle: viewModel.isComplete
                 ? const Text('Completed')
                 : const Text('Incomplete'),
-            leading: _CompleteCheckbox(todo)),
+            leading: _CompleteCheckbox(viewModel)),
       ),
     );
   }
 }
 
 class _CompleteCheckbox extends StatelessWidget {
-  final Todo todo;
-  const _CompleteCheckbox(this.todo, {Key? key}) : super(key: key);
+  final TodoViewModel viewModel;
+  const _CompleteCheckbox(this.viewModel, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final realm = Provider.of<Realm>(context);
@@ -78,10 +78,10 @@ class _CompleteCheckbox extends StatelessWidget {
     return Checkbox(
       checkColor: Colors.white,
       fillColor: MaterialStateProperty.resolveWith(getColor),
-      value: todo.isComplete,
+      value: viewModel.isComplete,
       onChanged: (bool? value) {
         realm.write(() {
-          todo.isComplete = value ?? false;
+          viewModel.todo.isComplete = value ?? false;
         });
       },
     );
