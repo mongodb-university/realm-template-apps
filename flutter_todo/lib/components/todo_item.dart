@@ -7,8 +7,9 @@ import 'modify_todo.dart';
 
 class TodoItem extends StatelessWidget {
   final TodoViewModel viewModel;
+  final Animation<double> animation;
 
-  const TodoItem(this.viewModel, {Key? key}) : super(key: key);
+  const TodoItem(this.viewModel, this.animation, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,38 +20,48 @@ class TodoItem extends StatelessWidget {
       });
     }
 
-    return Slidable(
-      key: const ValueKey(0),
-      endActionPane: ActionPane(motion: ScrollMotion(), children: [
-        SlidableAction(
-          onPressed: (BuildContext context) {
-            showModifyTodoModal(context, viewModel.todo);
-          },
-          flex: 2,
-          backgroundColor: Color(Colors.blue[500].hashCode),
-          foregroundColor: Colors.white,
-          icon: Icons.edit,
-          label: 'Change',
+    return FadeTransition(
+      key: key ?? ObjectKey(viewModel),
+      opacity: animation,
+      child: SizeTransition(
+        sizeFactor: animation,
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          child: Slidable(
+            endActionPane: ActionPane(
+              motion: const ScrollMotion(),
+              children: [
+                SlidableAction(
+                  onPressed: (BuildContext context) {
+                    showModifyTodoModal(context, viewModel.todo);
+                  },
+                  flex: 2,
+                  backgroundColor: Color(Colors.blue[500].hashCode),
+                  foregroundColor: Colors.white,
+                  icon: Icons.edit,
+                  label: 'Change',
+                ),
+                SlidableAction(
+                  onPressed: (BuildContext context) {
+                    deleteItem();
+                  },
+                  flex: 2,
+                  backgroundColor: Color(Colors.red[600].hashCode),
+                  foregroundColor: Colors.white,
+                  icon: Icons.delete_forever,
+                  label: 'Delete',
+                )
+              ],
+            ),
+            child: Card(
+              child: ListTile(
+                title: Text(viewModel.summary),
+                subtitle: Text(viewModel.isComplete ? 'Completed' : 'Incomplete'),
+                leading: _CompleteCheckbox(viewModel),
+              ),
+            ),
+          ),
         ),
-        SlidableAction(
-          onPressed: (BuildContext context) {
-            deleteItem();
-          },
-          flex: 2,
-          backgroundColor: Color(Colors.red[600].hashCode),
-          foregroundColor: Colors.white,
-          icon: Icons.delete_forever,
-          label: 'Delete',
-        )
-      ]),
-      // actions: []
-      child: Card(
-        child: ListTile(
-            title: Text(viewModel.summary),
-            subtitle: viewModel.isComplete
-                ? const Text('Completed')
-                : const Text('Incomplete'),
-            leading: _CompleteCheckbox(viewModel)),
       ),
     );
   }

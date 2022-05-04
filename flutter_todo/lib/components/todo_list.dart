@@ -50,18 +50,8 @@ class _TodoListState extends State<TodoList> {
           for (final deletionIndex in data.deleted) {
             final toDie = _todoViewModels.removeAt(deletionIndex); // update view model collection
             _myListKey.currentState?.removeItem(deletionIndex, (context, animation) {
-              return FadeTransition(
-                opacity: animation,
-                child: SizeTransition(
-                  sizeFactor: animation,
-                  child: AnimatedSwitcher(
-                    duration: _animationDuration,
-                    child: TodoItem(toDie),
-                  ),
-                ),
-              );
+              return TodoItem(toDie, animation);
             });
-            
           }
 
           // Handle inserts
@@ -85,16 +75,7 @@ class _TodoListState extends State<TodoList> {
               key: _myListKey,
               initialItemCount: todos.length,
               itemBuilder: (context, index, animation) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: SizeTransition(
-                    sizeFactor: animation,
-                    child: AnimatedSwitcher(
-                      duration: _animationDuration,
-                      child: TodoItem(_todoViewModels[index]),
-                    ),
-                  ),
-                );
+                return TodoItem(_todoViewModels[index], animation);
               });
         });
   }
