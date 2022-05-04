@@ -16,11 +16,11 @@ class App extends StatelessWidget {
       create: (_) => Realm(Configuration([Todo.schema])),
       dispose: (_, realm) => realm.close(),
       child: MaterialApp(
-        title: 'Flutter Todo',
+        title: 'Realm Flutter Todo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const HomePage(title: 'Flutter Todo'),
+        home: const HomePage(title: 'Realm Flutter Todo'),
       ),
     );
   }
