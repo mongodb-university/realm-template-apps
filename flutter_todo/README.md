@@ -2,7 +2,8 @@
 
 A todo list application built with the [Realm Flutter SDK](https://www.mongodb.com/docs/realm/sdk/flutter/).
 
-This example only supports Flutter for Android and iOS.
+This example only supports Flutter for Android, iOS, Windows, MacOS, and Linux.
+It **does not** support Flutter for Web.
 
 ## Getting Started
 
