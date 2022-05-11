@@ -3,6 +3,7 @@ using System.IO;
 using System;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace RealmTemplateApp
 {
@@ -21,9 +22,17 @@ namespace RealmTemplateApp
         {
             try
             {
-                var appConfiguration = LoadAppConfiguration();
+                LoadAppConfiguration();
+                // :state-start: partition-based-sync
+                var appConfiguration = new Realms.Sync.AppConfiguration(appId)
+                {
+                    BaseUri = new Uri(baseUrl)
+                };
                 RealmApp = Realms.Sync.App.Create(appConfiguration);
-
+                // :state-end:
+                // :state-uncomment-start: flexible-sync
+                // RealmApp = Realms.Sync.App.Create(appId);
+                // :state-uncomment-end:flexible-sync
                 var navPage = RealmApp.CurrentUser == null ?
                     new NavigationPage(new LoginPage()) :
                     new NavigationPage(new TaskPage());
@@ -31,36 +40,39 @@ namespace RealmTemplateApp
                 NavigationPage.SetHasBackButton(navPage, false);
                 MainPage = navPage;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                // A NullReferenceException occurs if:
+                // A Exception occurs if:
                 // 1. the config file does not exist, or
                 // 2. the config does not contain an "appId" or "baseUrl" element.
 
                 // If the appId value is incorrect, we handle that
                 // exception in the Login page.
 
-                throw e;
+                Debug.WriteLine(ex.ToString());
             }
         }
 
-        private Realms.Sync.AppConfiguration LoadAppConfiguration()
+        private void LoadAppConfiguration()
         {
-            using (Stream stream = this.GetType().Assembly.
-               GetManifestResourceStream("RealmTemplateApp." + "realm.json"))
-            using (StreamReader reader = new StreamReader(stream))
+            try
             {
-                var json = reader.ReadToEnd();
-                var parsedJson = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-                appId = parsedJson["appId"];
-                baseUrl = parsedJson["baseUrl"];
-                var appConfiguration = new Realms.Sync.AppConfiguration(appId)
+                using (Stream stream = this.GetType().Assembly.
+                   GetManifestResourceStream("RealmTemplateApp." + "realm.json"))
+                using (StreamReader reader = new StreamReader(stream))
                 {
-                    BaseUri = new Uri(baseUrl)
-                };
-                return appConfiguration;
+                    var json = reader.ReadToEnd();
+                    var parsedJson = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                    appId = parsedJson["appId"];
+                    baseUrl = parsedJson["baseUrl"];
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error has occurred: {ex.Message}.");
             }
         }
+
 
         protected override void OnSleep()
         {

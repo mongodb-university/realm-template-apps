@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:RealmTemplateApp"
+             x:Class="RealmTemplateApp.LoginPage">
+    <NavigationPage.TitleView>
+        <Label Text="My Sync App" FontSize="18" TextColor="#000" FontAttributes="Bold" HorizontalOptions="CenterAndExpand" VerticalOptions="Center"/>
+    </NavigationPage.TitleView>
+    <StackLayout Orientation="Vertical">
+        <StackLayout VerticalOptions="StartAndExpand">
+            <Entry x:Name="txtEmail" Placeholder="Email" TextChanged="Email_Entry_Completed" IsTextPredictionEnabled="False" Keyboard="Plain"/>
+            <Entry x:Name="txtPassword" Placeholder="Password" IsPassword="True" TextChanged="Password_Entry_Completed" IsTextPredictionEnabled="False" Keyboard="Plain" />
+            <Button x:Name="main_button" Text="Create a New Account" Clicked="Main_Button_Clicked"/>
+            <Label x:Name="switcher" FontSize="14" HorizontalOptions="Center" Text="Already have an account? Log In" TextColor="Blue" TextDecorations="Underline">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Switcher_Tapped" />
+                </Label.GestureRecognizers>
+            </Label>
+        </StackLayout>
+        <Frame VerticalOptions="End" HorizontalOptions="Center" Margin="0,0,0,100">
+            <local:FooterView/>
+        </Frame>
+    </StackLayout>
+
+</ContentPage>
