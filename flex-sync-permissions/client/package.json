@@ -13,6 +13,7 @@
   "dependencies": {
     "await-timeout": "^1.1.1",
     "cli-progress": "^3.11.0",
+    "commander": "^9.2.0",
     "inquirer": "^8.2.4",
     "realm": "^10.16.0"
   },

@@ -1,8 +1,8 @@
 import Realm from "realm";
 import { strict as assert } from "assert";
 import * as BSON from "BSON";
-import { appId, baseUrl } from "./realm.json";
-import Timeout from "await-timeout";
+import { baseUrl } from "./realm.json";
+import { program } from "commander";
 
 const ItemSchema = {
   name: "Item",
@@ -25,11 +25,10 @@ const UserSchema = {
   primaryKey: "_id",
 };
 
-const addCollaboratorsExample = async () => {
+const addCollaboratorsExample = async (appId) => {
   console.log(`Connecting to ${appId}`);
   const app = new Realm.App({ id: appId, baseUrl });
   const logIn = async (email, password) => {
-    console.log(email, password);
     const credentials = Realm.Credentials.emailPassword(email, password);
     let newUser;
     try {
@@ -129,8 +128,11 @@ const addCollaboratorsExample = async () => {
   realm2.close();
 };
 
+
 /************ RESTRICTED FEED **********************/
-const restrictedFeedExample = async () => {
+
+const restrictedFeedExample = async (appId) => {
+
   console.log(`Connecting to ${appId}`);
   const app = new Realm.App({ id: appId, baseUrl });
   let newUser;
@@ -183,6 +185,10 @@ const restrictedFeedExample = async () => {
   console.log("Logging in as user 2");
   const user2 = await logIn('"user2@foo.bar"', '"password"');
 
+  console.log("Adding user1 to user2's subscribedTo array");
+  const funcArgs = [user1.id];
+  let funcResult = await user2.callFunction("subscribeToUser", funcArgs);
+  console.log(funcResult);
   console.log("Opening synced realm for user2");
   const realm2 = await Realm.open({
     schema: [ItemSchema],
@@ -212,24 +218,6 @@ const restrictedFeedExample = async () => {
     });
   });
 
-  console.log("Adding user1 to user2's subscribedTo array");
-  const mongo = user2.mongoClient("mongodb-atlas-cdu");
-  const collection = mongo.db("Item").collection("User");
-  const filter = {
-    _id: user2.id,
-  };
-  const updateDoc = {
-    $set: {
-      subscribedTo: user1.id,//add user1's id to user2's array
-    },
-  };
-  try {
-    const result = await collection.updateOne(filter, updateDoc);
-    console.log(result);
-  } catch (e) {
-    console.log("******", e);
-  }
-
   // verify user 2 can read their data and user1's
   console.log('I should have multiple documents.');
   let results = realm2.objects("Item");
@@ -242,4 +230,30 @@ const restrictedFeedExample = async () => {
   realm2.close();
 };
 
-restrictedFeedExample().then(() => process.exit(0));
+const demos = {
+  addCollaboratorsExample,
+  restrictedFeedExample,
+};
+
+program
+  .usage("[OPTIONS]...")
+  .option("--appId <appId>", "Backend app ID")
+  .argument("<demo>", "Demo function to run")
+  .action(async (demoName, options) => {
+    const { appId } = options;
+
+    const demoFunction = demos[demoName];
+    if (demoFunction === undefined) {
+      throw new Error(
+        `Unknown demo: ${demoName}. Options are: ${Object.keys(demos)}`
+      );
+    }
+    try {
+      await demoFunction(appId);
+      process.exit(0);
+    } catch (error) {
+      console.error("Received error:", error);
+      process.exit(1);
+    }
+  })
+  .parse();
