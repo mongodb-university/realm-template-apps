@@ -128,7 +128,11 @@ const addCollaboratorsExample = async (appId) => {
   realm2.close();
 };
 
+
+/************ RESTRICTED FEED **********************/
+
 const restrictedFeedExample = async (appId) => {
+
   console.log(`Connecting to ${appId}`);
   const app = new Realm.App({ id: appId, baseUrl });
   let newUser;
@@ -150,7 +154,6 @@ const restrictedFeedExample = async (appId) => {
 
   console.log("Logging in as user 1");
   const user1 = await logIn('"user1@foo.bar"', '"password"');
-
   console.log("Opening synced realm for user1");
   const realm1 = await Realm.open({
     schema: [ItemSchema],
@@ -175,13 +178,17 @@ const restrictedFeedExample = async (appId) => {
     realm1.create("Item", {
       _id: new BSON.ObjectID(),
       owner_id: user1.id,
-      name: "user1 first item",
+      name: "user1 first item"
     });
   });
 
   console.log("Logging in as user 2");
   const user2 = await logIn('"user2@foo.bar"', '"password"');
 
+  console.log("Adding user1 to user2's subscribedTo array");
+  const funcArgs = [user1.id];
+  let funcResult = await user2.callFunction("subscribeToUser", funcArgs);
+  console.log(funcResult);
   console.log("Opening synced realm for user2");
   const realm2 = await Realm.open({
     schema: [ItemSchema],
@@ -199,6 +206,7 @@ const restrictedFeedExample = async (appId) => {
   const user2sub = realm2.objects("Item");
   await realm2.subscriptions.update((mutableSubs) => {
     mutableSubs.add(user2sub);
+    mutableSubs.add(user1sub);
   });
 
   console.log("Creating Item owned by user2");
@@ -206,31 +214,18 @@ const restrictedFeedExample = async (appId) => {
     realm2.create("Item", {
       _id: new BSON.ObjectID(),
       owner_id: user2.id,
-      name: "user2 first item",
+      name: "user2 first item"
     });
   });
 
-  console.log("Adding user1 to user2's subscribedTo array");
-  const mongo = user2.mongoClient("mongodb-atlas-cdu");
-  const collection = mongo.db("Item").collection("User");
-  const filter = {
-    _id: user2.id,
-  };
-  const updateDoc = {
-    $set: {
-      subscribedTo: user1.id, //add user1's id to user2's array
-    },
-  };
-
-  const result = await collection.updateOne(filter, updateDoc);
-  console.log(result);
-
   // verify user 2 can read their data and user1's
-  console.log("I should have multiple documents.");
+  console.log('I should have multiple documents.');
   let results = realm2.objects("Item");
   console.log(results);
 
+
   // verify user2 can edit their data but not user1
+
   realm1.close();
   realm2.close();
 };
