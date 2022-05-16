@@ -1,1 +1,6 @@
-[]
+[
+    {
+        "name": "resetFunc",
+        "private": true
+    }
+]

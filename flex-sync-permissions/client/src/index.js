@@ -28,10 +28,10 @@ const UserSchema = {
 const addCollaboratorsExample = async () => {
   console.log(`Connecting to ${appId}`);
   const app = new Realm.App({ id: appId, baseUrl });
-  let newUser;
   const logIn = async (email, password) => {
     console.log(email, password);
     const credentials = Realm.Credentials.emailPassword(email, password);
+    let newUser;
     try {
       newUser = await app.logIn(credentials);
       console.log(`Logged in as user ${newUser.id}`);
@@ -45,10 +45,10 @@ const addCollaboratorsExample = async () => {
   };
 
   console.log("Logging in as user 1");
-  const user1 = await logIn('"user1@foo.bar"', '"password"');
+  const user1 = await logIn("user1@foo.bar", "password");
 
   console.log("Logging in as user 2");
-  const user2 = await logIn('"user2@foo.bar"', '"password"');
+  const user2 = await logIn("user2@foo.bar", "password");
 
   console.log("Opening synced realm for user2");
   const realm = await Realm.open({
@@ -117,7 +117,7 @@ const addCollaboratorsExample = async () => {
   console.log("Making an edit");
   realm2.write(() => {
     const item = user1Items[0];
-    assert("It does not belong to user2", item.owner_id !== user1.id);
+    assert("It does not belong to user1", item.owner_id !== user1.id);
     item.name = "edited successfully!";
   });
 
@@ -128,7 +128,6 @@ const addCollaboratorsExample = async () => {
 
   realm2.close();
 };
-
 
 const restrictedFeedExample = async () => {
   console.log(`Connecting to ${appId}`);
@@ -177,5 +176,5 @@ const restrictedFeedExample = async () => {
   realm2.close();
 };
 
-restrictedFeedExample().then(() => process.exit(0));
+// restrictedFeedExample().then(() => process.exit(0));
 addCollaboratorsExample().then(() => process.exit(0));
