@@ -15,22 +15,40 @@ const ItemSchema = {
   primaryKey: "_id",
 };
 
+const UserSchema = {
+  name: "User",
+  properties: {
+    _id: "objectId",
+    name: "string",
+    subscribedTo: "string[]",
+  },
+  primaryKey: "_id",
+};
+
 const addCollaboratorsExample = async () => {
   console.log(`Connecting to ${appId}`);
   const app = new Realm.App({ id: appId, baseUrl });
-
-  const logIn = async () => {
-    const credentials = Realm.Credentials.anonymous();
-    const newUser = await app.logIn(credentials);
-    console.log(`Logged in as new user ${newUser.id}`);
+  let newUser;
+  const logIn = async (email, password) => {
+    console.log(email, password);
+    const credentials = Realm.Credentials.emailPassword(email, password);
+    try {
+      newUser = await app.logIn(credentials);
+      console.log(`Logged in as user ${newUser.id}`);
+    } catch {
+      newUser = await app.emailPasswordAuth.registerUser({ email, password });
+      console.log(`Created new user ${newUser}`);
+      newUser = await app.logIn(credentials);
+      console.log(`Logged in as user ${newUser}`);
+    }
     return newUser;
   };
 
   console.log("Logging in as user 1");
-  const user1 = await logIn();
+  const user1 = await logIn('"user1@foo.bar"', '"password"');
 
   console.log("Logging in as user 2");
-  const user2 = await logIn();
+  const user2 = await logIn('"user2@foo.bar"', '"password"');
 
   console.log("Opening synced realm for user2");
   const realm = await Realm.open({
@@ -111,4 +129,53 @@ const addCollaboratorsExample = async () => {
   realm2.close();
 };
 
+
+const restrictedFeedExample = async () => {
+  console.log(`Connecting to ${appId}`);
+  const app = new Realm.App({ id: appId, baseUrl });
+  let newUser;
+  const logIn = async (email, password) => {
+    console.log(email, password);
+    const credentials = Realm.Credentials.emailPassword(email, password);
+    try {
+      newUser = await app.logIn(credentials);
+      console.log(`Logged in as user ${newUser.id}`);
+    } catch {
+      newUser = await app.emailPasswordAuth.registerUser({ email, password });
+      console.log(`Created new user ${newUser}`);
+      newUser = await app.logIn(credentials);
+      console.log(`Logged in as user ${newUser}`);
+    }
+    return newUser;
+  };
+
+  console.log("Logging in as user 1");
+  const user1 = await logIn('"user1@foo.bar"', '"password"');
+
+  console.log("Logging in as user 2");
+  const user2 = await logIn('"user2@foo.bar"', '"password"');
+
+  console.log("Opening synced realm for user2");
+  const realm = await Realm.open({
+    schema: [ItemSchema],
+    sync: {
+      user: user2,
+      flexible: true,
+      error: (session, error) => {
+        console.error("Is connected:", session.isConnected());
+        console.error("Error:", error);
+      },
+    },
+  });
+
+  console.log("Subscribing to user1");
+
+  // Use mongodb to edit user2's subscribed array to add user1's ID
+  // verify user 2 can read their data and user1's
+  // verify user2 can edit their data but not user1
+
+  realm2.close();
+};
+
+restrictedFeedExample().then(() => process.exit(0));
 addCollaboratorsExample().then(() => process.exit(0));
