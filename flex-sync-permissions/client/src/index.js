@@ -1,8 +1,8 @@
 import Realm from "realm";
 import { strict as assert } from "assert";
 import * as BSON from "BSON";
-import { appId, baseUrl } from "./realm.json";
-import Timeout from "await-timeout";
+import { baseUrl } from "./realm.json";
+import { program } from "commander";
 
 const ItemSchema = {
   name: "Item",
@@ -25,11 +25,10 @@ const UserSchema = {
   primaryKey: "_id",
 };
 
-const addCollaboratorsExample = async () => {
+const addCollaboratorsExample = async (appId) => {
   console.log(`Connecting to ${appId}`);
   const app = new Realm.App({ id: appId, baseUrl });
   const logIn = async (email, password) => {
-    console.log(email, password);
     const credentials = Realm.Credentials.emailPassword(email, password);
     let newUser;
     try {
@@ -129,8 +128,7 @@ const addCollaboratorsExample = async () => {
   realm2.close();
 };
 
-const restrictedFeedExample = async () => {
-
+const restrictedFeedExample = async (appId) => {
   console.log(`Connecting to ${appId}`);
   const app = new Realm.App({ id: appId, baseUrl });
   let newUser;
@@ -177,7 +175,7 @@ const restrictedFeedExample = async () => {
     realm1.create("Item", {
       _id: new BSON.ObjectID(),
       owner_id: user1.id,
-      name: "user1 first item"
+      name: "user1 first item",
     });
   });
 
@@ -208,7 +206,7 @@ const restrictedFeedExample = async () => {
     realm2.create("Item", {
       _id: new BSON.ObjectID(),
       owner_id: user2.id,
-      name: "user2 first item"
+      name: "user2 first item",
     });
   });
 
@@ -220,7 +218,7 @@ const restrictedFeedExample = async () => {
   };
   const updateDoc = {
     $set: {
-      subscribedTo: user1.id,//add user1's id to user2's array
+      subscribedTo: user1.id, //add user1's id to user2's array
     },
   };
 
@@ -228,14 +226,39 @@ const restrictedFeedExample = async () => {
   console.log(result);
 
   // verify user 2 can read their data and user1's
-  console.log('I should have multiple documents.');
+  console.log("I should have multiple documents.");
   let results = realm2.objects("Item");
   console.log(results);
-
 
   // verify user2 can edit their data but not user1
   realm1.close();
   realm2.close();
 };
 
-restrictedFeedExample().then(() => process.exit(0));
+const demos = {
+  addCollaboratorsExample,
+  restrictedFeedExample,
+};
+
+program
+  .usage("[OPTIONS]...")
+  .option("--appId <appId>", "Backend app ID")
+  .argument("<demo>", "Demo function to run")
+  .action(async (demoName, options) => {
+    const { appId } = options;
+
+    const demoFunction = demos[demoName];
+    if (demoFunction === undefined) {
+      throw new Error(
+        `Unknown demo: ${demoName}. Options are: ${Object.keys(demos)}`
+      );
+    }
+    try {
+      await demoFunction(appId);
+      process.exit(0);
+    } catch (error) {
+      console.error("Received error:", error);
+      process.exit(1);
+    }
+  })
+  .parse();
