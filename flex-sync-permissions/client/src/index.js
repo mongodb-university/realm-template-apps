@@ -129,8 +129,8 @@ const addCollaboratorsExample = async () => {
   realm2.close();
 };
 
+/************ RESTRICTED FEED **********************/
 const restrictedFeedExample = async () => {
-
   console.log(`Connecting to ${appId}`);
   const app = new Realm.App({ id: appId, baseUrl });
   let newUser;
@@ -152,7 +152,6 @@ const restrictedFeedExample = async () => {
 
   console.log("Logging in as user 1");
   const user1 = await logIn('"user1@foo.bar"', '"password"');
-
   console.log("Opening synced realm for user1");
   const realm1 = await Realm.open({
     schema: [ItemSchema],
@@ -201,6 +200,7 @@ const restrictedFeedExample = async () => {
   const user2sub = realm2.objects("Item");
   await realm2.subscriptions.update((mutableSubs) => {
     mutableSubs.add(user2sub);
+    mutableSubs.add(user1sub);
   });
 
   console.log("Creating Item owned by user2");
@@ -223,9 +223,12 @@ const restrictedFeedExample = async () => {
       subscribedTo: user1.id,//add user1's id to user2's array
     },
   };
-
-  const result = await collection.updateOne(filter, updateDoc);
-  console.log(result);
+  try {
+    const result = await collection.updateOne(filter, updateDoc);
+    console.log(result);
+  } catch (e) {
+    console.log("******", e);
+  }
 
   // verify user 2 can read their data and user1's
   console.log('I should have multiple documents.');
@@ -234,6 +237,7 @@ const restrictedFeedExample = async () => {
 
 
   // verify user2 can edit their data but not user1
+
   realm1.close();
   realm2.close();
 };
