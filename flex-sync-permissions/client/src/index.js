@@ -191,7 +191,6 @@ const restrictedFeedExample = async (appId) => {
   let funcResult = await user2.callFunction("subscribeToUser", funcArgs);
   console.log(funcResult);
 
-
   console.log("Opening synced realm for user2");
   const realm2 = await Realm.open({
     schema: [ItemSchema],
@@ -221,6 +220,7 @@ const restrictedFeedExample = async (appId) => {
   await realm2.subscriptions.update((mutableSubs) => {
     mutableSubs.add(realm2.objects("Item"));
     // mutableSubs.add(subscribedToItems)
+
   });
 
   const user2Items = realm2.objects("Item");
@@ -242,18 +242,17 @@ const restrictedFeedExample = async (appId) => {
     console.log(JSON.stringify(item));
   }
 
-
-
-
   // verify user 2 can read their data and user1's
-  //console.log('I should have multiple documents.');
-  //let results = realm2.objects("Item");
-  //console.log(results);
+  console.log('I should have multiple documents.');
+  let results = realm2.objects("Item");
+  console.log(results);
+
 
 
   // verify user2 can edit their data but not user1
 
-  //realm1.close();
+
+  realm1.close();
   realm2.close();
 };
 
