@@ -11,6 +11,7 @@ const ItemSchema = {
     owner_id: "string",
     name: "string",
     collaborators: "string[]",
+    team: "string"
   },
   primaryKey: "_id",
 };
@@ -257,9 +258,171 @@ const restrictedFeedExample = async (appId) => {
   realm2.close();
 };
 
+
+/************ TIERED **********************/
+
+const tieredExample = async (appId) => {
+
+  console.log(`Connecting to ${appId}`);
+  const app = new Realm.App({ id: appId, baseUrl });
+
+  const logIn = async (email, password) => {
+    let newUser;
+
+    console.log(email, password);
+    const credentials = Realm.Credentials.emailPassword(email, password);
+    try {
+      newUser = await app.logIn(credentials);
+      console.log(`Logged in as user ${newUser.id}`);
+    } catch {
+      newUser = await app.emailPasswordAuth.registerUser({ email, password });
+      console.log(`Created new user ${newUser}`);
+      newUser = await app.logIn(credentials);
+      console.log(`Logged in as user ${newUser}`);
+    }
+    return newUser;
+  };
+
+  console.log("Logging in as user 1");
+  const user1 = await logIn('"user1@foo.bar"', '"password"');
+  console.log("Opening synced realm for user1");
+
+  console.log("Adding user1 as Admin on team 'foo'");
+  const user1FuncArgs = [user1.id, "foo", "true"];
+  let user1FuncResult = await user1.callFunction("joinTeam", user1FuncArgs);
+  console.log(user1FuncResult);
+
+  const realm1 = await Realm.open({
+    schema: [ItemSchema],
+    sync: {
+      user: user1,
+      flexible: true,
+      error: (session, error) => {
+        console.error("Is connected:", session.isConnected());
+        console.error("Error:", error);
+      },
+      clientReset: {
+        mode: "manual",
+      },
+    },
+  });
+
+
+  console.log("subscribing");
+  const user1Items = realm1.objects("Item");
+  await realm1.subscriptions.update((mutableSubs) => {
+    mutableSubs.add(user1Items);
+  });
+
+  console.log("Creating Item owned by user1");
+  realm1.write(() => {
+    realm1.create("Item", {
+      _id: new BSON.ObjectID(),
+      owner_id: user1.id,
+      name: "user1 created this",
+      team: "foo"
+    });
+  });
+
+  console.log("User1 can *read*", user1Items.length, "documents.");
+  console.log("User1's Readable Items:");
+  for (const item of user1Items) {
+    console.log(JSON.stringify(item));
+  }
+
+  console.log("Logging in as user 2");
+  const user2 = await logIn('"user2@foo.bar"', '"password"');
+
+  console.log("Adding user2 as member of team 'foo'");
+  const funcArgs = [user2.id, "foo", "false"];
+  let funcResult = await user2.callFunction("joinTeam", funcArgs);
+  console.log(funcResult);
+
+  console.log("Opening synced realm for user2");
+  const realm2 = await Realm.open({
+    schema: [ItemSchema],
+    sync: {
+      user: user2,
+      flexible: true,
+      error: (session, error) => {
+        console.error("Is connected:", session.isConnected());
+        console.error("Error:", error);
+      },
+      clientReset: {
+        mode: "manual",
+      },
+    },
+  });
+
+  await realm2.subscriptions.update((mutableSubs) => {
+    mutableSubs.add(realm2.objects("Item"));
+  });
+
+  console.log("Creating Item owned by user2");
+  realm2.write(() => {
+    realm2.create("Item", {
+      _id: new BSON.ObjectID(),
+      owner_id: user2.id,
+      name: "user2 created this item",
+      team: "foo"
+    });
+  });
+
+  const user2Items = realm2.objects("Item");
+  console.log("User2 can *read*", user2Items.length, "documents.");
+
+  console.log("User2's Readable Items:");
+  for (const item of user2Items) {
+    console.log(JSON.stringify(item));
+  }
+
+  const doc1a = user1Items[0];
+  const doc2a = user2Items[0];
+  const doc1b = user1Items[1];
+  const doc2b = user2Items[1];
+
+  console.log("Can user2 edit their own doc?");
+  realm2.write(() => {
+    doc2a.name = "user2 edited this!";
+  });
+  console.log(doc2a.name);
+
+  console.log("Can user1 edit their own doc?");
+  realm1.write(() => {
+    doc1a.name = "user1 edited this!";
+  });
+  console.log(doc1a.name);
+
+  console.log("Can user2 edit a User1 doc?");
+  try {
+    realm1.write(() => {
+      doc1b.name = "user2 edited this!";
+    });
+    console.log(doc1b.name);
+  } catch (e) {
+    console.log(e);
+  }
+
+  console.log("Can user1 edit a User2 doc?");
+  try {
+    realm2.write(() => {
+      doc2b.name = "user1 edited this!";
+    });
+    console.log(doc2b.name);
+  } catch (e) {
+    console.log(e);
+  }
+
+
+  realm1.close();
+  realm2.close();
+};
+
+
 const demos = {
   addCollaboratorsExample,
   restrictedFeedExample,
+  tieredExample
 };
 
 program
