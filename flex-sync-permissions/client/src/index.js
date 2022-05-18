@@ -314,7 +314,9 @@ const tieredExample = async (appId) => {
     mutableSubs.add(user1Items);
   });
 
-  console.log("Creating Item owned by user1");
+  console.log("!!!!!!!!", user1Items.length);
+
+  /*console.log("Creating Item owned by user1");
   realm1.write(() => {
     realm1.create("Item", {
       _id: new BSON.ObjectID(),
@@ -322,7 +324,7 @@ const tieredExample = async (appId) => {
       name: "user1 created this",
       team: "foo"
     });
-  });
+  });*/
 
   console.log("User1 can *read*", user1Items.length, "documents.");
   console.log("User1's Readable Items:");
@@ -356,16 +358,6 @@ const tieredExample = async (appId) => {
 
   await realm2.subscriptions.update((mutableSubs) => {
     mutableSubs.add(realm2.objects("Item"));
-  });
-
-  console.log("Creating Item owned by user2");
-  realm2.write(() => {
-    realm2.create("Item", {
-      _id: new BSON.ObjectID(),
-      owner_id: user2.id,
-      name: "user2 created this item",
-      team: "foo"
-    });
   });
 
   const user2Items = realm2.objects("Item");
