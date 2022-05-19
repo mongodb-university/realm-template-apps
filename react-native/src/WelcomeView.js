@@ -1,33 +1,27 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Realm from 'realm';
+import {useApp} from '@realm/react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StyleSheet, Text, View, Alert} from 'react-native';
 import {Input, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {realmApp} from './RealmApp';
 
 Icon.loadFont(); // load FontAwesome font
 
 export function WelcomeView({navigation, route}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null);
 
   // state values for toggable visibility of features in the UI
   const [passwordHidden, setPasswordHidden] = useState(true);
   const [isInSignUpMode, setIsInSignUpMode] = useState(true);
 
-  useEffect(() => {
-    if (user) {
-      navigation.navigate('Tasks'); // if there is a logged in user, navigate to the Tasks Screen
-    }
-  }, [user, navigation]);
+  const app = useApp();
 
   // signIn() uses the emailPassword authentication provider to log in
   const signIn = async () => {
     const creds = Realm.Credentials.emailPassword(email, password);
-    const loggedInUser = await realmApp.logIn(creds);
-    setUser(loggedInUser);
+    await app.logIn(creds);
   };
 
   // onPressSignIn() uses the emailPassword authentication provider to log in
@@ -42,7 +36,7 @@ export function WelcomeView({navigation, route}) {
   // onPressSignUp() registers the user and then calls signIn to log the user in
   const onPressSignUp = async () => {
     try {
-      await realmApp.emailPasswordAuth.registerUser(email, password);
+      await app.emailPasswordAuth.registerUser({email, password});
       signIn(email, password);
     } catch (error) {
       Alert.alert(`Failed to sign up: ${error.message}`);
