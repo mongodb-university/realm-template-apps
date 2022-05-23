@@ -1,0 +1,40 @@
+{
+    "type": "flexible",
+    "state": "enabled",
+    "development_mode_enabled": false,
+    "service_name": "mongodb-atlas",
+    "database_name": "Item",
+    "last_disabled": 1653320842,
+    "is_recovery_mode_disabled": false,
+    "permissions": {
+        "rules": {},
+        "defaultRoles": [
+            {
+                "name": "admin",
+                "applyWhen": {
+                    "%%user.custom_data.isTeamAdmin": true
+                },
+                "read": {
+                    "team": "%%user.custom_data.team"
+                },
+                "write": {
+                    "team": "%%user.custom_data.team"
+                }
+            },
+            {
+                "name": "user",
+                "applyWhen": {},
+                "read": {
+                    "team": "%%user.custom_data.team"
+                },
+                "write": {
+                    "owner_id": "%%user.id"
+                }
+            }
+        ]
+    },
+    "queryable_fields_names": [
+        "owner_id",
+        "team"
+    ]
+}
