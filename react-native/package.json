@@ -1,6 +1,6 @@
 {
   "name": "app",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -13,6 +13,7 @@
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.4",
+    "@realm/react": "^0.3.0",
     "react": "17.0.1",
     "react-native": "0.64.0",
     "react-native-elements": "^3.3.2",
@@ -21,7 +22,7 @@
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.0.0",
     "react-native-vector-icons": "^8.1.0",
-    "realm": "^10.0.0"
+    "realm": "^10.17.0"
   },
   "devDependencies": {
     "@babel/core": "^7.13.14",

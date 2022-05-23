@@ -40,8 +40,8 @@
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
     "backend_path": "todo-sync",
-    "client_path": "react-native",
-    "metadata_path": "react-native",
+    "client_path": "generated/react-native-partition-based-sync",
+    "metadata_path": "generated/react-native-partition-based-sync",
     "metadata_filename": "realm",
     "file_format": "json"
   },
