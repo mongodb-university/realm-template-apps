@@ -4,6 +4,7 @@ import * as BSON from "BSON";
 import { baseUrl } from "./realm.json";
 import { program } from "commander";
 import { tieredExample } from "./index-tiered.js";
+import { restrictedFeedExample } from "./restricted.js";
 
 const ItemSchema = {
   name: "Item",
@@ -125,137 +126,6 @@ const addCollaboratorsExample = async (appId) => {
 
   realm2.close();
 };
-
-/************ RESTRICTED FEED **********************/
-
-const restrictedFeedExample = async (appId) => {
-  console.log(`Connecting to ${appId}`);
-  const app = new Realm.App({ id: appId, baseUrl });
-
-  const logIn = async (email, password) => {
-    let newUser;
-
-    console.log(email, password);
-    const credentials = Realm.Credentials.emailPassword(email, password);
-    try {
-      newUser = await app.logIn(credentials);
-      console.log(`Logged in as user ${newUser.id}`);
-    } catch {
-      newUser = await app.emailPasswordAuth.registerUser({ email, password });
-      console.log(`Created new user ${newUser}`);
-      newUser = await app.logIn(credentials);
-      console.log(`Logged in as user ${newUser}`);
-    }
-    return newUser;
-  };
-
-  console.log("Logging in as user 1");
-  const user1 = await logIn('"user1@foo.bar"', '"password"');
-  console.log("Opening synced realm for user1");
-
-  const realm1 = await Realm.open({
-    schema: [ItemSchema],
-    sync: {
-      user: user1,
-      flexible: true,
-      error: (session, error) => {
-        console.error("Is connected:", session.isConnected());
-        console.error("Error:", error);
-      },
-      clientReset: {
-        mode: "manual",
-      },
-    },
-  });
-
-  const user1Items = realm1.objects("Item");
-  await realm1.subscriptions.update((mutableSubs) => {
-    mutableSubs.add(user1Items);
-  });
-
-  console.log("!!!!!!!!", user1Items.length);
-
-  /*console.log("Creating Item owned by user1");
-  realm1.write(() => {
-    realm1.create("Item", {
-      _id: new BSON.ObjectID(),
-      owner_id: user1.id,
-      name: "user1 first item"
-    });
-  });*/
-
-  console.log("Logging in as user 2");
-  const user2 = await logIn('"user2@foo.bar"', '"password"');
-
-  console.log("Adding user1 to user2's subscribedTo array");
-  const funcArgs = [user1.id];
-  let funcResult = await user2.callFunction("subscribeToUser", funcArgs);
-  console.log(funcResult);
-
-
-  console.log("Opening synced realm for user2");
-  const realm2 = await Realm.open({
-    schema: [ItemSchema],
-    sync: {
-      user: user2,
-      flexible: true,
-      error: (session, error) => {
-        console.error("Is connected:", session.isConnected());
-        console.error("Error:", error);
-      },
-      clientReset: {
-        mode: "manual",
-      },
-    },
-  });
-
-  //realm2 should have all the documents user2 can read
-  // ...or do we need to add a subscription to query against the array?
-  //
-  /* const items = realm.objects("Item");
- const subscribedToItems = items.filtered(
-    'owner_id = '
-  );*/
-
-  await realm2.subscriptions.update((mutableSubs) => {
-    mutableSubs.add(realm2.objects("Item"));
-    // mutableSubs.add(subscribedToItems)
-  });
-
-  const user2Items = realm2.objects("Item");
-  console.log("*************", user2Items.length);
-
-  /*console.log("Creating Item owned by user2");
-  realm2.write(() => {
-    realm2.create("Item", {
-      _id: new BSON.ObjectID(),
-      owner_id: user2.id,
-      name: "user2 first item"
-    });
-  });*/
-
-  console.log("Items:");
-  for (const item of user2Items) {
-    console.log(JSON.stringify(item));
-  }
-
-  // verify user 2 can read their data and user1's
-  //console.log('I should have multiple documents.');
-  //let results = realm2.objects("Item");
-  //console.log(results);
-
-  // verify user 2 can read their data and user1's
-  //console.log('I should have multiple documents.');
-  //let results = realm2.objects("Item");
-  //console.log(results);
-
-
-  // verify user2 can edit their data but not user1
-
-  //realm1.close();
-  realm2.close();
-};
-
 
 const demos = {
   addCollaboratorsExample,
