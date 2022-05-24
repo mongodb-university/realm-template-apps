@@ -1,15 +1,15 @@
 // :state-start: restricted-feed
-import Realm from "realm";
 import * as BSON from "BSON";
+import { logInOrRegister } from "./logInOrRegister.js";
+import { getRealm } from "./getRealm.js";
 
-let app;
 let author1DocAId;
 let author1DocBId;
 let author2DocAId;
 let author2DocBId;
-const author1Account = { email: "author1@foo.bar", password: "password" };
+const author1Account = { email: "author1@example.com", password: "password" };
 let author1Id;
-const author2Account = { email: "author2@foo.bar", password: "password" };
+const author2Account = { email: "author2@example.com", password: "password" };
 
 const ItemSchema = {
   name: "Item",
@@ -20,56 +20,9 @@ const ItemSchema = {
   },
   primaryKey: "_id",
 };
+const schema = [ItemSchema];
 
-const logIn = async (props) => {
-  let newUser;
-  const credentials = Realm.Credentials.emailPassword(
-    props.email,
-    props.password
-  );
-  try {
-    newUser = await app.logIn(credentials);
-    console.log(`Logged in as user ${newUser.id}`);
-  } catch {
-    newUser = await app.emailPasswordAuth.registerUser({
-      email: props.email,
-      password: props.password,
-    });
-    console.log(`Created new user ${newUser}`);
-    newUser = await app.logIn(credentials);
-    console.log(`Logged in as user ${newUser.id}`);
-  }
-  return newUser;
-};
-
-const getRealm = async (user) => {
-  return Realm.open({
-    schema: [ItemSchema],
-    sync: {
-      user: user,
-      flexible: true,
-      error: (session, error) => {
-        console.error("Is connected:", session.isConnected());
-        console.error("Sync Error:", error);
-      },
-      clientReset: {
-        mode: "manual",
-        open: Realm.open({
-          schema: [ItemSchema],
-          sync: {
-            user: user,
-            flexible: true,
-          },
-        }),
-      },
-    },
-  });
-};
-
-export const restrictedFeedExample = async (appId, baseUrl) => {
-  console.log(`Connecting to ${appId}`);
-  app = new Realm.App({ id: appId, baseUrl });
-
+export const restrictedFeedExample = async () => {
   await setUpAuthor1();
   await setUpAuthor2();
   await canAuthor1ReadAndEdit();
@@ -78,11 +31,11 @@ export const restrictedFeedExample = async (appId, baseUrl) => {
 
 const setUpAuthor1 = async () => {
   console.log("Logging in as Author1");
-  const author1 = await logIn(author1Account);
+  const author1 = await logInOrRegister(author1Account);
   author1Id = author1.id;
   console.log("Opening synced realm for author1");
 
-  const realm1 = await getRealm(author1);
+  const realm1 = await getRealm({ user: author1, schema });
 
   const author1Items = realm1.objects("Item");
   await realm1.subscriptions.update((mutableSubs) => {
@@ -115,14 +68,14 @@ const setUpAuthor1 = async () => {
 
 const setUpAuthor2 = async () => {
   console.log("Logging in as Author2");
-  const author2 = await logIn({
+  const author2 = await logInOrRegister({
     email: author2Account.email,
     password: author2Account.password,
   });
   author2Id = author2.id;
 
   console.log("Opening synced realm for author1");
-  const realm = await getRealm(author2);
+  const realm = await getRealm({ user: author2, schema });
 
   const author2Items = realm.objects("Item");
   await realm.subscriptions.update((mutableSubs) => {
@@ -159,9 +112,9 @@ const setUpAuthor2 = async () => {
 
 const canAuthor1ReadAndEdit = async () => {
   console.log("Logging in again as Author1");
-  const author1 = await logIn(author1Account);
+  const author1 = await logInOrRegister(author1Account);
 
-  const realm = await getRealm(author1);
+  const realm = await getRealm({ user: author1, schema });
   let adminItems = realm.objects("Item");
 
   await realm.subscriptions.update((mutableSubs) => {
@@ -202,9 +155,9 @@ const canAuthor1ReadAndEdit = async () => {
 
 const canAuthor2ReadAndEdit = async () => {
   console.log("Logging in again as Author2");
-  const author2 = await logIn(author2Account);
+  const author2 = await logInOrRegister(author2Account);
 
-  const realm = await getRealm(author2);
+  const realm = await getRealm({ user: author2, schema });
   let adminItems = realm.objects("Item");
 
   await realm.subscriptions.update((mutableSubs) => {

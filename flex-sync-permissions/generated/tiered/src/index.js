@@ -1,3 +1,5 @@
-import { tieredExample } from "./tieredExample.js";
+import Realm from "realm";
 import { appId, baseUrl } from "./realm.json";
-tieredExample(appId, baseUrl);
+export const app = new Realm.App({ id: appId, baseUrl });
+import { tieredExample } from "./tieredExample.js";
+tieredExample();
