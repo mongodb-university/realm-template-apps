@@ -40,11 +40,11 @@ program
   .parse();
 // :remove-end:
 // :state-uncomment-start: add-collaborators
-// addCollaboratorsExample(appId);
+// addCollaboratorsExample(appId, baseUrl);
 // :state-uncomment-end:
 // :state-uncomment-start: tiered
-// tieredExample(appId);
+// tieredExample(appId, baseUrl);
 // :state-uncomment-end:
 // :state-uncomment-start: restricted-feed
-// restrictedFeedExample(appId);
+// restrictedFeedExample(appId, baseUrl);
 // :state-uncomment-end:
