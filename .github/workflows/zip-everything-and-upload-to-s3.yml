@@ -11,7 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: mkdir zip
-      - run: zip -r zip/realm-template-apps-2022-05-25.zip . -x ".git/*" ".github/*" ".DS_Store" "./zip/" "./web-js/*"
+      # Update version before a watershed such as "stuff for MDBW that backend
+      # is not ready to consume yet". We can continue to upload to the new
+      # version, and when backend is ready to consume they can switch to the new
+      # version.
+      - run: zip -r zip/realm-template-apps-v2.zip . -x ".git/*" ".github/*" ".DS_Store" "./zip/" "./web-js/*"
       - uses: shallwefootball/s3-upload-action@master
         with:
           aws_key_id: ${{ secrets.AWS_KEY_ID }}
