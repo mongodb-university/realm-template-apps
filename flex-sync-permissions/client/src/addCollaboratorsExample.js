@@ -2,6 +2,8 @@
 import Realm from "realm";
 import { strict as assert } from "assert";
 import * as BSON from "BSON";
+import { app } from "./index.js";
+import { logInOrRegister } from "./logInOrRegister.js";
 
 const ItemSchema = {
   name: "Item",
@@ -10,34 +12,22 @@ const ItemSchema = {
     owner_id: "string",
     name: "string",
     collaborators: "string[]",
-    team: "string",
   },
   primaryKey: "_id",
 };
 
-export const addCollaboratorsExample = async (appId, baseUrl) => {
-  console.log(`Connecting to ${appId}`);
-  const app = new Realm.App({ id: appId, baseUrl });
-  const logIn = async (email, password) => {
-    const credentials = Realm.Credentials.emailPassword(email, password);
-    let newUser;
-    try {
-      newUser = await app.logIn(credentials);
-      console.log(`Logged in as user ${newUser.id}`);
-    } catch {
-      newUser = await app.emailPasswordAuth.registerUser({ email, password });
-      console.log(`Created new user ${newUser}`);
-      newUser = await app.logIn(credentials);
-      console.log(`Logged in as user ${newUser}`);
-    }
-    return newUser;
-  };
-
+export const addCollaboratorsExample = async () => {
   console.log("Logging in as user 1");
-  const user1 = await logIn("user1@foo.bar", "password");
+  const user1 = await logInOrRegister({
+    email: "user1@example.com",
+    password: "password",
+  });
 
   console.log("Logging in as user 2");
-  const user2 = await logIn("user2@foo.bar", "password");
+  const user2 = await logInOrRegister({
+    email: "user1@example.com",
+    password: "password",
+  });
 
   console.log("Opening synced realm for user2");
   const realm = await Realm.open({

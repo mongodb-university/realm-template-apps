@@ -1,50 +1,15 @@
+import Realm from "realm";
+import { appId, baseUrl } from "./realm.json";
+export const app = new Realm.App({ id: appId, baseUrl });
 // :state-start: add-collaborators
 import { addCollaboratorsExample } from "./addCollaboratorsExample.js";
+addCollaboratorsExample();
 // :state-end:
 // :state-start: tiered
 import { tieredExample } from "./tieredExample.js";
+tieredExample();
 // :state-end:
 // :state-start: restricted-feed
 import { restrictedFeedExample } from "./restrictedFeedExample.js";
+restrictedFeedExample();
 // :state-end:
-import { appId, baseUrl } from "./realm.json";
-// :remove-start:
-import { program } from "commander";
-const demos = {
-  addCollaboratorsExample,
-  restrictedFeedExample,
-  tieredExample,
-};
-
-program
-  .usage("[OPTIONS]...")
-  .option("--appId <appId>", "Backend app ID")
-  .argument("<demo>", "Demo function to run")
-  .action(async (demoName, options) => {
-    const { appId } = options;
-
-    const demoFunction = demos[demoName];
-    if (demoFunction === undefined) {
-      throw new Error(
-        `Unknown demo: ${demoName}. Options are: ${Object.keys(demos)}`
-      );
-    }
-    try {
-      await demoFunction(appId, baseUrl);
-      process.exit(0);
-    } catch (error) {
-      console.error("Received error:", error);
-      process.exit(1);
-    }
-  })
-  .parse();
-// :remove-end:
-// :state-uncomment-start: add-collaborators
-// addCollaboratorsExample(appId, baseUrl);
-// :state-uncomment-end:
-// :state-uncomment-start: tiered
-// tieredExample(appId, baseUrl);
-// :state-uncomment-end:
-// :state-uncomment-start: restricted-feed
-// restrictedFeedExample(appId, baseUrl);
-// :state-uncomment-end:

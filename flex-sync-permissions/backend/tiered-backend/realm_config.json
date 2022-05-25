@@ -1,7 +1,8 @@
 {
-    "app_id": "flexsyncpermissions-pbedo",
     "config_version": 20210101,
+    "app_id": "flexsyncpermissions-jtkpp",
     "name": "FlexSyncPermissions",
     "location": "US-VA",
-    "deployment_model": "LOCAL"
+    "deployment_model": "GLOBAL",
+    "environment": "production"
 }

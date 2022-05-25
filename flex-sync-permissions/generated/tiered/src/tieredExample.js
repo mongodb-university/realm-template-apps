@@ -1,21 +1,22 @@
-import Realm from "realm";
 import * as BSON from "BSON";
+import { logInOrRegister } from "./logInOrRegister.js";
+import { app } from "./index.js";
+import { getRealm } from "./getRealm.js";
 
-let app;
 let adminDoc1Id;
 let adminDoc2Id;
 let memberDoc1Id;
 let memberDoc2Id;
 const realmTeamAdminAccount = {
-  email: "teamRealmAdmin@foo.bar",
+  email: "teamRealmAdmin@example.com",
   password: "password",
 };
 const atlasTeamAdminAccount = {
-  email: "teamAtlasAdmin@foo.bar",
+  email: "teamAtlasAdmin@example.com",
   password: "password",
 };
 const realmTeamMemberAccount = {
-  email: "teamRealmMember@foo.bar",
+  email: "teamRealmMember@example.com",
   password: "password",
 };
 
@@ -30,49 +31,9 @@ const ItemSchema = {
   },
   primaryKey: "_id",
 };
+const schema = [ItemSchema];
 
-const logIn = async (props) => {
-  let newUser;
-  const credentials = Realm.Credentials.emailPassword(
-    props.email,
-    props.password
-  );
-  try {
-    newUser = await app.logIn(credentials);
-    console.log(`Logged in as user ${newUser.id}`);
-  } catch {
-    newUser = await app.emailPasswordAuth.registerUser({
-      email: props.email,
-      password: props.password,
-    });
-    console.log(`Created new user ${newUser}`);
-    newUser = await app.logIn(credentials);
-    console.log(`Logged in as user ${newUser}`);
-  }
-  return newUser;
-};
-
-const getRealm = async (user) => {
-  return Realm.open({
-    schema: [ItemSchema],
-    sync: {
-      user: user,
-      flexible: true,
-      error: (session, error) => {
-        console.error("Is connected:", session.isConnected());
-        console.error("Error:", error);
-      },
-      clientReset: {
-        mode: "manual",
-      },
-    },
-  });
-};
-
-export const tieredExample = async (appId, baseUrl) => {
-  console.log(`Connecting to ${appId}`);
-  app = new Realm.App({ id: appId, baseUrl });
-
+export const tieredExample = async () => {
   await setUpTeamRealmAdmin();
   await setUpTeamRealmMember();
   await setUpTeamAtlasAdmin();
@@ -82,7 +43,7 @@ export const tieredExample = async (appId, baseUrl) => {
 
 const setUpTeamRealmAdmin = async () => {
   console.log("Logging in as Team 'TeamRealm' Admin");
-  const admin = await logIn(realmTeamAdminAccount);
+  const admin = await logInOrRegister(realmTeamAdminAccount);
 
   console.log("Opening synced realm for admin");
 
@@ -94,7 +55,7 @@ const setUpTeamRealmAdmin = async () => {
   const customadminData = await admin.refreshCustomData();
   console.log(JSON.stringify(customadminData));
 
-  const adminRealm = await getRealm(admin);
+  const adminRealm = await getRealm({ user: admin, schema });
 
   const adminItems = adminRealm.objects("Item");
   await adminRealm.subscriptions.update((mutableSubs) => {
@@ -131,7 +92,7 @@ const setUpTeamRealmAdmin = async () => {
 
 const setUpTeamRealmMember = async () => {
   console.log("Logging in as a Member of team 'TeamRealm'");
-  const member = await logIn(realmTeamMemberAccount);
+  const member = await logInOrRegister(realmTeamMemberAccount);
 
   console.log("Adding member as member of team 'realmTeam'");
   const funcArgs = [member.id, "realmTeam", false];
@@ -139,7 +100,7 @@ const setUpTeamRealmMember = async () => {
   console.log(funcResult);
 
   console.log("Opening synced realm for member");
-  const memberRealm = await getRealm(member);
+  const memberRealm = await getRealm({ user: member, schema });
 
   await memberRealm.subscriptions.update((mutableSubs) => {
     mutableSubs.add(memberRealm.objects("Item"));
@@ -173,7 +134,7 @@ const setUpTeamRealmMember = async () => {
 
 const setUpTeamAtlasAdmin = async () => {
   console.log("Logging in as Team 'AtlasTeam' Admin");
-  const atlasTeamAdmin = await logIn(atlasTeamAdminAccount);
+  const atlasTeamAdmin = await logInOrRegister(atlasTeamAdminAccount);
 
   console.log("Adding admin as Admin on team 'atlasTeam'");
   const adminFuncArgs = [atlasTeamAdmin.id, "atlasTeam", true];
@@ -187,7 +148,7 @@ const setUpTeamAtlasAdmin = async () => {
   console.log(JSON.stringify(customadminData));
 
   console.log("Opening synced realm for admin");
-  const adminAtlasTeamRealm = await getRealm(atlasTeamAdmin);
+  const adminAtlasTeamRealm = await getRealm({ user: atlasTeamAdmin, schema });
 
   const adminItems = adminAtlasTeamRealm.objects("Item");
   await adminAtlasTeamRealm.subscriptions.update((mutableSubs) => {
@@ -210,9 +171,9 @@ const setUpTeamAtlasAdmin = async () => {
 
 const canAdminEdit = async () => {
   console.log("Logging in again as TeamRealm Admin");
-  const admin = await logIn(realmTeamAdminAccount);
+  const admin = await logInOrRegister(realmTeamAdminAccount);
 
-  const adminRealm = await getRealm(admin);
+  const adminRealm = await getRealm({ user: admin, schema });
 
   let adminItems = adminRealm.objects("Item");
   await adminRealm.subscriptions.update((mutableSubs) => {
@@ -257,9 +218,9 @@ const canAdminEdit = async () => {
 
 const canMemberEdit = async () => {
   console.log("Logging in again as TeamRealm Member");
-  const member = await logIn(realmTeamMemberAccount);
+  const member = await logInOrRegister(realmTeamMemberAccount);
 
-  const memberRealm = await getRealm(member);
+  const memberRealm = await getRealm({ user: member, schema });
 
   const memberItems = memberRealm.objects("Item");
   await memberRealm.subscriptions.update((mutableSubs) => {
