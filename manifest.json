@@ -36,7 +36,7 @@
     "file_format": "xml"
   },
   "react-native.todo": {
-    "name": "React Native Todo App",
+    "name": "React Native Todo App (Partition-based Sync)",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
     "backend_path": "todo-sync",
@@ -45,13 +45,33 @@
     "metadata_filename": "realm",
     "file_format": "json"
   },
+  "react-native.todo.flex": {
+    "name": "React Native Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "todo-flexible-sync",
+    "client_path": "generated/react-native-flexible-sync",
+    "metadata_path": "generated/react-native-flexible-sync",
+    "metadata_filename": "realm",
+    "file_format": "json"
+  },
   "xamarin.todo": {
-    "name": "Xamarin Todo App",
+    "name": "Xamarin Todo App (Partition-based Sync)",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
     "backend_path": "todo-sync",
     "client_path": "generated/xamarin-partition-based-sync",
     "metadata_path": "generated/xamarin-partition-based-sync/realm-todo-dotnet",
+    "metadata_filename": "realm",
+    "file_format": "json"
+  },
+  "xamarin.todo.flex": {
+    "name": "Xamarin Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "todo-sync",
+    "client_path": "generated/xamarin-flexible-sync",
+    "metadata_path": "generated/xamarin-flexible-sync/realm-todo-dotnet",
     "metadata_filename": "realm",
     "file_format": "json"
   },
