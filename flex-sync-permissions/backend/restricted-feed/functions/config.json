@@ -1,0 +1,22 @@
+[
+    {
+        "name": "resetFunc",
+        "private": true
+    },
+    {
+        "name": "onUserCreated",
+        "private": true
+    },
+    {
+        "name": "deleteAllItems",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "joinTeam",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    }
+]
