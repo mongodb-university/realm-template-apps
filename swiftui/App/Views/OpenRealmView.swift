@@ -20,7 +20,7 @@ struct OpenRealmView: View {
     @AsyncOpen(appId: theAppConfig.appId, partitionValue: "", timeout: 4000) var asyncOpen
     // :state-end:
     // :state-uncomment-start: flexible-sync
-    // @AsyncOpen(appId: testAppId, timeout: 2000) var asyncOpen
+    // @AsyncOpen(appId: theAppConfig.appId, timeout: 2000) var asyncOpen
     // :state-uncomment-end:
        
     var body: some View {
@@ -64,7 +64,7 @@ struct OpenRealmView: View {
            //     TodosView(leadingBarButton: AnyView(LogoutButton()))
            //          .environment(\.realm, realm)
            // }
-           // :state-end:
+           // :state-uncomment-end:
        // The realm is currently being downloaded from the server.
        // Show a progress view.
        case .progress(let progress):
