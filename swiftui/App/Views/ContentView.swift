@@ -11,9 +11,9 @@ struct ContentView: View {
             // partitionValue to the view that opens a realm.
             OpenRealmView().environment(\.partitionValue, user.id)
             // :state-end:
-            // :state-uncomment-start: flexible-sync
-            // OpenRealmView()
-            // :state-uncomment-end:
+            // :state-start: flexible-sync
+            OpenRealmView()
+            // :state-end:
         } else {
             // If there is no user logged in, show the login view.
             LoginView()
