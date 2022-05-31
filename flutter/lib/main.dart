@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
-import 'components/todo_list.dart';
-import 'components/create_todo.dart';
+import './realm/app.dart';
+import './screens/homepage.dart';
+import './screens/log_in.dart';
 
 void main() => runApp(const App());
 
@@ -20,24 +21,12 @@ class App extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const HomePage(title: 'Realm Flutter Todo'),
+        initialRoute: realmApp.currentUser != null ? '/' : '/login',
+        routes: {
+          '/': (context) => const HomePage(),
+          '/login': (context) => LogIn()
+        },
       ),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: const TodoList(),
-      floatingActionButton: const CreateTodo(),
     );
   }
 }
