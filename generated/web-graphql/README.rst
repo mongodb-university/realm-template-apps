@@ -12,7 +12,7 @@ The client allows you to:
 ⚛️ **Create React App**: This project was bootstrapped with `Create React App <https://github.com/facebook/create-react-app>`_.
 
 
-The client allows you to connect using Realm's `remote MongoDB queries <https://docs.mongodb.com/realm/web/mongodb/>`_.
+The client allows you to connect using Realm's `GraphQL API <https://docs.mongodb.com/realm/graphql/>`_.
 
 Set Up and Run the App
 ----------------------
