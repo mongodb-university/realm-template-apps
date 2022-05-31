@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
 
-export const API_TYPE_NAME = "GraphQL"
+export const API_TYPE_NAME = "MQL"
 
 export function AppName() {
   return (

@@ -2,8 +2,8 @@
 Atlas App Services Web Starter
 ==============================
 
-This project contains the web client for the MongoDB Atlas App Services template
-application. The client allows you to:
+This project contains the web client for the Atlas App Services template application.
+The client allows you to:
 
 - Sign up and log in as an Email/Password user
 
@@ -12,7 +12,7 @@ application. The client allows you to:
 ⚛️ **Create React App**: This project was bootstrapped with `Create React App <https://github.com/facebook/create-react-app>`_.
 
 
-The client allows you to connect using Realm's `GraphQL API <https://docs.mongodb.com/realm/graphql/>`_.
+The client allows you to connect using Realm's `remote MongoDB queries <https://docs.mongodb.com/realm/web/mongodb/>`_.
 
 Set Up and Run the App
 ----------------------
