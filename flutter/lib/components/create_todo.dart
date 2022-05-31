@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:realm/realm.dart';
-import 'package:uuid/uuid.dart';
 
-const uuid = Uuid();
+final uuid = Uuid.v4();
 
 class CreateTodo extends StatelessWidget {
   const CreateTodo({Key? key}) : super(key: key);
@@ -45,7 +44,7 @@ class _CreateTodoFormState extends State<CreateTodoForm> {
     void createTodo(String name) {
       final realm = Provider.of<Realm>(context, listen: false);
       realm.write(() {
-        final id = uuid.v4();
+        final id = Uuid.v4();
         final newTodo = Todo(id.toString(), name);
         realm.add<Todo>(newTodo);
       });

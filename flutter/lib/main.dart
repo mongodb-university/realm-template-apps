@@ -13,7 +13,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider<Realm>(
-      create: (_) => Realm(Configuration([Todo.schema])),
+      create: (_) => Realm(Configuration.local([Todo.schema])),
       dispose: (_, realm) => realm.close(),
       child: MaterialApp(
         title: 'Realm Flutter Todo',

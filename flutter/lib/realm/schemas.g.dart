@@ -49,7 +49,7 @@ class Todo extends _Todo with RealmEntity, RealmObject {
   static SchemaObject? _schema;
   static SchemaObject _initSchema() {
     RealmObject.registerFactory(Todo._);
-    return const SchemaObject(Todo, [
+    return const SchemaObject(Todo, 'Todo', [
       SchemaProperty('id', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('isComplete', RealmPropertyType.bool),
       SchemaProperty('summary', RealmPropertyType.string),

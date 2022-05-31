@@ -48,3 +48,4 @@ app.*.map.json
 # local version of realm sdk & binary
 realm-dart/
 binary/
+realm_packages/
