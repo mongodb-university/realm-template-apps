@@ -13,7 +13,7 @@ struct ContentView: View {
             // If there is no user logged in, show the login view.
             LoginView()
         }
-        Text("Built with the MongoDB Realm Sync Template")
+        Text("Built with the Atlas Device Sync Template")
             .font(.footnote)
             .padding()
     }
