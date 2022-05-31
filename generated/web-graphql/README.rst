@@ -1,9 +1,9 @@
-=========================
-MongoDB Realm Web Starter
-=========================
+==============================
+Atlas App Services Web Starter
+==============================
 
-This project contains the web client for the MongoDB Realm template application.
-The client allows you to:
+This project contains the web client for the MongoDB Atlas App Services template
+application. The client allows you to:
 
 - Sign up and log in as an Email/Password user
 

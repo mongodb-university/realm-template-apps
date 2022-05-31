@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="RealmTemplateApp.FooterView">
     <ContentView.Content>
-        <Label Text="Built with the MongoDB Realm Sync Template"
+        <Label Text="Built with the Atlas Device Sync Template"
                FontSize="Small"
                TextColor="#333"/>
     </ContentView.Content>
