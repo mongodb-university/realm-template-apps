@@ -60,7 +60,7 @@ const App = () => {
           </NavigationContainer>
           <View style={styles.footer}>
             <Text style={styles.footerText}>
-              Built with the MongoDB Realm Sync Template
+              Built with the Atlas Device Sync Template
             </Text>
           </View>
         </SafeAreaProvider>

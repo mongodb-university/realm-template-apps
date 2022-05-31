@@ -25,7 +25,7 @@ function MoreInfoItem({ children }) {
 export function MoreInfoTemplateAndDocs() {
   return (
     <MoreInfoItem>
-      <span>Built with the MongoDB Realm {API_TYPE_NAME} Template</span> |{" "}
+      <span>Built with the Atlas App Services {API_TYPE_NAME} Template</span> |{" "}
       <Link target="_blank" href="https://docs.mongodb.com/realm">
         Docs
       </Link>
