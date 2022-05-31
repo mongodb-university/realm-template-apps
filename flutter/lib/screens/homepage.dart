@@ -8,10 +8,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar,
-      body: const TodoList(),
-      floatingActionButton: const CreateTodo(),
+    return const Scaffold(
+      appBar: TodoAppBar(),
+      body: TodoList(),
+      floatingActionButton: CreateTodo(),
     );
   }
 }
