@@ -1,9 +1,9 @@
 {
   "sync.todo": {
-    "name": "Sync Todo App",
+    "name": "Flexible Sync Todo App",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
-    "backend_path": "todo-sync"
+    "backend_path": "todo-flexible-sync"
   },
   "ios.swift.todo": {
     "name": "iOS Swift Interface Builder Todo App",
