@@ -3,47 +3,6 @@ import 'package:flutter_todo/realm/app_services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:realm/realm.dart';
-import './create_todo_form.dart';
-
-class CreateTodo extends StatelessWidget {
-  const CreateTodo({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    void handlePressed() {
-      showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (_) => Wrap(children: const [_CreateTodoFormWrapper()]),
-      );
-    }
-
-    return FloatingActionButton(
-      onPressed: handlePressed,
-      tooltip: 'Add',
-      child: const Icon(Icons.add),
-    );
-  }
-}
-
-class _CreateTodoFormWrapper extends StatelessWidget {
-  const _CreateTodoFormWrapper({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding:
-            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        child: Container(
-            color: Colors.grey.shade100,
-            // height: 200,
-            padding:
-                const EdgeInsets.only(top: 25, bottom: 25, left: 50, right: 50),
-            child: Center(
-              child: CreateTodoForm(),
-            )));
-  }
-}
 
 class CreateTodoForm extends StatefulWidget {
   const CreateTodoForm({Key? key}) : super(key: key);

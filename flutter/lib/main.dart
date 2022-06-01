@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo/realm/schemas.dart';
+import 'package:flutter_todo/realm/init_realm.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
 import 'realm/app_services.dart';
@@ -25,9 +25,25 @@ class App extends StatelessWidget {
       ),
       initialRoute: currentUser != null ? '/' : '/login',
       routes: {
-        '/': (context) => const HomePage(),
+        '/': (context) => homepage(context),
         '/login': (context) => LogIn()
       },
     );
+  }
+}
+
+Widget homepage(BuildContext context) {
+  final currentUser = Provider.of<AppServices>(context).currentUser;
+
+  if (currentUser != null) {
+    return Provider<Realm>(
+      create: (_) => initRealm(currentUser),
+      dispose: (_, realm) => realm.close(),
+      builder: (context, child) {
+        return const HomePage();
+      },
+    );
+  } else {
+    return Text('oh no');
   }
 }
