@@ -69,7 +69,7 @@
     "name": "Xamarin Todo App",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
-    "backend_path": "todo-sync",
+    "backend_path": "todo-flexible-sync",
     "client_path": "generated/xamarin-flexible-sync",
     "metadata_path": "generated/xamarin-flexible-sync/realm-todo-dotnet",
     "metadata_filename": "realm",
