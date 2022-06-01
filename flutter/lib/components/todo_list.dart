@@ -13,7 +13,8 @@ class TodoViewModel {
   final Todo todo;
 
   const TodoViewModel._(this.id, this.isComplete, this.summary, this.todo);
-  TodoViewModel(Todo todo) : this._(todo.id, todo.isComplete, todo.summary, todo);
+  TodoViewModel(Todo todo)
+      : this._(todo.id, todo.isComplete, todo.summary, todo);
 }
 
 class TodoList extends StatefulWidget {
@@ -29,7 +30,10 @@ class _TodoListState extends State<TodoList> {
 
   @override
   Widget build(BuildContext context) {
-    final realm = Provider.of<Realm>(context);
+    final realm = Provider.of<Realm?>(context);
+    if (realm == null) {
+      return Container();
+    }
     final stream = realm.all<Todo>().changes;
 
     return StreamBuilder<RealmResultsChanges<Todo>>(
@@ -48,21 +52,25 @@ class _TodoListState extends State<TodoList> {
 
           // Handle deletions. These are handles first, as indexes refer to the old collection
           for (final deletionIndex in data.deleted) {
-            final toDie = _todoViewModels.removeAt(deletionIndex); // update view model collection
-            _myListKey.currentState?.removeItem(deletionIndex, (context, animation) {
+            final toDie = _todoViewModels
+                .removeAt(deletionIndex); // update view model collection
+            _myListKey.currentState?.removeItem(deletionIndex,
+                (context, animation) {
               return TodoItem(toDie, animation);
             });
           }
 
           // Handle inserts
           for (final insertionIndex in data.inserted) {
-            _todoViewModels.insert(insertionIndex, TodoViewModel(todos[insertionIndex]));
+            _todoViewModels.insert(
+                insertionIndex, TodoViewModel(todos[insertionIndex]));
             _myListKey.currentState?.insertItem(insertionIndex);
           }
 
           // Handle modifications
           for (final modifiedIndex in data.modified) {
-            _todoViewModels[modifiedIndex] = TodoViewModel(todos[modifiedIndex]);
+            _todoViewModels[modifiedIndex] =
+                TodoViewModel(todos[modifiedIndex]);
           }
 
           // Handle initialization (or any mismatch really, but that shouldn't happen)

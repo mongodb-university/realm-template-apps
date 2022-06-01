@@ -3,7 +3,6 @@ import 'package:flutter_todo/realm/app_services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:realm/realm.dart';
-import './create_todo_form.dart';
 
 class CreateTodo extends StatelessWidget {
   const CreateTodo({Key? key}) : super(key: key);
@@ -39,7 +38,7 @@ class _CreateTodoFormWrapper extends StatelessWidget {
             // height: 200,
             padding:
                 const EdgeInsets.only(top: 25, bottom: 25, left: 50, right: 50),
-            child: Center(
+            child: const Center(
               child: CreateTodoForm(),
             )));
   }
