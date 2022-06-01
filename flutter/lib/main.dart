@@ -13,20 +13,16 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<Realm>(
-      create: (_) => Realm(Configuration.local([Todo.schema])),
-      dispose: (_, realm) => realm.close(),
-      child: MaterialApp(
-        title: 'Realm Flutter Todo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        initialRoute: realmApp.currentUser != null ? '/' : '/login',
-        routes: {
-          '/': (context) => const HomePage(),
-          '/login': (context) => LogIn()
-        },
+    return MaterialApp(
+      title: 'Realm Flutter Todo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      initialRoute: realmApp.currentUser != null ? '/' : '/login',
+      routes: {
+        '/': (context) => const HomePage(),
+        '/login': (context) => LogIn()
+      },
     );
   }
 }

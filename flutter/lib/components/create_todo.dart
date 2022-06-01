@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo/realm/app.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:realm/realm.dart';
@@ -45,7 +46,7 @@ class _CreateTodoFormState extends State<CreateTodoForm> {
       final realm = Provider.of<Realm>(context, listen: false);
       realm.write(() {
         final id = Uuid.v4();
-        final newTodo = Todo(id.toString(), name);
+        final newTodo = Todo(id.toString(), name, realmApp.currentUser!.id);
         realm.add<Todo>(newTodo);
       });
     }

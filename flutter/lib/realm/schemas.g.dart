@@ -11,7 +11,8 @@ class Todo extends _Todo with RealmEntity, RealmObject {
 
   Todo(
     String id,
-    String summary, {
+    String summary,
+    String ownerId, {
     bool isComplete = false,
   }) {
     if (!_defaultsSet) {
@@ -19,15 +20,16 @@ class Todo extends _Todo with RealmEntity, RealmObject {
         'isComplete': false,
       });
     }
-    RealmObject.set(this, 'id', id);
+    RealmObject.set(this, '_id', id);
     RealmObject.set(this, 'isComplete', isComplete);
     RealmObject.set(this, 'summary', summary);
+    RealmObject.set(this, 'owner_id', ownerId);
   }
 
   Todo._();
 
   @override
-  String get id => RealmObject.get<String>(this, 'id') as String;
+  String get id => RealmObject.get<String>(this, '_id') as String;
   @override
   set id(String value) => throw RealmUnsupportedSetError();
 
@@ -42,6 +44,11 @@ class Todo extends _Todo with RealmEntity, RealmObject {
   set summary(String value) => RealmObject.set(this, 'summary', value);
 
   @override
+  String get ownerId => RealmObject.get<String>(this, 'owner_id') as String;
+  @override
+  set ownerId(String value) => RealmObject.set(this, 'owner_id', value);
+
+  @override
   Stream<RealmObjectChanges<Todo>> get changes =>
       RealmObject.getChanges<Todo>(this);
 
@@ -50,9 +57,11 @@ class Todo extends _Todo with RealmEntity, RealmObject {
   static SchemaObject _initSchema() {
     RealmObject.registerFactory(Todo._);
     return const SchemaObject(Todo, 'Todo', [
-      SchemaProperty('id', RealmPropertyType.string, primaryKey: true),
+      SchemaProperty('_id', RealmPropertyType.string,
+          mapTo: '_id', primaryKey: true),
       SchemaProperty('isComplete', RealmPropertyType.bool),
       SchemaProperty('summary', RealmPropertyType.string),
+      SchemaProperty('owner_id', RealmPropertyType.string, mapTo: 'owner_id'),
     ]);
   }
 }

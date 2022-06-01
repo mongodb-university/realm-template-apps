@@ -17,7 +17,7 @@ class TodoAppBar extends StatelessWidget with PreferredSizeWidget {
         actions: realmApp.currentUser != null
             ? <Widget>[
                 IconButton(
-                  icon: Icon(Icons.logout),
+                  icon: const Icon(Icons.logout),
                   tooltip: 'Log Out Icon',
                   onPressed: logOut,
                 ),
