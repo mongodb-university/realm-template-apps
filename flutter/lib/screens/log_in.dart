@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_todo/components/app_bar.dart';
-import 'package:flutter_todo/realm/app.dart';
+import 'package:flutter_todo/realm/app_services.dart';
 import 'package:realm/realm.dart';
 import 'HomePage.dart';
 
@@ -31,13 +32,14 @@ class _LogInState extends State<LogIn> {
 
   @override
   Widget build(BuildContext context) {
+    final app = Provider.of<AppServices>(context);
     void _logInUser() async {
       setState(() {
         _errorMessage = null;
       });
       try {
-        await realmApp.logIn(Credentials.emailPassword(
-            _emailController.text, _passwordController.text));
+        await app.logInUserEmailPw(
+            _emailController.text, _passwordController.text);
         Navigator.pushNamed(context, '/');
       } catch (err) {
         setState(() {
@@ -51,12 +53,8 @@ class _LogInState extends State<LogIn> {
         _errorMessage = null;
       });
       try {
-        EmailPasswordAuthProvider authProvider =
-            EmailPasswordAuthProvider(realmApp);
-        await authProvider.registerUser(
+        await app.registerUserEmailPw(
             _emailController.text, _passwordController.text);
-        await realmApp.logIn(Credentials.emailPassword(
-            _emailController.text, _passwordController.text));
         Navigator.pushNamed(context, '/');
       } catch (err) {
         setState(() {

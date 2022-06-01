@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo/realm/app.dart';
+import 'package:flutter_todo/realm/app_services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:realm/realm.dart';
@@ -41,12 +41,13 @@ class _CreateTodoFormState extends State<CreateTodoForm> {
   @override
   Widget build(BuildContext context) {
     TextTheme myTextTheme = Theme.of(context).textTheme;
+    final currentUser = Provider.of<AppServices>(context).currentUser;
 
     void createTodo(String name) {
       final realm = Provider.of<Realm>(context, listen: false);
       realm.write(() {
         final id = Uuid.v4();
-        final newTodo = Todo(id.toString(), name, realmApp.currentUser!.id);
+        final newTodo = Todo(id.toString(), name, currentUser!.id);
         realm.add<Todo>(newTodo);
       });
     }
