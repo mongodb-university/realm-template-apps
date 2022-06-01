@@ -24,49 +24,50 @@ struct OpenRealmView: View {
     // :state-end:
        
     var body: some View {
-       switch asyncOpen {
-       // Starting the Realm.asyncOpen process.
-       // Show a progress view.
-       case .connecting:
-           ProgressView()
-       // Waiting for a user to be logged in before executing
-       // Realm.asyncOpen.
-       case .waitingForUser:
-           ProgressView("Waiting for user to log in...")
-       // The realm has been opened and is ready for use.
-       // Show the Todos view.
-       case .open(let realm):
-           // :state-start: partition-based-sync
-           TodosView(leadingBarButton: AnyView(LogoutButton()))
-               .environment(\.realm, realm)
-           // :state-end:
-           // :state-start: flexible-sync
-           switch subscriptionState {
-           case .initial:
-               ProgressView("Subscribing to Query")
-                   .onAppear {
-                       Task {
-                           do {
-                               let subs = realm.subscriptions
-                               if subs.count == 0 {
-                                   try await subs.write {
-                                       subs.append(QuerySubscription<Todo>(name: "user_tasks") {
-                                           $0.owner_id == user!.id
-                                       })
-                                       
-                                   }
-                                   
-                               }
-                               subscriptionState = .completed
-                           }
-                       }
-                   }
-           case .completed:
-               TodosView(leadingBarButton: AnyView(LogoutButton()))
-                   .environment(\.realm, realm)
-               
-           }
-           // :state-end:
+        switch asyncOpen {
+        // Starting the Realm.asyncOpen process.
+        // Show a progress view.
+        case .connecting:
+            ProgressView()
+        // Waiting for a user to be logged in before executing
+        // Realm.asyncOpen.
+        case .waitingForUser:
+            ProgressView("Waiting for user to log in...")
+        // The realm has been opened and is ready for use.
+        // Show the Todos view.
+        case .open(let realm):
+            // :state-start: partition-based-sync
+            TodosView(leadingBarButton: AnyView(LogoutButton()))
+                .environment(\.realm, realm)
+            // :state-end:
+            // :state-start: flexible-sync
+            switch subscriptionState {
+            /// Use the `.initial` case to add a query subscription.
+            /// You must have at least one subscription before you read from or write to the realm.
+            case .initial:
+                ProgressView("Subscribing to Query")
+                    .onAppear {
+                        Task {
+                            do {
+                                let subs = realm.subscriptions
+                                if subs.count == 0 {
+                                    try await subs.update {
+                                        subs.append(QuerySubscription<Todo>(name: "user_tasks") {
+                                            $0.owner_id == user!.id
+                                        })
+                                    }
+                                }
+                                subscriptionState = .completed
+                            }
+                        }
+                    }
+            /// After you have added a subscription, use the `.completed` case
+            /// to move to the TodosView, injecting the prepared realm as an environment variable.
+            case .completed:
+                TodosView(leadingBarButton: AnyView(LogoutButton()))
+                    .environment(\.realm, realm)
+            }
+            // :state-end:
        // The realm is currently being downloaded from the server.
        // Show a progress view.
        case .progress(let progress):
