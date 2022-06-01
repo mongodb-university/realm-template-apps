@@ -30,29 +30,19 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentUser =
         Provider.of<AppServices>(context, listen: false).currentUser;
-    return MaterialApp(
-      title: 'Realm Flutter Todo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: MaterialApp(
+        title: 'Realm Flutter Todo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        initialRoute: currentUser != null ? '/' : '/login',
+        routes: {
+          '/': (context) => const HomePage(),
+          '/login': (context) => LogIn()
+        },
       ),
-      initialRoute: currentUser != null ? '/' : '/login',
-      routes: {'/': (context) => HomePage(), '/login': (context) => LogIn()},
     );
-  }
-}
-
-Widget homepage(BuildContext context) {
-  final currentUser = Provider.of<AppServices>(context).currentUser;
-
-  if (currentUser != null) {
-    return Provider<Realm>(
-      create: (_) => initRealm(currentUser),
-      dispose: (_, realm) => realm.close(),
-      builder: (context, child) {
-        return const HomePage();
-      },
-    );
-  } else {
-    return Container();
   }
 }

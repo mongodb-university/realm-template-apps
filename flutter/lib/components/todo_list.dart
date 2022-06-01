@@ -4,8 +4,6 @@ import 'package:realm/realm.dart';
 import 'todo_item.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 
-const _animationDuration = Duration(milliseconds: 300);
-
 class TodoViewModel {
   final String id;
   final bool isComplete;

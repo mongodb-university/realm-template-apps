@@ -2,7 +2,6 @@ import 'package:realm/realm.dart';
 import '../realm/schemas.dart';
 
 Realm initRealm(User currentUser) {
-  print("USER ID: " + currentUser.id);
   Configuration config = Configuration.flexibleSync(currentUser, [Todo.schema]);
   Realm realm = Realm(
     config,

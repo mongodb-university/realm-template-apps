@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/components/app_bar.dart';
 import 'package:flutter_todo/realm/app_services.dart';
-import 'package:realm/realm.dart';
-import 'HomePage.dart';
 
 class LogIn extends StatefulWidget {
   @override
