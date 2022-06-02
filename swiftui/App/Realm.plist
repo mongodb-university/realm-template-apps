@@ -5,6 +5,6 @@
 	<key>baseUrl</key>
 	<string>https://realm.mongodb.com</string>
 	<key>appId</key>
-	<string>swiftui-template-oital</string>
+	<string>todo-sync-pcmwt</string>
 </dict>
 </plist>
