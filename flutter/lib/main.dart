@@ -9,19 +9,21 @@ import './screens/log_in.dart';
 
 const _APP_ID = 'todo-sync-msgyz';
 
-void main() => runApp(MultiProvider(providers: [
-      ChangeNotifierProvider<AppServices>(create: (_) => AppServices(_APP_ID)),
-      ProxyProvider<AppServices, Realm?>(
-        update: (context, app, previousRealm) {
-          if (app.currentUser != null) {
-            previousRealm?.close();
-            return initRealm(app.currentUser!);
-          }
-          return null;
-        },
-        dispose: (_, realm) => realm?.close(),
-      )
-    ], child: const App()));
+void main() async {
+  return runApp(MultiProvider(providers: [
+    ChangeNotifierProvider<AppServices>(create: (_) => AppServices(_APP_ID)),
+    ProxyProvider<AppServices, Realm?>(
+      update: (context, app, previousRealm) {
+        if (app.currentUser != null) {
+          previousRealm?.close();
+          return initRealm(app.currentUser!);
+        }
+        return null;
+      },
+      dispose: (_, realm) => realm?.close(),
+    )
+  ], child: const App()));
+}
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);

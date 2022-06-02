@@ -2,18 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
 import 'todo_item.dart';
-import 'package:flutter_todo/realm/schemas.dart';
-
-class TodoViewModel {
-  final String id;
-  final bool isComplete;
-  final String summary;
-  final Todo todo;
-
-  const TodoViewModel._(this.id, this.isComplete, this.summary, this.todo);
-  TodoViewModel(Todo todo)
-      : this._(todo.id, todo.isComplete, todo.summary, todo);
-}
+import '../realm/schemas.dart';
+import '../viewmodels/todo_viewmodel.dart';
 
 class TodoList extends StatefulWidget {
   const TodoList({Key? key}) : super(key: key);
