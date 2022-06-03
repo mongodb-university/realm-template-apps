@@ -16,12 +16,22 @@
     "file_format": "plist"
   },
   "swiftui.todo": {
-    "name": "SwiftUI Interface Builder Todo App",
+    "name": "SwiftUI Interface Builder Todo App (Partition-based Sync)",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
     "backend_path": "todo-sync",
-    "client_path": "swiftui",
-    "metadata_path": "swiftui/App",
+    "client_path": "generated/swiftui-partition-based-sync",
+    "metadata_path": "generated/swiftui-partition-based-sync/App",
+    "metadata_filename": "Realm",
+    "file_format": "plist"
+  },
+  "swiftui.todo.flex": {
+    "name": "SwiftUI Interface Builder Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "todo-flexible-sync",
+    "client_path": "generated/swiftui-flexible-sync",
+    "metadata_path": "generated/swiftui-flexible-sync/App",
     "metadata_filename": "Realm",
     "file_format": "plist"
   },

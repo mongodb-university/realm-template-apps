@@ -16,10 +16,8 @@ struct CreateTodoView: View {
     // with the new Todo and we should return to the TodosView.
     @Binding var isInCreateTodoView: Bool
     
-    // :state-start: flexible-sync
     @State var user: User
     
-    // :state-end:
     @State var todoSummary = ""
 
     var body: some View {
@@ -33,9 +31,7 @@ struct CreateTodoView: View {
             }
             Section {
                 Button(action: {
-                    // :state-start: flexible-sync
                     newTodo.owner_id = user.id
-                    // :state-end:
                     // To avoid updating too many times and causing Sync-related
                     // performance issues, we only assign to the `newTodo.summary`
                     // once when the user presses `Save`.

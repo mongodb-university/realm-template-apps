@@ -10,20 +10,13 @@ struct TodosView: View {
     @ObservedResults(Todo.self) var todo
     @State var isInCreateTodoView = false
     @State var todoSummary = ""
-    // :state-start: flexible-sync
     @State var user: User
-    // :state-end:
     
     var body: some View {
         NavigationView {
             VStack {
                 if isInCreateTodoView {
-                    // :state-start: partition-based-sync
-                    CreateTodoView(isInCreateTodoView: $isInCreateTodoView)
-                    // :state-end:
-                    // :state-start: flexible-sync
                     CreateTodoView(isInCreateTodoView: $isInCreateTodoView, user: user)
-                    // :state-end:
                 }
                 else {
                     TodoList()
