@@ -9,6 +9,7 @@ let author2DocBId;
 const author1Account = { email: "author1@example.com", password: "password" };
 let author1Id;
 const author2Account = { email: "author2@example.com", password: "password" };
+let author2Id;
 
 const ItemSchema = {
   name: "Item",
@@ -73,7 +74,7 @@ const setUpAuthor2 = async () => {
   });
   author2Id = author2.id;
 
-  console.log("Opening synced realm for author1");
+  console.log("Opening synced realm for Author2");
   const realm = await getRealm({ user: author2, schema });
 
   const author2Items = realm.objects("Item");
@@ -115,7 +116,7 @@ const canAuthor1ReadAndEdit = async () => {
 
   const realm = await getRealm({ user: author1, schema });
   let adminItems = realm.objects("Item");
-
+  console.log("adminItems", adminItems.length);
   await realm.subscriptions.update((mutableSubs) => {
     mutableSubs.add(adminItems);
   });
@@ -128,7 +129,7 @@ const canAuthor1ReadAndEdit = async () => {
   });
 
   const auth1DocA = realm.objectForPrimaryKey("Item", author1DocAId);
-
+  console.log(auth1DocA);
   console.log("Author1 is editing Author1's first doc", auth1DocA._id);
   try {
     realm.write(() => {

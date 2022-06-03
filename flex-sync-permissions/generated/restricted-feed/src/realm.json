@@ -1,3 +1,4 @@
 {
-  "baseUrl": "https://realm.mongodb.com"
+  "baseUrl": "https://realm.mongodb.com",
+  "appId": "flexsyncpermissions-pbedo"
 }
