@@ -1,0 +1,34 @@
+{
+    "type": "flexible",
+    "state": "enabled",
+    "development_mode_enabled": true,
+    "service_name": "mongodb-atlas",
+    "database_name": "add_collaborators",
+    "permissions": {
+        "rules": {},
+        "defaultRoles": [
+            {
+                "name": "read-only",
+                "applyWhen": {},
+                "write": {
+                    "$or": [
+                        {
+                            "owner_id": "%%user.id"
+                        },
+                        {
+                            "collaborators": {
+                                "$all": [
+                                    "%%user.id"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "queryable_fields_names": [
+        "collaborators",
+        "owner_id"
+    ]
+}
