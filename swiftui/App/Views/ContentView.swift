@@ -13,9 +13,14 @@ struct ContentView: View {
             // :state-end:
             // :state-start: flexible-sync
             let config = user.flexibleSyncConfiguration(initialSubscriptions: { subs in
-                subs.append(QuerySubscription<Todo>(name: "user_tasks") {
-                    $0.owner_id == user.id
-                })
+                if let foundSubscription = subs.first(named: "user_tasks") {
+                    // Existing subscription found - do nothing
+                    return
+                } else {
+                    subs.append(QuerySubscription<Todo>(name: "user_tasks") {
+                        $0.owner_id == user.id
+                    })
+                }
             })
             OpenRealmView(user: user).environment(\.realmConfiguration, config)
             // :state-end:
