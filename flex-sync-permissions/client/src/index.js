@@ -11,5 +11,10 @@ tieredExample().then(() => process.exit(0));
 // :state-end:
 // :state-start: restricted-feed
 import { restrictedFeedExample } from "./restrictedFeedExample.js";
-restrictedFeedExample().then(() => process.exit(0));
+restrictedFeedExample()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
 // :state-end:

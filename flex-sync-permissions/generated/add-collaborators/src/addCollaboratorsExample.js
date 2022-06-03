@@ -82,7 +82,7 @@ export const addCollaboratorsExample = async () => {
       _id: new BSON.ObjectID(),
       owner_id: theAuthor.id,
       name: "first item",
-      // collaborators: [theCollaborator.id], // See what happens when removing theCollaborator frmo this
+      collaborators: [theCollaborator.id],
     });
   });
 

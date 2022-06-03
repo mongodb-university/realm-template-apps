@@ -1,7 +1,9 @@
 {
-    "app_id": "flexsyncpermissions-pbedo",
+    "app_id": "flexsyncpermissions-jojzp",
     "config_version": 20210101,
     "name": "FlexSyncPermissions",
     "location": "US-VA",
-    "deployment_model": "LOCAL"
+    "provider_region": "aws-us-east-1",
+    "deployment_model": "GLOBAL",
+    "environment": "production"
 }

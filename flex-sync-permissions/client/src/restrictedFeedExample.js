@@ -9,6 +9,7 @@ let author2DocAId;
 let author2DocBId;
 const author1Account = { email: "author1@example.com", password: "password" };
 let author1Id;
+let author2Id;
 const author2Account = { email: "author2@example.com", password: "password" };
 
 const ItemSchema = {
@@ -62,8 +63,9 @@ const setUpAuthor1 = async () => {
     });
   });
 
-  author1.logOut();
+  await realm1.syncSession.uploadAllLocalChanges();
   realm1.close();
+  await author1.logOut();
 };
 
 const setUpAuthor2 = async () => {
@@ -103,11 +105,16 @@ const setUpAuthor2 = async () => {
   });
 
   console.log("Subscribing to Author1's feed.");
-  const funcArgs = [author2.id, author1Id];
-  author2.callFunction("subscribeToUser", funcArgs);
 
-  author2.logOut();
+  const result = await author2.callFunction("subscribeToUser", [
+    author1Account.email,
+  ]);
+  console.log(`Result: ${JSON.stringify(result)}`);
+
+  await realm.syncSession.uploadAllLocalChanges();
   realm.close();
+
+  await author2.logOut();
 };
 
 const canAuthor1ReadAndEdit = async () => {
@@ -117,9 +124,11 @@ const canAuthor1ReadAndEdit = async () => {
   const realm = await getRealm({ user: author1, schema });
   let adminItems = realm.objects("Item");
 
+  console.log("Adding subscription");
   await realm.subscriptions.update((mutableSubs) => {
     mutableSubs.add(adminItems);
   });
+  console.log("Syncing... (this might take a while)");
   await realm.subscriptions.waitForSynchronization();
 
   console.log("Author1 can read the following documents:");
@@ -136,16 +145,6 @@ const canAuthor1ReadAndEdit = async () => {
       auth1DocA.name += ", and Author1 edited it!";
     });
   } catch (e) {
-    console.error(e);
-  }
-
-  const auth2docA = realm.objectForPrimaryKey("Item", author2DocAId);
-  console.log("Author1 is editing Author2's first doc", auth2docA._id);
-  try {
-    realm.write(() => {
-      auth2docA.name += ", and Author1 should not have been able to edit it!";
-    });
-  } catch {
     console.error(e);
   }
 
@@ -169,29 +168,8 @@ const canAuthor2ReadAndEdit = async () => {
   adminItems.forEach((element) => {
     console.log(JSON.stringify(element));
   });
-  const auth2DocB = realm.objectForPrimaryKey("Item", author2DocBId);
 
-  console.log("editing", JSON.stringify(auth2DocB));
-  console.log("Author2 is editing Author2's second doc", auth2DocB._id);
-  try {
-    realm.write(() => {
-      auth2DocB.name += ", and Author2 edited it!";
-    });
-  } catch (e) {
-    console.error(e);
-  }
-
-  const auth1DocB = realm.objectForPrimaryKey("Item", author1DocBId);
-  console.log("Author2 is editing Author1's second doc", auth1DocB._id);
-  try {
-    realm.write(() => {
-      auth1DocB.name += ", and Author2 should not have been able to edit it!";
-    });
-  } catch {
-    console.error(e);
-  }
-
-  author2.logOut();
+  await author2.logOut();
   realm.close();
 };
 // :state-end:

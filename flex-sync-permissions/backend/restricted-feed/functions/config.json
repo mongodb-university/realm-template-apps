@@ -1,22 +1,22 @@
 [
     {
-        "name": "resetFunc",
-        "private": true
-    },
-    {
-        "name": "onUserCreated",
-        "private": true
-    },
-    {
         "name": "deleteAllItems",
         "private": false,
         "run_as_system": true,
         "disable_arg_logs": true
     },
     {
-        "name": "joinTeam",
+        "name": "subscribeToUser",
         "private": false,
         "run_as_system": true,
         "disable_arg_logs": true
+    },
+    {
+        "name": "onUserCreated",
+        "private": true
+    },
+    {
+        "name": "resetFunc",
+        "private": true
     }
 ]

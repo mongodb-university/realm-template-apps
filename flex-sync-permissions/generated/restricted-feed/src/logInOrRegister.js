@@ -11,19 +11,14 @@ export const logInOrRegister = async ({ email, password }) => {
   try {
     newUser = await app.logIn(credentials);
     console.log(`Logged in as user ${newUser.id}`);
-  } catch (er) {
-    console.error(er);
-    try {
-      newUser = await app.emailPasswordAuth.registerUser({
-        email,
-        password,
-      });
-      console.log(`Created new user ${newUser}`);
-      newUser = await app.logIn(credentials);
-      console.log(`Logged in as user ${newUser.id}`);
-    } catch (error) {
-      console.error(error);
-    }
+  } catch {
+    newUser = await app.emailPasswordAuth.registerUser({
+      email,
+      password,
+    });
+    console.log(`Created new user '${email}'`);
+    newUser = await app.logIn(credentials);
+    console.log(`Logged in as user '${email}' with ID ${newUser.id}`);
   }
   return newUser;
 };

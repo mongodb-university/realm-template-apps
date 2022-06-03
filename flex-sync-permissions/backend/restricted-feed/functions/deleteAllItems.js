@@ -1,9 +1,6 @@
-exports = function(arg){
-
-    var collection = context.services.get("mongodb-atlas").db("Item").collection("Item");
-    collection.deleteMany({}).then((result) => {
-      console.log(result);
-    });
-
-return;
+exports = function(arg) {
+  const collection = context.services.get("mongodb-atlas").db("Item").collection("Item");
+  return collection.deleteMany({}).then((result) => {
+    console.log(result);
+  });
 };
