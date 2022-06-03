@@ -106,7 +106,7 @@ const setUpAuthor2 = async () => {
   console.log("Subscribing to Author1's feed.");
 
   const result = await author2.callFunction("subscribeToUser", [
-    author1Account.email,
+    author2Id, author1Account.email,
   ]);
   console.log(`Result: ${JSON.stringify(result)}`);
 
