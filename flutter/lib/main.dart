@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:convert';
 import 'package:flutter_todo/realm/init_realm.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
 import 'realm/app_services.dart';
-import 'realm/schemas.dart';
 import './screens/homepage.dart';
 import './screens/log_in.dart';
 
-const _APP_ID = 'todo-sync-msgyz';
-
 void main() async {
+  // get app id from config
+  WidgetsFlutterBinding.ensureInitialized();
+  final realmConfig =
+      json.decode(await rootBundle.loadString('assets/config/realm.json'));
+  String appId = realmConfig['appId'];
+
   return runApp(MultiProvider(providers: [
-    ChangeNotifierProvider<AppServices>(create: (_) => AppServices(_APP_ID)),
+    ChangeNotifierProvider<AppServices>(create: (_) => AppServices(appId)),
     ProxyProvider<AppServices, Realm?>(
       update: (context, app, previousRealm) {
         if (app.currentUser != null) {
