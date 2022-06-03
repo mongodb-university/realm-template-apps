@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
 import 'todo_item.dart';
 import '../realm/schemas.dart';
+import '../realm/app_services.dart';
 import '../viewmodels/todo_viewmodel.dart';
 
 class TodoList extends StatefulWidget {
@@ -18,12 +19,13 @@ class _TodoListState extends State<TodoList> {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = Provider.of<AppServices>(context).currentUser;
     final realm = Provider.of<Realm?>(context);
     if (realm == null) {
       return Container();
     }
-    final stream = realm.all<Todo>().changes;
-
+    final stream =
+        realm.query<Todo>('owner_id == "${currentUser?.id}"').changes;
     return StreamBuilder<RealmResultsChanges<Todo>>(
         stream: stream,
         builder: (context, snapshot) {

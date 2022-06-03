@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:realm/realm.dart';
 import 'package:flutter_todo/realm/app_services.dart';
 
 class TodoAppBar extends StatelessWidget with PreferredSizeWidget {
@@ -9,17 +10,17 @@ class TodoAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentUser = Provider.of<AppServices>(context).currentUser;
+    final app = Provider.of<AppServices>(context);
 
     Future<void> logOut() async {
-      await currentUser?.logOut();
+      await app.logOutUser();
       Navigator.pushNamed(context, '/login');
     }
 
     return AppBar(
         title: const Text('Realm Flutter Todo'),
         automaticallyImplyLeading: false,
-        actions: currentUser != null
+        actions: app.currentUser != null
             ? <Widget>[
                 IconButton(
                   icon: const Icon(Icons.logout),
