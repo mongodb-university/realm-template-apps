@@ -16,9 +16,9 @@ export const logInOrRegister = async ({ email, password }) => {
       email,
       password,
     });
-    console.log(`Created new user ${newUser}`);
+    console.log(`Created new user '${email}'`);
     newUser = await app.logIn(credentials);
-    console.log(`Logged in as user ${newUser.id}`);
+    console.log(`Logged in as user '${email}' with ID ${newUser.id}`);
   }
   return newUser;
 };

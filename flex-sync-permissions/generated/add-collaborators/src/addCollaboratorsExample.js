@@ -16,23 +16,48 @@ const ItemSchema = {
 };
 
 export const addCollaboratorsExample = async () => {
-  console.log("Logging in as user 1");
-  const user1 = await logInOrRegister({
-    email: "user1@example.com",
+  console.log(`
+
+  addCollaboratorsExample
+  -----------------------
+
+  This function demonstrates the "add collaborators" permissions model. 
+
+  The demo logs in as two different users. The first user creates a document and
+  adds the second user as a collaborator on that document. The second user then
+  logs in and tries to modify that document.
+
+  If permissions are set up correctly, you can expect the following behavior:
+
+  - As a collaborator, the second user's write will successfully sync.
+  - If the second user were not added as a collaborator, sync would fail when
+    attempting to upload the second user's changes.
+
+`);
+  console.log(
+    "Logging in as theCollaborator (to ensure there is someone to collaborate with)"
+  );
+  const theCollaborator = await logInOrRegister({
+    email: "theCollaborator@example.com",
     password: "password",
   });
 
-  console.log("Logging in as user 2");
-  const user2 = await logInOrRegister({
-    email: "user1@example.com",
+  console.log("Logging in as theAuthor");
+  const theAuthor = await logInOrRegister({
+    email: "theAuthor@example.com",
     password: "password",
   });
 
-  console.log("Opening synced realm for user2");
+  assert(
+    theAuthor.id !== theCollaborator.id,
+    "These should not be the same user!"
+  );
+
+  console.log("Opening synced realm for theAuthor");
   const realm = await Realm.open({
     schema: [ItemSchema],
     sync: {
-      user: user2,
+      user: theAuthor,
       flexible: true,
       error: (session, error) => {
         console.error("Is connected:", session.isConnected());
@@ -44,38 +69,37 @@ export const addCollaboratorsExample = async () => {
     },
   });
 
-  console.log("Subscribing to user2's items");
-  const user2Items = realm.objects("Item");
+  console.log("Subscribing to theAuthor's items");
+  const theAuthorItems = realm.objects("Item");
   await realm.subscriptions.update((mutableSubs) => {
-    mutableSubs.add(user2Items);
+    mutableSubs.add(theAuthorItems);
   });
 
-  console.log("Creating item with user1 as a collaborator");
+  console.log("Creating item with theCollaborator as a collaborator");
   realm.write(() => {
+    realm.deleteAll();
     realm.create("Item", {
       _id: new BSON.ObjectID(),
-      owner_id: user2.id,
+      owner_id: theAuthor.id,
       name: "first item",
-      collaborators: [user1.id],
+      // collaborators: [theCollaborator.id], // See what happens when removing theCollaborator frmo this
     });
   });
 
-  console.log("Items:");
-  for (const item of user2Items) {
-    console.log(JSON.stringify(item));
-  }
+  console.log("Items in realm:");
+  printItems(theAuthorItems);
 
   console.log("Uploading all local changes and closing the realm");
   await realm.syncSession.uploadAllLocalChanges();
   realm.close();
 
-  console.log("Switching to user1");
-  app.switchUser(user1);
+  console.log("Switching to theCollaborator");
+  app.switchUser(theCollaborator);
 
   const realm2 = await Realm.open({
     schema: [ItemSchema],
     sync: {
-      user: user1,
+      user: theCollaborator,
       flexible: true,
       error: (session, error) => {
         console.error("Is connected:", session.isConnected());
@@ -87,28 +111,45 @@ export const addCollaboratorsExample = async () => {
     },
   });
 
-  console.log("Subscribing to user1's items");
-  const user1Items = realm2.objects("Item");
+  console.log("Subscribing to theCollaborator's items");
+  const theCollaboratorItems = realm2.objects("Item");
   await realm2.subscriptions.update((mutableSubs) => {
-    mutableSubs.add(user1Items);
+    mutableSubs.add(theCollaboratorItems);
   });
 
   console.log("Items:");
-  for (const item of user1Items) {
-    console.log(JSON.stringify(item));
-  }
+  printItems(theCollaboratorItems);
 
   console.log("Making an edit");
   realm2.write(() => {
-    const item = user1Items[0];
-    assert("It does not belong to user1", item.owner_id !== user1.id);
+    const item = theCollaboratorItems[0];
+    assert(
+      "It does not belong to theCollaborator",
+      item.owner_id !== theCollaborator.id
+    );
     item.name = "edited successfully!";
   });
 
   console.log("Items:");
-  for (const item of user1Items) {
+  printItems(theCollaboratorItems);
+
+  console.log(`
+^ Note that the above object now has the name 'edited successfully!' indicating that it was edited successfully locally.
+Permissions are not evaluated until a sync attempt is made, so we'll upload the changes now.
+`);
+
+  console.log("Uploading all local changes");
+  await realm2.syncSession.uploadAllLocalChanges();
+  realm2.close();
+
+  console.log(
+    "\nIf you're reading this message, the change was accepted by the sync server. No permissions were violated. Success!\n"
+  );
+};
+
+function printItems(items) {
+  for (const item of items) {
     console.log(JSON.stringify(item));
   }
+}
 
-  realm2.close();
-};
