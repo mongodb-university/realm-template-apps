@@ -14,9 +14,11 @@ void main() async {
   final realmConfig =
       json.decode(await rootBundle.loadString('assets/config/realm.json'));
   String appId = realmConfig['appId'];
+  Uri baseUrl = Uri.parse(realmConfig['baseUrl']);
 
   return runApp(MultiProvider(providers: [
-    ChangeNotifierProvider<AppServices>(create: (_) => AppServices(appId)),
+    ChangeNotifierProvider<AppServices>(
+        create: (_) => AppServices(appId, baseUrl)),
     ProxyProvider<AppServices, Realm?>(
       update: (context, app, previousRealm) {
         if (app.currentUser != null) {

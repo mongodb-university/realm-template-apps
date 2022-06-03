@@ -3,9 +3,11 @@ import 'package:realm/realm.dart';
 
 class AppServices with ChangeNotifier {
   String id;
+  Uri baseUrl;
   App _app;
   User? currentUser;
-  AppServices(this.id) : _app = App(AppConfiguration(id));
+  AppServices(this.id, this.baseUrl)
+      : _app = App(AppConfiguration(id, baseUrl: baseUrl));
 
   Future<User> logInUserEmailPw(String email, String password) async {
     User loggedInUser =
