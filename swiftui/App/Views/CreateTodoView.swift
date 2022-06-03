@@ -18,6 +18,7 @@ struct CreateTodoView: View {
     
     // :state-start: flexible-sync
     @State var user: User
+    
     // :state-end:
     @State var todoSummary = ""
 

@@ -12,12 +12,7 @@ struct ContentView: View {
             OpenRealmView().environment(\.partitionValue, user.id)
             // :state-end:
             // :state-start: flexible-sync
-            let config = user.flexibleSyncConfiguration(initialSubscriptions: { subs in
-                subs.append(QuerySubscription<Todo>(name: "user_tasks") {
-                    $0.owner_id == user.id
-                })
-            })
-            OpenRealmView(user: user).environment(\.realmConfiguration, config)
+            OpenRealmView(user: user)
             // :state-end:
         } else {
             // If there is no user logged in, show the login view.
