@@ -2,7 +2,8 @@ import * as BSON from "BSON";
 import { logInOrRegister } from "./logInOrRegister.js";
 import { getRealm } from "./getRealm.js";
 
-// Set this to "false" to create new accounts on each run
+// Set this to "false" to create new accounts on each run. This guarantees a
+// client reset will happen when the permissions get updated.
 const reuseAccounts = true;
 
 const makeEmail = (name) => {
@@ -40,6 +41,32 @@ export const restrictedFeedExample = async () => {
 };
 
 const setUpAuthor = async () => {
+  console.log(`
+
+  restrictedFeedExample
+  ---------------------
+
+  This function demonstrates the "restricted feed" permissions model. 
+
+  The demo logs in as two different users: "author" and "subscriber". The author
+  creates two documents. The subscriber also creates two documents of their own,
+  because anyone can be an author.
+
+  The demo then calls a backend function, "subscribeToUser", which adds the
+  author to the subscriber's list of subscribed-to users.
+
+  Permission changes only take effect on subsequent sessions. Permission changes
+  also cause a client reset on the next session. So, the demo closes and reopens
+  the subscriber's realm (and attempts a client reset if needed) to have the
+  permissions changes take effect.
+
+  If permissions are set up correctly, you can expect the following behavior:
+
+  - Author and subscriber can read and write their own documents.
+  - Subscriber can see the author's documents as well as their own.
+
+`);
+
   console.log("Logging in as Author");
   const author = await logInOrRegister(authorAccount);
 
@@ -141,6 +168,10 @@ const canSubscriberRead = async () => {
   items.forEach((element) => {
     console.log(JSON.stringify(element));
   });
+
+  console.log(
+    "^ If permissions are working, expect to see both Subscriber's items and Author's items."
+  );
 
   await subscriber.logOut();
   realm.close();
