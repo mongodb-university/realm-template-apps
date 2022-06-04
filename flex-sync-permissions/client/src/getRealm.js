@@ -1,21 +1,28 @@
 import Realm from "realm";
+import fs from "fs";
 
 /**
   Opens a flexible sync realm for the given user with the given schema.
  */
 export const getRealm = async ({ user, schema }) => {
-  return await Realm.open({
+  const error = async (session, error) => {
+    if (error.name !== "ClientReset") {
+      console.error("Unhandled sync error:", error);
+      return;
+    }
+
+    // TODO: Discard local changes and download
+  };
+  const config = {
     schema,
     sync: {
       user,
       flexible: true,
-      error: (session, error) => {
-        console.error("Is connected:", session.isConnected());
-        console.error("Sync Error:", error);
-      },
       clientReset: {
         mode: "manual",
       },
+      error,
     },
-  });
+  };
+  return await Realm.open(config);
 };
