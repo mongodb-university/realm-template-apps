@@ -8,16 +8,12 @@ let adminDoc1Id;
 let adminDoc2Id;
 let memberDoc1Id;
 let memberDoc2Id;
-const realmTeamAdminAccount = {
-  email: "teamRealmAdmin@example.com",
+const greenTeamAdminAccount = {
+  email: "greenTeamAdmin@example.com",
   password: "password",
 };
-const atlasTeamAdminAccount = {
-  email: "teamAtlasAdmin@example.com",
-  password: "password",
-};
-const realmTeamMemberAccount = {
-  email: "teamRealmMember@example.com",
+const greenTeamMemberAccount = {
+  email: "greenTeamMember@example.com",
   password: "password",
 };
 
@@ -27,7 +23,6 @@ const ItemSchema = {
     _id: "objectId",
     owner_id: "string",
     name: "string",
-    collaborators: "string[]",
     team: "string",
   },
   primaryKey: "_id",
@@ -35,233 +30,229 @@ const ItemSchema = {
 const schema = [ItemSchema];
 
 export const tieredExample = async () => {
-  await setUpTeamRealmAdmin();
-  await setUpTeamRealmMember();
-  await setUpTeamAtlasAdmin();
+  console.log(`
+
+  tieredExample
+  -------------
+
+  This function demonstrates the "tiered privileges" permissions model. 
+
+  The demo logs in as two different users, "admin" and "member". The admin calls
+  the backend function "addTeam" with the parameter to set themselves as an
+  admin. 
+
+  In a real app, you wouldn't let clients just set themselves as admin! This is
+  just for demo purposes.
+
+  The admin then adds a couple documents and logs out. The member then logs in
+  and also joins the team with the same backend function. The member creates a
+  couple documents and logs out.
+
+  The admin then logs in and proves they can edit not only their own documents
+  but the member's documents as well. The member then logs in and attempts to
+  edit the admin's documents, but fails.
+
+  If permissions are set up correctly, you can expect the following behavior:
+
+  - The admin may write any doc with the same team value.
+  - The member may read any doc with the same team value, but can only edit
+    their own docs.
+
+`);
+
+  await setUpAdmin();
+  await setUpMember();
   await canAdminEdit();
   await canMemberEdit();
 };
 
-const setUpTeamRealmAdmin = async () => {
-  console.log("Logging in as Team 'TeamRealm' Admin");
-  const admin = await logInOrRegister(realmTeamAdminAccount);
+const setUpAdmin = async () => {
+  console.log("Logging in as admin");
+  const admin = await logInOrRegister(greenTeamAdminAccount);
 
-  console.log("Opening synced realm for admin");
-
-  console.log("Adding admin as Admin on team 'realmTeam'");
-  const adminFuncArgs = [admin.id, "realmTeam", true];
-  let adminFuncResult = await admin.callFunction("joinTeam", adminFuncArgs);
+  console.log("Adding admin as Admin on team 'greenTeam'");
+  const adminFuncArgs = [admin.id, "greenTeam", true /* make admin */];
+  const adminFuncResult = await admin.callFunction("joinTeam", adminFuncArgs);
   console.log(adminFuncResult);
 
-  const customadminData = await admin.refreshCustomData();
-  console.log(JSON.stringify(customadminData));
+  // Refresh user data to validate that adminhood successfully granted
+  const customData = await admin.refreshCustomData();
+  console.log("Custom data:", JSON.stringify(customData));
 
-  const adminRealm = await getRealm({ user: admin, schema });
+  const realm = await getRealm({ user: admin, schema });
 
-  const adminItems = adminRealm.objects("Item");
-  await adminRealm.subscriptions.update((mutableSubs) => {
+  const adminItems = realm.objects("Item");
+  await realm.subscriptions.update((mutableSubs) => {
     mutableSubs.add(adminItems);
   });
 
-  console.log("Creating item owned by TeamRealm Admin");
-  adminRealm.write(() => {
+  console.log("Create items owned by admin");
+  realm.write(() => {
     adminDoc1Id = new BSON.ObjectID();
-    adminRealm.create("Item", {
+    realm.create("Item", {
       _id: adminDoc1Id,
       owner_id: admin.id,
-      name: "TeamRealm Admin created this",
-      team: "realmTeam",
+      name: "GreenTeam Admin created this",
+      team: "greenTeam",
     });
-  });
-
-  console.log("Creating another item owned by TeamRealm Admin");
-  adminRealm.write(() => {
     adminDoc2Id = new BSON.ObjectID();
-    adminRealm.create("Item", {
+    realm.create("Item", {
       _id: adminDoc2Id,
       owner_id: admin.id,
-      name: "TeamRealm Admin created this, too",
-      team: "realmTeam",
+      name: "GreenTeam Admin created this, too",
+      team: "greenTeam",
     });
   });
 
-  console.log("Logging out admin");
-  app.currentUser.logOut();
+  await realm.syncSession.uploadAllLocalChanges();
 
-  adminRealm.close();
+  console.log("Logging out admin");
+  realm.close();
+  await app.currentUser.logOut();
 };
 
-const setUpTeamRealmMember = async () => {
-  console.log("Logging in as a Member of team 'TeamRealm'");
-  const member = await logInOrRegister(realmTeamMemberAccount);
+const setUpMember = async () => {
+  console.log("Logging in as a member of team");
+  const member = await logInOrRegister(greenTeamMemberAccount);
 
-  console.log("Adding member as member of team 'realmTeam'");
-  const funcArgs = [member.id, "realmTeam", false];
+  console.log("Adding member as member of team 'greenTeam'");
+  const funcArgs = [member.id, "greenTeam", false /* not admin */];
   const funcResult = await member.callFunction("joinTeam", funcArgs);
   console.log(funcResult);
 
   console.log("Opening synced realm for member");
-  const memberRealm = await getRealm({ user: member, schema });
+  const realm = await getRealm({ user: member, schema });
 
-  await memberRealm.subscriptions.update((mutableSubs) => {
-    mutableSubs.add(memberRealm.objects("Item"));
+  await realm.subscriptions.update((mutableSubs) => {
+    mutableSubs.add(realm.objects("Item"));
   });
 
   console.log("Creating item owned by member");
-  memberRealm.write(() => {
+  realm.write(() => {
     memberDoc1Id = new BSON.ObjectID();
-    memberRealm.create("Item", {
+    realm.create("Item", {
       _id: memberDoc1Id,
       owner_id: member.id,
-      name: "TeamRealm Member created this",
-      team: "realmTeam",
+      name: "GreenTeam Member created this",
+      team: "greenTeam",
     });
-  });
-
-  console.log("Creating another item owned by member");
-  memberRealm.write(() => {
     memberDoc2Id = new BSON.ObjectID();
-    memberRealm.create("Item", {
+    realm.create("Item", {
       _id: memberDoc2Id,
       owner_id: member.id,
-      name: "TeamRealm Member created this, too",
-      team: "realmTeam",
+      name: "GreenTeam Member created this, too",
+      team: "greenTeam",
     });
   });
 
-  member.logOut();
-  memberRealm.close();
-};
+  await realm.syncSession.uploadAllLocalChanges();
 
-const setUpTeamAtlasAdmin = async () => {
-  console.log("Logging in as Team 'AtlasTeam' Admin");
-  const atlasTeamAdmin = await logInOrRegister(atlasTeamAdminAccount);
-
-  console.log("Adding admin as Admin on team 'atlasTeam'");
-  const adminFuncArgs = [atlasTeamAdmin.id, "atlasTeam", true];
-  let adminFuncResult = await atlasTeamAdmin.callFunction(
-    "joinTeam",
-    adminFuncArgs
-  );
-  console.log(adminFuncResult);
-
-  const customadminData = await atlasTeamAdmin.refreshCustomData();
-  console.log(JSON.stringify(customadminData));
-
-  console.log("Opening synced realm for admin");
-  const adminAtlasTeamRealm = await getRealm({ user: atlasTeamAdmin, schema });
-
-  const adminItems = adminAtlasTeamRealm.objects("Item");
-  await adminAtlasTeamRealm.subscriptions.update((mutableSubs) => {
-    mutableSubs.add(adminItems);
-  });
-
-  console.log("Creating item owned by AtlasTeam Admin");
-  adminAtlasTeamRealm.write(() => {
-    adminAtlasTeamRealm.create("Item", {
-      _id: new BSON.ObjectID(),
-      owner_id: atlasTeamAdmin.id,
-      name: "AtlasTeam Admin created this",
-      team: "atlasTeam",
-    });
-  });
-  console.log("Logging out 'AtlasTeam' Admin");
-  app.currentUser.logOut();
-  adminAtlasTeamRealm.close();
+  realm.close();
+  await member.logOut();
 };
 
 const canAdminEdit = async () => {
-  console.log("Logging in again as TeamRealm Admin");
-  const admin = await logInOrRegister(realmTeamAdminAccount);
+  console.log("Logging in again as admin");
+  const admin = await logInOrRegister(greenTeamAdminAccount);
 
-  const adminRealm = await getRealm({ user: admin, schema });
+  const realm = await getRealm({ user: admin, schema });
 
-  let adminItems = adminRealm.objects("Item");
-  await adminRealm.subscriptions.update((mutableSubs) => {
+  let adminItems = realm.objects("Item");
+  await realm.subscriptions.update((mutableSubs) => {
     mutableSubs.add(adminItems);
   });
 
-  await adminRealm.subscriptions.waitForSynchronization();
-  adminItems = adminRealm.objects("Item");
-  console.log("TeamRealm's Admin can read the following documents:");
+  await realm.subscriptions.waitForSynchronization();
+  adminItems = realm.objects("Item");
+  console.log("GreenTeam's Admin can read the following documents:");
 
   adminItems.forEach((element) => {
     console.log(JSON.stringify(element));
   });
-  const adminDoc1 = adminRealm.objectForPrimaryKey("Item", adminDoc1Id);
+  const adminDoc1 = realm.objectForPrimaryKey("Item", adminDoc1Id);
 
-  console.log("TeamRealm Admin is editing TeamRealm Admin doc", adminDoc1._id);
+  console.log("GreenTeam Admin is editing GreenTeam Admin doc", adminDoc1._id);
   try {
-    adminRealm.write(() => {
-      adminDoc1.name += ", and TeamRealm Admin edited it!";
+    realm.write(() => {
+      adminDoc1.name += ", and GreenTeam Admin edited it!";
     });
   } catch (e) {
     console.error(e);
   }
   console.log(memberDoc1Id);
-  const memberDoc1 = adminRealm.objectForPrimaryKey("Item", memberDoc1Id);
+  const memberDoc1 = realm.objectForPrimaryKey("Item", memberDoc1Id);
   console.log(memberDoc1);
   console.log(
-    "TeamRealm Admin is editing TeamRealm Member doc",
+    "GreenTeam Admin is editing GreenTeam Member doc",
     memberDoc1._id
   );
   try {
-    adminRealm.write(() => {
-      memberDoc1.name += ", and TeamRealm Admin edited it!";
+    realm.write(() => {
+      memberDoc1.name += ", and GreenTeam Admin edited it!";
     });
   } catch {
     console.error(e);
   }
 
-  admin.logOut();
-  adminRealm.close();
+  try {
+    await realm.syncSession.uploadAllLocalChanges();
+  } catch (e) {
+    console.error("Failed to upload all changes: ", e.message);
+  }
+  realm.close();
+  await admin.logOut();
 };
 
 const canMemberEdit = async () => {
-  console.log("Logging in again as TeamRealm Member");
-  const member = await logInOrRegister(realmTeamMemberAccount);
+  console.log("Logging in again as GreenTeam Member");
+  const member = await logInOrRegister(greenTeamMemberAccount);
 
-  const memberRealm = await getRealm({ user: member, schema });
+  const realm = await getRealm({ user: member, schema });
 
-  const memberItems = memberRealm.objects("Item");
-  await memberRealm.subscriptions.update((mutableSubs) => {
+  const memberItems = realm.objects("Item");
+  await realm.subscriptions.update((mutableSubs) => {
     mutableSubs.add(memberItems);
   });
-  console.log("TeamRealm's Member can read the following documents:");
+  console.log("GreenTeam's Member can read the following documents:");
 
   memberItems.forEach((element) => {
     console.log(JSON.stringify(element));
   });
 
-  const memberDoc2 = memberRealm.objectForPrimaryKey("Item", memberDoc2Id);
+  const memberDoc2 = realm.objectForPrimaryKey("Item", memberDoc2Id);
   console.log(
-    "TeamRealm Member is editing TeamRealm Member doc",
+    "GreenTeam Member is editing GreenTeam Member doc",
     memberDoc2._id
   );
   try {
-    memberRealm.write(() => {
-      memberDoc2.name += ", and TeamRealm Member edited it!";
+    realm.write(() => {
+      memberDoc2.name += ", and GreenTeam Member edited it!";
     });
   } catch (e) {
     console.error(e);
   }
 
-  const adminDoc2 = memberRealm.objectForPrimaryKey("Item", adminDoc2Id);
-  console.log("Member is editing TeamRealm Admin doc", adminDoc2);
+  const adminDoc2 = realm.objectForPrimaryKey("Item", adminDoc2Id);
+  console.log("Member is editing GreenTeam Admin doc", adminDoc2);
   try {
-    memberRealm.write(() => {
-      adminDoc2.name += ", and TeamRealm Member edited it!";
+    realm.write(() => {
+      adminDoc2.name += ", and GreenTeam Member edited it!";
     });
   } catch (e) {
     console.error(e);
   }
 
+  try {
+    await realm.syncSession.uploadAllLocalChanges();
+  } catch (e) {
+    console.error("Failed to upload all changes: ", e.message);
+  }
   console.log(
-    "The console should show a message when failing to edit the Admin document." +
+    "The console should show a message when failing to edit the Admin document. " +
       "There should be 1 edited doc."
   );
 
-  member.logOut();
-  memberRealm.close();
+  realm.close();
+  await member.logOut();
 };
 // :state-end: tiered
