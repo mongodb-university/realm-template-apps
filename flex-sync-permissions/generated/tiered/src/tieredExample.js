@@ -22,7 +22,6 @@ const ItemSchema = {
     _id: "objectId",
     owner_id: "string",
     name: "string",
-    collaborators: "string[]",
     team: "string",
   },
   primaryKey: "_id",
@@ -30,6 +29,36 @@ const ItemSchema = {
 const schema = [ItemSchema];
 
 export const tieredExample = async () => {
+  console.log(`
+
+  tieredExample
+  -------------
+
+  This function demonstrates the "tiered privileges" permissions model. 
+
+  The demo logs in as two different users, "admin" and "member". The admin calls
+  the backend function "addTeam" with the parameter to set themselves as an
+  admin. 
+
+  In a real app, you wouldn't let clients just set themselves as admin! This is
+  just for demo purposes.
+
+  The admin then adds a couple documents and logs out. The member then logs in
+  and also joins the team with the same backend function. The member creates a
+  couple documents and logs out.
+
+  The admin then logs in and proves they can edit not only their own documents
+  but the member's documents as well. The member then logs in and attempts to
+  edit the admin's documents, but fails.
+
+  If permissions are set up correctly, you can expect the following behavior:
+
+  - The admin may write any doc with the same team value.
+  - The member may read any doc with the same team value, but can only edit
+    their own docs.
+
+`);
+
   await setUpAdmin();
   await setUpMember();
   await canAdminEdit();
@@ -163,6 +192,12 @@ const canAdminEdit = async () => {
   } catch {
     console.error(e);
   }
+
+  try {
+    await realm.syncSession.uploadAllLocalChanges();
+  } catch (e) {
+    console.error("Failed to upload all changes: ", e.message);
+  }
   realm.close();
   await admin.logOut();
 };
@@ -208,9 +243,11 @@ const canMemberEdit = async () => {
 
   try {
     await realm.syncSession.uploadAllLocalChanges();
-  } catch (e) {}
+  } catch (e) {
+    console.error("Failed to upload all changes: ", e.message);
+  }
   console.log(
-    "The console should show a message when failing to edit the Admin document." +
+    "The console should show a message when failing to edit the Admin document. " +
       "There should be 1 edited doc."
   );
 

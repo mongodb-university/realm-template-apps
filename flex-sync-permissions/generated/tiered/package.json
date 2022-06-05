@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "build": "babel src --out-dir build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "demo": "npm run clean && npm run build && node .",
+    "clean": "rm -rf build && rm -rf mongodb-realm"
   },
   "author": "",
   "license": "ISC",
