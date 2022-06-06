@@ -1,16 +1,6 @@
 import SwiftUI
 import RealmSwift
 
-// :state-start: flexible-sync
-// Create a SubscriptionState enum. Use
-// this to add Flexible Sync subscriptions
-// before using the realm.
-enum SubscriptionState {
-    case initial
-    case completed
-}
-// :state-end:
-
 /// Called when login completes. Opens the realm asynchronously and navigates to the Todos screen.
 struct OpenRealmView: View {
     // :state-start: partition-based-sync
@@ -42,34 +32,8 @@ struct OpenRealmView: View {
                 .environment(\.realm, realm)
             // :state-end:
             // :state-start: flexible-sync
-            // Use the `.initial` case to add a query subscription.
-            // You must have at least one subscription before you read from or write to the realm.
-            switch subscriptionState {
-            case .initial:
-                ProgressView("Subscribing to Query")
-                    .onAppear {
-                        Task {
-                            do {
-                                let subs = realm.subscriptions
-                                if subs.count == 0 {
-                                    try await subs.write {
-                                        subs.append(QuerySubscription<Todo>(name: "user_tasks") {
-                                            $0.owner_id == user!.id
-                                            
-                                        })
-                                    }
-                                    
-                                }
-                                subscriptionState = .completed
-                            }
-                        }
-                    }
-            // After you have added a subscription, use the `.completed` case
-            // to move to the TodosView, injecting the prepared realm as an environment variable.
-            case .completed:
-                TodosView(leadingBarButton: AnyView(LogoutButton()), user: user)
-                    .environment(\.realm, realm)
-            }
+            TodosView(leadingBarButton: AnyView(LogoutButton()), user: user)
+                .environment(\.realm, realm)
             // :state-end:
        // The realm is currently being downloaded from the server.
        // Show a progress view.
