@@ -44,3 +44,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# local version of realm sdk & binary
+realm-dart/
+binary/
+realm_packages/

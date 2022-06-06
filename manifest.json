@@ -85,6 +85,16 @@
     "metadata_filename": "realm",
     "file_format": "json"
   },
+  "flutter.todo.flex": {
+    "name": "Flutter Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "todo-flexible-sync",
+    "client_path": "flutter",
+    "metadata_path": "flutter/assets/config",
+    "metadata_filename": "realm",
+    "file_format": "json"
+  },
   "triggers": {
     "name": "Triggers Template",
     "repo_owner": "mongodb-university",

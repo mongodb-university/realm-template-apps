@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo/components/todo_list.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'modify_todo.dart';
+import '../viewmodels/todo_viewmodel.dart';
 
 class TodoItem extends StatelessWidget {
   final TodoViewModel viewModel;
@@ -56,7 +56,8 @@ class TodoItem extends StatelessWidget {
             child: Card(
               child: ListTile(
                 title: Text(viewModel.summary),
-                subtitle: Text(viewModel.isComplete ? 'Completed' : 'Incomplete'),
+                subtitle:
+                    Text(viewModel.isComplete ? 'Completed' : 'Incomplete'),
                 leading: _CompleteCheckbox(viewModel),
               ),
             ),
