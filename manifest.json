@@ -95,6 +95,16 @@
     "metadata_filename": "realm",
     "file_format": "json"
   },
+  "kotlin.todo.flex": {
+    "name": "Kotlin Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "todo-flexible-sync",
+    "client_path": "kotlin-sdk",
+    "metadata_path": "kotlin-sdk/app/src/main/res/values",
+    "metadata_filename": "realm",
+    "file_format": "json"
+  },
   "triggers": {
     "name": "Triggers Template",
     "repo_owner": "mongodb-university",
