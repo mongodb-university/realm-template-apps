@@ -6,12 +6,6 @@ struct ContentView: View {
     
     var body: some View {
         if let user = app.currentUser {
-            // :state-start: partition-based-sync
-            // If there is a logged in user, pass the user ID as the
-            // partitionValue to the view that opens a realm.
-            OpenRealmView().environment(\.partitionValue, user.id)
-            // :state-end:
-            // :state-start: flexible-sync
             let config = user.flexibleSyncConfiguration(initialSubscriptions: { subs in
                 if let foundSubscription = subs.first(named: "user_tasks") {
                     // Existing subscription found - do nothing
@@ -23,7 +17,6 @@ struct ContentView: View {
                 }
             })
             OpenRealmView(user: user).environment(\.realmConfiguration, config)
-            // :state-end:
         } else {
             // If there is no user logged in, show the login view.
             LoginView()
