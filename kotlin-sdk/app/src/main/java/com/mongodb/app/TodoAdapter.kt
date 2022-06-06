@@ -72,7 +72,7 @@ internal class TodoAdapter(private var data: RealmResults<Todo>, private val rea
                                 "_id == $0",
                                 holder.id
                             ).find().first()
-                            this.delete(todo)
+                            delete(todo)
                         }
                     }
                     refreshData()
