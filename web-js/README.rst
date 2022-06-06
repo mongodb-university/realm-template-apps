@@ -1,8 +1,8 @@
-=========================
-MongoDB Realm Web Starter
-=========================
+==============================
+Atlas App Services Web Starter
+==============================
 
-This project contains the web client for the MongoDB Realm template application.
+This project contains the web client for the Atlas App Services template application.
 The client allows you to:
 
 - Sign up and log in as an Email/Password user
@@ -87,7 +87,7 @@ Specify your template App ID and URLs in the ``appId``, ``baseUrl``, and
    
    {
      "appId": "<Your Template App ID>",
-     "baseUrl": "<Base URL for MongoDB Realm>",
+     "baseUrl": "<Base URL for Atlas App Services>",
      "appUrl": "<Base URL of your App>"
    }
 

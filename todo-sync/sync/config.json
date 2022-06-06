@@ -1,0 +1,19 @@
+{
+    "state": "enabled",
+    "database_name": "todo",
+    "partition": {
+        "key": "_partition",
+        "type": "string",
+        "required": true,
+        "permissions": {
+            "read": {
+                "%%partition": "%%user.id"
+            },
+            "write": {
+                "%%partition": "%%user.id"
+            }
+        }
+    },
+    "development_mode_enabled": true,
+    "service_name": "mongodb-atlas"
+}

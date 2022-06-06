@@ -1,0 +1,9 @@
+﻿{
+   // :state-start: flexible-sync
+  "appId": "todo-sync-jxgjv",
+  // :state-end:
+  // :state-start: partition-based-sync
+  "appId": "todo-sync-tmikv",
+  // :state-end:
+  "baseUrl": "https://realm.mongodb.com"
+}

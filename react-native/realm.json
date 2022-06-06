@@ -1,3 +1,9 @@
 {
-  "appId": "<Your App ID>"
+  // :state-start: flexible-sync
+  "appId": "todo-sync-zpqwm",
+  // :state-end:
+  // :state-start: partition-based-sync
+  "appId": "todo-sync-partition-lwwcs",
+  // :state-end:
+  "baseUrl": "https://realm.mongodb.com"
 }

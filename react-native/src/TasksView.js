@@ -1,89 +1,54 @@
-import React, {useEffect, useState, useRef} from 'react';
-import Realm from 'realm';
+import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
 import {BSON} from 'realm';
+import {useUser} from '@realm/react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StyleSheet, Text, View} from 'react-native';
 import {Button, Overlay, ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {appId} from '../realm';
-import {CreateToDoPrompt} from './CreateToDoPrompt';
-import TaskSchema from './TaskSchema';
 
-if (!appId) {
-  throw 'Missing Realm App ID. Set your App ID in realm.json';
-}
-const app = Realm.App.getApp(appId);
+import {CreateToDoPrompt} from './CreateToDoPrompt';
+import TaskContext from './TaskSchema';
+
+const {useRealm, useQuery} = TaskContext;
 
 Icon.loadFont(); // load FontAwesome font
 
-export function TasksView({navigation}) {
-  const [tasks, setTasks] = useState([]);
-
+export function TasksView() {
+  const realm = useRealm();
+  const result = useQuery('Task');
+  const tasks = useMemo(() => result, [result]);
+  const user = useUser();
   // state value for toggable visibility of the 'CreateToDoPrompt' Model in the UI
-  const [createToDoOverlayVisible, setCreateToDoOverlayVisible] = useState(
-    false,
-  );
+  const [createToDoOverlayVisible, setCreateToDoOverlayVisible] =
+    useState(false);
 
-  // Use a Ref to store the realm rather than the state because it is not
-  // directly rendered, so updating it should not trigger a re-render as using
-  // state would.
-  const realmReference = useRef(null);
-
-  useEffect(() => {
-    const config = {
-      schema: [TaskSchema],
-      sync: {
-        user: app.currentUser,
-        partitionValue: app.currentUser?.id,
-      },
-    };
-
-    Realm.open(config)
-      .then(realmInstance => {
-        realmReference.current = realmInstance;
-        const realm = realmReference.current;
-        // if the realm exists, get all Task items and add a listener on the Task collection
-        if (realm) {
-          // Get all Task items, sorted by name
-          const sortedTasks = realmReference.current
-            .objects('Task')
-            .sorted('summary');
-          // set the sorted Tasks to state as an array, so they can be rendered as a list
-          setTasks([...sortedTasks]);
-          // watch for changes to the Task collection. When tasks are created,
-          // modified or deleted the 'sortedTasks' variable will update with the new
-          // live Task objects, and then the Tasks in state will be updated to the
-          // sortedTasks
-          sortedTasks.addListener(() => {
-            setTasks([...sortedTasks]);
-          });
-        }
-      })
-      .catch(err => {
-        console.log(`an error occurred opening the realm ${err}`);
-      });
-
-    // cleanup function to close realm after component unmounts
-    return () => {
-      const realm = realmReference.current;
-      // if the realm exists, close the realm
-      if (realm) {
-        realm.close();
-        // set the reference to null so the realm can't be used after it is closed
-        realmReference.current = null;
-        setTasks([]); // set the Tasks state to an empty array since the component is unmounting
-      }
-    };
-  }, [realmReference, setTasks]);
+  // :state-uncomment-start: flexible-sync
+  // useEffect(() => {
+  //   // initialize the subscriptions
+  //   const initSubscription = async () => {
+  //     await realm.subscriptions.update(mutableSubs => {
+  //       mutableSubs.add(
+  //         realm.objects('Task').filtered(`owner_id == "${user.id}"`),
+  //       ); // subscribe to all Tasks of the logged in user
+  //     });
+  //   };
+  //   initSubscription();
+  // }, [realm, user]);
+  // :state-uncomment-end:
 
   // createTask() takes in a summary and then creates a Task object with that summary
   const createTask = summary => {
-    const realm = realmReference.current;
     // if the realm exists, create a task
     if (realm) {
       realm.write(() => {
         realm.create('Task', {
           _id: new BSON.ObjectID(),
+          // :state-uncomment-start: flexible-sync
+          // owner_id: user.id,
+          // :state-uncomment-end:
+          // :state-start: partition-based-sync
+          _partition: user?.id,
+          // :state-end:
           summary,
         });
       });
@@ -92,7 +57,6 @@ export function TasksView({navigation}) {
 
   // deleteTask() deletes a Task with a particular _id
   const deleteTask = _id => {
-    const realm = realmReference.current;
     // if the realm exists, get the Task with a particular _id and delete it
     if (realm) {
       const task = realm.objectForPrimaryKey('Task', _id); // search for a realm object with a primary key that is an objectId
@@ -101,10 +65,8 @@ export function TasksView({navigation}) {
       });
     }
   };
-
   // toggleTaskIsComplete() updates a Task with a particular _id to be 'completed'
   const toggleTaskIsComplete = _id => {
-    const realm = realmReference.current;
     // if the realm exists, get the Task with a particular _id and update it's 'isCompleted' field
     if (realm) {
       const task = realm.objectForPrimaryKey('Task', _id); // search for a realm object with a primary key that is an objectId

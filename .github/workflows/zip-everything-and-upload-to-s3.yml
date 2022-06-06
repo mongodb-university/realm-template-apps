@@ -1,0 +1,25 @@
+name: Zip Everything and Upload to s3
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  zip-and-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: mkdir zip
+      # Update version before a watershed such as "stuff for MDBW that backend
+      # is not ready to consume yet". We can continue to upload to the new
+      # version, and when backend is ready to consume they can switch to the new
+      # version.
+      - run: zip -r zip/realm-template-apps-v2.zip . -x ".git/*" ".github/*" ".DS_Store" "./zip/" "./web-js/*"
+      - uses: shallwefootball/s3-upload-action@master
+        with:
+          aws_key_id: ${{ secrets.AWS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_bucket: ${{ secrets.AWS_BUCKET }}
+          source_dir: ./zip
+          destination_dir: ""
