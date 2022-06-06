@@ -103,7 +103,7 @@
     "client_path": "kotlin-sdk",
     "metadata_path": "kotlin-sdk/app/src/main/res/values",
     "metadata_filename": "realm",
-    "file_format": "json"
+    "file_format": "xml"
   },
   "triggers": {
     "name": "Triggers Template",
