@@ -1,0 +1,12 @@
+{
+  // :state-start: add-collaborators
+  "appId": "add-collaborators-catqy",
+  // :state-end:
+  // :state-start: tiered
+  "appId": "flexsyncpermissions-jtkpp",
+  // :state-end:
+  // :state-start: restricted-feed
+  "appId": "flexsyncpermissions-jojzp",
+  // :state-end:
+  "baseUrl": "https://realm.mongodb.com"
+}
