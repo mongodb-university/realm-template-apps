@@ -23,7 +23,11 @@ namespace RealmTemplateApp
             try
             {
                 LoadAppConfiguration();
-                RealmApp = Realms.Sync.App.Create(appId);
+                var appConfiguration = new Realms.Sync.AppConfiguration(appId)
+                {
+                    BaseUri = new Uri(baseUrl)
+                };
+                RealmApp = Realms.Sync.App.Create(appConfiguration);
                 var navPage = RealmApp.CurrentUser == null ?
                     new NavigationPage(new LoginPage()) :
                     new NavigationPage(new TaskPage());
