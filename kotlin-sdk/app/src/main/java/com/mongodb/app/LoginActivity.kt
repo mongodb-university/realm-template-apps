@@ -9,7 +9,9 @@ import android.widget.EditText
 import android.widget.Toast
 import io.realm.kotlin.internal.platform.runBlocking
 import io.realm.kotlin.mongodb.Credentials
-import io.realm.kotlin.mongodb.exceptions.ServiceException
+import io.realm.kotlin.mongodb.exceptions.ConnectionException
+import io.realm.kotlin.mongodb.exceptions.InvalidCredentialsException
+import io.realm.kotlin.mongodb.exceptions.UserAlreadyExistsException
 
 /*
 * Launched whenever a user isn't already logged in. Allows a user to enter email
@@ -55,24 +57,27 @@ class LoginActivity : AppCompatActivity() {
         // while this operation completes, disable the button to login or create a new account
         loginButton.isEnabled = false
         // register a user using the Realm App
-        var success = false
-        var error: String? = null
         runBlocking {
-            try {
+            runCatching {
                 realmApp.emailPasswordAuth.registerUser(username, password)
-                success = true
-            } catch (e: ServiceException) {
-                success = false
-                error = e.message
+            }.onSuccess {
+                // re-enable the button after user registration returns a result
+                loginButton.isEnabled = true
+                Log.v(TAG(), "user logged in")
+                logIn(username, password)
+            }.onFailure { ex: Throwable ->
+                Log.v(TAG(), "User failed to register with: ${ex.message}")
+                when (ex) {
+                    is UserAlreadyExistsException -> {
+                        displayErrorMessage( "Failed to register. User already exists.")
+                    }
+                    else -> {
+                        displayErrorMessage( "Failed to register: ${ex.message}")
+                    }
+                }
+                // re-enable the button after user registration returns a result
+                loginButton.isEnabled = true
             }
-        }
-        // re-enable the button after user registration returns a result
-        loginButton.isEnabled = true
-        if (success) {
-            // if successfully created an account, log in
-            logIn(username, password)
-        } else {
-            displayErrorMessage( "Error: $error")
         }
     }
 
@@ -83,24 +88,35 @@ class LoginActivity : AppCompatActivity() {
         // while this operation completes, disable the button to login or create a new account
         loginButton.isEnabled = false
         val creds = Credentials.emailPassword(username, password)
-        var success = false
-        var error: String? = null
+
         runBlocking {
-            try {
+            runCatching {
                 realmApp.login(creds)
-                success = true
-            } catch (e: ServiceException) {
-                success = false
-                error = e.message
+            }.onSuccess {
+                // re-enable the button after user login returns a result
+                loginButton.isEnabled = true
+                Log.v(TAG(), "user logged in")
+
+                // on a successful login, open the todo view
+                startActivity(Intent(application, TodoActivity::class.java))
+            }.onFailure { ex: Throwable ->
+                when (ex) {
+                    is InvalidCredentialsException -> {
+                        Log.v(TAG(), "User failed to log in with: ${ex.message}")
+                        displayErrorMessage( "Invalid username or password. Check your credentials and try again.")
+                    }
+                    is ConnectionException -> {
+                        Log.v(TAG(), "User failed to log in with: ${ex.message}")
+                        displayErrorMessage( "Could not connect to the authentication provider. Check your internet connection and try again.")
+                    }
+                    else -> {
+                        Log.e(TAG(), ex.toString())
+                        displayErrorMessage( "Error: $ex")
+                    }
+                }
+                // re-enable the button after user login returns a result
+                loginButton.isEnabled = true
             }
-        }
-        // re-enable the buttons after user login returns a result
-        loginButton.isEnabled = true
-        if (success) {
-            // on a successful login, open the s screen
-            startActivity(Intent(this, TodoActivity::class.java))
-        } else {
-            displayErrorMessage( "Error: $error")
         }
     }
 

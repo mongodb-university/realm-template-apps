@@ -17,6 +17,9 @@ import io.realm.kotlin.Realm
 import io.realm.kotlin.internal.platform.runBlocking
 import io.realm.kotlin.mongodb.sync.SyncConfiguration
 import io.realm.kotlin.ext.query
+import io.realm.kotlin.mongodb.Credentials
+import io.realm.kotlin.mongodb.exceptions.ConnectionException
+import io.realm.kotlin.mongodb.exceptions.InvalidCredentialsException
 import io.realm.kotlin.mongodb.exceptions.ServiceException
 import io.realm.kotlin.mongodb.subscriptions
 
@@ -91,19 +94,22 @@ class TodoActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
             R.id.action_logout -> {
-                var success = false
                 runBlocking {
-                    try {
+                    runCatching {
                         realmApp.currentUser?.logOut()
-                        success = true
+                    }.onSuccess {
                         Log.v(TAG(), "user logged out")
-                    } catch (e: ServiceException) {
-                        success = false
-                        Log.e(TAG(), "log out failed! Error: ${e.message}")
+                        startActivity(Intent(application, LoginActivity::class.java))
+                    }.onFailure { ex: Throwable ->
+                        when (ex) {
+                            is ServiceException -> {
+                                Log.e(TAG(), "log out failed! Error: ${ex.message}")
+                            }
+                            else -> {
+                                Log.e(TAG(), ex.toString())
+                            }
+                        }
                     }
-                }
-                if (success) {
-                    startActivity(Intent(this, LoginActivity::class.java))
                 }
                 true
             }
