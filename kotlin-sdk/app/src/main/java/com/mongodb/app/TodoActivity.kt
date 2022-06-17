@@ -101,14 +101,7 @@ class TodoActivity : AppCompatActivity() {
                         Log.v(TAG(), "user logged out")
                         startActivity(Intent(application, LoginActivity::class.java))
                     }.onFailure { ex: Throwable ->
-                        when (ex) {
-                            is ServiceException -> {
-                                Log.e(TAG(), "log out failed! Error: ${ex.message}")
-                            }
-                            else -> {
-                                Log.e(TAG(), ex.toString())
-                            }
-                        }
+                        Log.e(TAG(), "log out failed! Error: ${ex.message}")
                     }
                 }
                 true
