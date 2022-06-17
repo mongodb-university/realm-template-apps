@@ -87,10 +87,10 @@ class LoginActivity : AppCompatActivity() {
     private fun logIn(username: String, password: String) {
         // while this operation completes, disable the button to login or create a new account
         loginButton.isEnabled = false
-        val creds = Credentials.emailPassword(username, password)
 
         runBlocking {
             runCatching {
+                val creds = Credentials.emailPassword(username, password)
                 realmApp.login(creds)
             }.onSuccess {
                 // re-enable the button after user login returns a result
