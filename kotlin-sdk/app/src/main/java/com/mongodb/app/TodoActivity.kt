@@ -3,6 +3,7 @@ package com.mongodb.app
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -16,6 +17,10 @@ import io.realm.kotlin.Realm
 import io.realm.kotlin.internal.platform.runBlocking
 import io.realm.kotlin.mongodb.sync.SyncConfiguration
 import io.realm.kotlin.ext.query
+import io.realm.kotlin.mongodb.Credentials
+import io.realm.kotlin.mongodb.exceptions.ConnectionException
+import io.realm.kotlin.mongodb.exceptions.InvalidCredentialsException
+import io.realm.kotlin.mongodb.exceptions.ServiceException
 import io.realm.kotlin.mongodb.subscriptions
 
 class TodoActivity : AppCompatActivity() {
@@ -90,7 +95,14 @@ class TodoActivity : AppCompatActivity() {
         return when (menuItem.itemId) {
             R.id.action_logout -> {
                 runBlocking {
-                    realmApp.currentUser?.logOut()
+                    runCatching {
+                        realmApp.currentUser?.logOut()
+                    }.onSuccess {
+                        Log.v(TAG(), "user logged out")
+                        startActivity(Intent(application, LoginActivity::class.java))
+                    }.onFailure { ex: Throwable ->
+                        Log.e(TAG(), "log out failed! Error: ${ex.message}")
+                    }
                 }
                 true
             }

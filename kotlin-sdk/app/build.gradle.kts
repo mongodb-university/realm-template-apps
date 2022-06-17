@@ -25,5 +25,5 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.3.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
-    implementation("io.realm.kotlin:library-sync:1.0.0-SNAPSHOT") // DON'T FORGET TO UPDATE VERSION IN PROJECT GRADLE
+    implementation("io.realm.kotlin:library-sync:1.0.0") // DON'T FORGET TO UPDATE VERSION IN PROJECT GRADLE
 }
