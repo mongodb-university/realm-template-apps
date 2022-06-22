@@ -7,8 +7,9 @@ namespace RealmTemplateApp.Models
     public class Task : RealmObject
     {
         [PrimaryKey]
+        [Required]
         [MapTo("_id")]
-        public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
+        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
         [MapTo("owner_id")]
         [Required]
