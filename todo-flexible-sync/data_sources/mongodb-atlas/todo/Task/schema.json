@@ -2,7 +2,7 @@
     "bsonType": "object",
     "properties": {
         "_id": {
-            "bsonType": "string"
+            "bsonType": "objectId"
         },
         "isComplete": {
             "bsonType": "bool"
