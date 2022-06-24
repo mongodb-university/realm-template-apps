@@ -26,5 +26,4 @@ export class Task {
 
 export default createRealmContext({
   schema: [Task.schema],
-  deleteRealmIfMigrationNeeded: true,
 });
