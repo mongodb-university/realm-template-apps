@@ -59,7 +59,7 @@
     "name": "React Native Todo App",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
-    "backend_path": "todo-flexible-sync-old",
+    "backend_path": "backends/flexible-sync",
     "client_path": "generated/react-native-flexible-sync",
     "metadata_path": "generated/react-native-flexible-sync",
     "metadata_filename": "realm",
