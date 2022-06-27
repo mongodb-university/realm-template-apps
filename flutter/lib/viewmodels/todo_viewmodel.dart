@@ -2,7 +2,7 @@ import 'package:realm/realm.dart';
 import '../realm/schemas.dart';
 
 class TodoViewModel {
-  final String id;
+  final ObjectId id;
   final bool isComplete;
   final String summary;
   final Todo todo;

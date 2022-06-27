@@ -458,21 +458,21 @@ packages:
       name: realm
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.0+beta"
+    version: "0.3.1+beta"
   realm_common:
     dependency: transitive
     description:
       name: realm_common
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.0+beta"
+    version: "0.3.1+beta"
   realm_generator:
     dependency: transitive
     description:
       name: realm_generator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.0+beta"
+    version: "0.3.1+beta"
   sane_uuid:
     dependency: transitive
     description:
