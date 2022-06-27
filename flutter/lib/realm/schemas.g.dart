@@ -10,7 +10,7 @@ class Todo extends _Todo with RealmEntity, RealmObject {
   static var _defaultsSet = false;
 
   Todo(
-    String id,
+    ObjectId id,
     String summary,
     String ownerId, {
     bool isComplete = false,
@@ -29,9 +29,9 @@ class Todo extends _Todo with RealmEntity, RealmObject {
   Todo._();
 
   @override
-  String get id => RealmObject.get<String>(this, '_id') as String;
+  ObjectId get id => RealmObject.get<ObjectId>(this, '_id') as ObjectId;
   @override
-  set id(String value) => throw RealmUnsupportedSetError();
+  set id(ObjectId value) => throw RealmUnsupportedSetError();
 
   @override
   bool get isComplete => RealmObject.get<bool>(this, 'isComplete') as bool;
@@ -57,7 +57,7 @@ class Todo extends _Todo with RealmEntity, RealmObject {
   static SchemaObject _initSchema() {
     RealmObject.registerFactory(Todo._);
     return const SchemaObject(Todo, 'Todo', [
-      SchemaProperty('_id', RealmPropertyType.string,
+      SchemaProperty('_id', RealmPropertyType.objectid,
           mapTo: '_id', primaryKey: true),
       SchemaProperty('isComplete', RealmPropertyType.bool),
       SchemaProperty('summary', RealmPropertyType.string),

@@ -146,9 +146,6 @@ class _LogInState extends State<LogIn> {
                       ? Text(_errorMessage!,
                           style: const TextStyle(color: Colors.red))
                       : null),
-              const SizedBox(
-                height: 130,
-              ),
               TextButton(
                   onPressed: _setLogInSignUpState,
                   child: Text(
