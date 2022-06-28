@@ -3,7 +3,7 @@
     "name": "Flexible Sync Todo App",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
-    "backend_path": "todo-flexible-sync-old"
+    "backend_path": "backends/flexible-sync"
   },
   "ios.swift.todo": {
     "name": "iOS Swift Interface Builder Todo App",
@@ -29,7 +29,7 @@
     "name": "SwiftUI Interface Builder Todo App",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
-    "backend_path": "todo-flexible-sync-old",
+    "backend_path": "backends/flexible-sync",
     "client_path": "generated/swiftui-flexible-sync",
     "metadata_path": "generated/swiftui-flexible-sync/App",
     "metadata_filename": "Realm",
@@ -99,7 +99,7 @@
     "name": "Kotlin Todo App",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
-    "backend_path": "todo-flexible-sync-old",
+    "backend_path": "backends/flexible-sync",
     "client_path": "kotlin-sdk",
     "metadata_path": "kotlin-sdk/app/src/main/res/values",
     "metadata_filename": "realm",
@@ -131,33 +131,33 @@
     "metadata_filename": "realm",
     "file_format": "json"
   },
-  "flex-sync-permissions.add-collaborators": {
+  "flex-sync-guides.add-collaborators": {
     "name": "Flex Sync Permissions Guide: 'Add Collaborators' Demo",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
-    "backend_path": "flex-sync-permissions/backend/add-collaborators",
-    "client_path": "flex-sync-permissions/generated/add-collaborators",
-    "metadata_path": "flex-sync-permissions/generated/add-collaborators/src",
+    "backend_path": "flex-sync-guides/backend/add-collaborators",
+    "client_path": "flex-sync-guides/generated/add-collaborators",
+    "metadata_path": "flex-sync-guides/generated/add-collaborators/src",
     "metadata_filename": "realm",
     "file_format": "json"
   },
-  "flex-sync-permissions.restricted-feed": {
+  "flex-sync-guides.restricted-feed": {
     "name": "Flex Sync Permissions Guide: 'Restricted Feed' Demo",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
-    "backend_path": "flex-sync-permissions/backend/restricted-feed",
-    "client_path": "flex-sync-permissions/generated/restricted-feed",
-    "metadata_path": "flex-sync-permissions/generated/restricted-feed/src",
+    "backend_path": "flex-sync-guides/backend/restricted-feed",
+    "client_path": "flex-sync-guides/generated/restricted-feed",
+    "metadata_path": "flex-sync-guides/generated/restricted-feed/src",
     "metadata_filename": "realm",
     "file_format": "json"
   },
-  "flex-sync-permissions.tiered": {
+  "flex-sync-guides.tiered": {
     "name": "Flex Sync Permissions Guide: 'Tiered' Demo",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
-    "backend_path": "flex-sync-permissions/backend/tiered",
-    "client_path": "flex-sync-permissions/generated/tiered",
-    "metadata_path": "flex-sync-permissions/generated/tiered/src",
+    "backend_path": "flex-sync-guides/backend/tiered",
+    "client_path": "flex-sync-guides/generated/tiered",
+    "metadata_path": "flex-sync-guides/generated/tiered/src",
     "metadata_filename": "realm",
     "file_format": "json"
   }
