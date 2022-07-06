@@ -102,8 +102,8 @@ class _CreateTodoFormState extends State<CreateTodoForm> {
                         onPressed: () {
                           void createTodo(String name) {
                             realm.write(() {
-                              final newTodo = Todo(
-                                  Uuid.v4().toString(), name, currentUser!.id);
+                              final newTodo =
+                                  Todo(ObjectId(), name, currentUser!.id);
                               realm.add<Todo>(newTodo);
                             });
                           }

@@ -34,7 +34,6 @@ const App = () => {
       <RealmProvider
         // :state-start: partition-based-sync
         sync={{partitionValue: user?.id}}
-        deleteRealmIfMigrationNeeded={false}
         // :state-end:
         // :state-uncomment-start: flexible-sync
         // sync={{flexible: true}}

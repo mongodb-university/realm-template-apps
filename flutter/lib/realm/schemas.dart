@@ -6,7 +6,7 @@ part 'schemas.g.dart';
 class _Todo {
   @MapTo('_id')
   @PrimaryKey()
-  late String id;
+  late ObjectId id;
   bool isComplete = false;
   late String summary;
   @MapTo('owner_id')
