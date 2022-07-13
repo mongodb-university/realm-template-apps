@@ -11,14 +11,50 @@ import io.realm.kotlin.Realm
 import io.realm.kotlin.internal.platform.runBlocking
 import io.realm.kotlin.types.ObjectId
 import io.realm.kotlin.ext.query
+import io.realm.kotlin.notifications.InitialResults
+import io.realm.kotlin.notifications.ResultsChange
+import io.realm.kotlin.notifications.UpdatedList
+import io.realm.kotlin.notifications.UpdatedResults
 import io.realm.kotlin.query.RealmResults
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Extends the Realm-provided RealmRecyclerViewAdapter to provide data
  * for a RecyclerView to display Realm objects on screen to a user.
  */
-internal class TodoAdapter(private var data: RealmResults<Todo>, private val realm: Realm)
+internal class TodoAdapter(private var data: RealmResults<Todo>, private val realm: Realm, private val listener: Flow<ResultsChange<Todo>>)
     : RecyclerView.Adapter<TodoAdapter.TaskViewHolder>() {
+
+    // event handler to update the UI when any change to underlying data occurs
+    init {
+        CoroutineScope(Dispatchers.IO).launch {
+            listener.collect { event: ResultsChange<Todo> ->
+                when(event) {
+                    is UpdatedResults -> {
+                        // if an update occurred, update the frozen list of data in the background
+                        data = event.list
+                        if (event.deletions.isNotEmpty()) {
+                            event.deletions.forEach {
+                                notifyItemRemoved(it)
+                            }
+                        } else if (event.insertions.isNotEmpty()) {
+                            event.insertions.forEach {
+                                notifyItemInserted(it)
+                            }
+                        } else if (event.changes.isNotEmpty()) {
+                            event.changes.forEach {
+                                notifyItemChanged(it)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     internal inner class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var id: ObjectId? = null
@@ -45,7 +81,7 @@ internal class TodoAdapter(private var data: RealmResults<Todo>, private val rea
      *  Allows a user to check and uncheck a todo and updates its status in the realm.
      */
     private fun onCheckboxClicked(holder: TaskViewHolder) {
-        runBlocking {
+        CoroutineScope(Dispatchers.IO).launch {
             realm.write {
                 val todo: Todo = this.query<Todo>(
                     "_id == $0",
@@ -53,7 +89,6 @@ internal class TodoAdapter(private var data: RealmResults<Todo>, private val rea
                 ).find().first()
                 todo.isComplete = holder.checkbox.isChecked
             }
-            refreshData()
         }
     }
 
@@ -66,7 +101,7 @@ internal class TodoAdapter(private var data: RealmResults<Todo>, private val rea
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
                 R.id.action_delete -> {
-                    runBlocking {
+                    CoroutineScope(Dispatchers.IO).launch {
                         realm.write {
                             val todo: Todo = this.query<Todo>(
                                 "_id == $0",
@@ -75,18 +110,11 @@ internal class TodoAdapter(private var data: RealmResults<Todo>, private val rea
                             delete(todo)
                         }
                     }
-                    refreshData()
                 }
             }
             true
         }
         popup.show()
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun refreshData() {
-        data = realm.query<Todo>().find()
-        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
