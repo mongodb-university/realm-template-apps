@@ -14,14 +14,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.kotlin.Realm
-import io.realm.kotlin.internal.platform.runBlocking
 import io.realm.kotlin.mongodb.sync.SyncConfiguration
 import io.realm.kotlin.ext.query
-import io.realm.kotlin.mongodb.Credentials
-import io.realm.kotlin.mongodb.exceptions.ConnectionException
-import io.realm.kotlin.mongodb.exceptions.InvalidCredentialsException
-import io.realm.kotlin.mongodb.exceptions.ServiceException
 import io.realm.kotlin.mongodb.subscriptions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TodoActivity : AppCompatActivity() {
     private lateinit var realm: Realm
@@ -71,10 +70,11 @@ class TodoActivity : AppCompatActivity() {
                 .waitForInitialRemoteData()
                 .build()
             this.realm = Realm.open(config)
-            runBlocking {
+            CoroutineScope(Dispatchers.IO).launch {
                 realm.subscriptions.waitForSynchronization()
             }
-            todoAdapter = TodoAdapter(realm.query<Todo>().find(), realm)
+            val query = realm.query<Todo>()
+            todoAdapter = TodoAdapter(query.find(), realm, query.asFlow())
             recyclerView.adapter = todoAdapter
         }
     }
@@ -94,12 +94,14 @@ class TodoActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
             R.id.action_logout -> {
-                runBlocking {
+                CoroutineScope(Dispatchers.IO).launch {
                     runCatching {
                         realmApp.currentUser?.logOut()
                     }.onSuccess {
                         Log.v(TAG(), "user logged out")
-                        startActivity(Intent(application, LoginActivity::class.java))
+                        withContext(Dispatchers.Main) {
+                            startActivity(Intent(application, LoginActivity::class.java))
+                        }
                     }.onFailure { ex: Throwable ->
                         Log.e(TAG(), "log out failed! Error: ${ex.message}")
                     }
@@ -125,12 +127,11 @@ class TodoActivity : AppCompatActivity() {
                         dialog.dismiss()
                         val todo = Todo(realmApp.currentUser!!.identity)
                         todo.summary = input.text.toString()
-                        runBlocking {
+                        CoroutineScope(Dispatchers.IO).launch {
                             realm.write {
                                 this.copyToRealm(todo)
                             }
                         }
-                        todoAdapter.refreshData()
                     }
                 }
             .setNegativeButton("Cancel") { dialog, _ ->

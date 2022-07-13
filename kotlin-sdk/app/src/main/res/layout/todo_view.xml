@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     android:orientation="horizontal"
     android:layout_margin="1dp"
     android:padding="8dp">
@@ -24,7 +23,7 @@
         android:layout_toEndOf="@+id/checkbox"
         android:layout_toRightOf="@+id/checkbox"
         android:padding="1dp"
-        android:textColor="#000000"
+        android:textColor="@color/blue"
         android:textSize="18sp"
         android:textStyle="bold" />
 
