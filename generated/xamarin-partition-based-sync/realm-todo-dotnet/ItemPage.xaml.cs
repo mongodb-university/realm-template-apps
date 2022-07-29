@@ -11,16 +11,16 @@ namespace RealmTemplateApp
 {
     public partial class ItemPage : ContentPage
     {
-        private Realm itemsRealm;
-        private User user;
+        private Realm _itemsRealm;
+        private User _user;
         private IEnumerable<Item> _items;
 
         public ItemPage()
         {
             InitializeComponent();
-            user = App.RealmApp.CurrentUser;
-            var config = new PartitionSyncConfiguration(user.Id.ToString(), user);
-            itemsRealm = Realm.GetInstance(config);
+            _user = App.RealmApp.CurrentUser;
+            var config = new PartitionSyncConfiguration(_user.Id.ToString(), _user);
+            _itemsRealm = Realm.GetInstance(config);
             config.OnSessionError = (sender, e) =>
             {
                 //handle errors here
@@ -44,7 +44,7 @@ namespace RealmTemplateApp
         {
             if (_items == null)
             {
-                _items = itemsRealm.All<Item>();
+                _items = _itemsRealm.All<Item>();
             }
 
             listItems.ItemsSource = _items;
@@ -61,21 +61,21 @@ namespace RealmTemplateApp
 
             var newItem = new Item()
             {
-                Partition = user.Id.ToString(),
+                Partition = _user.Id.ToString(),
                 Summary = result,
                 IsComplete = false
             };
 
-            itemsRealm.Write(() =>
+            _itemsRealm.Write(() =>
             {
-                itemsRealm.Add(newItem);
+                _itemsRealm.Add(newItem);
             });
         }
 
         private async void Logout_Clicked(object sender, EventArgs e)
         {
             // Ensure the realm is closed when the user logs out
-            itemsRealm.Dispose();
+            _itemsRealm.Dispose();
             await App.RealmApp.CurrentUser.LogOutAsync();
 
             var root = Navigation.NavigationStack.First();
@@ -103,9 +103,9 @@ namespace RealmTemplateApp
                 return;
             };
 
-            itemsRealm.Write(() =>
+            _itemsRealm.Write(() =>
             {
-                itemsRealm.Remove(itemToDelete);
+                _itemsRealm.Remove(itemToDelete);
             });
         }
 
