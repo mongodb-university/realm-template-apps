@@ -3,35 +3,37 @@ using System.Linq;
 using RealmTemplateApp.Models;
 using Realms;
 using Xamarin.Forms;
-using System.ComponentModel;
 using Realms.Sync;
 using System.Collections.Generic;
 using Realms.Sync.Exceptions;
 
 namespace RealmTemplateApp
 {
-    public partial class TaskPage : ContentPage
+    public partial class ItemPage : ContentPage
     {
-        private Realm taskRealm;
+        private Realm itemsRealm;
         private User user;
-        private IEnumerable<Task> _tasks;
+        private IEnumerable<Item> _items;
 
-        public TaskPage()
+        public ItemPage()
         {
             InitializeComponent();
             user = App.RealmApp.CurrentUser;
             var config = new FlexibleSyncConfiguration(user);
-            taskRealm = Realm.GetInstance(config);
+            itemsRealm = Realm.GetInstance(config);
             AddSubscriptionsToRealm();
-            Session.Error += SessionErrorHandler();
+            config.OnSessionError = (sender, e) =>
+            {
+                //handle errors here
+            };
         }
 
         private void AddSubscriptionsToRealm()
         {
-           var subscriptions = taskRealm.Subscriptions;
+           var subscriptions = itemsRealm.Subscriptions;
            subscriptions.Update(() =>
            {
-               var defaultSubscription = taskRealm.All<Task>()
+               var defaultSubscription = itemsRealm.All<Item>()
                    .Where(t => t.OwnerId == user.Id);
                subscriptions.Add(defaultSubscription);
            });
@@ -42,50 +44,50 @@ namespace RealmTemplateApp
             base.OnAppearing();
             try
             {
-                SetUpTaskList();
+                SetUpItemsList();
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error Fetching Tasks", ex.Message, "OK");
+                await DisplayAlert("Error Fetching Items", ex.Message, "OK");
             }
         }
 
-        private void SetUpTaskList()
+        private void SetUpItemsList()
         {
-            if (_tasks == null)
+            if (_items == null)
             {
-                _tasks = taskRealm.All<Task>();
+                _items = itemsRealm.All<Item>();
             }
 
-            listTasks.ItemsSource = _tasks;
+            listItems.ItemsSource = _items;
         }
 
         private async void New_Button_Clicked(object sender, EventArgs e)
         {
-            string result = await DisplayPromptAsync("New Task", "Enter the Task Name");
+            string result = await DisplayPromptAsync("New Item", "Enter the Item Name");
 
             if (result == null)
             {
                 return;
             }
 
-            var newTask = new Task()
+            var newItem = new Item()
             {
                 OwnerId = user.Id.ToString(),
                 Summary = result,
                 IsComplete = false
             };
 
-            taskRealm.Write(() =>
+            itemsRealm.Write(() =>
             {
-                taskRealm.Add(newTask);
+                itemsRealm.Add(newItem);
             });
         }
 
         private async void Logout_Clicked(object sender, EventArgs e)
         {
             // Ensure the realm is closed when the user logs out
-            taskRealm.Dispose();
+            itemsRealm.Dispose();
             await App.RealmApp.CurrentUser.LogOutAsync();
 
             var root = Navigation.NavigationStack.First();
@@ -103,9 +105,9 @@ namespace RealmTemplateApp
 
         private async void Delete_Clicked(object sender, EventArgs e)
         {
-            var taskToDelete = (e as TappedEventArgs).Parameter as Task;
-            var result = await DisplayAlert("Delete Task",
-                $"Are you sure you want to delete \"{taskToDelete.Summary}\"?",
+            var itemToDelete = (e as TappedEventArgs).Parameter as Item;
+            var result = await DisplayAlert("Delete Item",
+                $"Are you sure you want to delete \"{itemToDelete.Summary}\"?",
                 "Yes", "No");
 
             if (result == false)
@@ -113,9 +115,9 @@ namespace RealmTemplateApp
                 return;
             };
 
-            taskRealm.Write(() =>
+            itemsRealm.Write(() =>
             {
-                taskRealm.Remove(taskToDelete);
+                itemsRealm.Remove(itemToDelete);
             });
         }
 

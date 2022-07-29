@@ -4,15 +4,15 @@ using Realms;
 
 namespace RealmTemplateApp.Models
 {
-    public class Task : RealmObject
+    public class Item : RealmObject
     {
         [PrimaryKey]
         [MapTo("_id")]
         public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
 
-        [MapTo("owner_id")]
+        [MapTo("_partition")]
         [Required]
-        public string OwnerId { get; set; }
+        public string Partition { get; set; }
 
         [MapTo("summary")]
         [Required]

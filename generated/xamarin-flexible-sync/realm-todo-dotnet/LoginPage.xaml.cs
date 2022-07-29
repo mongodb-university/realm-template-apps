@@ -33,9 +33,9 @@ namespace RealmTemplateApp
             try
             {
                 await App.RealmApp.LogInAsync(Credentials.EmailPassword(email, password));
-                var taskPage = new TaskPage();
-                NavigationPage.SetHasBackButton(taskPage, false);
-                await Navigation.PushAsync(taskPage);
+                var itemPage = new ItemPage();
+                NavigationPage.SetHasBackButton(itemPage, false);
+                await Navigation.PushAsync(itemPage);
             }
             catch (Exception ex)
             {
