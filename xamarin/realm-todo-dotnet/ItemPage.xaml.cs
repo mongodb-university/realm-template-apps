@@ -6,6 +6,8 @@ using Xamarin.Forms;
 using Realms.Sync;
 using System.Collections.Generic;
 using Realms.Sync.Exceptions;
+using Rg.Plugins.Popup.Contracts;
+using Rg.Plugins.Popup.Services;
 
 namespace RealmTemplateApp
 {
@@ -14,6 +16,8 @@ namespace RealmTemplateApp
         private Realm _itemsRealm;
         private User _user;
         private IEnumerable<Item> _items;
+        private IPopupNavigation _popup { get; set; }
+        private NewItemPopup _modalPage;
 
         public ItemPage()
         {
@@ -33,6 +37,8 @@ namespace RealmTemplateApp
             {
                 //handle errors here
             };
+            _popup = PopupNavigation.Instance;
+            _modalPage = new NewItemPopup();
         }
 
         // :state-uncomment-start: flexible-sync
@@ -59,6 +65,13 @@ namespace RealmTemplateApp
             {
                 await DisplayAlert("Error Fetching Items", ex.Message, "OK");
             }
+            _popup.Popped += Popup_Popped;
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            _popup.Popped += Popup_Popped;
         }
 
         private void SetUpItemsList()
@@ -73,12 +86,14 @@ namespace RealmTemplateApp
 
         private async void New_Button_Clicked(object sender, EventArgs e)
         {
-            string result = await DisplayPromptAsync("New Item", "Enter the Item Name");
+            await _popup.PushAsync(_modalPage);
+        }
 
-            if (result == null)
-            {
-                return;
-            }
+        private async void Popup_Popped(object sender, Rg.Plugins.Popup.Events.PopupNavigationEventArgs e)
+        {
+            var popup = (NewItemPopup)e.Page;
+
+            if (!popup.IsOK) return;
 
             var newItem = new Item()
             {
@@ -88,7 +103,7 @@ namespace RealmTemplateApp
                 // :state-uncomment-start:flexible-sync
                 //OwnerId = user.Id.ToString(),
                 // :state-uncomment-end:flexible-sync
-                Summary = result,
+                Summary = popup.ItemName,
                 IsComplete = false
             };
 
@@ -96,6 +111,7 @@ namespace RealmTemplateApp
             {
                 _itemsRealm.Add(newItem);
             });
+
         }
 
         private async void Logout_Clicked(object sender, EventArgs e)
