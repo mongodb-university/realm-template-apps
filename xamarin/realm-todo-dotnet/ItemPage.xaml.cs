@@ -27,7 +27,7 @@ namespace RealmTemplateApp
             var config = new PartitionSyncConfiguration(_user.Id.ToString(), _user);
             // :state-end:
             // :state-uncomment-start: flexible-sync
-            //var config = new FlexibleSyncConfiguration(user);
+            //var config = new FlexibleSyncConfiguration(_user);
             // :state-uncomment-end:flexible-sync
             _itemsRealm = Realm.GetInstance(config);
             // :state-uncomment-start: flexible-sync
@@ -44,11 +44,11 @@ namespace RealmTemplateApp
         // :state-uncomment-start: flexible-sync
         //private void AddSubscriptionsToRealm()
         //{
-        //    var subscriptions = itemsRealm.Subscriptions;
+        //    var subscriptions = _itemsRealm.Subscriptions;
         //    subscriptions.Update(() =>
         //    {
-        //        var defaultSubscription = itemsRealm.All<Item>()
-        //            .Where(t => t.OwnerId == user.Id);
+        //        var defaultSubscription = _itemsRealm.All<Item>()
+        //            .Where(t => t.OwnerId == _user.Id);
         //        subscriptions.Add(defaultSubscription);
         //    });
         //}
@@ -101,7 +101,7 @@ namespace RealmTemplateApp
                 Partition = _user.Id.ToString(),
                 // :state-end:
                 // :state-uncomment-start:flexible-sync
-                //OwnerId = user.Id.ToString(),
+                //OwnerId = _user.Id.ToString(),
                 // :state-uncomment-end:flexible-sync
                 Summary = popup.ItemName,
                 IsComplete = false
