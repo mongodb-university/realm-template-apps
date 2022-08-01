@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    x:Class="RealmTemplateApp.NewItemPopup">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+<StackLayout HorizontalOptions="Center" Orientation="Vertical" BackgroundColor="#FFFFFF" WidthRequest="400"
+             Grid.Column="0">
+        <Label TextColor="Blue" FontSize="20" HorizontalTextAlignment="Center" FontAttributes="Bold"
+               Text="Add New Item" />
+        <Label FontSize="18" HorizontalTextAlignment="Left" Text="Item Name:"/>
+        <Entry Placeholder="Item 1" x:Name="newItemName"/>
+        <Button Text="OK" Clicked="OK_Button_Clicked" />
+        <Button Text="Cancel" Clicked="Cancel_Button_Clicked" />
+</StackLayout>
+    
+    </Grid>
+</pages:PopupPage>

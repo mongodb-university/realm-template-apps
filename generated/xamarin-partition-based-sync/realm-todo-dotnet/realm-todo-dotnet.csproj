@@ -20,6 +20,7 @@
     <PackageReference Include="Realm" Version="10.14.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2515" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Rg.Plugins.Popup" Version="2.1.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -29,8 +30,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="app-config.xml" />
+    <None Remove="Rg.Plugins.Popup" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="realm.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="MyPage.xaml.cs">
+      <DependentUpon>NewItemPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="NewItemPopup.xaml.cs">
+      <DependentUpon>NewItemPopup.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
