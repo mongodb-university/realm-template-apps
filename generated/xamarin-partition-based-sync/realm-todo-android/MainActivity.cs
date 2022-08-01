@@ -10,6 +10,8 @@ namespace RealmTemplateApp.Droid
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            Rg.Plugins.Popup.Popup.Init(this);
+
             ToolbarResource = Resource.Layout.Toolbar;
             base.OnCreate(savedInstanceState);
 
