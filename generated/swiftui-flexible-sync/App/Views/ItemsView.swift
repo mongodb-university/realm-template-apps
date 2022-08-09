@@ -1,30 +1,31 @@
 import SwiftUI
 import RealmSwift
 
-/// Use views to see a list of all Todos, add or delete todos, or logout.
-struct TodosView: View {
+/// Use views to see a list of all Items, add or delete Items, or logout.
+struct ItemsView: View {
     var leadingBarButton: AnyView?
     // ObservedResults is a mutable collection; here it's
-    // all of the Todo objects in the realm.
+    // all of the Item objects in the realm.
     // You can append or delete todos directly from the collection.
-    @ObservedResults(Todo.self) var todo
-    @State var isInCreateTodoView = false
-    @State var todoSummary = ""
+    @ObservedResults(Item.self) var item
+    @State var isInCreateItemView = false
+    @State var itemSummary = ""
+    @State var user: User
     
     var body: some View {
         NavigationView {
             VStack {
-                if isInCreateTodoView {
-                    CreateTodoView(isInCreateTodoView: $isInCreateTodoView)
+                if isInCreateItemView {
+                    CreateItemView(isInCreateItemView: $isInCreateItemView, user: user)
                 }
                 else {
-                    TodoList()
+                    ItemList()
                 }
             }
             .navigationBarItems(leading: self.leadingBarButton,
                 trailing: HStack {
                     Button {
-                        isInCreateTodoView = true
+                        isInCreateItemView = true
                     } label: {
                         Image(systemName: "plus")
                     }

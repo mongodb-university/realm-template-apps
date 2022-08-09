@@ -17,7 +17,7 @@ struct ContentView: View {
                     // Existing subscription found - do nothing
                     return
                 } else {
-                    subs.append(QuerySubscription<Todo>(name: "user_tasks") {
+                    subs.append(QuerySubscription<Item>(name: "user_tasks") {
                         $0.owner_id == user.id
                     })
                 }
