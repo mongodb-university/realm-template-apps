@@ -18,10 +18,8 @@ export function TasksView() {
   const result = useQuery('Task');
   const tasks = useMemo(() => result, [result]);
   const user = useUser();
-  // state value for toggable visibility of the 'CreateToDoPrompt' Model in the UI
-  const [createToDoOverlayVisible, setCreateToDoOverlayVisible] =
-    useState(false);
-
+  const [showNewTaskOverlay, setShowNewTaskOverlay] = useState(false);
+  
   // :state-uncomment-start: flexible-sync
   // useEffect(() => {
   //   // initialize the subscriptions
@@ -37,20 +35,20 @@ export function TasksView() {
   //   initSubscription();
   // }, [realm, user]);
   // :state-uncomment-end:
-
+  
   // createTask() takes in a summary and then creates a Task object with that summary
-  const createTask = summary => {
+  const createTask = ({summary}) => {
     // if the realm exists, create a task
     if (realm) {
       realm.write(() => {
         realm.create('Task', {
           _id: new BSON.ObjectID(),
-          // :state-uncomment-start: flexible-sync
-          // owner_id: user.id,
-          // :state-uncomment-end:
           // :state-start: partition-based-sync
           _partition: user?.id,
           // :state-end:
+          // :state-uncomment-start: flexible-sync
+          // owner_id: user.id,
+          // :state-uncomment-end:
           summary,
         });
       });
@@ -78,26 +76,21 @@ export function TasksView() {
     }
   };
 
-  // toggleCreateToDoOverlayVisible toggles the visibility of the 'CreateToDoPrompt' Model in the UI
-  const toggleCreateToDoOverlayVisible = () => {
-    setCreateToDoOverlayVisible(!createToDoOverlayVisible);
-  };
-
   return (
     <SafeAreaProvider>
       <View style={styles.viewWrapper}>
         <Button
           title="+ ADD TO-DO"
           buttonStyle={styles.addToDoButton}
-          onPress={toggleCreateToDoOverlayVisible}
+          onPress={() => setShowNewTaskOverlay(true)}
         />
         <Overlay
-          isVisible={createToDoOverlayVisible}
-          onBackdropPress={toggleCreateToDoOverlayVisible}>
+          isVisible={showNewTaskOverlay}
+          onBackdropPress={() => setShowNewTaskOverlay(false)}>
           <CreateToDoPrompt
-            setNewTaskSummary={value => {
-              toggleCreateToDoOverlayVisible();
-              createTask(value);
+            onSubmit={({summary}) => {
+              setShowNewTaskOverlay(false);
+              createTask(summary);
             }}
           />
         </Overlay>

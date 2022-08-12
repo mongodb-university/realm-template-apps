@@ -26,4 +26,8 @@ export class Task {
 
 export default createRealmContext({
   schema: [Task.schema],
+  // :state-uncomment-start: flexible-sync
+  // sync: {flexible: true},
+  // deleteRealmIfMigrationNeeded: true,
+  // :state-uncomment-end:flexible-sync
 });
