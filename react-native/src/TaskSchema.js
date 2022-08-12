@@ -1,5 +1,4 @@
 import {BSON} from 'realm';
-import {createRealmContext} from '@realm/react';
 
 export class Task {
   constructor({id = new BSON.ObjectId(), isComplete = false}) {
@@ -23,11 +22,3 @@ export class Task {
     primaryKey: '_id',
   };
 }
-
-export default createRealmContext({
-  schema: [Task.schema],
-  // :state-uncomment-start: flexible-sync
-  // sync: {flexible: true},
-  // deleteRealmIfMigrationNeeded: true,
-  // :state-uncomment-end:flexible-sync
-});

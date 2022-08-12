@@ -7,9 +7,8 @@ import {Button, Overlay, ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {CreateToDoPrompt} from './CreateToDoPrompt';
-import TaskContext from './TaskSchema';
-
-const {useRealm, useQuery} = TaskContext;
+import RealmContext from './RealmContext';
+const {useRealm, useQuery} = RealmContext
 
 Icon.loadFont(); // load FontAwesome font
 
@@ -90,7 +89,7 @@ export function TasksView() {
           <CreateToDoPrompt
             onSubmit={({summary}) => {
               setShowNewTaskOverlay(false);
-              createTask(summary);
+              createTask({summary});
             }}
           />
         </Overlay>
@@ -105,12 +104,12 @@ export function TasksView() {
             />
             <Button
               type="clear"
+              onPress={() => deleteTask(task._id)}
               icon={
                 <Icon
                   name="times"
                   size={12}
                   color="#979797"
-                  onPress={() => deleteTask(task._id)}
                 />
               }
             />
@@ -144,7 +143,6 @@ const styles = StyleSheet.create({
   },
   addToDoButton: {
     backgroundColor: '#00BAD4',
-    width: 150,
     borderRadius: 4,
     margin: 5,
   },

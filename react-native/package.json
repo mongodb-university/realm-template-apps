@@ -8,7 +8,10 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "prettier": "prettier --write src/*"
+    "prettier": "prettier --write src/*",
+    "generate:prod-partition-based-sync": "npx bluehawk copy . --destination=../generated/react-native-partition-based-sync --ignore=realm.json --state=partition-based-sync",
+    "generate:prod-flexible-sync": "npx bluehawk copy . --destination=../generated/react-native-flexible-sync --ignore=realm.json --state=flexible-sync",
+    "generate:prod": "npm run generate:prod-partition-based-sync && npm run generate:prod-flexible-sync"
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",

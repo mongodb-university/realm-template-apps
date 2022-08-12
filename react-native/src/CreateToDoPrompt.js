@@ -8,6 +8,7 @@ Icon.loadFont(); // load FontFamily font
 export function CreateToDoPrompt(props) {
   const {onSubmit} = props;
   const [summary, setSummary] = useState(null);
+  
   return (
     <View style={styles.modalWrapper}>
       <Text h4 style={styles.addTaskTitle}>
