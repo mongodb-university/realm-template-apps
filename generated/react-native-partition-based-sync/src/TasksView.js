@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import {BSON} from 'realm';
 import {useUser} from '@realm/react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -7,9 +7,8 @@ import {Button, Overlay, ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {CreateToDoPrompt} from './CreateToDoPrompt';
-import TaskContext from './TaskSchema';
-
-const {useRealm, useQuery} = TaskContext;
+import RealmContext from './RealmContext';
+const {useRealm, useQuery} = RealmContext
 
 Icon.loadFont(); // load FontAwesome font
 
@@ -18,13 +17,11 @@ export function TasksView() {
   const result = useQuery('Task');
   const tasks = useMemo(() => result, [result]);
   const user = useUser();
-  // state value for toggable visibility of the 'CreateToDoPrompt' Model in the UI
-  const [createToDoOverlayVisible, setCreateToDoOverlayVisible] =
-    useState(false);
-
-
+  const [showNewTaskOverlay, setShowNewTaskOverlay] = useState(false);
+  
+  
   // createTask() takes in a summary and then creates a Task object with that summary
-  const createTask = summary => {
+  const createTask = ({summary}) => {
     // if the realm exists, create a task
     if (realm) {
       realm.write(() => {
@@ -58,26 +55,21 @@ export function TasksView() {
     }
   };
 
-  // toggleCreateToDoOverlayVisible toggles the visibility of the 'CreateToDoPrompt' Model in the UI
-  const toggleCreateToDoOverlayVisible = () => {
-    setCreateToDoOverlayVisible(!createToDoOverlayVisible);
-  };
-
   return (
     <SafeAreaProvider>
       <View style={styles.viewWrapper}>
         <Button
           title="+ ADD TO-DO"
           buttonStyle={styles.addToDoButton}
-          onPress={toggleCreateToDoOverlayVisible}
+          onPress={() => setShowNewTaskOverlay(true)}
         />
         <Overlay
-          isVisible={createToDoOverlayVisible}
-          onBackdropPress={toggleCreateToDoOverlayVisible}>
+          isVisible={showNewTaskOverlay}
+          onBackdropPress={() => setShowNewTaskOverlay(false)}>
           <CreateToDoPrompt
-            setNewTaskSummary={value => {
-              toggleCreateToDoOverlayVisible();
-              createTask(value);
+            onSubmit={({summary}) => {
+              setShowNewTaskOverlay(false);
+              createTask({summary});
             }}
           />
         </Overlay>
@@ -92,12 +84,12 @@ export function TasksView() {
             />
             <Button
               type="clear"
+              onPress={() => deleteTask(task._id)}
               icon={
                 <Icon
                   name="times"
                   size={12}
                   color="#979797"
-                  onPress={() => deleteTask(task._id)}
                 />
               }
             />
@@ -131,7 +123,6 @@ const styles = StyleSheet.create({
   },
   addToDoButton: {
     backgroundColor: '#00BAD4',
-    width: 150,
     borderRadius: 4,
     margin: 5,
   },
