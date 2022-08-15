@@ -27,7 +27,6 @@ class TodoActivity : AppCompatActivity() {
     private lateinit var config: SyncConfiguration
     private lateinit var recyclerView: RecyclerView
     private lateinit var todoAdapter: TodoAdapter
-    private val USER_TASKS = "user's todos"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +63,7 @@ class TodoActivity : AppCompatActivity() {
                             "owner_id == $0",
                             realmApp.currentUser!!.identity
                         ),
-                        USER_TASKS
+                        "User's Items"
                     )
                 }
                 .waitForInitialRemoteData()
