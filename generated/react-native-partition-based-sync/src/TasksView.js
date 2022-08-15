@@ -14,12 +14,11 @@ Icon.loadFont(); // load FontAwesome font
 
 export function TasksView() {
   const realm = useRealm();
-  const result = useQuery('Task');
-  const tasks = useMemo(() => result, [result]);
+  const tasks = useQuery('Task');
   const user = useUser();
   const [showNewTaskOverlay, setShowNewTaskOverlay] = useState(false);
-  
-  
+
+
   // createTask() takes in a summary and then creates a Task object with that summary
   const createTask = ({summary}) => {
     // if the realm exists, create a task
@@ -85,13 +84,7 @@ export function TasksView() {
             <Button
               type="clear"
               onPress={() => deleteTask(task._id)}
-              icon={
-                <Icon
-                  name="times"
-                  size={12}
-                  color="#979797"
-                />
-              }
+              icon={<Icon name="times" size={12} color="#979797" />}
             />
           </ListItem>
         ))}
@@ -127,6 +120,6 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   taskTitle: {
-    minWidth: 275,
+    flex: 1,
   },
 });

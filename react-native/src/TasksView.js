@@ -14,27 +14,24 @@ Icon.loadFont(); // load FontAwesome font
 
 export function TasksView() {
   const realm = useRealm();
-  const result = useQuery('Task');
-  const tasks = useMemo(() => result, [result]);
+  const tasks = useQuery('Task');
   const user = useUser();
   const [showNewTaskOverlay, setShowNewTaskOverlay] = useState(false);
-  
+
   // :state-uncomment-start: flexible-sync
   // useEffect(() => {
   //   // initialize the subscriptions
   //   const initSubscription = async () => {
   //     await realm.subscriptions.update(mutableSubs => {
   //       // subscribe to all Tasks of the logged in user
-  //       const ownTasks = realm
-  //         .objects('Task')
-  //         .filtered(`owner_id == "${user.id}"`);
+  //       const ownTasks = tasks.filtered(`owner_id == "${user.id}"`);
   //       mutableSubs.add(ownTasks, {name: "ownTasks"});
   //     });
   //   };
   //   initSubscription();
   // }, [realm, user]);
   // :state-uncomment-end:
-  
+
   // createTask() takes in a summary and then creates a Task object with that summary
   const createTask = ({summary}) => {
     // if the realm exists, create a task
@@ -105,13 +102,7 @@ export function TasksView() {
             <Button
               type="clear"
               onPress={() => deleteTask(task._id)}
-              icon={
-                <Icon
-                  name="times"
-                  size={12}
-                  color="#979797"
-                />
-              }
+              icon={<Icon name="times" size={12} color="#979797" />}
             />
           </ListItem>
         ))}
@@ -147,6 +138,6 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   taskTitle: {
-    minWidth: 275,
+    flex: 1,
   },
 });
