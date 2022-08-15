@@ -7,9 +7,8 @@ import {Button, Overlay, ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {CreateToDoPrompt} from './CreateToDoPrompt';
-import TaskContext from './TaskSchema';
-
-const {useRealm, useQuery} = TaskContext;
+import RealmContext from './RealmContext';
+const {useRealm, useQuery} = RealmContext
 
 Icon.loadFont(); // load FontAwesome font
 
@@ -18,37 +17,37 @@ export function TasksView() {
   const result = useQuery('Task');
   const tasks = useMemo(() => result, [result]);
   const user = useUser();
-  // state value for toggable visibility of the 'CreateToDoPrompt' Model in the UI
-  const [createToDoOverlayVisible, setCreateToDoOverlayVisible] =
-    useState(false);
-
+  const [showNewTaskOverlay, setShowNewTaskOverlay] = useState(false);
+  
   // :state-uncomment-start: flexible-sync
   // useEffect(() => {
   //   // initialize the subscriptions
   //   const initSubscription = async () => {
   //     await realm.subscriptions.update(mutableSubs => {
-  //       mutableSubs.add(
-  //         realm.objects('Task').filtered(`owner_id == "${user.id}"`),
-  //       ); // subscribe to all Tasks of the logged in user
+  //       // subscribe to all Tasks of the logged in user
+  //       const ownTasks = realm
+  //         .objects('Task')
+  //         .filtered(`owner_id == "${user.id}"`);
+  //       mutableSubs.add(ownTasks, {name: "ownTasks"});
   //     });
   //   };
   //   initSubscription();
   // }, [realm, user]);
   // :state-uncomment-end:
-
+  
   // createTask() takes in a summary and then creates a Task object with that summary
-  const createTask = summary => {
+  const createTask = ({summary}) => {
     // if the realm exists, create a task
     if (realm) {
       realm.write(() => {
         realm.create('Task', {
           _id: new BSON.ObjectID(),
-          // :state-uncomment-start: flexible-sync
-          // owner_id: user.id,
-          // :state-uncomment-end:
           // :state-start: partition-based-sync
           _partition: user?.id,
           // :state-end:
+          // :state-uncomment-start: flexible-sync
+          // owner_id: user.id,
+          // :state-uncomment-end:
           summary,
         });
       });
@@ -76,26 +75,21 @@ export function TasksView() {
     }
   };
 
-  // toggleCreateToDoOverlayVisible toggles the visibility of the 'CreateToDoPrompt' Model in the UI
-  const toggleCreateToDoOverlayVisible = () => {
-    setCreateToDoOverlayVisible(!createToDoOverlayVisible);
-  };
-
   return (
     <SafeAreaProvider>
       <View style={styles.viewWrapper}>
         <Button
           title="+ ADD TO-DO"
           buttonStyle={styles.addToDoButton}
-          onPress={toggleCreateToDoOverlayVisible}
+          onPress={() => setShowNewTaskOverlay(true)}
         />
         <Overlay
-          isVisible={createToDoOverlayVisible}
-          onBackdropPress={toggleCreateToDoOverlayVisible}>
+          isVisible={showNewTaskOverlay}
+          onBackdropPress={() => setShowNewTaskOverlay(false)}>
           <CreateToDoPrompt
-            setNewTaskSummary={value => {
-              toggleCreateToDoOverlayVisible();
-              createTask(value);
+            onSubmit={({summary}) => {
+              setShowNewTaskOverlay(false);
+              createTask({summary});
             }}
           />
         </Overlay>
@@ -110,12 +104,12 @@ export function TasksView() {
             />
             <Button
               type="clear"
+              onPress={() => deleteTask(task._id)}
               icon={
                 <Icon
                   name="times"
                   size={12}
                   color="#979797"
-                  onPress={() => deleteTask(task._id)}
                 />
               }
             />
@@ -149,7 +143,6 @@ const styles = StyleSheet.create({
   },
   addToDoButton: {
     backgroundColor: '#00BAD4',
-    width: 150,
     borderRadius: 4,
     margin: 5,
   },

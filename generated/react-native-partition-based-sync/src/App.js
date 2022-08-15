@@ -5,14 +5,14 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {AppProvider, UserProvider, useUser} from '@realm/react';
 
+import {appId, baseUrl} from '../realm';
 import {LogoutButton} from './LogoutButton';
 import {WelcomeView} from './WelcomeView';
 import {TasksView} from './TasksView';
-import TaskContext from './TaskSchema';
-import {appId, baseUrl} from '../realm';
+import RealmContext from './RealmContext';
+const {RealmProvider} = RealmContext
 
 const Stack = createStackNavigator();
-const {RealmProvider} = TaskContext;
 
 const AppWrapper = () => {
   return (
@@ -31,7 +31,6 @@ const App = () => {
       {/* After login, user will be automatically populated in realm configuration */}
       <RealmProvider
         sync={{partitionValue: user?.id}}
-        deleteRealmIfMigrationNeeded={false}
         fallback={() => (
           <View style={styles.activityContainer}>
             <ActivityIndicator size="large" />
