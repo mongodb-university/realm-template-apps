@@ -6,15 +6,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 Icon.loadFont(); // load FontFamily font
 
 export function CreateToDoPrompt(props) {
-  const {onSubmit} = props;
-  const [summary, setSummary] = useState(null);
-
+  const {setNewTaskSummary} = props;
+  const [toDoSummary, setToDoSummary] = useState(null);
   return (
     <View style={styles.modalWrapper}>
       <Text h4 style={styles.addItemTitle}>
         Add To-Do Item
       </Text>
-      <Input placeholder="What do you want to do?" onChangeText={setSummary} />
+      <Input placeholder="New Task Summary" onChangeText={setToDoSummary} />
       <Button
         title="Save"
         buttonStyle={styles.saveButton}

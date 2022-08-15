@@ -8,9 +8,9 @@ import {AppProvider, UserProvider, useUser} from '@realm/react';
 import {appId, baseUrl} from '../realm';
 import {LogoutButton} from './LogoutButton';
 import {WelcomeView} from './WelcomeView';
-import {ItemListView} from './ItemListView';
-import RealmContext from './RealmContext';
-const {RealmProvider} = RealmContext;
+import {TasksView} from './TasksView';
+import TaskContext from './TaskSchema';
+import {appId, baseUrl} from '../realm';
 
 const Stack = createStackNavigator();
 
