@@ -24,7 +24,7 @@ export function TasksView() {
   //   const initSubscription = async () => {
   //     await realm.subscriptions.update(mutableSubs => {
   //       // subscribe to all Tasks of the logged in user
-  //       const ownTasks = tasks.filtered(`owner_id == "${user.id}"`);
+  //       let ownTasks = tasks.filtered(`owner_id == "${user.id}"`);
   //       mutableSubs.add(ownTasks, {name: "ownTasks"});
   //     });
   //   };
