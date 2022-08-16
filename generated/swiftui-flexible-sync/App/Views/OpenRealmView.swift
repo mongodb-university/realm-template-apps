@@ -1,10 +1,10 @@
 import SwiftUI
 import RealmSwift
 
-/// Called when login completes. Opens the realm asynchronously and navigates to the Todos screen.
+/// Called when login completes. Opens the realm asynchronously and navigates to the Items screen.
 struct OpenRealmView: View {
     @AsyncOpen(appId: theAppConfig.appId, timeout: 2000) var asyncOpen
-    // We must pass the user, so we can set the user.id when we create Todo objects
+    // We must pass the user, so we can set the user.id when we create Item objects
     @State var user: User
        
     var body: some View {
@@ -18,9 +18,9 @@ struct OpenRealmView: View {
         case .waitingForUser:
             ProgressView("Waiting for user to log in...")
         // The realm has been opened and is ready for use.
-        // Show the Todos view.
+        // Show the Items view.
         case .open(let realm):
-            TodosView(leadingBarButton: AnyView(LogoutButton()), user: user)
+            ItemsView(leadingBarButton: AnyView(LogoutButton()), user: user)
                 .environment(\.realm, realm)
        // The realm is currently being downloaded from the server.
        // Show a progress view.

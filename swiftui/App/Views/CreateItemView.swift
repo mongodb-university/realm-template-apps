@@ -1,54 +1,54 @@
 import SwiftUI
 import RealmSwift
 
-/// Instantiate a new Todo object, let the user input a ``summary``, and then
-/// append it to the ``todos`` collection to add it to the Todo list.
-struct CreateTodoView: View {
-    // The ``todos`` ObservedResults collection is the
-    // entire list of Todo items in the realm.
-    @ObservedResults(Todo.self) var todos
+/// Instantiate a new Item object, let the user input a ``summary``, and then
+/// append it to the ``items`` collection to add it to the Item list.
+struct CreateItemView: View {
+    // The ``items`` ObservedResults collection is the
+    // entire list of Item objects in the realm.
+    @ObservedResults(Item.self) var items
     
-    // Create a new Realm Todo object.
-    @State private var newTodo = Todo()
+    // Create a new Realm Item object.
+    @State private var newItem = Item()
     
-    // We've passed in the ``creatingNewTodo`` variable
-    // from the TodosView to know when the user is done
-    // with the new Todo and we should return to the TodosView.
-    @Binding var isInCreateTodoView: Bool
+    // We've passed in the ``creatingNewItem`` variable
+    // from the ItemsView to know when the user is done
+    // with the new Item and we should return to the ItemsView.
+    @Binding var isInCreateItemView: Bool
     
     // :state-start: flexible-sync
     @State var user: User
     
     // :state-end:
-    @State var todoSummary = ""
+    @State var itemSummary = ""
 
     var body: some View {
         Form {
-            Section(header: Text("Todo Name")) {
+            Section(header: Text("Item Name")) {
                 // When using Atlas Device Sync, binding directly to the
                 // synced property can cause performance issues. Instead,
                 // we'll bind to a `@State` variable and then assign to the
                 // synced property when the user presses `Save`
-                TextField("New todo", text: $todoSummary)
+                TextField("New item", text: $itemSummary)
             }
             Section {
                 Button(action: {
                     // :state-start: flexible-sync
-                    newTodo.owner_id = user.id
+                    newItem.owner_id = user.id
                     // :state-end:
                     // To avoid updating too many times and causing Sync-related
-                    // performance issues, we only assign to the `newTodo.summary`
+                    // performance issues, we only assign to the `newItem.summary`
                     // once when the user presses `Save`.
-                    newTodo.summary = todoSummary
-                    // Appending the new Todo object to the ``todos``
+                    newItem.summary = itemSummary
+                    // Appending the new Item object to the ``items``
                     // ObservedResults collection adds it to the
                     // realm in an implicit write.
-                    $todos.append(newTodo)
+                    $items.append(newItem)
                     
                     // Now we're done with this view, so set the
-                    // ``isInCreateTodoView`` variable to false to
-                    // return to the TodosView.
-                    isInCreateTodoView = false
+                    // ``isInCreateItemView`` variable to false to
+                    // return to the ItemsView.
+                    isInCreateItemView = false
                 }) {
                     HStack {
                         Spacer()
@@ -59,9 +59,9 @@ struct CreateTodoView: View {
                 Button(action: {
                     // If the user cancels, we don't want to
                     // append the new object we created to the
-                    // task list, so we set the ``isInCreateTodoView``
-                    // value to false to return to the TodosView.
-                    isInCreateTodoView = false
+                    // task list, so we set the ``isInCreateItemView``
+                    // value to false to return to the ItemsView.
+                    isInCreateItemView = false
                 }) {
                     HStack {
                         Spacer()
@@ -71,6 +71,6 @@ struct CreateTodoView: View {
                 }
             }
         }
-        .navigationBarTitle("Add Todo")
+        .navigationBarTitle("Add Item")
     }
 }
