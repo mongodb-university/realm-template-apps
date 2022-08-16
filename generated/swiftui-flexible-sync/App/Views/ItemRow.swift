@@ -1,14 +1,14 @@
 import SwiftUI
 import RealmSwift
 
-struct TodoRow: View {
-    @ObservedRealmObject var todo: Todo
+struct ItemRow: View {
+    @ObservedRealmObject var item: Item
     
     var body: some View {
-        NavigationLink(destination: TodoDetail(todo: todo)) {
-            Text(todo.summary)
+        NavigationLink(destination: ItemDetail(item: item)) {
+            Text(item.summary)
             Spacer()
-            if todo.isComplete {
+            if item.isComplete {
                 Image(systemName: "checkmark")
                     .foregroundColor(.blue)
                     .padding(.trailing, 10)
