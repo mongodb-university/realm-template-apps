@@ -1,23 +1,18 @@
 import {BSON} from 'realm';
 
-export class Task {
+export class Item {
   constructor({id = new BSON.ObjectId(), isComplete = false}) {
     this.isComplete = isComplete;
     this._id = id;
   }
 
   static schema = {
-    name: 'Task',
+    name: 'Item',
     properties: {
       _id: 'objectId',
       isComplete: {type: 'bool', default: false},
       summary: 'string',
-      // :state-start: partition-based-sync
-      _partition: 'string',
-      // :state-end:
-      // :state-uncomment-start: flexible-sync
-      // owner_id: 'string',
-      // :state-uncomment-end:flexible-sync
+      owner_id: 'string',
     },
     primaryKey: '_id',
   };

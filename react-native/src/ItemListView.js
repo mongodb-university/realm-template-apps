@@ -12,32 +12,34 @@ const {useRealm, useQuery} = RealmContext
 
 Icon.loadFont(); // load FontAwesome font
 
-export function TasksView() {
+export function ItemListView() {
   const realm = useRealm();
-  const tasks = useQuery('Task');
+  const items = useQuery('Item');
   const user = useUser();
-  const [showNewTaskOverlay, setShowNewTaskOverlay] = useState(false);
+  const [showNewItemOverlay, setShowNewItemOverlay] = useState(false);
 
   // :state-uncomment-start: flexible-sync
   // useEffect(() => {
   //   // initialize the subscriptions
   //   const initSubscription = async () => {
   //     await realm.subscriptions.update(mutableSubs => {
-  //       // subscribe to all Tasks of the logged in user
-  //       let ownTasks = tasks.filtered(`owner_id == "${user.id}"`);
-  //       mutableSubs.add(ownTasks, {name: "ownTasks"});
+  //       // subscribe to all of the logged in user's to-do items
+  //       let ownItems = realm
+  //         .objects("Item")
+  //         .filtered(`owner_id == "${user.id}"`);
+  //       mutableSubs.add(ownItems, {name: "ownItems"});
   //     });
   //   };
   //   initSubscription();
   // }, [realm, user]);
   // :state-uncomment-end:
 
-  // createTask() takes in a summary and then creates a Task object with that summary
-  const createTask = ({summary}) => {
-    // if the realm exists, create a task
+  // createItem() takes in a summary and then creates an Item object with that summary
+  const createItem = ({summary}) => {
+    // if the realm exists, create an Item
     if (realm) {
       realm.write(() => {
-        realm.create('Task', {
+        realm.create('Item', {
           _id: new BSON.ObjectID(),
           // :state-start: partition-based-sync
           _partition: user?.id,
@@ -51,23 +53,23 @@ export function TasksView() {
     }
   };
 
-  // deleteTask() deletes a Task with a particular _id
-  const deleteTask = _id => {
-    // if the realm exists, get the Task with a particular _id and delete it
+  // deleteItem() deletes an Item with a particular _id
+  const deleteItem = _id => {
+    // if the realm exists, get the Item with a particular _id and delete it
     if (realm) {
-      const task = realm.objectForPrimaryKey('Task', _id); // search for a realm object with a primary key that is an objectId
+      const item = realm.objectForPrimaryKey('Item', _id); // search for a realm object with a primary key that is an objectId
       realm.write(() => {
-        realm.delete(task);
+        realm.delete(item);
       });
     }
   };
-  // toggleTaskIsComplete() updates a Task with a particular _id to be 'completed'
-  const toggleTaskIsComplete = _id => {
-    // if the realm exists, get the Task with a particular _id and update it's 'isCompleted' field
+  // toggleItemIsComplete() updates an Item with a particular _id to be 'completed'
+  const toggleItemIsComplete = _id => {
+    // if the realm exists, get the Item with a particular _id and update it's 'isCompleted' field
     if (realm) {
-      const task = realm.objectForPrimaryKey('Task', _id); // search for a realm object with a primary key that is an objectId
+      const item = realm.objectForPrimaryKey('Item', _id); // search for a realm object with a primary key that is an objectId
       realm.write(() => {
-        task.isComplete = !task.isComplete;
+        item.isComplete = !item.isComplete;
       });
     }
   };
@@ -78,30 +80,30 @@ export function TasksView() {
         <Button
           title="+ ADD TO-DO"
           buttonStyle={styles.addToDoButton}
-          onPress={() => setShowNewTaskOverlay(true)}
+          onPress={() => setShowNewItemOverlay(true)}
         />
         <Overlay
-          isVisible={showNewTaskOverlay}
-          onBackdropPress={() => setShowNewTaskOverlay(false)}>
+          isVisible={showNewItemOverlay}
+          onBackdropPress={() => setShowNewItemOverlay(false)}>
           <CreateToDoPrompt
             onSubmit={({summary}) => {
-              setShowNewTaskOverlay(false);
-              createTask({summary});
+              setShowNewItemOverlay(false);
+              createItem({summary});
             }}
           />
         </Overlay>
-        {tasks.map(task => (
-          <ListItem key={`${task._id}`} bottomDivider topDivider>
-            <ListItem.Title style={styles.taskTitle}>
-              {task.summary}
+        {items.map(item => (
+          <ListItem key={`${item._id}`} bottomDivider topDivider>
+            <ListItem.Title style={styles.itemTitle}>
+              {item.summary}
             </ListItem.Title>
             <ListItem.CheckBox
-              checked={task.isComplete}
-              onPress={() => toggleTaskIsComplete(task._id)}
+              checked={item.isComplete}
+              onPress={() => toggleItemIsComplete(item._id)}
             />
             <Button
               type="clear"
-              onPress={() => deleteTask(task._id)}
+              onPress={() => deleteItem(item._id)}
               icon={<Icon name="times" size={12} color="#979797" />}
             />
           </ListItem>
@@ -137,7 +139,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     margin: 5,
   },
-  taskTitle: {
+  itemTitle: {
     flex: 1,
   },
 });

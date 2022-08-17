@@ -1,6 +1,6 @@
 import {createRealmContext} from '@realm/react';
-import { Task } from './TaskSchema';
+import { Item } from './ItemSchema';
 
 export default createRealmContext({
-  schema: [Task.schema],
+  schema: [Item.schema],
 });
