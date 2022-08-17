@@ -30,7 +30,7 @@ class ItemActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_todo)
+        setContentView(R.layout.activity_item)
 
         val toolbar = findViewById<View>(R.id.item_menu) as Toolbar
         setSupportActionBar(toolbar)
@@ -82,7 +82,7 @@ class ItemActivity : AppCompatActivity() {
      * Add buttons to the item menu.
      */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.todo_menu, menu)
+        menuInflater.inflate(R.menu.item_menu, menu)
         return true
     }
 

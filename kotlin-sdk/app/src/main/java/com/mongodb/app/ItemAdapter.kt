@@ -58,7 +58,7 @@ internal class ItemAdapter(private var data: RealmResults<Item>, private val rea
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.todo_view, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_view, parent, false)
         return ItemViewHolder(itemView)
     }
 
