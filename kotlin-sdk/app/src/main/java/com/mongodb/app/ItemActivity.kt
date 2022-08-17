@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -117,21 +118,30 @@ class ItemActivity : AppCompatActivity() {
      *  Creates a popup that allows the user to insert a item into the realm.
      */
     private fun onFabClicked() {
-        val input = EditText(this)
-        val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setMessage("Enter item name:")
-                .setCancelable(true)
-                .setPositiveButton("Create") { dialog, _ ->
-                    run {
-                        dialog.dismiss()
-                        val item = Item(realmApp.currentUser!!.identity)
-                        item.summary = input.text.toString()
-                        CoroutineScope(Dispatchers.IO).launch {
-                            realm.write {
-                                this.copyToRealm(item)
-                            }
+        val mBuilder = AlertDialog.Builder(this)
+            .setMessage("Enter Item Name:")
+        val mView: View = layoutInflater.inflate(R.layout.create_item_dialog, null)
+
+        val itemSummaryInput = mView.findViewById<View>(R.id.plain_text_input) as EditText
+
+        mBuilder
+            .setPositiveButton("Create") { dialog, _ ->
+                run {
+                    val item = Item(realmApp.currentUser!!.identity)
+                    item.summary = itemSummaryInput.text.toString()
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        realm.write {
+                            this.copyToRealm(item)
                         }
                     }
+
+                    // Display the item created using Android's Toast feedback popup
+                    Toast.makeText(
+                        this,
+                        "Item created: ${item.summary}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             .setNegativeButton("Cancel") { dialog, _ ->
                     dialog.cancel()
