@@ -21,7 +21,7 @@ export function ItemListView() {
   // :state-uncomment-start: flexible-sync
   // useEffect(() => {
   //   // initialize the subscriptions
-  //   const initSubscription = async () => {
+  //   const updateSubscriptions = async () => {
   //     await realm.subscriptions.update(mutableSubs => {
   //       // subscribe to all of the logged in user's to-do items
   //       let ownItems = realm
@@ -30,7 +30,7 @@ export function ItemListView() {
   //       mutableSubs.add(ownItems, {name: "ownItems"});
   //     });
   //   };
-  //   initSubscription();
+  //   updateSubscriptions();
   // }, [realm, user]);
   // :state-uncomment-end:
 
