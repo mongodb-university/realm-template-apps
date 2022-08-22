@@ -27,6 +27,7 @@ export function ItemListView() {
   //       let ownItems = realm
   //         .objects("Item")
   //         .filtered(`owner_id == "${user.id}"`);
+  //       // use the same name as the initial subscription to update it
   //       mutableSubs.add(ownItems, {name: "ownItems"});
   //     });
   //   };
