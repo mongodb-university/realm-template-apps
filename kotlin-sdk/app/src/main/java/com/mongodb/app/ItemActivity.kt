@@ -118,13 +118,13 @@ class ItemActivity : AppCompatActivity() {
      *  Creates a popup that allows the user to insert a item into the realm.
      */
     private fun onFabClicked() {
-        val mBuilder = AlertDialog.Builder(this)
+        val dialogBuilder = AlertDialog.Builder(this)
             .setMessage("Enter Item Name:")
-        val mView: View = layoutInflater.inflate(R.layout.create_item_dialog, null)
+        val view: View = layoutInflater.inflate(R.layout.create_item_dialog, null)
 
-        val itemSummaryInput = mView.findViewById<View>(R.id.plain_text_input) as EditText
+        val itemSummaryInput = view.findViewById<View>(R.id.plain_text_input) as EditText
 
-        mBuilder
+        dialogBuilder
             .setPositiveButton("Create") { dialog, _ ->
                 run {
                     val item = Item(realmApp.currentUser!!.identity)
@@ -143,14 +143,15 @@ class ItemActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+            }
             .setNegativeButton("Cancel") { dialog, _ ->
                     dialog.cancel()
                 }
+
+        dialogBuilder.setView(view)
         val dialog = dialogBuilder.create()
-        dialog.setView(input)
         dialog.setTitle("Add Item")
         dialog.show()
-        input.requestFocus()
     }
 
     /**
