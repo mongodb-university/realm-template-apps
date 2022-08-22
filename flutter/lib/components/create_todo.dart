@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/realm/app_services.dart';
+import 'package:flutter_todo/viewmodels/todo_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:realm/realm.dart';
@@ -100,16 +101,11 @@ class _CreateTodoFormState extends State<CreateTodoForm> {
                       return ElevatedButton(
                         child: const Text('Create'),
                         onPressed: () {
-                          void createTodo(String name) {
-                            realm.write(() {
-                              final newTodo = Todo(
-                                  Uuid.v4().toString(), name, currentUser!.id);
-                              realm.add<Todo>(newTodo);
-                            });
-                          }
-
                           if (_formKey.currentState!.validate()) {
-                            createTodo(todoEditingController.text);
+                            print('pressed again');
+                            final summary = todoEditingController.text;
+                            TodoViewModel.create(realm,
+                                Todo(ObjectId(), summary, currentUser!.id));
                             Navigator.pop(context);
                           }
                         },
