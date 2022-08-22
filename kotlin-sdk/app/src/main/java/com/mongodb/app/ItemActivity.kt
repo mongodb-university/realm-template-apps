@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -22,32 +23,31 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class TodoActivity : AppCompatActivity() {
+class ItemActivity : AppCompatActivity() {
     private lateinit var realm: Realm
     private lateinit var config: SyncConfiguration
     private lateinit var recyclerView: RecyclerView
-    private lateinit var todoAdapter: TodoAdapter
-    private val USER_TASKS = "user's todos"
+    private lateinit var itemAdapter: ItemAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_todo)
+        setContentView(R.layout.activity_item)
 
-        val toolbar = findViewById<View>(R.id.todo_menu) as Toolbar
+        val toolbar = findViewById<View>(R.id.item_menu) as Toolbar
         setSupportActionBar(toolbar)
 
         val fab = findViewById<View>(R.id.floating_action_button)
         fab.setOnClickListener { (onFabClicked()) }
 
-        recyclerView = findViewById(R.id.todo_list)
+        recyclerView = findViewById(R.id.item_list)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
         recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
     }
 
     /**
-     *  On start, open a realm that contains todos for the current user.
-     *  Query the realm for Task objects, sorted by a stable order that remains
+     *  On start, open a realm that contains items for the current user.
+     *  Query the realm for 'Item' objects, sorted by a stable order that remains
      *  consistent between runs, and display the collection using a recyclerView.
      */
     override fun onStart() {
@@ -57,14 +57,14 @@ class TodoActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
         }
         else {
-            config = SyncConfiguration.Builder(user, setOf(Todo::class))
+            config = SyncConfiguration.Builder(user, setOf(Item::class))
                 .initialSubscriptions { realm ->
                     add(
-                        realm.query<Todo>(
+                        realm.query<Item>(
                             "owner_id == $0",
                             realmApp.currentUser!!.identity
                         ),
-                        USER_TASKS
+                        "User's Items"
                     )
                 }
                 .waitForInitialRemoteData()
@@ -73,22 +73,22 @@ class TodoActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 realm.subscriptions.waitForSynchronization()
             }
-            val query = realm.query<Todo>()
-            todoAdapter = TodoAdapter(query.find(), realm, query.asFlow())
-            recyclerView.adapter = todoAdapter
+            val query = realm.query<Item>()
+            itemAdapter = ItemAdapter(query.find(), realm, query.asFlow())
+            recyclerView.adapter = itemAdapter
         }
     }
 
     /**
-     * Add buttons to the todo menu.
+     * Add buttons to the item menu.
      */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.todo_menu, menu)
+        menuInflater.inflate(R.menu.item_menu, menu)
         return true
     }
 
     /**
-     *  Decides actions for all buttons on the todo menu.
+     *  Decides actions for all buttons on the item menu.
      *  When "log out" is tapped, logs out the user and brings them back to the login screen.
      */
     override fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
@@ -115,33 +115,43 @@ class TodoActivity : AppCompatActivity() {
     }
 
     /**
-     *  Creates a popup that allows the user to insert a todo into the realm.
+     *  Creates a popup that allows the user to insert a item into the realm.
      */
     private fun onFabClicked() {
-        val input = EditText(this)
         val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setMessage("Enter todo name:")
-                .setCancelable(true)
-                .setPositiveButton("Create") { dialog, _ ->
-                    run {
-                        dialog.dismiss()
-                        val todo = Todo(realmApp.currentUser!!.identity)
-                        todo.summary = input.text.toString()
-                        CoroutineScope(Dispatchers.IO).launch {
-                            realm.write {
-                                this.copyToRealm(todo)
-                            }
+            .setMessage("Enter Item Name:")
+        val view: View = layoutInflater.inflate(R.layout.create_item_dialog, null)
+
+        val itemSummaryInput = view.findViewById<View>(R.id.plain_text_input) as EditText
+
+        dialogBuilder
+            .setPositiveButton("Create") { dialog, _ ->
+                run {
+                    val item = Item(realmApp.currentUser!!.identity)
+                    item.summary = itemSummaryInput.text.toString()
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        realm.write {
+                            this.copyToRealm(item)
                         }
                     }
+
+                    // Display the item created using Android's Toast feedback popup
+                    Toast.makeText(
+                        this,
+                        "Item created: ${item.summary}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
+            }
             .setNegativeButton("Cancel") { dialog, _ ->
                     dialog.cancel()
                 }
+
+        dialogBuilder.setView(view)
         val dialog = dialogBuilder.create()
-        dialog.setView(input)
-        dialog.setTitle("Add ToDo")
+        dialog.setTitle("Add Item")
         dialog.show()
-        input.requestFocus()
     }
 
     /**
