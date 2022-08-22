@@ -15,9 +15,7 @@ class TodoItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final realm = Provider.of<Realm>(context);
     void deleteItem() {
-      realm.write(() {
-        realm.delete(viewModel.todo);
-      });
+      viewModel.delete();
     }
 
     return FadeTransition(
@@ -33,7 +31,7 @@ class TodoItem extends StatelessWidget {
               children: [
                 SlidableAction(
                   onPressed: (BuildContext context) {
-                    showModifyTodoModal(context, viewModel.todo);
+                    showModifyTodoModal(context, viewModel);
                   },
                   flex: 2,
                   backgroundColor: Color(Colors.blue[500].hashCode),
@@ -92,9 +90,7 @@ class _CompleteCheckbox extends StatelessWidget {
       fillColor: MaterialStateProperty.resolveWith(getColor),
       value: viewModel.isComplete,
       onChanged: (bool? value) {
-        realm.write(() {
-          viewModel.todo.isComplete = value ?? false;
-        });
+        viewModel.update(isComplete: value ?? false);
       },
     );
   }
