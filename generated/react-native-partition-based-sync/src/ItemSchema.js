@@ -1,13 +1,16 @@
 import {BSON} from 'realm';
 
 export class Item {
-  constructor({id = new BSON.ObjectId(), isComplete = false}) {
+  constructor({
+    _id = new BSON.ObjectId(),
+    isComplete = false,
+  }) {
+    this._id = _id;
     this.isComplete = isComplete;
-    this._id = id;
   }
 
   static schema = {
-    name: 'Task',
+    name: 'Item',
     properties: {
       _id: 'objectId',
       isComplete: {type: 'bool', default: false},

@@ -25,7 +25,9 @@ const AppWrapper = () => {
 };
 
 const App = () => {
+  // :state-start: partition-based-sync
   const user = useUser();
+  // :state-end:
   return (
     <>
       {/* After login, user will be automatically populated in realm configuration */}
@@ -39,10 +41,7 @@ const App = () => {
         //   initialSubscriptions: {
         //     update: (subs, realm) => {
         //       // subscribe to all of the logged in user's to-do items
-        //       const ownItems = realm
-        //         .objects('Item')
-        //         .filtered(`owner_id == "${user?.id}"`);
-        //       subs.update(ownItems, {name: 'ownItems'});
+        //       subs.add(realm.objects('Item'), {name: 'ownItems'});
         //     },
         //  }
         // }}

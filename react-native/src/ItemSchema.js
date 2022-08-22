@@ -11,7 +11,7 @@ export class Item {
     this._id = _id;
     this.isComplete = isComplete;
     // :state-uncomment-start: flexible-sync
-    // this.owner_id: 'string',
+    // this.owner_id = owner_id;
     // :state-uncomment-end:flexible-sync
   }
 

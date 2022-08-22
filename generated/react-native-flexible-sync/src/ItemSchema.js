@@ -1,9 +1,14 @@
 import {BSON} from 'realm';
 
 export class Item {
-  constructor({id = new BSON.ObjectId(), isComplete = false}) {
+  constructor({
+    _id = new BSON.ObjectId(),
+    isComplete = false,
+    owner_id,
+  }) {
+    this._id = _id;
     this.isComplete = isComplete;
-    this._id = id;
+    this.owner_id = owner_id;
   }
 
   static schema = {

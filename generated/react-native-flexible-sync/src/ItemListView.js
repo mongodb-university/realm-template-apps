@@ -20,16 +20,17 @@ export function ItemListView() {
 
   useEffect(() => {
     // initialize the subscriptions
-    const initSubscription = async () => {
+    const updateSubscriptions = async () => {
       await realm.subscriptions.update(mutableSubs => {
         // subscribe to all of the logged in user's to-do items
         let ownItems = realm
           .objects("Item")
           .filtered(`owner_id == "${user.id}"`);
+        // use the same name as the initial subscription to update it
         mutableSubs.add(ownItems, {name: "ownItems"});
       });
     };
-    initSubscription();
+    updateSubscriptions();
   }, [realm, user]);
 
   // createItem() takes in a summary and then creates an Item object with that summary
