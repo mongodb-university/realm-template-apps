@@ -53,19 +53,20 @@ class _TodoListState extends State<TodoList> {
           // Handle inserts
           for (final insertionIndex in data.inserted) {
             _todoViewModels.insert(
-                insertionIndex, TodoViewModel(todos[insertionIndex]));
+                insertionIndex, TodoViewModel(realm, todos[insertionIndex]));
             _myListKey.currentState?.insertItem(insertionIndex);
           }
 
           // Handle modifications
           for (final modifiedIndex in data.modified) {
             _todoViewModels[modifiedIndex] =
-                TodoViewModel(todos[modifiedIndex]);
+                TodoViewModel(realm, todos[modifiedIndex]);
           }
 
           // Handle initialization (or any mismatch really, but that shouldn't happen)
           if (todos.length != _todoViewModels.length) {
-            _todoViewModels.insertAll(0, todos.map(TodoViewModel.new));
+            _todoViewModels.insertAll(
+                0, todos.map((todo) => TodoViewModel(realm, todo)));
             _todoViewModels.length = todos.length;
           }
 

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_todo/realm/schemas.dart';
-import 'package:realm/realm.dart';
+import 'package:flutter_todo/viewmodels/todo_viewmodel.dart';
 
-void showModifyTodoModal(BuildContext context, Todo todo) {
+void showModifyTodoModal(BuildContext context, TodoViewModel todo) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -12,7 +10,7 @@ void showModifyTodoModal(BuildContext context, Todo todo) {
 }
 
 class ModifyTodoForm extends StatefulWidget {
-  final Todo todo;
+  final TodoViewModel todo;
   const ModifyTodoForm(this.todo, {Key? key}) : super(key: key);
 
   @override
@@ -34,22 +32,14 @@ class _ModifyTodoFormState extends State<ModifyTodoForm> {
   @override
   Widget build(BuildContext context) {
     TextTheme myTextTheme = Theme.of(context).textTheme;
-
-    final realm = Provider.of<Realm>(context);
+    final todo = widget.todo;
 
     void updateTodo() {
-      final todo = widget.todo;
-      realm.write(() {
-        todo.summary = _summary;
-        todo.isComplete = _isComplete;
-      });
+      todo.update(summary: _summary, isComplete: _isComplete);
     }
 
     void deleteTodo() {
-      final todo = widget.todo;
-      realm.write(() {
-        realm.delete(todo);
-      });
+      todo.delete();
     }
 
     void handleTodoRadioChange(bool? value) {

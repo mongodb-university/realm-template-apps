@@ -11,4 +11,7 @@ class _Todo {
   late String summary;
   @MapTo('owner_id')
   late String ownerId;
+  late int? priority;
 }
+
+enum PriorityLevel { severe, high, medium, low }
