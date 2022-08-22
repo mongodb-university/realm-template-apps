@@ -14,7 +14,6 @@ class Todo extends _Todo with RealmEntity, RealmObject {
     String summary,
     String ownerId, {
     bool isComplete = false,
-    int? priority,
   }) {
     if (!_defaultsSet) {
       _defaultsSet = RealmObject.setDefaults<Todo>({
@@ -25,7 +24,6 @@ class Todo extends _Todo with RealmEntity, RealmObject {
     RealmObject.set(this, 'isComplete', isComplete);
     RealmObject.set(this, 'summary', summary);
     RealmObject.set(this, 'owner_id', ownerId);
-    RealmObject.set(this, 'priority', priority);
   }
 
   Todo._();
@@ -51,11 +49,6 @@ class Todo extends _Todo with RealmEntity, RealmObject {
   set ownerId(String value) => RealmObject.set(this, 'owner_id', value);
 
   @override
-  int? get priority => RealmObject.get<int>(this, 'priority') as int?;
-  @override
-  set priority(int? value) => RealmObject.set(this, 'priority', value);
-
-  @override
   Stream<RealmObjectChanges<Todo>> get changes =>
       RealmObject.getChanges<Todo>(this);
 
@@ -69,7 +62,6 @@ class Todo extends _Todo with RealmEntity, RealmObject {
       SchemaProperty('isComplete', RealmPropertyType.bool),
       SchemaProperty('summary', RealmPropertyType.string),
       SchemaProperty('owner_id', RealmPropertyType.string, mapTo: 'owner_id'),
-      SchemaProperty('priority', RealmPropertyType.int, optional: true),
     ]);
   }
 }
