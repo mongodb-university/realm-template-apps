@@ -4,7 +4,7 @@ import io.realm.kotlin.types.ObjectId
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 
-open class Todo() : RealmObject {
+open class Item() : RealmObject {
         @PrimaryKey
         var _id: ObjectId = ObjectId.create()
         var isComplete: Boolean = false
