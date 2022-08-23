@@ -3,7 +3,7 @@ import 'package:realm/realm.dart';
 part 'schemas.g.dart';
 
 @RealmModel()
-class _Todo {
+class _Task {
   @MapTo('_id')
   @PrimaryKey()
   late ObjectId id;

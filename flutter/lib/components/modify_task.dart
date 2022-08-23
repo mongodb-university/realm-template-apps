@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo/viewmodels/todo_viewmodel.dart';
+import 'package:flutter_todo/viewmodels/task_viewmodel.dart';
 
-void showModifyTodoModal(BuildContext context, TodoViewModel todo) {
+void showModifyTaskModal(BuildContext context, TaskViewModel task) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    builder: (_) => Wrap(children: [ModifyTodoForm(todo)]),
+    builder: (_) => Wrap(children: [ModifyTaskForm(task)]),
   );
 }
 
-class ModifyTodoForm extends StatefulWidget {
-  final TodoViewModel todo;
-  const ModifyTodoForm(this.todo, {Key? key}) : super(key: key);
+class ModifyTaskForm extends StatefulWidget {
+  final TaskViewModel task;
+  const ModifyTaskForm(this.task, {Key? key}) : super(key: key);
 
   @override
-  _ModifyTodoFormState createState() => _ModifyTodoFormState();
+  _ModifyTaskFormState createState() => _ModifyTaskFormState();
 }
 
-class _ModifyTodoFormState extends State<ModifyTodoForm> {
+class _ModifyTaskFormState extends State<ModifyTaskForm> {
   final _formKey = GlobalKey<FormState>();
   late bool _isComplete;
   late String _summary;
@@ -25,24 +25,24 @@ class _ModifyTodoFormState extends State<ModifyTodoForm> {
   @override
   void initState() {
     super.initState();
-    _summary = widget.todo.summary;
-    _isComplete = widget.todo.isComplete;
+    _summary = widget.task.summary;
+    _isComplete = widget.task.isComplete;
   }
 
   @override
   Widget build(BuildContext context) {
     TextTheme myTextTheme = Theme.of(context).textTheme;
-    final todo = widget.todo;
+    final task = widget.task;
 
-    void updateTodo() {
-      todo.update(summary: _summary, isComplete: _isComplete);
+    void updateTask() {
+      task.update(summary: _summary, isComplete: _isComplete);
     }
 
-    void deleteTodo() {
-      todo.delete();
+    void deleteTask() {
+      task.delete();
     }
 
-    void handleTodoRadioChange(bool? value) {
+    void handleTaskRadioChange(bool? value) {
       setState(() {
         _isComplete = value ?? false;
       });
@@ -67,7 +67,7 @@ class _ModifyTodoFormState extends State<ModifyTodoForm> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text(
-                  'Update Your Todo',
+                  'Update Your Task',
                   style: myTextTheme.headline6,
                 ),
                 TextFormField(
@@ -89,13 +89,13 @@ class _ModifyTodoFormState extends State<ModifyTodoForm> {
                     RadioListTile(
                       title: const Text('Complete'),
                       value: true,
-                      onChanged: handleTodoRadioChange,
+                      onChanged: handleTaskRadioChange,
                       groupValue: _isComplete,
                     ),
                     RadioListTile(
                       title: const Text('Incomplete'),
                       value: false,
-                      onChanged: handleTodoRadioChange,
+                      onChanged: handleTaskRadioChange,
                       groupValue: _isComplete,
                     ),
                   ],
@@ -122,7 +122,7 @@ class _ModifyTodoFormState extends State<ModifyTodoForm> {
                                 backgroundColor:
                                     MaterialStateProperty.all(Colors.red)),
                             onPressed: () {
-                              deleteTodo();
+                              deleteTask();
                               Navigator.pop(context);
                             }),
                       ),
@@ -132,7 +132,7 @@ class _ModifyTodoFormState extends State<ModifyTodoForm> {
                           child: const Text('Update'),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              updateTodo();
+                              updateTask();
                               Navigator.pop(context);
                             }
                           },
