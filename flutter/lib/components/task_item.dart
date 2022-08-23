@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'modify_task.dart';
-import '../viewmodels/task_viewmodel.dart';
+import 'package:flutter_todo/viewmodels/task_viewmodel.dart';
 
 class TaskItem extends StatelessWidget {
   final TaskViewModel viewModel;
