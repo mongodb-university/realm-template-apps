@@ -6,17 +6,17 @@ part of 'schemas.dart';
 // RealmObjectGenerator
 // **************************************************************************
 
-class Todo extends _Todo with RealmEntity, RealmObject {
+class Task extends _Task with RealmEntity, RealmObject {
   static var _defaultsSet = false;
 
-  Todo(
+  Task(
     ObjectId id,
     String summary,
     String ownerId, {
     bool isComplete = false,
   }) {
     if (!_defaultsSet) {
-      _defaultsSet = RealmObject.setDefaults<Todo>({
+      _defaultsSet = RealmObject.setDefaults<Task>({
         'isComplete': false,
       });
     }
@@ -26,7 +26,7 @@ class Todo extends _Todo with RealmEntity, RealmObject {
     RealmObject.set(this, 'owner_id', ownerId);
   }
 
-  Todo._();
+  Task._();
 
   @override
   ObjectId get id => RealmObject.get<ObjectId>(this, '_id') as ObjectId;
@@ -49,14 +49,14 @@ class Todo extends _Todo with RealmEntity, RealmObject {
   set ownerId(String value) => RealmObject.set(this, 'owner_id', value);
 
   @override
-  Stream<RealmObjectChanges<Todo>> get changes =>
-      RealmObject.getChanges<Todo>(this);
+  Stream<RealmObjectChanges<Task>> get changes =>
+      RealmObject.getChanges<Task>(this);
 
   static SchemaObject get schema => _schema ??= _initSchema();
   static SchemaObject? _schema;
   static SchemaObject _initSchema() {
-    RealmObject.registerFactory(Todo._);
-    return const SchemaObject(Todo, 'Todo', [
+    RealmObject.registerFactory(Task._);
+    return const SchemaObject(Task, 'Task', [
       SchemaProperty('_id', RealmPropertyType.objectid,
           mapTo: '_id', primaryKey: true),
       SchemaProperty('isComplete', RealmPropertyType.bool),

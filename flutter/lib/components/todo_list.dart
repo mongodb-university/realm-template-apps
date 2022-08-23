@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
-import 'todo_item.dart';
+import 'task_item.dart';
 import '../realm/schemas.dart';
 import '../realm/app_services.dart';
-import '../viewmodels/todo_viewmodel.dart';
+import '../viewmodels/task_viewmodel.dart';
 
 class TodoList extends StatefulWidget {
   const TodoList({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class TodoList extends StatefulWidget {
 }
 
 class _TodoListState extends State<TodoList> {
-  final _todoViewModels = <TodoViewModel>[];
+  final _taskViewModels = <TaskViewModel>[];
   final _myListKey = GlobalKey<AnimatedListState>();
 
   @override
@@ -25,8 +25,8 @@ class _TodoListState extends State<TodoList> {
       return Container();
     }
     final stream =
-        realm.query<Todo>('owner_id == "${currentUser?.id}"').changes;
-    return StreamBuilder<RealmResultsChanges<Todo>>(
+        realm.query<Task>('owner_id == "${currentUser?.id}"').changes;
+    return StreamBuilder<RealmResultsChanges<Task>>(
         stream: stream,
         builder: (context, snapshot) {
           final data = snapshot.data;
@@ -34,47 +34,47 @@ class _TodoListState extends State<TodoList> {
             // While we wait for data to load..
             return Container(
               padding: const EdgeInsets.only(top: 25),
-              child: const Center(child: Text("No Todos yet!")),
+              child: const Center(child: Text("No Tasks yet!")),
             );
           }
 
-          final todos = data.results;
+          final tasks = data.results;
 
           // Handle deletions. These are handles first, as indexes refer to the old collection
           for (final deletionIndex in data.deleted) {
-            final toDie = _todoViewModels
+            final toDie = _taskViewModels
                 .removeAt(deletionIndex); // update view model collection
             _myListKey.currentState?.removeItem(deletionIndex,
                 (context, animation) {
-              return TodoItem(toDie, animation);
+              return TaskItem(toDie, animation);
             });
           }
 
           // Handle inserts
           for (final insertionIndex in data.inserted) {
-            _todoViewModels.insert(
-                insertionIndex, TodoViewModel(realm, todos[insertionIndex]));
+            _taskViewModels.insert(
+                insertionIndex, TaskViewModel(realm, tasks[insertionIndex]));
             _myListKey.currentState?.insertItem(insertionIndex);
           }
 
           // Handle modifications
           for (final modifiedIndex in data.modified) {
-            _todoViewModels[modifiedIndex] =
-                TodoViewModel(realm, todos[modifiedIndex]);
+            _taskViewModels[modifiedIndex] =
+                TaskViewModel(realm, tasks[modifiedIndex]);
           }
 
           // Handle initialization (or any mismatch really, but that shouldn't happen)
-          if (todos.length != _todoViewModels.length) {
-            _todoViewModels.insertAll(
-                0, todos.map((todo) => TodoViewModel(realm, todo)));
-            _todoViewModels.length = todos.length;
+          if (tasks.length != _taskViewModels.length) {
+            _taskViewModels.insertAll(
+                0, tasks.map((task) => TaskViewModel(realm, task)));
+            _taskViewModels.length = tasks.length;
           }
 
           return AnimatedList(
               key: _myListKey,
-              initialItemCount: todos.length,
+              initialItemCount: tasks.length,
               itemBuilder: (context, index, animation) {
-                return TodoItem(_todoViewModels[index], animation);
+                return TaskItem(_taskViewModels[index], animation);
               });
         });
   }
