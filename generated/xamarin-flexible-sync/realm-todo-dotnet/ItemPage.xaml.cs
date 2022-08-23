@@ -13,9 +13,10 @@ namespace RealmTemplateApp
 {
     public partial class ItemPage : ContentPage
     {
+        public IEnumerable<Item> Items { get; }
+
         private Realm _itemsRealm;
         private User _user;
-        private IEnumerable<Item> _items;
         private IPopupNavigation _popup { get; set; }
         private NewItemPopup _modalPage;
 
@@ -23,7 +24,7 @@ namespace RealmTemplateApp
         {
             InitializeComponent();
             _user = App.RealmApp.CurrentUser;
-            var config = new FlexibleSyncConfiguration(user);
+            var config = new FlexibleSyncConfiguration(_user);
             _itemsRealm = Realm.GetInstance(config);
             AddSubscriptionsToRealm();
             config.OnSessionError = (sender, e) =>
@@ -32,15 +33,17 @@ namespace RealmTemplateApp
             };
             _popup = PopupNavigation.Instance;
             _modalPage = new NewItemPopup();
+            Items = _itemsRealm.All<Item>();
+            BindingContext = this;
         }
 
         private void AddSubscriptionsToRealm()
         {
-           var subscriptions = itemsRealm.Subscriptions;
+           var subscriptions = _itemsRealm.Subscriptions;
            subscriptions.Update(() =>
            {
-               var defaultSubscription = itemsRealm.All<Item>()
-                   .Where(t => t.OwnerId == user.Id);
+               var defaultSubscription = _itemsRealm.All<Item>()
+                   .Where(t => t.OwnerId == _user.Id);
                subscriptions.Add(defaultSubscription);
            });
         }
@@ -48,14 +51,6 @@ namespace RealmTemplateApp
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            try
-            {
-                SetUpItemsList();
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("Error Fetching Items", ex.Message, "OK");
-            }
             _popup.Popped += Popup_Popped;
         }
 
@@ -65,15 +60,7 @@ namespace RealmTemplateApp
             _popup.Popped += Popup_Popped;
         }
 
-        private void SetUpItemsList()
-        {
-            if (_items == null)
-            {
-                _items = _itemsRealm.All<Item>();
-            }
 
-            listItems.ItemsSource = _items;
-        }
 
         private async void New_Button_Clicked(object sender, EventArgs e)
         {
@@ -88,7 +75,7 @@ namespace RealmTemplateApp
 
             var newItem = new Item()
             {
-                OwnerId = user.Id.ToString(),
+                OwnerId = _user.Id.ToString(),
                 Summary = popup.ItemName,
                 IsComplete = false
             };
