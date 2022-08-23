@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
 import 'task_item.dart';
-import '../realm/schemas.dart';
-import '../realm/app_services.dart';
-import '../viewmodels/task_viewmodel.dart';
+import 'package:flutter_todo/realm/schemas.dart';
+import 'package:flutter_todo/realm/app_services.dart';
+import 'package:flutter_todo/viewmodels/task_viewmodel.dart';
 
 class TodoList extends StatefulWidget {
   const TodoList({Key? key}) : super(key: key);

@@ -1,5 +1,5 @@
 import 'package:realm/realm.dart';
-import '../realm/schemas.dart';
+import 'package:flutter_todo/realm/schemas.dart';
 
 Realm initRealm(User currentUser) {
   Configuration config = Configuration.flexibleSync(currentUser, [Task.schema]);

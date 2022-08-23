@@ -1,5 +1,5 @@
 import 'package:realm/realm.dart';
-import '../realm/schemas.dart';
+import 'package:flutter_todo/realm/schemas.dart';
 
 class TaskViewModel {
   final ObjectId id;

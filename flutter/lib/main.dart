@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
-import 'package:flutter_todo/realm/init_realm.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
-import 'realm/app_services.dart';
-import './screens/homepage.dart';
-import './screens/log_in.dart';
+import 'package:flutter_todo/realm/app_services.dart';
+import 'package:flutter_todo/realm/init_realm.dart';
+import 'package:flutter_todo/screens/homepage.dart';
+import 'package:flutter_todo/screens/log_in.dart';
 
 void main() async {
   // get app id from config
