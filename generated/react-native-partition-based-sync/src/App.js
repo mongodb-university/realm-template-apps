@@ -10,7 +10,7 @@ import {LogoutButton} from './LogoutButton';
 import {WelcomeView} from './WelcomeView';
 import {ItemListView} from './ItemListView';
 import RealmContext from './RealmContext';
-const {RealmProvider} = RealmContext
+const {RealmProvider} = RealmContext;
 
 const Stack = createStackNavigator();
 

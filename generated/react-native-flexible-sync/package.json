@@ -9,8 +9,8 @@
     "test": "jest",
     "lint": "eslint .",
     "prettier": "prettier --write src/*",
-    "generate:partition-based-sync": "npx bluehawk copy . --output=../generated/react-native-partition-based-sync --ignore=realm.json --state=partition-based-sync",
-    "generate:flexible-sync": "npx bluehawk copy . --output=../generated/react-native-flexible-sync --ignore=realm.json --state=flexible-sync",
+    "generate:partition-based-sync": "npx bluehawk copy . --output=../generated/react-native-partition-based-sync --state=partition-based-sync",
+    "generate:flexible-sync": "npx bluehawk copy . --output=../generated/react-native-flexible-sync --state=flexible-sync",
     "generate": "npm run generate:partition-based-sync && npm run generate:flexible-sync"
   },
   "dependencies": {

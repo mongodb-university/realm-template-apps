@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {CreateToDoPrompt} from './CreateToDoPrompt';
 import RealmContext from './RealmContext';
-const {useRealm, useQuery} = RealmContext
+const {useRealm, useQuery} = RealmContext;
 
 Icon.loadFont(); // load FontAwesome font
 
