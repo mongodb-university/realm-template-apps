@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/components/todo_list.dart';
-import 'package:flutter_todo/components/create_task.dart';
+import 'package:flutter_todo/components/create_item.dart';
 import 'package:flutter_todo/components/app_bar.dart';
 
 class HomePage extends StatelessWidget {
@@ -11,7 +11,7 @@ class HomePage extends StatelessWidget {
     return const Scaffold(
       appBar: TodoAppBar(),
       body: TodoList(),
-      floatingActionButton: CreateTask(),
+      floatingActionButton: CreateItem(),
     );
   }
 }
