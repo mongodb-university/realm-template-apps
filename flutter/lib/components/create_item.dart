@@ -3,10 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:flutter_todo/realm/app_services.dart';
-import 'package:flutter_todo/viewmodels/task_viewmodel.dart';
+import 'package:flutter_todo/viewmodels/item_viewmodel.dart';
 
-class CreateTask extends StatelessWidget {
-  const CreateTask({Key? key}) : super(key: key);
+class CreateItem extends StatelessWidget {
+  const CreateItem({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class CreateTask extends StatelessWidget {
       showModalBottomSheet(
         isScrollControlled: true,
         context: context,
-        builder: (_) => Wrap(children: const [_CreateTaskFormWrapper()]),
+        builder: (_) => Wrap(children: const [_CreateItemFormWrapper()]),
       );
     }
 
@@ -26,8 +26,8 @@ class CreateTask extends StatelessWidget {
   }
 }
 
-class _CreateTaskFormWrapper extends StatelessWidget {
-  const _CreateTaskFormWrapper({Key? key}) : super(key: key);
+class _CreateItemFormWrapper extends StatelessWidget {
+  const _CreateItemFormWrapper({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,21 +40,21 @@ class _CreateTaskFormWrapper extends StatelessWidget {
             padding:
                 const EdgeInsets.only(top: 25, bottom: 25, left: 50, right: 50),
             child: const Center(
-              child: CreateTaskForm(),
+              child: CreateItemForm(),
             )));
   }
 }
 
-class CreateTaskForm extends StatefulWidget {
-  const CreateTaskForm({Key? key}) : super(key: key);
+class CreateItemForm extends StatefulWidget {
+  const CreateItemForm({Key? key}) : super(key: key);
 
   @override
-  _CreateTaskFormState createState() => _CreateTaskFormState();
+  _CreateItemFormState createState() => _CreateItemFormState();
 }
 
-class _CreateTaskFormState extends State<CreateTaskForm> {
+class _CreateItemFormState extends State<CreateItemForm> {
   final _formKey = GlobalKey<FormState>();
-  var taskEditingController = TextEditingController();
+  var itemEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -68,11 +68,11 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
-            'Create a New Task',
+            'Create a New Item',
             style: myTextTheme.headline6,
           ),
           TextFormField(
-            controller: taskEditingController,
+            controller: itemEditingController,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter some text';
@@ -103,9 +103,9 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             print('pressed again');
-                            final summary = taskEditingController.text;
-                            TaskViewModel.create(realm,
-                                Task(ObjectId(), summary, currentUser!.id));
+                            final summary = itemEditingController.text;
+                            ItemViewModel.create(realm,
+                                Item(ObjectId(), summary, currentUser!.id));
                             Navigator.pop(context);
                           }
                         },

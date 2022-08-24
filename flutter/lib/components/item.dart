@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'modify_task.dart';
-import 'package:flutter_todo/viewmodels/task_viewmodel.dart';
+import 'modify_item.dart';
+import 'package:flutter_todo/viewmodels/item_viewmodel.dart';
 
-class TaskItem extends StatelessWidget {
-  final TaskViewModel viewModel;
+class ItemItem extends StatelessWidget {
+  final ItemViewModel viewModel;
   final Animation<double> animation;
 
-  const TaskItem(this.viewModel, this.animation, {Key? key}) : super(key: key);
+  const ItemItem(this.viewModel, this.animation, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class TaskItem extends StatelessWidget {
               children: [
                 SlidableAction(
                   onPressed: (BuildContext context) {
-                    showModifyTaskModal(context, viewModel);
+                    showModifyItemModal(context, viewModel);
                   },
                   flex: 2,
                   backgroundColor: Color(Colors.blue[500].hashCode),
@@ -67,7 +67,7 @@ class TaskItem extends StatelessWidget {
 }
 
 class _CompleteCheckbox extends StatelessWidget {
-  final TaskViewModel viewModel;
+  final ItemViewModel viewModel;
   const _CompleteCheckbox(this.viewModel, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
