@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
-import 'item.dart';
+import 'item_card.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:flutter_todo/realm/app_services.dart';
 import 'package:flutter_todo/viewmodels/item_viewmodel.dart';
@@ -46,7 +46,7 @@ class _TodoListState extends State<TodoList> {
                 .removeAt(deletionIndex); // update view model collection
             _myListKey.currentState?.removeItem(deletionIndex,
                 (context, animation) {
-              return ItemItem(toDie, animation);
+              return ItemCard(toDie, animation);
             });
           }
 
@@ -74,7 +74,7 @@ class _TodoListState extends State<TodoList> {
               key: _myListKey,
               initialItemCount: items.length,
               itemBuilder: (context, index, animation) {
-                return ItemItem(_itemViewModels[index], animation);
+                return ItemCard(_itemViewModels[index], animation);
               });
         });
   }
