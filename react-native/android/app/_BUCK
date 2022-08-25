@@ -35,12 +35,12 @@ android_library(
 
 android_build_config(
     name = "build_config",
-    package = "com.reactnative",
+    package = "com.synctutorial",
 )
 
 android_resource(
     name = "res",
-    package = "com.reactnative",
+    package = "com.synctutorial",
     res = "src/main/res",
 )
 
