@@ -53,15 +53,7 @@ class ItemCard extends StatelessWidget {
             ),
             child: Card(
               child: ListTile(
-                title: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: _PriorityIndicator(viewModel.priority),
-                    ),
-                    SizedBox(width: 175, child: Text(viewModel.summary)),
-                  ],
-                ),
+                title: SizedBox(width: 175, child: Text(viewModel.summary)),
                 subtitle:
                     Text(viewModel.isComplete ? 'Completed' : 'Incomplete'),
                 leading: _CompleteCheckbox(viewModel),
