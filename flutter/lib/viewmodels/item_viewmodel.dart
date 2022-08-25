@@ -37,3 +37,10 @@ class ItemViewModel {
     });
   }
 }
+
+abstract class PriorityLevel {
+  static int severe = 0;
+  static int high = 1;
+  static int medium = 2;
+  static int low = 3;
+}
