@@ -5,14 +5,14 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {AppProvider, UserProvider, useUser} from '@realm/react';
 
+import {appId, baseUrl} from '../realm';
 import {LogoutButton} from './LogoutButton';
 import {WelcomeView} from './WelcomeView';
-import {TasksView} from './TasksView';
-import TaskContext from './TaskSchema';
-import {appId, baseUrl} from '../realm';
+import {ItemListView} from './ItemListView';
+import RealmContext from './RealmContext';
+const {RealmProvider} = RealmContext;
 
 const Stack = createStackNavigator();
-const {RealmProvider} = TaskContext;
 
 const AppWrapper = () => {
   return (
@@ -29,7 +29,15 @@ const App = () => {
     <>
       {/* After login, user will be automatically populated in realm configuration */}
       <RealmProvider
-        sync={{flexible: true}}
+        sync={{
+          flexible: true,
+          initialSubscriptions: {
+            update: (subs, realm) => {
+              // subscribe to all of the logged in user's to-do items
+              subs.add(realm.objects('Item'), {name: 'ownItems'});
+            },
+         }
+        }}
         fallback={() => (
           <View style={styles.activityContainer}>
             <ActivityIndicator size="large" />
@@ -39,8 +47,8 @@ const App = () => {
           <NavigationContainer>
             <Stack.Navigator>
               <Stack.Screen
-                name="Tasks"
-                component={TasksView}
+                name="Your To-Do List"
+                component={ItemListView}
                 options={{
                   headerLeft: () => {
                     return <LogoutButton />;
