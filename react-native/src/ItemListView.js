@@ -7,9 +7,8 @@ import {Button, Overlay, ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {CreateToDoPrompt} from './CreateToDoPrompt';
-import TaskContext from './TaskSchema';
-
-const {useRealm, useQuery} = TaskContext;
+import RealmContext from './RealmContext';
+const {useRealm, useQuery} = RealmContext;
 
 Icon.loadFont(); // load FontAwesome font
 
@@ -17,27 +16,28 @@ export function ItemListView() {
   const realm = useRealm();
   const items = useQuery('Item');
   const user = useUser();
-  // state value for toggable visibility of the 'CreateToDoPrompt' Model in the UI
-  const [createToDoOverlayVisible, setCreateToDoOverlayVisible] =
-    useState(false);
+  const [showNewItemOverlay, setShowNewItemOverlay] = useState(false);
 
   // :state-uncomment-start: flexible-sync
   // useEffect(() => {
   //   // initialize the subscriptions
   //   const updateSubscriptions = async () => {
   //     await realm.subscriptions.update(mutableSubs => {
-  //       mutableSubs.add(
-  //         realm.objects('Task').filtered(`owner_id == "${user.id}"`),
-  //       ); // subscribe to all Tasks of the logged in user
+  //       // subscribe to all of the logged in user's to-do items
+  //       let ownItems = realm
+  //         .objects("Item")
+  //         .filtered(`owner_id == "${user.id}"`);
+  //       // use the same name as the initial subscription to update it
+  //       mutableSubs.add(ownItems, {name: "ownItems"});
   //     });
   //   };
   //   updateSubscriptions();
   // }, [realm, user]);
   // :state-uncomment-end:
 
-  // createTask() takes in a summary and then creates a Task object with that summary
-  const createTask = summary => {
-    // if the realm exists, create a task
+  // createItem() takes in a summary and then creates an Item object with that summary
+  const createItem = ({summary}) => {
+    // if the realm exists, create an Item
     if (realm) {
       realm.write(() => {
         realm.create('Item', {
@@ -81,15 +81,15 @@ export function ItemListView() {
         <Button
           title="+ ADD TO-DO"
           buttonStyle={styles.addToDoButton}
-          onPress={toggleCreateToDoOverlayVisible}
+          onPress={() => setShowNewItemOverlay(true)}
         />
         <Overlay
           isVisible={showNewItemOverlay}
           onBackdropPress={() => setShowNewItemOverlay(false)}>
           <CreateToDoPrompt
-            setNewTaskSummary={value => {
-              toggleCreateToDoOverlayVisible();
-              createTask(value);
+            onSubmit={({summary}) => {
+              setShowNewItemOverlay(false);
+              createItem({summary});
             }}
           />
         </Overlay>
@@ -104,14 +104,8 @@ export function ItemListView() {
             />
             <Button
               type="clear"
-              icon={
-                <Icon
-                  name="times"
-                  size={12}
-                  color="#979797"
-                  onPress={() => deleteTask(task._id)}
-                />
-              }
+              onPress={() => deleteItem(item._id)}
+              icon={<Icon name="times" size={12} color="#979797" />}
             />
           </ListItem>
         ))}
