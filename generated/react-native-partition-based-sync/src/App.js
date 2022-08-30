@@ -8,9 +8,9 @@ import {AppProvider, UserProvider, useUser} from '@realm/react';
 import {appId, baseUrl} from '../realm';
 import {LogoutButton} from './LogoutButton';
 import {WelcomeView} from './WelcomeView';
-import {TasksView} from './TasksView';
+import {ItemListView} from './ItemListView';
 import RealmContext from './RealmContext';
-const {RealmProvider} = RealmContext
+const {RealmProvider} = RealmContext;
 
 const Stack = createStackNavigator();
 
@@ -40,8 +40,8 @@ const App = () => {
           <NavigationContainer>
             <Stack.Navigator>
               <Stack.Screen
-                name="Tasks"
-                component={TasksView}
+                name="Your To-Do List"
+                component={ItemListView}
                 options={{
                   headerLeft: () => {
                     return <LogoutButton />;

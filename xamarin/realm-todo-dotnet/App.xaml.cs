@@ -35,7 +35,7 @@ namespace RealmTemplateApp
                 // :state-uncomment-end:flexible-sync
                 var navPage = RealmApp.CurrentUser == null ?
                     new NavigationPage(new LoginPage()) :
-                    new NavigationPage(new TaskPage());
+                    new NavigationPage(new ItemPage());
 
                 NavigationPage.SetHasBackButton(navPage, false);
                 MainPage = navPage;

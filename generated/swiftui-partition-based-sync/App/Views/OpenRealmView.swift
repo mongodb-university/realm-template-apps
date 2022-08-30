@@ -1,8 +1,7 @@
 import SwiftUI
 import RealmSwift
 
-
-/// Called when login completes. Opens the realm asynchronously and navigates to the Todos screen.
+/// Called when login completes. Opens the realm asynchronously and navigates to the Items screen.
 struct OpenRealmView: View {
     // By leaving the `partitionValue` an empty string, we use the
     // `.environment(\.partitionValue, user.id)` passed in from the `ContentView`
@@ -19,9 +18,9 @@ struct OpenRealmView: View {
         case .waitingForUser:
             ProgressView("Waiting for user to log in...")
         // The realm has been opened and is ready for use.
-        // Show the Todos view.
+        // Show the Items view.
         case .open(let realm):
-            TodosView(leadingBarButton: AnyView(LogoutButton()))
+            ItemsView(leadingBarButton: AnyView(LogoutButton()))
                 .environment(\.realm, realm)
        // The realm is currently being downloaded from the server.
        // Show a progress view.

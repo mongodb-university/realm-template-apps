@@ -105,8 +105,8 @@ class LoginActivity : AppCompatActivity() {
                     loginButton.isEnabled = true
                     Log.v(TAG(), "user logged in")
 
-                    // on a successful login, open the todo view
-                    startActivity(Intent(application, TodoActivity::class.java))
+                    // on a successful login, open the item view
+                    startActivity(Intent(application, ItemActivity::class.java))
                 }
             }.onFailure { ex: Throwable ->
                 when (ex) {
