@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo/realm/app_services.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_todo/realm/schemas.dart';
 import 'package:realm/realm.dart';
+import 'package:flutter_todo/realm/schemas.dart';
+import 'package:flutter_todo/realm/app_services.dart';
+import 'package:flutter_todo/viewmodels/item_viewmodel.dart';
 
-class CreateTodo extends StatelessWidget {
-  const CreateTodo({Key? key}) : super(key: key);
+class CreateItem extends StatelessWidget {
+  const CreateItem({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class CreateTodo extends StatelessWidget {
       showModalBottomSheet(
         isScrollControlled: true,
         context: context,
-        builder: (_) => Wrap(children: const [_CreateTodoFormWrapper()]),
+        builder: (_) => Wrap(children: const [_CreateItemFormWrapper()]),
       );
     }
 
@@ -25,8 +26,8 @@ class CreateTodo extends StatelessWidget {
   }
 }
 
-class _CreateTodoFormWrapper extends StatelessWidget {
-  const _CreateTodoFormWrapper({Key? key}) : super(key: key);
+class _CreateItemFormWrapper extends StatelessWidget {
+  const _CreateItemFormWrapper({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,21 +40,21 @@ class _CreateTodoFormWrapper extends StatelessWidget {
             padding:
                 const EdgeInsets.only(top: 25, bottom: 25, left: 50, right: 50),
             child: const Center(
-              child: CreateTodoForm(),
+              child: CreateItemForm(),
             )));
   }
 }
 
-class CreateTodoForm extends StatefulWidget {
-  const CreateTodoForm({Key? key}) : super(key: key);
+class CreateItemForm extends StatefulWidget {
+  const CreateItemForm({Key? key}) : super(key: key);
 
   @override
-  _CreateTodoFormState createState() => _CreateTodoFormState();
+  _CreateItemFormState createState() => _CreateItemFormState();
 }
 
-class _CreateTodoFormState extends State<CreateTodoForm> {
+class _CreateItemFormState extends State<CreateItemForm> {
   final _formKey = GlobalKey<FormState>();
-  var todoEditingController = TextEditingController();
+  var itemEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -67,11 +68,11 @@ class _CreateTodoFormState extends State<CreateTodoForm> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
-            'Create a New Todo',
+            'Create a New Item',
             style: myTextTheme.headline6,
           ),
           TextFormField(
-            controller: todoEditingController,
+            controller: itemEditingController,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter some text';
@@ -100,16 +101,11 @@ class _CreateTodoFormState extends State<CreateTodoForm> {
                       return ElevatedButton(
                         child: const Text('Create'),
                         onPressed: () {
-                          void createTodo(String name) {
-                            realm.write(() {
-                              final newTodo =
-                                  Todo(ObjectId(), name, currentUser!.id);
-                              realm.add<Todo>(newTodo);
-                            });
-                          }
-
                           if (_formKey.currentState!.validate()) {
-                            createTodo(todoEditingController.text);
+                            print('pressed again');
+                            final summary = itemEditingController.text;
+                            ItemViewModel.create(realm,
+                                Item(ObjectId(), summary, currentUser!.id));
                             Navigator.pop(context);
                           }
                         },

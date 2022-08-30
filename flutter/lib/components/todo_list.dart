@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
-import 'todo_item.dart';
-import '../realm/schemas.dart';
-import '../realm/app_services.dart';
-import '../viewmodels/todo_viewmodel.dart';
+import 'item_card.dart';
+import 'package:flutter_todo/realm/schemas.dart';
+import 'package:flutter_todo/realm/app_services.dart';
+import 'package:flutter_todo/viewmodels/item_viewmodel.dart';
 
 class TodoList extends StatefulWidget {
   const TodoList({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class TodoList extends StatefulWidget {
 }
 
 class _TodoListState extends State<TodoList> {
-  final _todoViewModels = <TodoViewModel>[];
+  final _itemViewModels = <ItemViewModel>[];
   final _myListKey = GlobalKey<AnimatedListState>();
 
   @override
@@ -25,8 +25,8 @@ class _TodoListState extends State<TodoList> {
       return Container();
     }
     final stream =
-        realm.query<Todo>('owner_id == "${currentUser?.id}"').changes;
-    return StreamBuilder<RealmResultsChanges<Todo>>(
+        realm.query<Item>('owner_id == "${currentUser?.id}"').changes;
+    return StreamBuilder<RealmResultsChanges<Item>>(
         stream: stream,
         builder: (context, snapshot) {
           final data = snapshot.data;
@@ -34,46 +34,47 @@ class _TodoListState extends State<TodoList> {
             // While we wait for data to load..
             return Container(
               padding: const EdgeInsets.only(top: 25),
-              child: const Center(child: Text("No Todos yet!")),
+              child: const Center(child: Text("No Items yet!")),
             );
           }
 
-          final todos = data.results;
+          final items = data.results;
 
           // Handle deletions. These are handles first, as indexes refer to the old collection
           for (final deletionIndex in data.deleted) {
-            final toDie = _todoViewModels
+            final toDie = _itemViewModels
                 .removeAt(deletionIndex); // update view model collection
             _myListKey.currentState?.removeItem(deletionIndex,
                 (context, animation) {
-              return TodoItem(toDie, animation);
+              return ItemCard(toDie, animation);
             });
           }
 
           // Handle inserts
           for (final insertionIndex in data.inserted) {
-            _todoViewModels.insert(
-                insertionIndex, TodoViewModel(todos[insertionIndex]));
+            _itemViewModels.insert(
+                insertionIndex, ItemViewModel(realm, items[insertionIndex]));
             _myListKey.currentState?.insertItem(insertionIndex);
           }
 
           // Handle modifications
           for (final modifiedIndex in data.modified) {
-            _todoViewModels[modifiedIndex] =
-                TodoViewModel(todos[modifiedIndex]);
+            _itemViewModels[modifiedIndex] =
+                ItemViewModel(realm, items[modifiedIndex]);
           }
 
           // Handle initialization (or any mismatch really, but that shouldn't happen)
-          if (todos.length != _todoViewModels.length) {
-            _todoViewModels.insertAll(0, todos.map(TodoViewModel.new));
-            _todoViewModels.length = todos.length;
+          if (items.length != _itemViewModels.length) {
+            _itemViewModels.insertAll(
+                0, items.map((item) => ItemViewModel(realm, item)));
+            _itemViewModels.length = items.length;
           }
 
           return AnimatedList(
               key: _myListKey,
-              initialItemCount: todos.length,
+              initialItemCount: items.length,
               itemBuilder: (context, index, animation) {
-                return TodoItem(_todoViewModels[index], animation);
+                return ItemCard(_itemViewModels[index], animation);
               });
         });
   }

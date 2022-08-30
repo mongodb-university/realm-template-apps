@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_todo/realm/schemas.dart';
-import 'package:realm/realm.dart';
+import 'package:flutter_todo/viewmodels/item_viewmodel.dart';
 
-void showModifyTodoModal(BuildContext context, Todo todo) {
+void showModifyItemModal(BuildContext context, ItemViewModel item) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    builder: (_) => Wrap(children: [ModifyTodoForm(todo)]),
+    builder: (_) => Wrap(children: [ModifyItemForm(item)]),
   );
 }
 
-class ModifyTodoForm extends StatefulWidget {
-  final Todo todo;
-  const ModifyTodoForm(this.todo, {Key? key}) : super(key: key);
+class ModifyItemForm extends StatefulWidget {
+  final ItemViewModel item;
+  const ModifyItemForm(this.item, {Key? key}) : super(key: key);
 
   @override
-  _ModifyTodoFormState createState() => _ModifyTodoFormState();
+  _ModifyItemFormState createState() => _ModifyItemFormState();
 }
 
-class _ModifyTodoFormState extends State<ModifyTodoForm> {
+class _ModifyItemFormState extends State<ModifyItemForm> {
   final _formKey = GlobalKey<FormState>();
   late bool _isComplete;
   late String _summary;
@@ -27,32 +25,24 @@ class _ModifyTodoFormState extends State<ModifyTodoForm> {
   @override
   void initState() {
     super.initState();
-    _summary = widget.todo.summary;
-    _isComplete = widget.todo.isComplete;
+    _summary = widget.item.summary;
+    _isComplete = widget.item.isComplete;
   }
 
   @override
   Widget build(BuildContext context) {
     TextTheme myTextTheme = Theme.of(context).textTheme;
+    final item = widget.item;
 
-    final realm = Provider.of<Realm>(context);
-
-    void updateTodo() {
-      final todo = widget.todo;
-      realm.write(() {
-        todo.summary = _summary;
-        todo.isComplete = _isComplete;
-      });
+    void updateItem() {
+      item.update(summary: _summary, isComplete: _isComplete);
     }
 
-    void deleteTodo() {
-      final todo = widget.todo;
-      realm.write(() {
-        realm.delete(todo);
-      });
+    void deleteItem() {
+      item.delete();
     }
 
-    void handleTodoRadioChange(bool? value) {
+    void handleItemRadioChange(bool? value) {
       setState(() {
         _isComplete = value ?? false;
       });
@@ -77,7 +67,7 @@ class _ModifyTodoFormState extends State<ModifyTodoForm> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text(
-                  'Update Your Todo',
+                  'Update Your Item',
                   style: myTextTheme.headline6,
                 ),
                 TextFormField(
@@ -99,13 +89,13 @@ class _ModifyTodoFormState extends State<ModifyTodoForm> {
                     RadioListTile(
                       title: const Text('Complete'),
                       value: true,
-                      onChanged: handleTodoRadioChange,
+                      onChanged: handleItemRadioChange,
                       groupValue: _isComplete,
                     ),
                     RadioListTile(
                       title: const Text('Incomplete'),
                       value: false,
-                      onChanged: handleTodoRadioChange,
+                      onChanged: handleItemRadioChange,
                       groupValue: _isComplete,
                     ),
                   ],
@@ -132,7 +122,7 @@ class _ModifyTodoFormState extends State<ModifyTodoForm> {
                                 backgroundColor:
                                     MaterialStateProperty.all(Colors.red)),
                             onPressed: () {
-                              deleteTodo();
+                              deleteItem();
                               Navigator.pop(context);
                             }),
                       ),
@@ -142,7 +132,7 @@ class _ModifyTodoFormState extends State<ModifyTodoForm> {
                           child: const Text('Update'),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              updateTodo();
+                              updateItem();
                               Navigator.pop(context);
                             }
                           },
