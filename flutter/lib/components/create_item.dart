@@ -102,7 +102,6 @@ class _CreateItemFormState extends State<CreateItemForm> {
                         child: const Text('Create'),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            print('pressed again');
                             final summary = itemEditingController.text;
                             ItemViewModel.create(realm,
                                 Item(ObjectId(), summary, currentUser!.id));
