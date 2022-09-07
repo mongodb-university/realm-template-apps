@@ -25,7 +25,3 @@ subprojects {
 subprojects {
     project.evaluationDependsOn(':app')
 }
-
-item clean(type: Delete) {
-    delete rootProject.buildDir
-}
