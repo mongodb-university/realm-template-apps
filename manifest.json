@@ -90,8 +90,8 @@
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
     "backend_path": "backends/flexible-sync",
-    "client_path": "flutter",
-    "metadata_path": "flutter/assets/config",
+    "client_path": "flutter_todo",
+    "metadata_path": "flutter_todo/assets/config",
     "metadata_filename": "realm",
     "file_format": "json"
   },
