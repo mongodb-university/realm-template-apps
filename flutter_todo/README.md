@@ -16,4 +16,4 @@ and [Atlas Device Sync](https://www.mongodb.com/docs/atlas/app-services/sync/).
 
 ## Build on the App
 
-Learn about how to this application in the [Flutter Device Sync Tutorial](https://www.mongodb.com/docs/atlas/app-services/tutorial/flutter/).
+Learn about how to build a feature on top of this application in the [Flutter Device Sync Tutorial](https://www.mongodb.com/docs/atlas/app-services/tutorial/flutter/).
