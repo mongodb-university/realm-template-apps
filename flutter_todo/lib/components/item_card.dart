@@ -53,6 +53,8 @@ class ItemCard extends StatelessWidget {
             ),
             child: Card(
               child: ListTile(
+                // If you're following the tutorial, replace the `title` field
+                // with the code in the tutorial to show the `_PriorityIndicator` widget
                 title: SizedBox(width: 175, child: Text(viewModel.summary)),
                 subtitle:
                     Text(viewModel.isComplete ? 'Completed' : 'Incomplete'),
@@ -95,3 +97,5 @@ class _CompleteCheckbox extends StatelessWidget {
     );
   }
 }
+
+// If you're following the tutorial, add the `_PriorityIndicator` widget here

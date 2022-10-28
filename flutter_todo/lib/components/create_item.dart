@@ -4,6 +4,7 @@ import 'package:realm/realm.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:flutter_todo/realm/app_services.dart';
 import 'package:flutter_todo/viewmodels/item_viewmodel.dart';
+// If you're following the tutorial, import the widget you created `select_priority.dart'
 
 class CreateItem extends StatelessWidget {
   const CreateItem({Key? key}) : super(key: key);
@@ -53,8 +54,13 @@ class CreateItemForm extends StatefulWidget {
 }
 
 class _CreateItemFormState extends State<CreateItemForm> {
+  // If you're following the tutorial, create a variable
+  // `int _priority PriorityLevel.low;` to track the current priority.
   final _formKey = GlobalKey<FormState>();
   var itemEditingController = TextEditingController();
+
+  // If you're following the tutorial, create a function `_setPriority(int priority)`
+  // that sets the state of `_priority` to `the parameter `priority`.
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +86,8 @@ class _CreateItemFormState extends State<CreateItemForm> {
               return null;
             },
           ),
+          // If you're following the tutorial, add `SelectPriority(_priority, _setPriority),`
+          // to show the priority selector.
           Padding(
             padding: const EdgeInsets.only(top: 15),
             child: Row(
@@ -103,7 +111,10 @@ class _CreateItemFormState extends State<CreateItemForm> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             final summary = itemEditingController.text;
-                            ItemViewModel.create(realm,
+                            ItemViewModel.create(
+                                realm,
+                                // If you're following the tutorial, add `priority: _priority`
+                                // to `Item()`
                                 Item(ObjectId(), summary, currentUser!.id));
                             Navigator.pop(context);
                           }

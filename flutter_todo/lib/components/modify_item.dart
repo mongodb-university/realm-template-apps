@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/viewmodels/item_viewmodel.dart';
+// If you're following the tutorial, import the widget you created `select_priority.dart'
 
 void showModifyItemModal(BuildContext context, ItemViewModel item) {
   showModalBottomSheet(
@@ -21,12 +22,15 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
   final _formKey = GlobalKey<FormState>();
   late bool _isComplete;
   late String _summary;
+  // If you're following the tutorial, create a variable `late int _priority`
+  // to track the current priority.
 
   @override
   void initState() {
     super.initState();
     _summary = widget.item.summary;
     _isComplete = widget.item.isComplete;
+    // If you're following the tutorial, set `_priority = widget.item.priority;`
   }
 
   @override
@@ -35,12 +39,17 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
     final item = widget.item;
 
     void updateItem() {
+      // If you're following the tutorial, add `priority: _priority` to `item.update()`
+      // to set the item's priority.
       item.update(summary: _summary, isComplete: _isComplete);
     }
 
     void deleteItem() {
       item.delete();
     }
+
+    // If you're following the tutorial, add a function `void _setPriority(int priority)`
+    // to set `_priority = priority` in state.
 
     void handleItemRadioChange(bool? value) {
       setState(() {
@@ -84,6 +93,8 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
                     return null;
                   },
                 ),
+                // If you're following the tutorial, add `SelectPriority(_priority, _setPriority),`
+                // to show the priority selector.
                 Column(
                   children: <Widget>[
                     RadioListTile(

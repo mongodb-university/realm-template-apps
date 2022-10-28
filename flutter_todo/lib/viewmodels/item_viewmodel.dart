@@ -9,8 +9,11 @@ class ItemViewModel {
   late Item item;
   final Realm realm;
 
+  // If you're following the tutorial, add `this.priority` to `ItemViewModel._()`
   ItemViewModel._(this.realm, this.item, this.id, this.summary, this.ownerId,
       this.isComplete);
+  // If you're following the tutorial, add `item.priority ?? PriorityLevel.low`
+  // to `this._()`
   ItemViewModel(Realm realm, Item item)
       : this._(
             realm, item, item.id, item.summary, item.ownerId, item.isComplete);
@@ -24,6 +27,8 @@ class ItemViewModel {
     realm.write(() => realm.delete(item));
   }
 
+  // If you're following the tutorial, add `int? priority` to the named parameters
+  // in `update()`
   void update({String? summary, bool? isComplete}) {
     realm.write(() {
       if (summary != null) {
@@ -34,6 +39,10 @@ class ItemViewModel {
         isComplete = isComplete;
         item.isComplete = isComplete as bool;
       }
+      // If you're following the tutorial, add another if statement setting
+      // `priority` if priority is not null.
     });
   }
 }
+
+// If you're following the tutorial, add the `abstract class PriorityLevel`
