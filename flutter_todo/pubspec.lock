@@ -99,6 +99,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "8.3.2"
+  cancellation_token:
+    dependency: transitive
+    description:
+      name: cancellation_token
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.5.0"
   characters:
     dependency: transitive
     description:
@@ -276,7 +283,7 @@ packages:
       name: json_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.5.0"
+    version: "4.7.0"
   lints:
     dependency: transitive
     description:
@@ -451,21 +458,21 @@ packages:
       name: realm
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.0+beta"
+    version: "0.6.0+beta"
   realm_common:
     dependency: transitive
     description:
       name: realm_common
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.0+beta"
+    version: "0.6.0+beta"
   realm_generator:
     dependency: transitive
     description:
       name: realm_generator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.0+beta"
+    version: "0.6.0+beta"
   sane_uuid:
     dependency: transitive
     description:
