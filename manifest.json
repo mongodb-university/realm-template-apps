@@ -30,8 +30,8 @@
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
     "backend_path": "backends/flexible-sync",
-    "client_path": "generated/swiftui-flexible-sync",
-    "metadata_path": "generated/swiftui-flexible-sync/App",
+    "client_path": "swiftui",
+    "metadata_path": "swiftui/App",
     "metadata_filename": "Realm",
     "file_format": "plist"
   },
@@ -60,8 +60,8 @@
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
     "backend_path": "backends/flexible-sync",
-    "client_path": "generated/react-native-flexible-sync",
-    "metadata_path": "generated/react-native-flexible-sync",
+    "client_path": "react-native",
+    "metadata_path": "react-native",
     "metadata_filename": "realm",
     "file_format": "json"
   },
@@ -80,8 +80,8 @@
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
     "backend_path": "backends/flexible-sync",
-    "client_path": "generated/xamarin-flexible-sync",
-    "metadata_path": "generated/xamarin-flexible-sync/realm-todo-dotnet",
+    "client_path": "xamarin",
+    "metadata_path": "xamarin/realm-todo-dotnet",
     "metadata_filename": "realm",
     "file_format": "json"
   },

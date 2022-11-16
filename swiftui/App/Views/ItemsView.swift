@@ -10,20 +10,13 @@ struct ItemsView: View {
     @ObservedResults(Item.self) var item
     @State var isInCreateItemView = false
     @State var itemSummary = ""
-    // :state-start: flexible-sync
     @State var user: User
-    // :state-end:
     
     var body: some View {
         NavigationView {
             VStack {
                 if isInCreateItemView {
-                    // :state-start: partition-based-sync
-                    CreateItemView(isInCreateItemView: $isInCreateItemView)
-                    // :state-end:
-                    // :state-start: flexible-sync
                     CreateItemView(isInCreateItemView: $isInCreateItemView, user: user)
-                    // :state-end:
                 }
                 else {
                     ItemList()

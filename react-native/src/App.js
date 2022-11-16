@@ -25,27 +25,19 @@ const AppWrapper = () => {
 };
 
 const App = () => {
-  // :state-start: partition-based-sync
-  const user = useUser();
-  // :state-end:
   return (
     <>
       {/* After login, user will be automatically populated in realm configuration */}
       <RealmProvider
-        // :state-start: partition-based-sync
-        sync={{partitionValue: user?.id}}
-        // :state-end:
-        // :state-uncomment-start: flexible-sync
-        // sync={{
-        //   flexible: true,
-        //   initialSubscriptions: {
-        //     update: (subs, realm) => {
-        //       // subscribe to all of the logged in user's to-do items
-        //       subs.add(realm.objects('Item'), {name: 'ownItems'});
-        //     },
-        //  }
-        // }}
-        // :state-uncomment-end:
+        sync={{
+          flexible: true,
+          initialSubscriptions: {
+            update: (subs, realm) => {
+              // subscribe to all of the logged in user's to-do items
+              subs.add(realm.objects('Item'), {name: 'ownItems'});
+            },
+         }
+        }}
         fallback={() => (
           <View style={styles.activityContainer}>
             <ActivityIndicator size="large" />

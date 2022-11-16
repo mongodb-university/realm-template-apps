@@ -16,10 +16,8 @@ struct CreateItemView: View {
     // with the new Item and we should return to the ItemsView.
     @Binding var isInCreateItemView: Bool
     
-    // :state-start: flexible-sync
     @State var user: User
     
-    // :state-end:
     @State var itemSummary = ""
 
     var body: some View {
@@ -33,9 +31,7 @@ struct CreateItemView: View {
             }
             Section {
                 Button(action: {
-                    // :state-start: flexible-sync
                     newItem.owner_id = user.id
-                    // :state-end:
                     // To avoid updating too many times and causing Sync-related
                     // performance issues, we only assign to the `newItem.summary`
                     // once when the user presses `Save`.
