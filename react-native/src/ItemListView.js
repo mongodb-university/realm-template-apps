@@ -18,22 +18,20 @@ export function ItemListView() {
   const user = useUser();
   const [showNewItemOverlay, setShowNewItemOverlay] = useState(false);
 
-  // :state-uncomment-start: flexible-sync
-  // useEffect(() => {
-  //   // initialize the subscriptions
-  //   const updateSubscriptions = async () => {
-  //     await realm.subscriptions.update(mutableSubs => {
-  //       // subscribe to all of the logged in user's to-do items
-  //       let ownItems = realm
-  //         .objects("Item")
-  //         .filtered(`owner_id == "${user.id}"`);
-  //       // use the same name as the initial subscription to update it
-  //       mutableSubs.add(ownItems, {name: "ownItems"});
-  //     });
-  //   };
-  //   updateSubscriptions();
-  // }, [realm, user]);
-  // :state-uncomment-end:
+  useEffect(() => {
+    // initialize the subscriptions
+    const updateSubscriptions = async () => {
+      await realm.subscriptions.update(mutableSubs => {
+        // subscribe to all of the logged in user's to-do items
+        let ownItems = realm
+          .objects("Item")
+          .filtered(`owner_id == "${user.id}"`);
+        // use the same name as the initial subscription to update it
+        mutableSubs.add(ownItems, {name: "ownItems"});
+      });
+    };
+    updateSubscriptions();
+  }, [realm, user]);
 
   // createItem() takes in a summary and then creates an Item object with that summary
   const createItem = ({summary}) => {
@@ -42,12 +40,7 @@ export function ItemListView() {
       realm.write(() => {
         realm.create('Item', {
           _id: new BSON.ObjectID(),
-          // :state-start: partition-based-sync
-          _partition: user?.id,
-          // :state-end:
-          // :state-uncomment-start: flexible-sync
-          // owner_id: user.id,
-          // :state-uncomment-end:
+          owner_id: user.id,
           summary,
         });
       });

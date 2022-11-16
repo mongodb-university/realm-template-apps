@@ -24,16 +24,9 @@ namespace RealmTemplateApp
         {
             InitializeComponent();
             _user = App.RealmApp.CurrentUser;
-            // :state-start: partition-based-sync
-            var config = new PartitionSyncConfiguration(_user.Id.ToString(), _user);
-            // :state-end:
-            // :state-uncomment-start: flexible-sync
-            //var config = new FlexibleSyncConfiguration(_user);
-            // :state-uncomment-end:flexible-sync
+            var config = new FlexibleSyncConfiguration(_user);
             _itemsRealm = Realm.GetInstance(config);
-            // :state-uncomment-start: flexible-sync
-            //AddSubscriptionsToRealm();
-            // :state-uncomment-end:flexible-sync
+            AddSubscriptionsToRealm();
             config.OnSessionError = (sender, e) =>
             {
                 //handle errors here
@@ -44,19 +37,17 @@ namespace RealmTemplateApp
             BindingContext = this;
         }
 
-        // :state-uncomment-start: flexible-sync
-        //private void AddSubscriptionsToRealm()
-        //{
-        //    var subscriptions = _itemsRealm.Subscriptions;
-        //    subscriptions.Update(() =>
-        //    {
-        //        var defaultSubscription = _itemsRealm.All<Item>()
-        //            .Where(t => t.OwnerId == _user.Id);
-        //        subscriptions.Add(defaultSubscription);
-        //    });
-        //}
-        //
-        // :state-uncomment-end:flexible-sync
+        private void AddSubscriptionsToRealm()
+        {
+           var subscriptions = _itemsRealm.Subscriptions;
+           subscriptions.Update(() =>
+           {
+               var defaultSubscription = _itemsRealm.All<Item>()
+                   .Where(t => t.OwnerId == _user.Id);
+               subscriptions.Add(defaultSubscription);
+           });
+        }
+        
         protected override async void OnAppearing()
         {
             base.OnAppearing();
@@ -84,12 +75,7 @@ namespace RealmTemplateApp
 
             var newItem = new Item()
             {
-                // :state-start: partition-based-sync
-                Partition = _user.Id.ToString(),
-                // :state-end:
-                // :state-uncomment-start:flexible-sync
-                //OwnerId = _user.Id.ToString(),
-                // :state-uncomment-end:flexible-sync
+                OwnerId = _user.Id.ToString(),
                 Summary = popup.ItemName,
                 IsComplete = false
             };
