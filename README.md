@@ -1,7 +1,16 @@
 # realm-template-apps
 
+This is the main repo for all MongoDB App Services & Realm template starter app
+clients and backend configurations.
+
 A GitHub action uploads to the realm-template-apps s3 bucket. See [.github/workflows/zip-everything-and-upload-to-s3.yml](.github/workflows/zip-everything-and-upload-to-s3.yml).
 For bucket access, consult the Realm docs team.
+
+## About "generated"
+
+⚠️ If the path contains `/generated/`, don't edit it directly! This is generated
+from another source, probably using
+[Bluehawk](https://github.com/mongodb-university/bluehawk).
 
 ## Adding a New Template App
 
