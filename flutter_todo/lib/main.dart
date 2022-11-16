@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
 import 'package:flutter_todo/realm/app_services.dart';
+import 'package:flutter_todo/realm/state_services.dart';
 import 'package:flutter_todo/realm/init_realm.dart';
 import 'package:flutter_todo/screens/homepage.dart';
 import 'package:flutter_todo/screens/log_in.dart';
@@ -19,6 +20,7 @@ void main() async {
   return runApp(MultiProvider(providers: [
     ChangeNotifierProvider<AppServices>(
         create: (_) => AppServices(appId, baseUrl)),
+    ChangeNotifierProvider<StateServices>(create: (_) => StateServices()),
     ProxyProvider<AppServices, Realm?>(
       update: (context, app, previousRealm) {
         if (app.currentUser != null) {

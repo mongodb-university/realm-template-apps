@@ -62,7 +62,7 @@ class _LogInState extends State<LogIn> {
     }
 
     return Scaffold(
-      appBar: const TodoAppBar(),
+      appBar: TodoAppBar(),
       body: Container(
         padding: const EdgeInsets.all(25),
         child: SingleChildScrollView(
