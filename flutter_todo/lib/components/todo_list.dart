@@ -56,7 +56,8 @@ class _TodoListState extends State<TodoList> {
 
           // Handle initialization (or any mismatch really, but that shouldn't happen)
           if (items.length != _itemViewModels.length) {
-            for (var i = _itemViewModels.length - 1; i >= 0; i--) {
+            var count = _itemViewModels.length - 1;
+            for (var i = count; i >= 0; i--) {
               _myListKey.currentState?.removeItem(i, (context, animation) {
                 return ItemCard(_itemViewModels.removeAt(i), animation);
               });

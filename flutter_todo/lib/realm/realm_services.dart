@@ -14,6 +14,16 @@ class RealmServices {
     }
   }
 
+  Future<void> sessionOff(bool sessionOff) async {
+    if (sessionOff) {
+      realm.syncSession.pause();
+    } else {
+      realm.syncSession.resume();
+      await realm.syncSession.waitForDownload();
+      await realm.syncSession.waitForUpload();
+    }
+  }
+
   Future<void> filterSwitch(bool isFilterOn) async {
     updateSubscriptions(isFilterOn: isFilterOn);
     await realm.subscriptions.waitForSynchronization();

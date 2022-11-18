@@ -8,6 +8,7 @@ class StateServices with ChangeNotifier {
   Future<void> sessionSwitch(RealmServices? realmServices) async {
     airplaneModeOn = !airplaneModeOn;
     if (realmServices != null) {
+      await realmServices.sessionOff(airplaneModeOn);
       notifyListeners();
     }
   }
