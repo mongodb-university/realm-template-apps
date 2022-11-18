@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:realm/realm.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'modify_item.dart';
 import 'package:flutter_todo/viewmodels/item_viewmodel.dart';
@@ -13,7 +11,6 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final realm = Provider.of<Realm>(context);
     void deleteItem() {
       viewModel.delete();
     }
@@ -71,8 +68,6 @@ class _CompleteCheckbox extends StatelessWidget {
   const _CompleteCheckbox(this.viewModel, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final realm = Provider.of<Realm>(context);
-
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,

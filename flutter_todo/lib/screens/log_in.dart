@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_todo/components/app_bar.dart';
 import 'package:flutter_todo/realm/app_services.dart';
 
 class LogIn extends StatefulWidget {
@@ -36,8 +35,7 @@ class _LogInState extends State<LogIn> {
         _errorMessage = null;
       });
       try {
-        await app.logInUserEmailPw(
-            _emailController.text, _passwordController.text);
+        await app.logInUserEmailPw(_emailController.text, _passwordController.text);
         Navigator.pushNamed(context, '/');
       } catch (err) {
         setState(() {
@@ -51,8 +49,7 @@ class _LogInState extends State<LogIn> {
         _errorMessage = null;
       });
       try {
-        await app.registerUserEmailPw(
-            _emailController.text, _passwordController.text);
+        await app.registerUserEmailPw(_emailController.text, _passwordController.text);
         Navigator.pushNamed(context, '/');
       } catch (err) {
         setState(() {
@@ -62,7 +59,6 @@ class _LogInState extends State<LogIn> {
     }
 
     return Scaffold(
-      appBar: TodoAppBar(),
       body: Container(
         padding: const EdgeInsets.all(25),
         child: SingleChildScrollView(
@@ -89,15 +85,11 @@ class _LogInState extends State<LogIn> {
                           }
                         });
                       },
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Email',
-                          hintText: 'Enter valid email like abc@gmail.com'),
+                      decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'Email', hintText: 'Enter valid email like abc@gmail.com'),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(
-                        left: 15.0, right: 15.0, top: 15, bottom: 0),
+                    padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
                     //padding: EdgeInsets.symmetric(horizontal: 15),
                     child: TextField(
                       obscureText: true,
@@ -110,19 +102,14 @@ class _LogInState extends State<LogIn> {
                           }
                         });
                       },
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Password',
-                          hintText: 'Enter secure password'),
+                      decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'Password', hintText: 'Enter secure password'),
                     ),
                   ),
                   Container(
                     height: 50,
                     width: 250,
                     margin: const EdgeInsets.symmetric(vertical: 25),
-                    decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(20)),
+                    decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(20)),
                     child: TextButton(
                       onPressed: () {
                         if (_logIn) {
@@ -133,8 +120,7 @@ class _LogInState extends State<LogIn> {
                       },
                       child: Text(
                         _logIn ? 'Log in' : 'Sign up',
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 25),
+                        style: const TextStyle(color: Colors.white, fontSize: 25),
                       ),
                     ),
                   ),
@@ -142,16 +128,11 @@ class _LogInState extends State<LogIn> {
               )),
               Container(
                   padding: const EdgeInsets.symmetric(vertical: 25),
-                  child: _errorMessage != null
-                      ? Text(_errorMessage!,
-                          style: const TextStyle(color: Colors.red))
-                      : null),
+                  child: _errorMessage != null ? Text(_errorMessage!, style: const TextStyle(color: Colors.red)) : null),
               TextButton(
                   onPressed: _setLogInSignUpState,
                   child: Text(
-                    _logIn
-                        ? "New to Flutter Realm Todo? Sign up"
-                        : 'Already have an account? Log in.',
+                    _logIn ? "New to Flutter Realm Todo? Sign up" : 'Already have an account? Log in.',
                   ))
             ],
           ),

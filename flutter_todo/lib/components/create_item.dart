@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo/realm/realm_services.dart';
 import 'package:provider/provider.dart';
 import 'package:realm/realm.dart';
 import 'package:flutter_todo/realm/schemas.dart';
-import 'package:flutter_todo/realm/app_services.dart';
 import 'package:flutter_todo/viewmodels/item_viewmodel.dart';
 
 class CreateItem extends StatelessWidget {
@@ -59,7 +59,7 @@ class _CreateItemFormState extends State<CreateItemForm> {
   @override
   Widget build(BuildContext context) {
     TextTheme myTextTheme = Theme.of(context).textTheme;
-    final currentUser = Provider.of<AppServices>(context).currentUser;
+    final currentUser = Provider.of<RealmServices>(context).currentUser;
 
     return Form(
       key: _formKey,
@@ -96,14 +96,14 @@ class _CreateItemFormState extends State<CreateItemForm> {
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Consumer<Realm>(
-                    builder: (context, realm, child) {
+                  child: Consumer<RealmServices>(
+                    builder: (context, realmServices, child) {
                       return ElevatedButton(
                         child: const Text('Create'),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             final summary = itemEditingController.text;
-                            ItemViewModel.create(realm,
+                            ItemViewModel.create(realmServices.realm,
                                 Item(ObjectId(), summary, currentUser!.id));
                             Navigator.pop(context);
                           }
