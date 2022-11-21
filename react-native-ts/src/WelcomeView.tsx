@@ -3,10 +3,7 @@ import Realm from 'realm';
 import {useApp} from '@realm/react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StyleSheet, Text, View, Alert} from 'react-native';
-import {Input, Button} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
-
-Icon.loadFont(); // load FontAwesome font
+import {Input, Button, Icon} from 'react-native-elements';
 
 export function WelcomeView(): React.ReactElement {
   const [email, setEmail] = useState('');
@@ -59,10 +56,12 @@ export function WelcomeView(): React.ReactElement {
           secureTextEntry={passwordHidden}
           rightIcon={
             <Icon
-              name={passwordHidden ? 'eye-slash' : 'eye'}
+              type="material-community"
+              name={passwordHidden ? 'eye-off-outline' : 'eye-outline'}
               size={12}
               color="black"
               onPress={() => setPasswordHidden(!passwordHidden)}
+              tvParallaxProperties={undefined}
             />
           }
           autoCompleteType={undefined}
