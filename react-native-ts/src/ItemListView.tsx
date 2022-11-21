@@ -7,7 +7,7 @@ import {Button, Overlay, ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {CreateToDoPrompt} from './CreateToDoPrompt';
-import realmContext from './realmContext';
+import realmContext from './RealmContext';
 import {Item} from './ItemSchema';
 const {useRealm, useQuery} = realmContext;
 
@@ -44,7 +44,10 @@ export function ItemListView() {
     ({summary}: {summary: string}) => {
       // if the realm exists, create an Item
       realm.write(() => {
-        return new Item(realm, summary, new Realm.BSON.ObjectId(user?.id));
+        return new Item(realm, {
+          summary,
+          owner_id: new Realm.BSON.ObjectId(user?.id),
+        });
       });
     },
     [realm, user],

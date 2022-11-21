@@ -9,7 +9,9 @@ import {appId, baseUrl} from '../realm.json';
 import {LogoutButton} from './LogoutButton';
 import {WelcomeView} from './WelcomeView';
 import {ItemListView} from './ItemListView';
-import realmContext from './realmContext';
+import realmContext from './RealmContext';
+import {AirbnbRating, Icon} from 'react-native-elements';
+import {AirplaneModeButton} from './AirplaneModeButton';
 const {RealmProvider} = realmContext;
 
 const Stack = createStackNavigator();
@@ -30,6 +32,14 @@ const LoadingIndicator = () => {
       <ActivityIndicator size="large" />
     </View>
   );
+};
+
+const headerRight = () => {
+  return <AirplaneModeButton />;
+};
+
+const headerLeft = () => {
+  return <LogoutButton />;
 };
 
 const App = () => {
@@ -54,7 +64,9 @@ const App = () => {
                 name="Your To-Do List"
                 component={ItemListView}
                 options={{
-                  headerLeft: LogoutButton,
+                  headerTitleAlign: 'center',
+                  headerLeft,
+                  headerRight,
                 }}
               />
             </Stack.Navigator>

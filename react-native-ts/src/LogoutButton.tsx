@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {Button, Alert} from 'react-native';
+import {Pressable, Alert, View, Text} from 'react-native';
 import {useUser} from '@realm/react';
 
 export function LogoutButton() {
@@ -12,8 +12,7 @@ export function LogoutButton() {
   }, [user]);
 
   return (
-    <Button
-      title="Log Out"
+    <Pressable
       onPress={() => {
         Alert.alert('Log Out', '', [
           {
@@ -23,7 +22,10 @@ export function LogoutButton() {
           },
           {text: 'Cancel', style: 'cancel'},
         ]);
-      }}
-    />
+      }}>
+      <View style={{paddingHorizontal: 6}}>
+        <Text style={{fontSize: 16, color: '#007AFF'}}>Log Out</Text>
+      </View>
+    </Pressable>
   );
 }
