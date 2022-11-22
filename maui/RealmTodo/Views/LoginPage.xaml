@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:RealmTodo.ViewModels"
+             x:Class="RealmTodo.Views.LoginPage"
+             Title="RealmTodo">
+    <ContentPage.BindingContext>
+        <vm:LoginViewModel />
+    </ContentPage.BindingContext>
+    <VerticalStackLayout
+        Padding="30"
+        Spacing="15">
+        <Label 
+            Text="Login"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"
+            FontSize="Header"/>
+        <Entry Placeholder="Email"/>
+        <Entry Placeholder="Password"/>
+        <Button Text="Create account"/>
+
+                <Label Margin="0,25,0,0"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
+                       TextColor="{DynamicResource Primary}"
+            Text="Already have an account? Log in"/>
+
+    </VerticalStackLayout>
+</ContentPage>
