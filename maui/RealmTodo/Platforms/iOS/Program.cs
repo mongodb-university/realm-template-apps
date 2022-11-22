@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace realm_todo_app;
+namespace RealmTodo;
 
 public class Program
 {

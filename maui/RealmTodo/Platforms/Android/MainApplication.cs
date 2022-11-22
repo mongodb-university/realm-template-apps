@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace realm_todo_app;
+namespace RealmTodo;
 
 [Application]
 public class MainApplication : MauiApplication

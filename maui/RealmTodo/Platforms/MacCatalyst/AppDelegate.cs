@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace realm_todo_app;
+namespace RealmTodo;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate

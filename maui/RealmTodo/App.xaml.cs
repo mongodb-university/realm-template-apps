@@ -1,4 +1,4 @@
-﻿namespace realm_todo_app;
+﻿namespace RealmTodo;
 
 public partial class App : Application
 {

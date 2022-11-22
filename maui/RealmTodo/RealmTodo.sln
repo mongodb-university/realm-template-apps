@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "realm-todo-app", "realm-todo-app\realm-todo-app.csproj", "{EBA6D3A5-7694-4397-96F5-B849746FCB63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealmTodo", "RealmTodo.csproj", "{ED1B0451-A735-464F-B6CA-E402C3A5AC0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +11,12 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EBA6D3A5-7694-4397-96F5-B849746FCB63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EBA6D3A5-7694-4397-96F5-B849746FCB63}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EBA6D3A5-7694-4397-96F5-B849746FCB63}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{EBA6D3A5-7694-4397-96F5-B849746FCB63}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EBA6D3A5-7694-4397-96F5-B849746FCB63}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EBA6D3A5-7694-4397-96F5-B849746FCB63}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{ED1B0451-A735-464F-B6CA-E402C3A5AC0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED1B0451-A735-464F-B6CA-E402C3A5AC0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED1B0451-A735-464F-B6CA-E402C3A5AC0A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{ED1B0451-A735-464F-B6CA-E402C3A5AC0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED1B0451-A735-464F-B6CA-E402C3A5AC0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED1B0451-A735-464F-B6CA-E402C3A5AC0A}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace realm_todo_app;
+namespace RealmTodo;
 
 public static class MauiProgram
 {

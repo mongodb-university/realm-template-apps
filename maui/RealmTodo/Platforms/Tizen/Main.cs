@@ -2,7 +2,7 @@
 using Microsoft.Maui;
 using Microsoft.Maui.Hosting;
 
-namespace realm_todo_app;
+namespace RealmTodo;
 
 class Program : MauiApplication
 {
