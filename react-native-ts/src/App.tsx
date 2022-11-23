@@ -10,8 +10,8 @@ import {LogoutButton} from './LogoutButton';
 import {WelcomeView} from './WelcomeView';
 import {ItemListView} from './ItemListView';
 import realmContext from './RealmContext';
-import {AirbnbRating, Icon} from 'react-native-elements';
-import {AirplaneModeButton} from './AirplaneModeButton';
+import {OfflineModeButton} from './OfflineModeButton';
+
 const {RealmProvider} = realmContext;
 
 const Stack = createStackNavigator();
@@ -35,7 +35,7 @@ const LoadingIndicator = () => {
 };
 
 const headerRight = () => {
-  return <AirplaneModeButton />;
+  return <OfflineModeButton />;
 };
 
 const headerLeft = () => {
@@ -55,6 +55,9 @@ const App = () => {
               subs.add(realm.objects('Item'), {name: 'ownItems'});
             },
           },
+          onError: (_, error) => {
+            console.error(error);
+          },
         }}
         fallback={LoadingIndicator}>
         <SafeAreaProvider>
@@ -73,7 +76,8 @@ const App = () => {
           </NavigationContainer>
           <View style={styles.footer}>
             <Text style={styles.footerText}>
-              Built with the Atlas Device Sync Template
+              Log in with the same account on another device or simulator to see
+              your list sync in real-time
             </Text>
           </View>
         </SafeAreaProvider>
@@ -84,11 +88,11 @@ const App = () => {
 
 const styles = StyleSheet.create({
   footerText: {
-    fontSize: 10,
+    fontSize: 12,
     textAlign: 'center',
   },
   footer: {
-    margin: 40,
+    padding: 24,
   },
   activityContainer: {
     flex: 1,

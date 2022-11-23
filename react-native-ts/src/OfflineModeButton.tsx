@@ -5,50 +5,36 @@ import RealmContext from './RealmContext';
 
 const {useRealm} = RealmContext;
 
-export function AirplaneModeButton() {
+export function OfflineModeButton() {
   const realm = useRealm();
 
-  const [airplaneMode, setAirplaneMode] = React.useState(
+  const [offlineMode, setOfflineMode] = React.useState(
     realm.syncSession?.state === 'inactive',
   );
   // The signOut function calls the logOut function on the currently
   // logged in user and then navigates to the welcome screen
 
   useEffect(() => {
-    if (realm.syncSession?.state === 'active' && airplaneMode === true) {
+    if (realm.syncSession?.state === 'active' && offlineMode === true) {
       realm.syncSession.pause();
     } else if (
       realm.syncSession?.state === 'inactive' &&
-      airplaneMode === false
+      offlineMode === false
     ) {
       realm.syncSession.resume();
     }
-  }, [airplaneMode, realm]);
+  }, [offlineMode, realm]);
 
   return (
     <Pressable
       onPress={() => {
-        if (!airplaneMode) {
-          Alert.alert(
-            'Activating Airplane Mode',
-            'This will replicate being offline',
-            [
-              {
-                text: 'Yes, Activate Airplane Mode',
-                style: 'destructive',
-                onPress: () => setAirplaneMode(true),
-              },
-              {text: 'Cancel', style: 'cancel'},
-            ],
-          );
-        } else {
-          setAirplaneMode(false);
-        }
+        setOfflineMode(!offlineMode);
       }}>
       <Icon
         style={styles.icon}
-        name={airplaneMode ? 'airplanemode-active' : 'airplanemode-inactive'}
+        name={offlineMode ? 'wifi-off' : 'wifi'}
         type="material"
+        tvParallaxProperties={undefined}
       />
     </Pressable>
   );
