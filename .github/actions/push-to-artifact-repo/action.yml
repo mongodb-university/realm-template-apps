@@ -10,7 +10,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: cbush/push-to-artifact-repo
+    - uses: mongodb/push-to-artifact-repo
       with:
         email: chris.bush+arty-fact@mongodb.com
         name: Arty Fact
