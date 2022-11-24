@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_todo/realm/realm_services.dart';
-import 'package:flutter_todo/realm/state_services.dart';
 import 'dart:convert';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/app_services.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_todo/screens/homepage.dart';
 import 'package:flutter_todo/screens/log_in.dart';
 
 void main() async {
-  // get app id from config
   WidgetsFlutterBinding.ensureInitialized();
   final realmConfig = json.decode(await rootBundle.loadString('assets/config/realm.json'));
   String appId = realmConfig['appId'];
@@ -17,13 +15,11 @@ void main() async {
 
   return runApp(MultiProvider(providers: [
     ChangeNotifierProvider<AppServices>(create: (_) => AppServices(appId, baseUrl)),
-    ChangeNotifierProvider<StateServices>(create: (_) => StateServices()),
-    ProxyProvider<AppServices, RealmServices?>(
-      update: (BuildContext context, AppServices appServices, RealmServices? realmServices) {
-        return appServices.app.currentUser != null ? RealmServices(appServices.app) : null;
-      },
-      dispose: ((context, realmServices) => realmServices?.dispose()),
-    ),
+    ChangeNotifierProxyProvider<AppServices, RealmServices?>(
+        create: (context) => null,
+        update: (BuildContext context, AppServices appServices, RealmServices? realmServices) {
+          return appServices.app.currentUser != null ? RealmServices(appServices.app) : null;
+        }),
   ], child: const App()));
 }
 

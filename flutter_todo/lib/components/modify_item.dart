@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo/viewmodels/item_viewmodel.dart';
-
-void showModifyItemModal(BuildContext context, ItemViewModel item) {
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    builder: (_) => Wrap(children: [ModifyItemForm(item)]),
-  );
-}
+import 'package:flutter_todo/realm/realm_services.dart';
+import 'package:flutter_todo/realm/schemas.dart';
+import 'package:provider/provider.dart';
 
 class ModifyItemForm extends StatefulWidget {
-  final ItemViewModel item;
+  final Item item;
   const ModifyItemForm(this.item, {Key? key}) : super(key: key);
 
   @override
@@ -19,38 +13,25 @@ class ModifyItemForm extends StatefulWidget {
 
 class _ModifyItemFormState extends State<ModifyItemForm> {
   final _formKey = GlobalKey<FormState>();
-  late bool _isComplete;
-  late String _summary;
+  late TextEditingController summaryController;
+  late ValueNotifier<bool> isCompleteController;
 
   @override
-  void initState() {
-    super.initState();
-    _summary = widget.item.summary;
-    _isComplete = widget.item.isComplete;
+  void dispose() {
+    summaryController.dispose();
+    isCompleteController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     TextTheme myTextTheme = Theme.of(context).textTheme;
+    final realmServices = Provider.of<RealmServices>(context, listen: false);
     final item = widget.item;
-
-    void updateItem() {
-      item.update(summary: _summary, isComplete: _isComplete);
-    }
-
-    void deleteItem() {
-      item.delete();
-    }
-
-    void handleItemRadioChange(bool? value) {
-      setState(() {
-        _isComplete = value ?? false;
-      });
-    }
-
+    summaryController = TextEditingController(text: item.summary);
+    isCompleteController = ValueNotifier<bool>(item.isComplete);
     return Padding(
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Container(
         color: Colors.grey.shade100,
         padding: const EdgeInsets.only(
@@ -71,12 +52,7 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
                   style: myTextTheme.headline6,
                 ),
                 TextFormField(
-                  initialValue: _summary,
-                  onChanged: (value) {
-                    setState(() {
-                      _summary = value;
-                    });
-                  },
+                  controller: summaryController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter some text';
@@ -84,22 +60,25 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
                     return null;
                   },
                 ),
-                Column(
-                  children: <Widget>[
-                    RadioListTile(
-                      title: const Text('Complete'),
-                      value: true,
-                      onChanged: handleItemRadioChange,
-                      groupValue: _isComplete,
-                    ),
-                    RadioListTile(
-                      title: const Text('Incomplete'),
-                      value: false,
-                      onChanged: handleItemRadioChange,
-                      groupValue: _isComplete,
-                    ),
-                  ],
-                ),
+                StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+                  isCompleteController.addListener(() => setState(() {}));
+                  return Column(
+                    children: <Widget>[
+                      RadioListTile(
+                        title: const Text('Complete'),
+                        value: true,
+                        onChanged: (value) => isCompleteController.value = (value as bool?) ?? false,
+                        groupValue: isCompleteController.value,
+                      ),
+                      RadioListTile(
+                        title: const Text('Incomplete'),
+                        value: false,
+                        onChanged: (value) => isCompleteController.value = (value as bool?) ?? false,
+                        groupValue: isCompleteController.value,
+                      ),
+                    ],
+                  );
+                }),
                 Padding(
                   padding: const EdgeInsets.only(top: 15),
                   child: Row(
@@ -108,33 +87,25 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 10),
                         child: ElevatedButton(
-                            child: const Text('Cancel'),
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.grey)),
-                            onPressed: () => Navigator.pop(context)),
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.grey)),
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('Cancel'),
+                        ),
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 10),
                         child: ElevatedButton(
-                            child: const Text('Delete'),
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.red)),
-                            onPressed: () {
-                              deleteItem();
-                              Navigator.pop(context);
-                            }),
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
+                          onPressed: () => delete(realmServices, item, context),
+                          child: const Text('Delete'),
+                        ),
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 10),
                         child: ElevatedButton(
                           child: const Text('Update'),
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              updateItem();
-                              Navigator.pop(context);
-                            }
+                          onPressed: () async {
+                            await update(context, realmServices, item, summaryController.text, isCompleteController.value);
                           },
                         ),
                       ),
@@ -147,5 +118,17 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
         ),
       ),
     );
+  }
+
+  Future<void> update(BuildContext context, RealmServices realmServices, Item item, String summary, bool isComplete) async {
+    if (_formKey.currentState!.validate()) {
+      await realmServices.updateItem(item, summary: summary, isComplete: isComplete);
+      Navigator.pop(context);
+    }
+  }
+
+  void delete(RealmServices realmServices, Item item, BuildContext context) {
+    realmServices.deleteItem(item);
+    Navigator.pop(context);
   }
 }

@@ -1,92 +1,63 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_todo/realm/realm_services.dart';
+import 'package:flutter_todo/realm/schemas.dart';
+import 'package:provider/provider.dart';
 import 'modify_item.dart';
-import 'package:flutter_todo/viewmodels/item_viewmodel.dart';
 
 class ItemCard extends StatelessWidget {
-  final ItemViewModel viewModel;
-  final Animation<double> animation;
+  final Item item;
 
-  const ItemCard(this.viewModel, this.animation, {Key? key}) : super(key: key);
+  const ItemCard(this.item, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    void deleteItem() {
-      viewModel.delete();
-    }
-
-    return FadeTransition(
-      key: key ?? ObjectKey(viewModel),
-      opacity: animation,
-      child: SizeTransition(
-        sizeFactor: animation,
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          child: Slidable(
-            endActionPane: ActionPane(
-              motion: const ScrollMotion(),
-              children: [
-                SlidableAction(
-                  onPressed: (BuildContext context) {
-                    showModifyItemModal(context, viewModel);
-                  },
-                  flex: 2,
-                  backgroundColor: Color(Colors.blue[500].hashCode),
-                  foregroundColor: Colors.white,
-                  icon: Icons.edit,
-                  label: 'Change',
-                ),
-                SlidableAction(
-                  onPressed: (BuildContext context) {
-                    deleteItem();
-                  },
-                  flex: 2,
-                  backgroundColor: Color(Colors.red[600].hashCode),
-                  foregroundColor: Colors.white,
-                  icon: Icons.delete_forever,
-                  label: 'Delete',
-                )
-              ],
+    final realmServices = Provider.of<RealmServices>(context);
+    return Card(
+      child: ListTile(
+        leading: Checkbox(
+          checkColor: Colors.white,
+          fillColor: MaterialStateProperty.resolveWith(getColor),
+          value: item.isComplete,
+          onChanged: (bool? value) async {
+            await realmServices.updateItem(item, isComplete: value ?? false);
+          },
+        ),
+        title: Expanded(child: Text(item.summary)),
+        subtitle: Text(item.isComplete ? 'Completed' : 'Incomplete'),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.edit),
+              tooltip: "Edit item",
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (_) => Wrap(children: [ModifyItemForm(item)]),
+                );
+              },
             ),
-            child: Card(
-              child: ListTile(
-                title: SizedBox(width: 175, child: Text(viewModel.summary)),
-                subtitle:
-                    Text(viewModel.isComplete ? 'Completed' : 'Incomplete'),
-                leading: _CompleteCheckbox(viewModel),
-              ),
+            IconButton(
+              icon: const Icon(Icons.delete),
+              tooltip: "Delete item",
+              onPressed: () => realmServices.deleteItem(item),
             ),
-          ),
+          ],
         ),
       ),
     );
   }
-}
 
-class _CompleteCheckbox extends StatelessWidget {
-  final ItemViewModel viewModel;
-  const _CompleteCheckbox(this.viewModel, {Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    Color getColor(Set<MaterialState> states) {
-      const Set<MaterialState> interactiveStates = <MaterialState>{
-        MaterialState.pressed,
-        MaterialState.hovered,
-        MaterialState.focused,
-      };
-      if (states.any(interactiveStates.contains)) {
-        return Colors.blue;
-      }
+  Color getColor(Set<MaterialState> states) {
+    const Set<MaterialState> interactiveStates = <MaterialState>{
+      MaterialState.pressed,
+      MaterialState.hovered,
+      MaterialState.focused,
+    };
+    if (states.any(interactiveStates.contains)) {
       return Colors.blue;
     }
-
-    return Checkbox(
-      checkColor: Colors.white,
-      fillColor: MaterialStateProperty.resolveWith(getColor),
-      value: viewModel.isComplete,
-      onChanged: (bool? value) {
-        viewModel.update(isComplete: value ?? false);
-      },
-    );
+    return Colors.blue;
   }
 }

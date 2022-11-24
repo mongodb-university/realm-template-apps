@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/realm/realm_services.dart';
 import 'package:provider/provider.dart';
-import 'package:realm/realm.dart';
-import 'package:flutter_todo/realm/schemas.dart';
-import 'package:flutter_todo/viewmodels/item_viewmodel.dart';
 
 class CreateItem extends StatelessWidget {
   const CreateItem({Key? key}) : super(key: key);
@@ -32,13 +29,11 @@ class _CreateItemFormWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding:
-            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Container(
             color: Colors.grey.shade100,
             // height: 200,
-            padding:
-                const EdgeInsets.only(top: 25, bottom: 25, left: 50, right: 50),
+            padding: const EdgeInsets.only(top: 25, bottom: 25, left: 50, right: 50),
             child: const Center(
               child: CreateItemForm(),
             )));
@@ -59,7 +54,7 @@ class _CreateItemFormState extends State<CreateItemForm> {
   @override
   Widget build(BuildContext context) {
     TextTheme myTextTheme = Theme.of(context).textTheme;
-    final currentUser = Provider.of<RealmServices>(context).currentUser;
+    final realmServices = Provider.of<RealmServices>(context);
 
     return Form(
       key: _formKey,
@@ -82,41 +77,47 @@ class _CreateItemFormState extends State<CreateItemForm> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ElevatedButton(
-                      child: const Text('Cancel'),
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.grey)),
-                      onPressed: () => Navigator.pop(context)),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Consumer<RealmServices>(
-                    builder: (context, realmServices, child) {
-                      return ElevatedButton(
-                        child: const Text('Create'),
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            final summary = itemEditingController.text;
-                            ItemViewModel.create(realmServices.realm,
-                                Item(ObjectId(), summary, currentUser!.id));
-                            Navigator.pop(context);
-                          }
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
+            child: buttonsWidget(context),
           ),
         ],
       ),
     );
+  }
+
+  Row buttonsWidget(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          child: ElevatedButton(
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.grey)),
+            onPressed: () => cancel(context),
+            child: const Text("Cancel"),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          child: Consumer<RealmServices>(
+            builder: (context, realmServices, child) {
+              return ElevatedButton(
+                onPressed: () => save(realmServices, context),
+                child: const Text('Create'),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  void cancel(BuildContext context) => Navigator.pop(context);
+
+  void save(RealmServices realmServices, BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      final summary = itemEditingController.text;
+      realmServices.createItem(summary, false);
+      Navigator.pop(context);
+    }
   }
 }

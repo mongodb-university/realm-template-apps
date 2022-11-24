@@ -21,6 +21,7 @@
     },
     "queryable_fields_names": [
         "_id",
-        "owner_id"
+        "owner_id",
+        "isComplete"
     ]
 }
