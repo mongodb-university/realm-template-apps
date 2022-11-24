@@ -8,6 +8,7 @@ class RealmServices with ChangeNotifier {
 
   bool filterOn = false;
   bool offlineModeOn = false;
+  bool isWaiting = false;
   late Realm realm;
   User? currentUser;
   App app;
@@ -40,19 +41,31 @@ class RealmServices with ChangeNotifier {
     if (offlineModeOn) {
       realm.syncSession.pause();
     } else {
-      realm.syncSession.resume();
-      await realm.subscriptions.waitForSynchronization();
-      await realm.syncSession.waitForDownload();
-      await realm.syncSession.waitForUpload();
+      try {
+        isWaiting = true;
+        notifyListeners();
+        realm.syncSession.resume();
+        await realm.subscriptions.waitForSynchronization();
+        await realm.syncSession.waitForDownload();
+        await realm.syncSession.waitForUpload();
+      } finally {
+        isWaiting = false;
+      }
     }
     notifyListeners();
   }
 
-  Future<void> filterSwitch() async {
-    filterOn = !filterOn;
+  Future<void> filterSwitch(bool value) async {
+    filterOn = value;
     updateSubscriptions();
     if (!offlineModeOn) {
-      await realm.subscriptions.waitForSynchronization();
+      try {
+        isWaiting = true;
+        notifyListeners();
+        await realm.subscriptions.waitForSynchronization();
+      } finally {
+        isWaiting = false;
+      }
     }
     notifyListeners();
   }

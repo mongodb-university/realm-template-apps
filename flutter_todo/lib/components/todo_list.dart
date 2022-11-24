@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo/components/item_card.dart';
-import 'package:flutter_todo/realm/realm_services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/schemas.dart';
+import 'package:flutter_todo/realm/realm_services.dart';
+import 'package:flutter_todo/components/todo_item.dart';
 
 class TodoList extends StatefulWidget {
   const TodoList({Key? key}) : super(key: key);
@@ -12,45 +12,44 @@ class TodoList extends StatefulWidget {
 }
 
 class _TodoListState extends State<TodoList> {
-  Widget filterSwitchWidget(RealmServices realmServices) {
-    return SizedBox(
-        height: 50,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Spacer(),
-            const Text("Show completed tasks only", textAlign: TextAlign.right),
-            Switch(
-              value: realmServices.filterOn,
-              onChanged: (value) async {
-                await realmServices.filterSwitch();
-                setState(() => realmServices.filterOn = value);
-              },
-            ),
-          ],
-        ));
-  }
-
-  Widget todoListWidget(RealmServices realmServices) {
-    final results = realmServices.realm.all<Item>();
-    return Expanded(
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: results.length,
-        itemBuilder: (context, index) => ItemCard(results[index]),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final realmServices = Provider.of<RealmServices>(context);
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(children: [
-        filterSwitchWidget(realmServices),
-        todoListWidget(realmServices),
-      ]),
-    );
+    return Stack(children: [
+      Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Consumer<RealmServices>(builder: (context, realmServices, child) {
+          final results = realmServices.realm.all<Item>();
+          return Column(
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  const Expanded(child: Text("Show completed tasks only", textAlign: TextAlign.right)),
+                  Switch(
+                    value: realmServices.filterOn,
+                    onChanged: (value) => realmServices.filterSwitch(value),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: results.length,
+                  itemBuilder: (context, index) => TodoItem(results[index]),
+                ),
+              ),
+            ],
+          );
+        }),
+      ),
+      Consumer<RealmServices>(builder: (context, realmServices, child) {
+        return realmServices.isWaiting
+            ? Container(
+                color: Colors.black.withOpacity(0.2),
+                child: const Center(child: CircularProgressIndicator()),
+              )
+            : Container();
+      })
+    ]);
   }
 }
