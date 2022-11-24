@@ -1,4 +1,7 @@
 ﻿using System;
+using Realms;
+using Realms.Sync;
+
 namespace RealmTodo.Services
 {
     public static class RealmService
@@ -10,6 +13,12 @@ namespace RealmTodo.Services
         public static void Init()
         {
             App = Realms.Sync.App.Create(appId);
+        }
+
+        public static void GetRealm()
+        {
+            var config = new FlexibleSyncConfiguration(App.CurrentUser);
+            var realm = Realm.GetInstance(config);
         }
     }
 }
