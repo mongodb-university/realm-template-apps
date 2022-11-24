@@ -2,11 +2,23 @@
 
 public partial class App : Application
 {
-	public App()
-	{
-		InitializeComponent();
+    public static Realms.Sync.App RealmApp;
 
-		MainPage = new AppShell();
-	}
+    public App()
+    {
+        InitializeComponent();
+
+        var appId = GetAppId();
+        RealmApp = Realms.Sync.App.Create(appId);
+
+        MainPage = new AppShell();
+    }
+
+    private string GetAppId()
+    {
+
+    }
+
+
 }
 

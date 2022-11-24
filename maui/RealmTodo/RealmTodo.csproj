@@ -46,17 +46,23 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="3.0.0" />
+		<PackageReference Include="Realm" Version="10.18.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="Models\" />
 		<None Remove="Views\" />
 		<None Remove="ViewModels\" />
 		<None Remove="CommunityToolkit.Mvvm" />
+		<None Remove="CommunityToolkit.Maui" />
+		<None Remove="Realm" />
+		<None Remove="Services\" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Models\" />
 		<Folder Include="Views\" />
 		<Folder Include="ViewModels\" />
+		<Folder Include="Services\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <MauiXaml Update="Views\LoginPage.xaml">
@@ -64,6 +70,9 @@
 	  </MauiXaml>
 	  <MauiXaml Condition=" '$(EnableDefaultXamlItems)' == 'true' " Update="Views\MainPage.xaml">
 	    <SubType>Designer</SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ItemsPage.xaml">
+	    <SubType></SubType>
 	  </MauiXaml>
 	</ItemGroup>
 	<ItemGroup>

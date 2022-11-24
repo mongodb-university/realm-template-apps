@@ -2,11 +2,16 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:RealmTodo.ViewModels"
-             x:Class="RealmTodo.Views.LoginPage"
-             Title="RealmTodo">
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="RealmTodo.Views.LoginPage">
     <ContentPage.BindingContext>
         <vm:LoginViewModel />
     </ContentPage.BindingContext>
+        <ContentPage.Behaviors>
+            <toolkit:EventToCommandBehavior
+                EventName="Appearing"
+                Command="{Binding AppearingCommand}" />
+    </ContentPage.Behaviors>
     <VerticalStackLayout
         Padding="30"
         Spacing="15">
@@ -17,13 +22,17 @@
             FontSize="Header"/>
         <Entry Placeholder="Email"/>
         <Entry Placeholder="Password"/>
-        <Button Text="Create account"/>
+        <Button Text="Create account" Command="{Binding SignUpCommand}"/>
 
                 <Label Margin="0,25,0,0"
                        VerticalOptions="Center"
                        HorizontalOptions="Center"
                        TextColor="{DynamicResource Primary}"
-            Text="Already have an account? Log in"/>
+                       Text="Already have an account? Log in">
+                 <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding LoginCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
 
     </VerticalStackLayout>
 </ContentPage>

@@ -12,11 +12,9 @@
         Route="LoginPage" />
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
-
+        Title="Your To-Do list"
+        ContentTemplate="{DataTemplate local:ItemsPage}"
+        Route="ItemsPage" />
 
 </Shell>
 
