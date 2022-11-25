@@ -4,8 +4,6 @@ import 'package:flutter_todo/realm/schemas.dart';
 import 'package:flutter_todo/realm/realm_services.dart';
 import 'package:flutter_todo/components/widgets.dart';
 
-
-
 class ModifyItemForm extends StatefulWidget {
   final Item item;
   const ModifyItemForm(this.item, {Key? key}) : super(key: key);
@@ -16,13 +14,21 @@ class ModifyItemForm extends StatefulWidget {
 
 class _ModifyItemFormState extends State<ModifyItemForm> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController summaryController;
-  late ValueNotifier<bool> isCompleteController;
+  late TextEditingController _summaryController;
+  late ValueNotifier<bool> _isCompleteController;
+
+  @override
+  void initState() {
+    _summaryController = TextEditingController();
+    _isCompleteController = ValueNotifier<bool>(false)..addListener(() => setState(() {}));
+
+    super.initState();
+  }
 
   @override
   void dispose() {
-    summaryController.dispose();
-    isCompleteController.dispose();
+    _summaryController.dispose();
+    _isCompleteController.dispose();
     super.dispose();
   }
 
@@ -31,8 +37,6 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
     TextTheme myTextTheme = Theme.of(context).textTheme;
     final realmServices = Provider.of<RealmServices>(context, listen: false);
     final item = widget.item;
-    summaryController = TextEditingController(text: item.summary);
-    isCompleteController = ValueNotifier<bool>(item.isComplete);
     return formLayout(
         context,
         Form(
@@ -43,15 +47,14 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
               children: <Widget>[
                 Text("Update your item", style: myTextTheme.headline6),
                 TextFormField(
-                  controller: summaryController,
+                  controller: _summaryController,
                   validator: (value) => (value ?? "").isEmpty ? "Please enter some text" : null,
                 ),
                 StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
-                  isCompleteController.addListener(() => setState(() {}));
                   return Column(
                     children: <Widget>[
-                      radioButton("Complete", true, isCompleteController),
-                      radioButton("Incomplete", false, isCompleteController),
+                      radioButton("Complete", true, _isCompleteController),
+                      radioButton("Incomplete", false, _isCompleteController),
                     ],
                   );
                 }),
@@ -63,14 +66,13 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
                       cancelButton(context),
                       deleteButton(context, onPressed: () => delete(realmServices, item, context)),
                       okButton(context, "Update",
-                          onPressed: () async => await update(context, realmServices, item, summaryController.text, isCompleteController.value)
-                      ),
+                          onPressed: () async => await update(context, realmServices, item, _summaryController.text, _isCompleteController.value)),
                     ],
                   ),
                 ),
               ],
             )));
-  } 
+  }
 
   Future<void> update(BuildContext context, RealmServices realmServices, Item item, String summary, bool isComplete) async {
     if (_formKey.currentState!.validate()) {

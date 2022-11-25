@@ -29,7 +29,19 @@ class CreateItemForm extends StatefulWidget {
 
 class _CreateItemFormState extends State<CreateItemForm> {
   final _formKey = GlobalKey<FormState>();
-  var itemEditingController = TextEditingController();
+  late TextEditingController _itemEditingController;
+
+  @override
+  void initState() {
+    _itemEditingController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _itemEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +56,7 @@ class _CreateItemFormState extends State<CreateItemForm> {
             children: <Widget>[
               Text("Create a new item", style: myTextTheme.headline6),
               TextFormField(
-                controller: itemEditingController,
+                controller: _itemEditingController,
                 validator: (value) => (value ?? "").isEmpty ? "Please enter some text" : null,
               ),
               Padding(
@@ -66,7 +78,7 @@ class _CreateItemFormState extends State<CreateItemForm> {
 
   void save(RealmServices realmServices, BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      final summary = itemEditingController.text;
+      final summary = _itemEditingController.text;
       realmServices.createItem(summary, false);
       Navigator.pop(context);
     }

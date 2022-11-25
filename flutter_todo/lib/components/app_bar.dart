@@ -6,11 +6,10 @@ import 'package:flutter_todo/realm/realm_services.dart';
 
 class TodoAppBar extends StatelessWidget with PreferredSizeWidget {
   TodoAppBar({Key? key}) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
     final realmServices = Provider.of<RealmServices>(context);
-
     return AppBar(
       title: const Text('Realm Flutter To-Do'),
       automaticallyImplyLeading: false,
@@ -18,12 +17,12 @@ class TodoAppBar extends StatelessWidget with PreferredSizeWidget {
         IconButton(
           icon: Icon(realmServices.offlineModeOn ? Icons.wifi_off_rounded : Icons.wifi_rounded),
           tooltip: 'Offline mode',
-          onPressed: () => realmServices.sessionSwitch(),
+          onPressed: () async => await realmServices.sessionSwitch(),
         ),
         IconButton(
           icon: const Icon(Icons.logout),
           tooltip: 'Log out',
-          onPressed: () => logOut(context, realmServices),
+          onPressed: () async => await logOut(context, realmServices),
         ),
       ],
     );

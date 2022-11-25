@@ -29,7 +29,7 @@ class _TodoListState extends State<TodoList> {
                   const Expanded(child: Text("Show completed tasks only", textAlign: TextAlign.right)),
                   Switch(
                     value: realmServices.filterOn,
-                    onChanged: (value) => realmServices.filterSwitch(value),
+                      onChanged: (value) async => await realmServices.filterSwitch(value),
                   ),
                 ],
                 ),

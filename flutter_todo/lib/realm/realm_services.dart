@@ -45,6 +45,7 @@ class RealmServices with ChangeNotifier {
         isWaiting = true;
         notifyListeners();
         realm.syncSession.resume();
+        updateSubscriptions();
         await realm.subscriptions.waitForSynchronization();
         await realm.syncSession.waitForDownload();
         await realm.syncSession.waitForUpload();

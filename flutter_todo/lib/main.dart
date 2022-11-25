@@ -16,7 +16,7 @@ void main() async {
   return runApp(MultiProvider(providers: [
     ChangeNotifierProvider<AppServices>(create: (_) => AppServices(appId, baseUrl)),
     ChangeNotifierProxyProvider<AppServices, RealmServices?>(
-        create: (context) => null,
+        create: (context) => null, //RealmServices could be initialize only if the user is logged in.
         update: (BuildContext context, AppServices appServices, RealmServices? realmServices) {
           return appServices.app.currentUser != null ? RealmServices(appServices.app) : null;
         }),
