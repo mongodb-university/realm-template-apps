@@ -9,7 +9,7 @@ class AppServices with ChangeNotifier {
   AppServices(this.id, this.baseUrl)
       : app = App(AppConfiguration(id, baseUrl: baseUrl));
 
-  Future<User> logInUserEmailPw(String email, String password) async {
+  Future<User> logInUserEmailPassword(String email, String password) async {
     User loggedInUser =
         await app.logIn(Credentials.emailPassword(email, password));
     currentUser = loggedInUser;
@@ -17,7 +17,7 @@ class AppServices with ChangeNotifier {
     return loggedInUser;
   }
 
-  Future<User> registerUserEmailPw(String email, String password) async {
+  Future<User> registerUserEmailPassword(String email, String password) async {
     EmailPasswordAuthProvider authProvider = EmailPasswordAuthProvider(app);
     await authProvider.registerUser(email, password);
     User loggedInUser =

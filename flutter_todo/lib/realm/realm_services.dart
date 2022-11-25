@@ -29,9 +29,9 @@ class RealmServices with ChangeNotifier {
       mutableSubscriptions.removeByName(queryName);
       mutableSubscriptions.removeByName(queryIsCompleteName);
       if (filterOn) {
-        mutableSubscriptions.add(realm.query<Item>(r'owner_id == $0 AND isComplete == $1', [currentUser?.id, true]), name: queryIsCompleteName);
+        mutableSubscriptions.add(realm.query<Item>(r'isComplete == $1', [currentUser?.id, true]), name: queryIsCompleteName);
       } else {
-        mutableSubscriptions.add(realm.query<Item>(r'owner_id == $0', [currentUser?.id]), name: queryName);
+        mutableSubscriptions.add(realm.all<Item>(), name: queryName);
       }
     });
   }
