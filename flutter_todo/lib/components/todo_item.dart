@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:flutter_todo/realm/realm_services.dart';
 
+enum MenuOption { edit, delete }
+
 class TodoItem extends StatelessWidget {
   final Item item;
 
@@ -23,28 +25,35 @@ class TodoItem extends StatelessWidget {
       ),
       title: Expanded(child: Text(item.summary)),
       subtitle: Text(item.isComplete ? 'Completed' : 'Incomplete'),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.edit),
-            tooltip: "Edit item",
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                builder: (_) => Wrap(children: [ModifyItemForm(item)]),
-              );
-            },
+      trailing: PopupMenuButton<MenuOption>(
+        onSelected: (menuItem) => handleMenuClick(context, menuItem, item, realmServices),
+        itemBuilder: (context) => [
+          const PopupMenuItem<MenuOption>(
+            value: MenuOption.edit,
+            child: ListTile(leading: Icon(Icons.edit), title: Text("Edit item")),
           ),
-          IconButton(
-            icon: const Icon(Icons.delete),
-            tooltip: "Delete item",
-            onPressed: () => realmServices.deleteItem(item),
+          const PopupMenuItem<MenuOption>(
+            value: MenuOption.delete,
+            child: ListTile(leading: Icon(Icons.delete), title: Text("Delete item")),
           ),
         ],
       ),
     );
+  }
+
+  void handleMenuClick(BuildContext context, MenuOption menuItem, Item item, RealmServices realmServices) {
+    switch (menuItem) {
+      case MenuOption.edit:
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (_) => Wrap(children: [ModifyItemForm(item)]),
+        );
+        break;
+      case MenuOption.delete:
+        realmServices.deleteItem(item);
+        break;
+    }
   }
 
   Color getColor(Set<MaterialState> states) {

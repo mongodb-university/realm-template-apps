@@ -21,7 +21,9 @@ class _TodoListState extends State<TodoList> {
           final results = realmServices.realm.all<Item>();
           return Column(
             children: [
-              Row(
+              Padding(
+                padding: const EdgeInsets.only(right: 15),
+                child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   const Expanded(child: Text("Show completed tasks only", textAlign: TextAlign.right)),
@@ -30,6 +32,7 @@ class _TodoListState extends State<TodoList> {
                     onChanged: (value) => realmServices.filterSwitch(value),
                   ),
                 ],
+                ),
               ),
               Expanded(
                 child: ListView.builder(
