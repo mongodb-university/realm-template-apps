@@ -9,18 +9,21 @@ class ModifyItemForm extends StatefulWidget {
   const ModifyItemForm(this.item, {Key? key}) : super(key: key);
 
   @override
-  _ModifyItemFormState createState() => _ModifyItemFormState();
+  _ModifyItemFormState createState() => _ModifyItemFormState(item);
 }
 
 class _ModifyItemFormState extends State<ModifyItemForm> {
   final _formKey = GlobalKey<FormState>();
+  final Item item;
   late TextEditingController _summaryController;
   late ValueNotifier<bool> _isCompleteController;
 
+  _ModifyItemFormState(this.item);
+
   @override
   void initState() {
-    _summaryController = TextEditingController();
-    _isCompleteController = ValueNotifier<bool>(false)..addListener(() => setState(() {}));
+    _summaryController = TextEditingController(text: item.summary);
+    _isCompleteController = ValueNotifier<bool>(item.isComplete)..addListener(() => setState(() {}));
 
     super.initState();
   }
@@ -36,7 +39,6 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
   Widget build(BuildContext context) {
     TextTheme myTextTheme = Theme.of(context).textTheme;
     final realmServices = Provider.of<RealmServices>(context, listen: false);
-    final item = widget.item;
     return formLayout(
         context,
         Form(
