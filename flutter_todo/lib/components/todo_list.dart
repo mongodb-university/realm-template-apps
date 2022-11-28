@@ -16,27 +16,48 @@ class _TodoListState extends State<TodoList> {
   @override
   Widget build(BuildContext context) {
     final realmServices = Provider.of<RealmServices>(context);
-    return Stack(children: [
-      Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: StreamBuilder<RealmResultsChanges<Item>>(
-          stream: realmServices.realm.all<Item>().changes,
-          builder: (context, snapshot) {
-            final data = snapshot.data;
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 15),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    const Expanded(child: Text("Show completed tasks only", textAlign: TextAlign.right)),
+                    Switch(
+                      value: realmServices.filterOn,
+                      onChanged: (value) async => await realmServices.filterSwitch(value),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: StreamBuilder<RealmResultsChanges<Item>>(
+                  stream: realmServices.realm.all<Item>().changes,
+                  builder: (context, snapshot) {
+                    final data = snapshot.data;
 
-            if (data == null) return waitingIndicator();
+                    if (data == null) return waitingIndicator();
 
-            final results = data.results;
-            return ListView.builder(
-              shrinkWrap: true,
-              itemCount: results.length,
-              itemBuilder: (context, index) => TodoItem(results[index]),
-            );
-          },
-      ),
-      ),
-      realmServices.isWaiting ? waitingIndicator() : Container()
-    ]);
+                    final results = data.results;
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: results.length,
+                      itemBuilder: (context, index) => TodoItem(results[index]),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        realmServices.isWaiting ? waitingIndicator() : Container()
+      ],
+    );
   }
 
   Container waitingIndicator() {
