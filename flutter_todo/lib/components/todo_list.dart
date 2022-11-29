@@ -15,7 +15,6 @@ class TodoList extends StatefulWidget {
 class _TodoListState extends State<TodoList> {
   @override
   Widget build(BuildContext context) {
-    final realmServices = Provider.of<RealmServices>(context);
     return Stack(
       children: [
         Padding(
@@ -24,7 +23,8 @@ class _TodoListState extends State<TodoList> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(right: 15),
-                child: Row(
+                child: Consumer<RealmServices>(builder: (context, realmServices, child) {
+                  return Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     const Expanded(child: Text("Show completed tasks only", textAlign: TextAlign.right)),
@@ -33,11 +33,12 @@ class _TodoListState extends State<TodoList> {
                       onChanged: (value) async => await realmServices.filterSwitch(value),
                     ),
                   ],
-                ),
+                  );
+                }),
               ),
               Expanded(
                 child: StreamBuilder<RealmResultsChanges<Item>>(
-                  stream: realmServices.realm.all<Item>().changes,
+                  stream: Provider.of<RealmServices>(context, listen: false).realm.all<Item>().changes,
                   builder: (context, snapshot) {
                     final data = snapshot.data;
 
@@ -55,7 +56,9 @@ class _TodoListState extends State<TodoList> {
             ],
           ),
         ),
-        realmServices.isWaiting ? waitingIndicator() : Container()
+        Consumer<RealmServices>(builder: (context, realmServices, child) {
+          return realmServices.isWaiting ? waitingIndicator() : Container();
+        }),
       ],
     );
   }
