@@ -34,7 +34,8 @@ class _LogInState extends State<LogIn> {
       body: Container(
         padding: const EdgeInsets.all(25),
         child: Form(
-          child: Column(
+          child: SingleChildScrollView(
+            child: Column(
             children: [
               Text(_isLogin ? 'Log In' : 'Sign Up', style: const TextStyle(fontSize: 25)),
               loginField(_emailController, labelText: "Email", hintText: "Enter valid email like abc@gmail.com"),
@@ -64,6 +65,7 @@ class _LogInState extends State<LogIn> {
                 child: Text(_errorMessage ?? "", style: const TextStyle(color: Colors.red)),
               ),
             ],
+          ),
           ),
         ),
       ),

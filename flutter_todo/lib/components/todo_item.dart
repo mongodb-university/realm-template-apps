@@ -14,7 +14,8 @@ class TodoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final realmServices = Provider.of<RealmServices>(context);
-    return ListTile(
+    return item.isValid
+        ? ListTile(
       leading: Checkbox(
         checkColor: Colors.white,
         fillColor: MaterialStateProperty.resolveWith(getColor),
@@ -23,8 +24,8 @@ class TodoItem extends StatelessWidget {
           await realmServices.updateItem(item, isComplete: value ?? false);
         },
       ),
-      title: Expanded(child: Text(item.summary)),
-      subtitle: Text(item.isComplete ? 'Completed' : 'Incomplete'),
+            title: Text(item.summary),
+            subtitle: Text("${item.isComplete ? 'Completed' : 'Incomplete'} ${item.ownerId == realmServices.currentUser?.id ? ' - mine' : ''}"),
       trailing: PopupMenuButton<MenuOption>(
         onSelected: (menuItem) => handleMenuClick(context, menuItem, item, realmServices),
         itemBuilder: (context) => [
@@ -38,7 +39,8 @@ class TodoItem extends StatelessWidget {
           ),
         ],
       ),
-    );
+          )
+        : Container();
   }
 
   void handleMenuClick(BuildContext context, MenuOption menuItem, Item item, RealmServices realmServices) {

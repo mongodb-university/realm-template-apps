@@ -12,6 +12,7 @@ void main() async {
   final realmConfig = json.decode(await rootBundle.loadString('assets/config/realm.json'));
   String appId = realmConfig['appId'];
   Uri baseUrl = Uri.parse(realmConfig['baseUrl']);
+ 
 
   return runApp(MultiProvider(providers: [
     ChangeNotifierProvider<AppServices>(create: (_) => AppServices(appId, baseUrl)),
@@ -29,6 +30,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentUser = Provider.of<RealmServices?>(context, listen: false)?.currentUser;
+
     return WillPopScope(
       onWillPop: () async => false,
       child: MaterialApp(

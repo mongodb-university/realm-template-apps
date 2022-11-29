@@ -15,6 +15,7 @@ class TodoList extends StatefulWidget {
 class _TodoListState extends State<TodoList> {
   @override
   Widget build(BuildContext context) {
+    final allItems = Provider.of<RealmServices>(context, listen: false).realm.all<Item>();
     return Stack(
       children: [
         Padding(
@@ -25,20 +26,20 @@ class _TodoListState extends State<TodoList> {
                 padding: const EdgeInsets.only(right: 15),
                 child: Consumer<RealmServices>(builder: (context, realmServices, child) {
                   return Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    const Expanded(child: Text("Show completed tasks only", textAlign: TextAlign.right)),
-                    Switch(
-                      value: realmServices.filterOn,
-                      onChanged: (value) async => await realmServices.filterSwitch(value),
-                    ),
-                  ],
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      const Expanded(child: Text("Show only my tasks", textAlign: TextAlign.right)),
+                      Switch(
+                        value: realmServices.filterOn,
+                        onChanged: (value) async => await realmServices.filterSwitch(value),
+                      ),
+                    ],
                   );
                 }),
               ),
               Expanded(
                 child: StreamBuilder<RealmResultsChanges<Item>>(
-                  stream: Provider.of<RealmServices>(context, listen: false).realm.all<Item>().changes,
+                  stream: allItems.changes,
                   builder: (context, snapshot) {
                     final data = snapshot.data;
 
@@ -48,7 +49,7 @@ class _TodoListState extends State<TodoList> {
                     return ListView.builder(
                       shrinkWrap: true,
                       itemCount: results.length,
-                      itemBuilder: (context, index) => TodoItem(results[index]),
+                      itemBuilder: (context, index) => results[index].isValid ? TodoItem(results[index]) : Container(),
                     );
                   },
                 ),
