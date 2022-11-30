@@ -14,8 +14,18 @@ class TodoList extends StatefulWidget {
 
 class _TodoListState extends State<TodoList> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final allItems = Provider.of<RealmServices>(context, listen: false).realm.all<Item>();
+    final realmServices = Provider.of<RealmServices>(context);
     return Stack(
       children: [
         Padding(
@@ -24,22 +34,20 @@ class _TodoListState extends State<TodoList> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(right: 15),
-                child: Consumer<RealmServices>(builder: (context, realmServices, child) {
-                  return Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      const Expanded(child: Text("Show only my tasks", textAlign: TextAlign.right)),
-                      Switch(
-                        value: realmServices.filterOn,
-                        onChanged: (value) async => await realmServices.filterSwitch(value),
-                      ),
-                    ],
-                  );
-                }),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    const Expanded(child: Text("Show All Tasks", textAlign: TextAlign.right)),
+                    Switch(
+                      value: realmServices.showAll,
+                      onChanged: (value) async => await realmServices.switchSubscription(value),
+                    ),
+                  ],
+                ),
               ),
               Expanded(
                 child: StreamBuilder<RealmResultsChanges<Item>>(
-                  stream: allItems.changes,
+                  stream: realmServices.realm.all<Item>().changes,
                   builder: (context, snapshot) {
                     final data = snapshot.data;
 
@@ -48,18 +56,17 @@ class _TodoListState extends State<TodoList> {
                     final results = data.results;
                     return ListView.builder(
                       shrinkWrap: true,
-                      itemCount: results.length,
+                      itemCount: results.realm.isClosed ? 0 : results.length,
                       itemBuilder: (context, index) => results[index].isValid ? TodoItem(results[index]) : Container(),
                     );
                   },
                 ),
               ),
+              const Text("Log in with the same account on another device or simulator to see your list sync in realm-time"),
             ],
           ),
         ),
-        Consumer<RealmServices>(builder: (context, realmServices, child) {
-          return realmServices.isWaiting ? waitingIndicator() : Container();
-        }),
+        realmServices.isWaiting ? waitingIndicator() : Container(),
       ],
     );
   }

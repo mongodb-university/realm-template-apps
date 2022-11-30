@@ -3,10 +3,10 @@ import 'package:realm/realm.dart';
 import 'package:flutter/material.dart';
 
 class RealmServices with ChangeNotifier {
-  static const String queryName = "getItemsSubscriptoion";
-  static const String queryIsCompleteName = "getIsCompleteItemsSubscriptoion";
+  static const String queryAllName = "getAllItemsSubscriptoion";
+  static const String queryMyItemsName = "getMyItemsSubscriptoion";
 
-  bool filterOn = false;
+  bool showAll = false;
   bool offlineModeOn = false;
   bool isWaiting = false;
   late Realm realm;
@@ -17,7 +17,7 @@ class RealmServices with ChangeNotifier {
     if (app.currentUser != null || currentUser != app.currentUser) {
       currentUser ??= app.currentUser;
       realm = Realm(Configuration.flexibleSync(currentUser!, [Item.schema]));
-      filterOn = (realm.subscriptions.findByName(queryIsCompleteName) != null);
+      showAll = (realm.subscriptions.findByName(queryAllName) != null);
       if (realm.subscriptions.isEmpty) {
         updateSubscriptions();
       }
@@ -26,12 +26,12 @@ class RealmServices with ChangeNotifier {
 
   void updateSubscriptions() {
     realm.subscriptions.update((mutableSubscriptions) {
-      mutableSubscriptions.removeByName(queryName);
-      mutableSubscriptions.removeByName(queryIsCompleteName);
-      if (filterOn) {
-        mutableSubscriptions.add(realm.query<Item>(r'owner_id == $0', [currentUser?.id]), name: queryIsCompleteName);
+      mutableSubscriptions.removeByName(queryAllName);
+      mutableSubscriptions.removeByName(queryMyItemsName);
+      if (showAll) {
+        mutableSubscriptions.add(realm.all<Item>(), name: queryAllName);
       } else {
-        mutableSubscriptions.add(realm.all<Item>(), name: queryName);
+        mutableSubscriptions.add(realm.query<Item>(r'owner_id == $0', [currentUser?.id]), name: queryMyItemsName);
       }
     });
   }
@@ -47,8 +47,6 @@ class RealmServices with ChangeNotifier {
         realm.syncSession.resume();
         updateSubscriptions();
         await realm.subscriptions.waitForSynchronization();
-        await realm.syncSession.waitForDownload();
-        await realm.syncSession.waitForUpload();
       } finally {
         isWaiting = false;
       }
@@ -56,15 +54,14 @@ class RealmServices with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> filterSwitch(bool value) async {
-    filterOn = value;
+  Future<void> switchSubscription(bool value) async {
+    showAll = value;
     updateSubscriptions();
     if (!offlineModeOn) {
       try {
         isWaiting = true;
         notifyListeners();
         await realm.subscriptions.waitForSynchronization();
-        await realm.syncSession.waitForDownload();
       } finally {
         isWaiting = false;
       }
