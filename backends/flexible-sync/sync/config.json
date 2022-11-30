@@ -7,21 +7,18 @@
     "permissions": {
         "rules": {},
         "defaultRoles": [
-            {
-                "name": "owner-read-write",
-                "applyWhen": {},
-                "read": {
-                    "owner_id": "%%user.id"
-                },
-                "write": {
-                    "owner_id": "%%user.id"
-                }
+        {
+            "name": "owner-write",
+            "applyWhen": {},
+            "read": true,
+            "write": {
+                "owner_id": "%%user.id"
             }
+        }
         ]
     },
     "queryable_fields_names": [
         "_id",
-        "owner_id",
-        "isComplete"
+        "owner_id"
     ]
 }
