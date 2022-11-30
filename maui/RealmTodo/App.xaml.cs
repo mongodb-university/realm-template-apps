@@ -1,24 +1,15 @@
-﻿namespace RealmTodo;
+﻿using RealmTodo.Services;
+
+namespace RealmTodo;
 
 public partial class App : Application
 {
-    public static Realms.Sync.App RealmApp;
-
     public App()
     {
         InitializeComponent();
 
-        var appId = GetAppId();
-        RealmApp = Realms.Sync.App.Create(appId);
+        RealmService.Init();
 
         MainPage = new AppShell();
     }
-
-    private string GetAppId()
-    {
-
-    }
-
-
 }
-

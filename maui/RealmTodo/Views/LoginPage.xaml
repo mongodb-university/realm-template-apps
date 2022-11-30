@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:RealmTodo.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="RealmTodo.Views.LoginPage">
+             x:Class="RealmTodo.Views.LoginPage"
+             Shell.NavBarIsVisible="false">
     <ContentPage.BindingContext>
         <vm:LoginViewModel />
     </ContentPage.BindingContext>
@@ -14,25 +15,30 @@
     </ContentPage.Behaviors>
     <VerticalStackLayout
         Padding="30"
-        Spacing="15">
+        Spacing="15"
+        VerticalOptions="StartAndExpand">
         <Label 
             Text="Login"
             VerticalOptions="Center" 
             HorizontalOptions="Center"
-            FontSize="Header"/>
-        <Entry Placeholder="Email"/>
-        <Entry Placeholder="Password"/>
+            FontSize="Title"
+            Margin="0,100,0,100"/>
+        <Entry Keyboard="Email" Placeholder="Email" Text="{Binding Email}"/>
+        <Entry Keyboard="Plain" IsPassword="True" Placeholder="Password" Text="{Binding Password}"/>
         <Button Text="Create account" Command="{Binding SignUpCommand}"/>
-
-                <Label Margin="0,25,0,0"
-                       VerticalOptions="Center"
-                       HorizontalOptions="Center"
-                       TextColor="{DynamicResource Primary}"
-                       Text="Already have an account? Log in">
-                 <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding LoginCommand}" />
-                </Label.GestureRecognizers>
-            </Label>
-
+        <Label Margin="5"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                TextColor="{DynamicResource Primary}"
+                Text="Already have an account? Log in">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding LoginCommand}" />
+            </Label.GestureRecognizers>
+        </Label>
+        <Label
+            Text="Please log in or register with a Device Sync user account. This is separate from your Atlas Cloud login"
+            FontSize="Caption"
+            HorizontalTextAlignment="Center"
+            Margin="0, 20"/>
     </VerticalStackLayout>
 </ContentPage>

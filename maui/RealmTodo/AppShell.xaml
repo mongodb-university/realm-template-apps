@@ -12,7 +12,7 @@
         Route="LoginPage" />
 
     <ShellContent
-        Title="Your To-Do list"
+        Title="RealmTodo"
         ContentTemplate="{DataTemplate local:ItemsPage}"
         Route="ItemsPage" />
 
