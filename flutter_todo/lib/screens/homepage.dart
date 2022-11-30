@@ -14,6 +14,7 @@ class HomePage extends StatelessWidget {
         : Scaffold(
       appBar: TodoAppBar(),
       body: const TodoList(),
+            floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
             floatingActionButton: const CreateItemAction(),
     );
   }

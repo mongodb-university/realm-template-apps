@@ -56,3 +56,51 @@ RadioListTile<bool> radioButton(String text, bool value, ValueNotifier<bool> con
     groupValue: controller.value,
   );
 }
+
+Widget styledBox({Widget? child}) {
+  return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(color: Color.fromARGB(255, 205, 202, 202)),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+        child: child,
+      ));
+}
+
+Widget styledFloatingAddButton(BuildContext context, {required void Function() onPressed}) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 5),
+    child: FloatingActionButton(
+      elevation: 0,
+      backgroundColor: Colors.white,
+      onPressed: onPressed,
+      tooltip: 'Add',
+      child: const Padding(
+        padding: EdgeInsets.all(3),
+        child: CircleAvatar(
+          radius: 26,
+          backgroundColor: Colors.blue,
+          child: Icon(Icons.add),
+        ),
+      ),
+    ),
+  );
+}
+
+SnackBar errorMessageWidget(String message) {
+  return SnackBar(
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      content: SizedBox(
+          height: 80,
+          child: Center(
+            child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    color: const Color.fromARGB(255, 244, 223, 221),
+                    borderRadius: const BorderRadius.all(Radius.circular(8))),
+                child: Text(message, style: const TextStyle(color: Color.fromARGB(255, 113, 18, 11)))),
+          )));
+}

@@ -8,15 +8,12 @@ class CreateItemAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () => showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (_) => Wrap(children: const [CreateItemForm()]),
-      ),
-      tooltip: 'Add',
-      child: const Icon(Icons.add),
-    );
+    return styledFloatingAddButton(context,
+        onPressed: () => showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (_) => Wrap(children: const [CreateItemForm()]),
+            ));
   }
 }
 

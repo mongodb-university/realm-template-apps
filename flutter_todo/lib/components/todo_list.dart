@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/components/todo_item.dart';
+import 'package:flutter_todo/components/widgets.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/realm_services.dart';
@@ -28,14 +29,10 @@ class _TodoListState extends State<TodoList> {
     final realmServices = Provider.of<RealmServices>(context);
     return Stack(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
+        Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 15),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
+            styledBox(
+              child: Row(
                   children: [
                     const Expanded(child: Text("Show All Tasks", textAlign: TextAlign.right)),
                     Switch(
@@ -43,9 +40,11 @@ class _TodoListState extends State<TodoList> {
                       onChanged: (value) async => await realmServices.switchSubscription(value),
                     ),
                   ],
-                ),
               ),
-              Expanded(
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                 child: StreamBuilder<RealmResultsChanges<Item>>(
                   stream: realmServices.realm.all<Item>().changes,
                   builder: (context, snapshot) {
@@ -62,9 +61,17 @@ class _TodoListState extends State<TodoList> {
                   },
                 ),
               ),
-              const Text("Log in with the same account on another device or simulator to see your list sync in realm-time"),
-            ],
-          ),
+            ),
+            styledBox(
+              child: const Expanded(
+                child: Text(
+                  '''Log in with the same account on another device
+or simulator to see your list sync in realm-time''',
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ),
+          ],
         ),
         realmServices.isWaiting ? waitingIndicator() : Container(),
       ],
