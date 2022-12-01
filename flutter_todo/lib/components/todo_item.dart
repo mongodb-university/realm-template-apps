@@ -65,7 +65,7 @@ class TodoItem extends StatelessWidget {
           );
         } else {
           showError(context, '''You are not allowed to edit tasks
-            that don't belogs to you.''');
+            that don't belog to you.''');
         }
         break;
       case MenuOption.delete:
@@ -73,7 +73,7 @@ class TodoItem extends StatelessWidget {
           realmServices.deleteItem(item);
         } else {
           showError(context, '''You are not allowed to delete tasks
-            that don't belogs to you.''');
+            that don't belog to you.''');
         }
 
         break;
