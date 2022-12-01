@@ -87,7 +87,8 @@ Widget styledFloatingAddButton(BuildContext context, {required void Function() o
   );
 }
 
-SnackBar errorMessageWidget(String message) {
+SnackBar errorMessageWidget(String title, String message) {
+  final textColor = Color.fromARGB(255, 113, 18, 11);
   return SnackBar(
       behavior: SnackBarBehavior.floating,
       backgroundColor: Colors.transparent,
@@ -95,7 +96,7 @@ SnackBar errorMessageWidget(String message) {
       dismissDirection: DismissDirection.none,
       elevation: 0,
       content: SizedBox(
-          height: 80,
+          height: 95,
           child: Center(
             child: Container(
                 padding: const EdgeInsets.all(16),
@@ -103,6 +104,11 @@ SnackBar errorMessageWidget(String message) {
                     border: Border.all(color: Colors.black),
                     color: const Color.fromARGB(255, 244, 223, 221),
                     borderRadius: const BorderRadius.all(Radius.circular(8))),
-                child: Text(message, style: const TextStyle(color: Color.fromARGB(255, 113, 18, 11)))),
+                child: Column(
+                  children: [
+                    Text(title, style: TextStyle(color: textColor, fontWeight: FontWeight.bold)),
+                    Text(message, style: TextStyle(color: textColor)),
+                  ],
+                )),
           )));
 }

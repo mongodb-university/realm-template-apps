@@ -23,7 +23,12 @@ class TodoItem extends StatelessWidget {
               fillColor: MaterialStateProperty.resolveWith(getColor),
               value: item.isComplete,
               onChanged: (bool? value) async {
-                await realmServices.updateItem(item, isComplete: value ?? false);
+                if (item.ownerId == realmServices.currentUser?.id) {
+                  await realmServices.updateItem(item, isComplete: value ?? false);
+                } else {
+                  showError(context, "Edit not allowed!", '''You are not allowed to edit tasks
+            that don't belog to you.''');
+                }
               },
             ),
             title: Text(item.summary),
@@ -64,7 +69,7 @@ class TodoItem extends StatelessWidget {
             builder: (_) => Wrap(children: [ModifyItemForm(item)]),
           );
         } else {
-          showError(context, '''You are not allowed to edit tasks
+          showError(context, "Edit not allowed!", '''You are not allowed to edit tasks
             that don't belog to you.''');
         }
         break;
@@ -72,7 +77,7 @@ class TodoItem extends StatelessWidget {
         if (item.ownerId == realmServices.currentUser?.id) {
           realmServices.deleteItem(item);
         } else {
-          showError(context, '''You are not allowed to delete tasks
+          showError(context, "Delete not allowed!", '''You are not allowed to delete tasks
             that don't belog to you.''');
         }
 
@@ -80,10 +85,10 @@ class TodoItem extends StatelessWidget {
     }
   }
 
-  void showError(BuildContext context, String error, {int durationInSeconds = 15}) {
+  void showError(BuildContext context, String title, String error, {int durationInSeconds = 15}) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
-      errorMessageWidget(error),
+      errorMessageWidget(title, error),
     );
     Future.delayed(Duration(seconds: durationInSeconds)).then((value) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
