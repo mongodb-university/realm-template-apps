@@ -1,38 +1,41 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useReducer} from 'react';
 import {Pressable, StyleSheet} from 'react-native';
 import {Icon} from 'react-native-elements';
-import RealmContext from './RealmContext';
+import { ConnectionNotificationCallback } from 'realm';
+import {realmContext} from './RealmContext';
 
-const {useRealm} = RealmContext;
+const {useRealm} = realmContext;
 
 export function OfflineModeButton() {
   const realm = useRealm();
 
-  const [offlineMode, setOfflineMode] = React.useState(
-    realm.syncSession?.state === 'inactive',
-  );
-  // The signOut function calls the logOut function on the currently
-  // logged in user and then navigates to the welcome screen
+  // This forces a rerender when modifying the sync session
+  // https://reactjs.org/docs/hooks-faq.html#is-there-something-like-forceupdate
+  const [, rerender] = useReducer(x => x + 1, 0);
 
+  // Call the rerender function when the connection state changes
   useEffect(() => {
-    if (realm.syncSession?.state === 'active' && offlineMode === true) {
-      realm.syncSession.pause();
-    } else if (
-      realm.syncSession?.state === 'inactive' &&
-      offlineMode === false
-    ) {
-      realm.syncSession.resume();
+    const notificationCallback: ConnectionNotificationCallback = (newState) => {
+      rerender()
     }
-  }, [offlineMode, realm]);
+    realm.syncSession?.addConnectionNotification(notificationCallback);
+    return () => {
+      realm.syncSession?.removeConnectionNotification(notificationCallback)
+    }
+  }, [realm, rerender])
 
   return (
     <Pressable
       onPress={() => {
-        setOfflineMode(!offlineMode);
+        if (realm.syncSession?.state === 'active') {
+          realm.syncSession.pause();
+        } else if (realm.syncSession?.state === 'inactive') {
+          realm.syncSession.resume();
+        }
       }}>
       <Icon
         style={styles.icon}
-        name={offlineMode ? 'wifi-off' : 'wifi'}
+        name={realm.syncSession?.state === 'active' ? 'wifi' : 'wifi-off'}
         type="material"
         tvParallaxProperties={undefined}
       />

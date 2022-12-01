@@ -2,49 +2,42 @@ import React, {useCallback, useState, useEffect} from 'react';
 import {BSON} from 'realm';
 import {useUser} from '@realm/react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {FlatList, StyleSheet, Switch, Text, View} from 'react-native';
+import {Alert, FlatList, StyleSheet, Switch, Text, View} from 'react-native';
 import {Button, Overlay, ListItem, Icon} from 'react-native-elements';
 
 import {CreateToDoPrompt} from './CreateToDoPrompt';
-import realmContext from './RealmContext';
+import {realmContext} from './RealmContext';
 
 import {Item} from './ItemSchema';
 
 const {useRealm, useQuery} = realmContext;
 
+const itemSubscriptionName = 'items';
+
 export function ItemListView() {
   const realm = useRealm();
-  const items = useQuery(Item);
+  const items = useQuery(Item).sorted('_id');
   const user = useUser();
 
   const [showNewItemOverlay, setShowNewItemOverlay] = useState(false);
-  const [showCompletedItems, setShowCompletedItems] = useState(false);
+  const [showAllItems, setShowAllItems] = useState(false);
 
+  // This effect will initialize the subscription to the items collection
+  // By default it will filter out all items that do not belong to the current user
   useEffect(() => {
-    const ownItems = realm
-      .objects(Item)
-      .filtered(
-        `owner_id == "${user?.id}"${
-          showCompletedItems ? '' : ' AND isComplete == false'
-        }`,
-      );
+    const subscribedItems = showAllItems
+      ? realm.objects(Item)
+      : realm.objects(Item).filtered(`owner_id == "${user?.id}"`);
     // initialize the subscriptions
     const updateSubscriptions = async () => {
       await realm.subscriptions.update(mutableSubs => {
         // subscribe to all of the logged in user's to-do items
         // use the same name as the initial subscription to update it
-        mutableSubs.add(ownItems, {name: 'ownItems'});
+        mutableSubs.add(subscribedItems, {name: itemSubscriptionName});
       });
     };
     updateSubscriptions();
-
-    // unsubscribe from 'ownItems' when the component unmounts
-    return () => {
-      realm.subscriptions.update(mutableSubs => {
-        mutableSubs.remove(ownItems);
-      });
-    };
-  }, [realm, user, showCompletedItems]);
+  }, [realm, user, showAllItems]);
 
   // createItem() takes in a summary and then creates an Item object with that summary
   const createItem = useCallback(
@@ -66,12 +59,16 @@ export function ItemListView() {
       // if the realm exists, get the Item with a particular _id and delete it
       const item = realm.objectForPrimaryKey(Item, id); // search for a realm object with a primary key that is an objectId
       if (item) {
-        realm.write(() => {
-          realm.delete(item);
-        });
+        if (item.owner_id !== user?.id) {
+          Alert.alert("You can't delete someone else's task!");
+        } else {
+          realm.write(() => {
+            realm.delete(item);
+          });
+        }
       }
     },
-    [realm],
+    [realm, user],
   );
   // toggleItemIsComplete() updates an Item with a particular _id to be 'completed'
   const toggleItemIsComplete = useCallback(
@@ -79,22 +76,26 @@ export function ItemListView() {
       // if the realm exists, get the Item with a particular _id and update it's 'isCompleted' field
       const item = realm.objectForPrimaryKey(Item, id); // search for a realm object with a primary key that is an objectId
       if (item) {
-        realm.write(() => {
-          item.isComplete = !item.isComplete;
-        });
+        if (item.owner_id !== user?.id) {
+          Alert.alert("You can't modify someone else's task!");
+        } else {
+          realm.write(() => {
+            item.isComplete = !item.isComplete;
+          });
+        }
       }
     },
-    [realm],
+    [realm, user],
   );
 
   return (
     <SafeAreaProvider>
       <View style={styles.viewWrapper}>
         <View style={styles.toggleRow}>
-          <Text style={styles.toggleText}>Show Completed Items</Text>
+          <Text style={styles.toggleText}>Show All Tasks</Text>
           <Switch
-            onValueChange={() => setShowCompletedItems(!showCompletedItems)}
-            value={showCompletedItems}
+            onValueChange={() => setShowAllItems(!showAllItems)}
+            value={showAllItems}
           />
         </View>
         <Overlay
@@ -121,6 +122,9 @@ export function ItemListView() {
               <ListItem.Title style={styles.itemTitle}>
                 {item.summary}
               </ListItem.Title>
+              <ListItem.Subtitle style={styles.itemSubtitle}>
+                {item.owner_id === user?.id ? '(mine)' : ''}
+              </ListItem.Subtitle>
               <ListItem.CheckBox
                 checked={item.isComplete}
                 iconType="material"
@@ -186,6 +190,10 @@ const styles = StyleSheet.create({
   itemTitle: {
     flex: 1,
   },
+  itemSubtitle: {
+    color: '#979797',
+    flex: 1,
+  },
   list: {},
   listFooter: {
     backgroundColor: '#f00',
@@ -193,10 +201,10 @@ const styles = StyleSheet.create({
   toggleRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    padding: 12,
   },
   toggleText: {
     flex: 1,
-    padding: 12,
     fontSize: 16,
   },
 });

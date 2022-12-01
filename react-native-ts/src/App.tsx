@@ -9,7 +9,7 @@ import {appId, baseUrl} from '../realm.json';
 import {LogoutButton} from './LogoutButton';
 import {WelcomeView} from './WelcomeView';
 import {ItemListView} from './ItemListView';
-import realmContext from './RealmContext';
+import {realmContext} from './RealmContext';
 import {OfflineModeButton} from './OfflineModeButton';
 
 const {RealmProvider} = realmContext;
@@ -48,13 +48,8 @@ const App = () => {
       <RealmProvider
         sync={{
           flexible: true,
-          initialSubscriptions: {
-            update: (subs, realm) => {
-              // subscribe to all of the logged in user's to-do items
-              subs.add(realm.objects('Item'), {name: 'ownItems'});
-            },
-          },
           onError: (_, error) => {
+            // Show sync errors in the console
             console.error(error);
           },
         }}
@@ -76,7 +71,7 @@ const App = () => {
           <View style={styles.footer}>
             <Text style={styles.footerText}>
               Log in with the same account on another device or simulator to see
-              your list sync in real-time
+              your list sync in real time
             </Text>
           </View>
         </SafeAreaProvider>
