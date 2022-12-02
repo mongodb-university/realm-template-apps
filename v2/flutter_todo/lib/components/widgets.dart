@@ -92,11 +92,11 @@ SnackBar errorMessageWidget(String title, String message) {
   return SnackBar(
       behavior: SnackBarBehavior.floating,
       backgroundColor: Colors.transparent,
-      margin: const EdgeInsets.only(bottom: 200.0),
+      margin: const EdgeInsets.only(bottom: 100.0),
       dismissDirection: DismissDirection.none,
       elevation: 0,
       content: SizedBox(
-          height: 95,
+          height: 105,
           child: Center(
             child: Container(
                 padding: const EdgeInsets.all(16),
@@ -107,7 +107,9 @@ SnackBar errorMessageWidget(String title, String message) {
                 child: Column(
                   children: [
                     Text(title, style: TextStyle(color: textColor, fontWeight: FontWeight.bold)),
-                    Text(message, style: TextStyle(color: textColor)),
+                    Expanded(
+                        child:
+                            Text(message, style: TextStyle(color: textColor))),
                   ],
                 )),
           )));
