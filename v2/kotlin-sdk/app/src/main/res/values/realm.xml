@@ -1,0 +1,4 @@
+<resources>
+  <string name="realm_app_id">todo-sync-zpqwm</string>
+  <string name="realm_base_url">https://realm.mongodb.com</string>
+</resources>

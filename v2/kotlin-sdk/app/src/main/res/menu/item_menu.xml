@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".CounterActivity">
+    <item
+        android:id="@+id/action_airplane_mode"
+        android:icon="@drawable/ic_baseline_wifi_24_white"
+        android:title="@string/airplane_mode"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_logout"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_logout_24_white"
+        android:text="@string/log_out"
+        android:title="@string/log_out"
+        app:showAsAction="always" />
+</menu>
