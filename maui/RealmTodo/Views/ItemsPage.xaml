@@ -4,15 +4,16 @@
              x:Class="RealmTodo.Views.ItemsPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:vm="clr-namespace:RealmTodo.ViewModels"
-             BackgroundColor="BlanchedAlmond">
+             BackgroundColor="BlanchedAlmond"
+             x:Name="itemsPage">
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior
             EventName="Appearing"
             Command="{Binding AppearingCommand}" />
     </ContentPage.Behaviors>
     <ContentPage.ToolbarItems>
-            <ToolbarItem Text="Change Connection Status" Order="Primary" IconImageSource="{Binding ConnectionStatusIcon}" Command="{Binding ChangeConnectionStatusCommand}" />
-            <ToolbarItem Text="Logout" Order="Primary" IconImageSource="logout.png" Command="{Binding AddItemCommand}"/>
+        <ToolbarItem Text="Change Connection Status" Order="Primary" IconImageSource="{Binding ConnectionStatusIcon}" Command="{Binding ChangeConnectionStatusCommand}" />
+        <ToolbarItem Text="Logout" Order="Primary" IconImageSource="logout.png" Command="{Binding LogoutCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.BindingContext>
         <vm:ItemsViewModel />
@@ -26,36 +27,52 @@
         </Grid.RowDefinitions>
         <StackLayout Orientation="Horizontal"
                      BackgroundColor="LightGray"
-            Padding="20"
-            Spacing="15">
+                     Padding="20"
+                     Spacing="15">
             <Label HorizontalTextAlignment="End"
                 Text="Show all tasks"
-                FontSize="Medium"
+                FontSize="Default"
                 HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
             <Switch HorizontalOptions="End" VerticalOptions="Center"/>
         </StackLayout>
-        <!--The animation don't look with this, but the other layouts are problematic
-        Also at least I should convert this to a normal stack layout-->
-        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Items}"
-                             Grid.Row="1"
-             BackgroundColor="Red">
-            <BindableLayout.ItemTemplate>
-            <DataTemplate>
-                <HorizontalStackLayout>
-                    <CheckBox IsChecked="{Binding IsComplete}" VerticalOptions="Center"  />
-                    <Label Text="{Binding Summary}"
+        <ListView ItemsSource="{Binding Items}"
+                  SelectionMode="None"
+             Grid.Row="1">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal" Padding="5">
+                            <CheckBox IsChecked="{Binding IsComplete}" VerticalOptions="Center"  />
+                            <Label Text="{Binding Summary}"
                             HorizontalOptions="FillAndExpand"
-                            VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-            </DataTemplate>
-            </BindableLayout.ItemTemplate>
-        </VerticalStackLayout>
-        <Button Grid.Row="2"
+                            VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Path=BindingContext.EditItemCommand, Source={x:Reference itemsPage}}"
+                                    CommandParameter="{Binding .}"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <Button Text="X"
+                                    FontSize="Large"
+                                    BackgroundColor="Transparent"
+                                    TextColor="Black"
+                                    VerticalOptions="Center" HorizontalOptions="End"
+                                    Command="{Binding Path=BindingContext.DeleteItemCommand, Source={x:Reference itemsPage}}"
+                                    CommandParameter="{Binding .}"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Border BackgroundColor="White"
+                StrokeThickness="0"
+               Padding="8" Grid.Row="2">
+            <Button 
                 Margin="5"
                 Text="Add new To-do"
                 FontSize="Medium"
                 Command="{Binding AddItemCommand}"
             />
+        </Border>
         <Label Grid.Row="3"
                Padding="10"
                BackgroundColor="BlanchedAlmond"

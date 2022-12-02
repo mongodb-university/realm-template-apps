@@ -34,16 +34,47 @@ namespace RealmTodo.ViewModels
         [RelayCommand]
         public async Task Logout()
         {
-
+            await realm.WriteAsync(() =>
+            {
+                realm.RemoveAll<Item>();
+            });
         }
 
         [RelayCommand]
         public async Task AddItem()
         {
+            var promptResult = await DialogService.ShowPromptAsync("New item");
+
+            if (!string.IsNullOrEmpty(promptResult))
+            {
+                await realm.WriteAsync(() =>
+                {
+                    var item = new Item() { OwnerId = currentUserId, IsComplete = false, Summary = promptResult };
+                    realm.Add(item);
+                });
+            }
+        }
+
+        [RelayCommand]
+        public async Task EditItem(Item item)
+        {
+            var promptResult = await DialogService.ShowPromptAsync("Edit item", item.Summary);
+
+            if (!string.IsNullOrEmpty(promptResult))
+            {
+                await realm.WriteAsync(() =>
+                {
+                    item.Summary = promptResult;
+                });
+            }
+        }
+
+        [RelayCommand]
+        public async Task DeleteItem(Item item)
+        {
             await realm.WriteAsync(() =>
             {
-                var item = new Item() { OwnerId = currentUserId, IsComplete = false, Summary = "Test" };
-                realm.Add(item);
+                realm.Remove(item);
             });
         }
 

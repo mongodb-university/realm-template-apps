@@ -9,6 +9,11 @@ namespace RealmTodo.Services
         {
             return Application.Current.MainPage.DisplayAlert(title, message, accept);
         }
+
+        public static Task<string> ShowPromptAsync(string title, string initialValue = "")
+        {
+            return Application.Current.MainPage.DisplayPromptAsync(title, "", initialValue: initialValue);
+        }
     }
 }
 
