@@ -1,26 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter_todo/realm/realm_services.dart';
 import 'dart:convert';
 import 'package:provider/provider.dart';
+import 'package:realm/realm.dart';
 import 'package:flutter_todo/realm/app_services.dart';
+import 'package:flutter_todo/realm/init_realm.dart';
 import 'package:flutter_todo/screens/homepage.dart';
 import 'package:flutter_todo/screens/log_in.dart';
 
 void main() async {
+  // get app id from config
   WidgetsFlutterBinding.ensureInitialized();
-  final realmConfig = json.decode(await rootBundle.loadString('assets/config/realm.json'));
+  final realmConfig =
+      json.decode(await rootBundle.loadString('assets/config/realm.json'));
   String appId = realmConfig['appId'];
   Uri baseUrl = Uri.parse(realmConfig['baseUrl']);
- 
 
   return runApp(MultiProvider(providers: [
-    ChangeNotifierProvider<AppServices>(create: (_) => AppServices(appId, baseUrl)),
-    ChangeNotifierProxyProvider<AppServices, RealmServices?>(
-        create: (context) => null, //RealmServices could be initialize only if the user is logged in.
-        update: (BuildContext context, AppServices appServices, RealmServices? realmServices) {
-          return appServices.app.currentUser != null ? RealmServices(appServices.app) : null;
-        }),
+    ChangeNotifierProvider<AppServices>(
+        create: (_) => AppServices(appId, baseUrl)),
+    ProxyProvider<AppServices, Realm?>(
+      update: (context, app, previousRealm) {
+        if (app.currentUser != null) {
+          previousRealm?.close();
+          return initRealm(app.currentUser!);
+        }
+        return null;
+      },
+      dispose: (_, realm) => realm?.close(),
+    )
   ], child: const App()));
 }
 
@@ -29,8 +37,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentUser = Provider.of<RealmServices?>(context, listen: false)?.currentUser;
-
+    final currentUser =
+        Provider.of<AppServices>(context, listen: false).currentUser;
     return WillPopScope(
       onWillPop: () async => false,
       child: MaterialApp(
@@ -39,7 +47,10 @@ class App extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         initialRoute: currentUser != null ? '/' : '/login',
-        routes: {'/': (context) => const HomePage(), '/login': (context) => LogIn()},
+        routes: {
+          '/': (context) => const HomePage(),
+          '/login': (context) => LogIn()
+        },
       ),
     );
   }
