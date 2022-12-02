@@ -30,16 +30,16 @@ class _TodoListState extends State<TodoList> {
     return Stack(
       children: [
         Column(
-            children: [
+          children: [
             styledBox(
               child: Row(
-                  children: [
-                    const Expanded(child: Text("Show All Tasks", textAlign: TextAlign.right)),
-                    Switch(
-                      value: realmServices.showAll,
-                      onChanged: (value) async => await realmServices.switchSubscription(value),
-                    ),
-                  ],
+                children: [
+                  const Expanded(child: Text("Show All Tasks", textAlign: TextAlign.right)),
+                  Switch(
+                    value: realmServices.showAll,
+                    onChanged: (value) async => await realmServices.switchSubscription(value),
+                  ),
+                ],
               ),
             ),
             Expanded(
@@ -65,8 +65,7 @@ class _TodoListState extends State<TodoList> {
             styledBox(
               child: const Expanded(
                 child: Text(
-                  '''Log in with the same account on another device
-or simulator to see your list sync in realm-time''',
+                  "Log in with the same account on another \n device to see your list sync in realm-time",
                   textAlign: TextAlign.left,
                 ),
               ),

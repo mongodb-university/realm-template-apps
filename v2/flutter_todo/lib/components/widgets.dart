@@ -11,20 +11,16 @@ Widget formLayout(BuildContext context, Widget? contentWidget) {
           )));
 }
 
-Widget loginField(TextEditingController controller,
-    {String? labelText, String? hintText, bool? obscure}) {
+Widget loginField(TextEditingController controller, {String? labelText, String? hintText, bool? obscure}) {
   return Padding(
     padding: const EdgeInsets.all(15),
     child: TextField(
         obscureText: obscure ?? false,
         controller: controller,
-        decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            labelText: labelText,
-            hintText: hintText)),
+        decoration: InputDecoration(border: const OutlineInputBorder(), labelText: labelText, hintText: hintText)),
   );
 }
-  
+
 Widget templateButton(BuildContext context, {Color color = Colors.grey, String text = "button", void Function()? onPressed}) {
   return Container(
     margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -74,9 +70,10 @@ RadioListTile<bool> radioButton(String text, bool value, ValueNotifier<bool> con
 Widget styledBox({Widget? child}) {
   return Container(
       width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 15),
       decoration: const BoxDecoration(color: Color.fromARGB(255, 205, 202, 202)),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+        padding: const EdgeInsets.fromLTRB(15, 8, 15, 8),
         child: child,
       ));
 }
@@ -121,9 +118,7 @@ SnackBar errorMessageWidget(String title, String message) {
                 child: Column(
                   children: [
                     Text(title, style: TextStyle(color: textColor, fontWeight: FontWeight.bold)),
-                    Expanded(
-                        child:
-                            Text(message, style: TextStyle(color: textColor))),
+                    Expanded(child: Text(message, style: TextStyle(color: textColor))),
                   ],
                 )),
           )));

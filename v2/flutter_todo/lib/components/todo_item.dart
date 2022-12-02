@@ -26,8 +26,7 @@ class TodoItem extends StatelessWidget {
                 if (item.ownerId == realmServices.currentUser?.id) {
                   await realmServices.updateItem(item, isComplete: value ?? false);
                 } else {
-                  showError(context, "Edit not allowed!", '''You are not allowed to edit tasks
-            that don't belog to you.''');
+                  showError(context, "Change not allowed!", "You are not allowed to change the status of \n tasks that don't belog to you.");
                 }
               },
             ),
@@ -69,16 +68,14 @@ class TodoItem extends StatelessWidget {
             builder: (_) => Wrap(children: [ModifyItemForm(item)]),
           );
         } else {
-          showError(context, "Edit not allowed!", '''You are not allowed to edit tasks
-            that don't belog to you.''');
+          showError(context, "Edit not allowed!", "You are not allowed to edit tasks \nthat don't belog to you.");
         }
         break;
       case MenuOption.delete:
         if (item.ownerId == realmServices.currentUser?.id) {
           realmServices.deleteItem(item);
         } else {
-          showError(context, "Delete not allowed!", '''You are not allowed to delete tasks
-            that don't belog to you.''');
+          showError(context, "Delete not allowed!", "You are not allowed to delete tasks \n that don't belog to you.");
         }
         break;
     }
