@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RealmTodo.Views.ItemsPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:vm="clr-namespace:RealmTodo.ViewModels">
+             xmlns:vm="clr-namespace:RealmTodo.ViewModels"
+             BackgroundColor="BlanchedAlmond">
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior
             EventName="Appearing"
@@ -18,22 +19,48 @@
     </ContentPage.BindingContext>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="50" />
+            <RowDefinition Height="70" />
+            <RowDefinition Height="60" />
         </Grid.RowDefinitions>
-        <CollectionView ItemsSource="{Binding Items}" BackgroundColor="PaleVioletRed"
-                  VerticalOptions="Start" Grid.Row="0">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                        <HorizontalStackLayout>
-                            <CheckBox IsChecked="{Binding IsComplete}" VerticalOptions="Center"  />
-                            <Label Text="{Binding Summary}"
-                                    HorizontalOptions="FillAndExpand"
-                                    VerticalOptions="Center"/>
-                        </HorizontalStackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-        <Label Text="Test" Grid.Row="1" BackgroundColor="Blue"/>
+        <StackLayout Orientation="Horizontal"
+                     BackgroundColor="LightGray"
+            Padding="20"
+            Spacing="15">
+            <Label HorizontalTextAlignment="End"
+                Text="Show all tasks"
+                FontSize="Medium"
+                HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+            <Switch HorizontalOptions="End" VerticalOptions="Center"/>
+        </StackLayout>
+        <!--The animation don't look with this, but the other layouts are problematic
+        Also at least I should convert this to a normal stack layout-->
+        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Items}"
+                             Grid.Row="1"
+             BackgroundColor="Red">
+            <BindableLayout.ItemTemplate>
+            <DataTemplate>
+                <HorizontalStackLayout>
+                    <CheckBox IsChecked="{Binding IsComplete}" VerticalOptions="Center"  />
+                    <Label Text="{Binding Summary}"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+            </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </VerticalStackLayout>
+        <Button Grid.Row="2"
+                Margin="5"
+                Text="Add new To-do"
+                FontSize="Medium"
+                Command="{Binding AddItemCommand}"
+            />
+        <Label Grid.Row="3"
+               Padding="10"
+               BackgroundColor="BlanchedAlmond"
+            Text="Log in with the same account on another device or simulator to see your list sync in real-time"
+            FontSize="Micro"
+            HorizontalTextAlignment="Center"/>
     </Grid>
 </ContentPage>

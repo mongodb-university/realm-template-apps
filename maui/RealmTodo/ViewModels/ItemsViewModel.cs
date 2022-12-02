@@ -20,16 +20,15 @@ namespace RealmTodo.ViewModels
         [RelayCommand]
         public async Task OnAppearing()
         {
-            //realm = await RealmService.GetRealmAsync();
-            //currentUserId = RealmService.App.CurrentUser.Id;
-            //Items = realm.All<Item>();
+            realm = await RealmService.GetRealmAsync();
+            currentUserId = RealmService.App.CurrentUser.Id;
+            Items = realm.All<Item>();
+            OnPropertyChanged(nameof(Items));
 
-            //OnPropertyChanged(nameof(Items));
-
-            //if (realm.Subscriptions.Count == 0)
-            //{
-            //    await ChangeSubscription(SubscriptionType.Mine);
-            //}
+            if (realm.Subscriptions.Count == 0)
+            {
+                await ChangeSubscription(SubscriptionType.Mine);
+            }
         }
 
         [RelayCommand]
@@ -43,7 +42,6 @@ namespace RealmTodo.ViewModels
         {
             await realm.WriteAsync(() =>
             {
-                realm.RemoveAll<Item>();
                 var item = new Item() { OwnerId = currentUserId, IsComplete = false, Summary = "Test" };
                 realm.Add(item);
             });
