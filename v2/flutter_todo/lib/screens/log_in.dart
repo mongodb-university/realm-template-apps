@@ -85,7 +85,7 @@ class _LogInState extends State<LogIn> {
   void clearError() {
     if (_errorMessage != null) {
       setState(() {
-        // reset error message when user starts typing
+        // Reset error message when user starts typing
         _errorMessage = null;
       });
     }
