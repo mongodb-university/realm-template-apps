@@ -15,10 +15,16 @@ namespace RealmTodo.Services
             App = Realms.Sync.App.Create(appId);
         }
 
-        public static void GetRealm()
+        public static async Task<Realm> GetRealmAsync()
         {
             var config = new FlexibleSyncConfiguration(App.CurrentUser);
-            var realm = Realm.GetInstance(config);
+            return await Realm.GetInstanceAsync(config);
+        }
+
+        public static Realm GetRealm()
+        {
+            var config = new FlexibleSyncConfiguration(App.CurrentUser);
+            return Realm.GetInstance(config);
         }
     }
 }

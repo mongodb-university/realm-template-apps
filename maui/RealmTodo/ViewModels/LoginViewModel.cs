@@ -17,8 +17,6 @@ namespace RealmTodo.ViewModels
         [RelayCommand]
         public async Task OnAppearing()
         {
-            Debug.WriteLine("OnAppearing");
-
             if (RealmService.App.CurrentUser != null)
             {
                 await GoToMainPage();

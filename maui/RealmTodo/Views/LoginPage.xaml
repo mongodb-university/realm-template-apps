@@ -8,10 +8,10 @@
     <ContentPage.BindingContext>
         <vm:LoginViewModel />
     </ContentPage.BindingContext>
-        <ContentPage.Behaviors>
-            <toolkit:EventToCommandBehavior
-                EventName="Appearing"
-                Command="{Binding AppearingCommand}" />
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding AppearingCommand}" />
     </ContentPage.Behaviors>
     <VerticalStackLayout
         Padding="30"
