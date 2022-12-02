@@ -2,14 +2,38 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RealmTodo.Views.ItemsPage"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:vm="clr-namespace:RealmTodo.ViewModels">
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding AppearingCommand}" />
+    </ContentPage.Behaviors>
+    <ContentPage.ToolbarItems>
+            <ToolbarItem Text="Change Connection Status" Order="Primary" IconImageSource="{Binding ConnectionStatusIcon}" Command="{Binding ChangeConnectionStatusCommand}" />
+            <ToolbarItem Text="Logout" Order="Primary" IconImageSource="logout.png" Command="{Binding AddItemCommand}"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.BindingContext>
         <vm:ItemsViewModel />
     </ContentPage.BindingContext>
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <CollectionView ItemsSource="{Binding Items}" BackgroundColor="PaleVioletRed"
+                  VerticalOptions="Start" Grid.Row="0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                        <HorizontalStackLayout>
+                            <CheckBox IsChecked="{Binding IsComplete}" VerticalOptions="Center"  />
+                            <Label Text="{Binding Summary}"
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Label Text="Test" Grid.Row="1" BackgroundColor="Blue"/>
+    </Grid>
 </ContentPage>
