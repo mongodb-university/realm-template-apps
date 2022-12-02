@@ -80,7 +80,6 @@ class TodoItem extends StatelessWidget {
           showError(context, "Delete not allowed!", '''You are not allowed to delete tasks
             that don't belog to you.''');
         }
-
         break;
     }
   }
