@@ -11,6 +11,20 @@ Widget formLayout(BuildContext context, Widget? contentWidget) {
           )));
 }
 
+Widget loginField(TextEditingController controller,
+    {String? labelText, String? hintText, bool? obscure}) {
+  return Padding(
+    padding: const EdgeInsets.all(15),
+    child: TextField(
+        obscureText: obscure ?? false,
+        controller: controller,
+        decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            labelText: labelText,
+            hintText: hintText)),
+  );
+}
+  
 Widget templateButton(BuildContext context, {Color color = Colors.grey, String text = "button", void Function()? onPressed}) {
   return Container(
     margin: const EdgeInsets.symmetric(horizontal: 10),

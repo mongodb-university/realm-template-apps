@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_todo/components/widgets.dart';
 import 'package:flutter_todo/realm/app_services.dart';
 
 class LogIn extends StatefulWidget {
@@ -69,16 +70,6 @@ class _LogInState extends State<LogIn> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget loginField(TextEditingController controller, {String? labelText, String? hintText, bool? obscure}) {
-    return Padding(
-      padding: const EdgeInsets.all(15),
-      child: TextField(
-          obscureText: obscure ?? false,
-          controller: controller,
-          decoration: InputDecoration(border: const OutlineInputBorder(), labelText: labelText, hintText: hintText)),
     );
   }
 
