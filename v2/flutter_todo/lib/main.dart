@@ -12,12 +12,13 @@ void main() async {
   final realmConfig = json.decode(await rootBundle.loadString('assets/config/realm.json'));
   String appId = realmConfig['appId'];
   Uri baseUrl = Uri.parse(realmConfig['baseUrl']);
- 
+
 
   return runApp(MultiProvider(providers: [
     ChangeNotifierProvider<AppServices>(create: (_) => AppServices(appId, baseUrl)),
     ChangeNotifierProxyProvider<AppServices, RealmServices?>(
-        create: (context) => null, //RealmServices could be initialize only if the user is logged in.
+        // RealmServices can only be initialized only if the user is logged in.
+        create: (context) => null,
         update: (BuildContext context, AppServices appServices, RealmServices? realmServices) {
           return appServices.app.currentUser != null ? RealmServices(appServices.app) : null;
         }),
