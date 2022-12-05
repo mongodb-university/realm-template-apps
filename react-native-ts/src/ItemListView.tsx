@@ -2,49 +2,52 @@ import React, {useCallback, useState, useEffect} from 'react';
 import {BSON} from 'realm';
 import {useUser} from '@realm/react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {StyleSheet, Text, View} from 'react-native';
-import {Button, Overlay, ListItem} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {Alert, FlatList, StyleSheet, Switch, Text, View} from 'react-native';
+import {Button, Overlay, ListItem, Icon} from 'react-native-elements';
 
 import {CreateToDoPrompt} from './CreateToDoPrompt';
-import realmContext from './realmContext';
+import {realmContext} from './RealmContext';
+
 import {Item} from './ItemSchema';
+
 const {useRealm, useQuery} = realmContext;
+
+const itemSubscriptionName = 'items';
 
 export function ItemListView() {
   const realm = useRealm();
-  const items = useQuery(Item);
+  const items = useQuery(Item).sorted('_id');
   const user = useUser();
-  const [showNewItemOverlay, setShowNewItemOverlay] = useState(false);
 
+  const [showNewItemOverlay, setShowNewItemOverlay] = useState(false);
+  const [showAllItems, setShowAllItems] = useState(false);
+
+  // This effect will initialize the subscription to the items collection
+  // By default it will filter out all items that do not belong to the current user
   useEffect(() => {
+    const subscribedItems = showAllItems
+      ? realm.objects(Item)
+      : realm.objects(Item).filtered(`owner_id == "${user?.id}"`);
     // initialize the subscriptions
     const updateSubscriptions = async () => {
       await realm.subscriptions.update(mutableSubs => {
         // subscribe to all of the logged in user's to-do items
-        let ownItems = realm
-          .objects(Item)
-          .filtered(`owner_id == "${user?.id}"`);
         // use the same name as the initial subscription to update it
-        mutableSubs.add(ownItems, {name: 'ownItems'});
+        mutableSubs.add(subscribedItems, {name: itemSubscriptionName});
       });
     };
     updateSubscriptions();
-
-    // unsubscribe from 'ownItems' when the component unmounts
-    return () => {
-      realm.subscriptions.update(mutableSubs => {
-        mutableSubs.removeByName('ownItems');
-      });
-    };
-  }, [realm, user]);
+  }, [realm, user, showAllItems]);
 
   // createItem() takes in a summary and then creates an Item object with that summary
   const createItem = useCallback(
     ({summary}: {summary: string}) => {
       // if the realm exists, create an Item
       realm.write(() => {
-        return new Item(realm, summary, new Realm.BSON.ObjectId(user?.id));
+        return new Item(realm, {
+          summary,
+          owner_id: user?.id,
+        });
       });
     },
     [realm, user],
@@ -56,12 +59,16 @@ export function ItemListView() {
       // if the realm exists, get the Item with a particular _id and delete it
       const item = realm.objectForPrimaryKey(Item, id); // search for a realm object with a primary key that is an objectId
       if (item) {
-        realm.write(() => {
-          realm.delete(item);
-        });
+        if (item.owner_id !== user?.id) {
+          Alert.alert("You can't delete someone else's task!");
+        } else {
+          realm.write(() => {
+            realm.delete(item);
+          });
+        }
       }
     },
-    [realm],
+    [realm, user],
   );
   // toggleItemIsComplete() updates an Item with a particular _id to be 'completed'
   const toggleItemIsComplete = useCallback(
@@ -69,22 +76,28 @@ export function ItemListView() {
       // if the realm exists, get the Item with a particular _id and update it's 'isCompleted' field
       const item = realm.objectForPrimaryKey(Item, id); // search for a realm object with a primary key that is an objectId
       if (item) {
-        realm.write(() => {
-          item.isComplete = !item.isComplete;
-        });
+        if (item.owner_id !== user?.id) {
+          Alert.alert("You can't modify someone else's task!");
+        } else {
+          realm.write(() => {
+            item.isComplete = !item.isComplete;
+          });
+        }
       }
     },
-    [realm],
+    [realm, user],
   );
 
   return (
     <SafeAreaProvider>
       <View style={styles.viewWrapper}>
-        <Button
-          title="+ ADD TO-DO"
-          buttonStyle={styles.addToDoButton}
-          onPress={() => setShowNewItemOverlay(true)}
-        />
+        <View style={styles.toggleRow}>
+          <Text style={styles.toggleText}>Show All Tasks</Text>
+          <Switch
+            onValueChange={() => setShowAllItems(!showAllItems)}
+            value={showAllItems}
+          />
+        </View>
         <Overlay
           isVisible={showNewItemOverlay}
           onBackdropPress={() => setShowNewItemOverlay(false)}>
@@ -95,33 +108,60 @@ export function ItemListView() {
             }}
           />
         </Overlay>
-        {items.map(item => (
-          <ListItem
-            key={`${item._id}`}
-            bottomDivider
-            topDivider
-            hasTVPreferredFocus={undefined}
-            tvParallaxProperties={undefined}>
-            <ListItem.Title style={styles.itemTitle}>
-              {item.summary}
-            </ListItem.Title>
-            <ListItem.CheckBox
-              checked={item.isComplete}
-              onPress={() => toggleItemIsComplete(item._id)}
+        <FlatList
+          keyExtractor={item => item._id.toString()}
+          data={items}
+          style={styles.list}
+          renderItem={({item}) => (
+            <ListItem
+              key={`${item._id}`}
+              bottomDivider
+              topDivider
+              hasTVPreferredFocus={undefined}
+              tvParallaxProperties={undefined}>
+              <ListItem.Title style={styles.itemTitle}>
+                {item.summary}
+              </ListItem.Title>
+              <ListItem.Subtitle style={styles.itemSubtitle}>
+                {item.owner_id === user?.id ? '(mine)' : ''}
+              </ListItem.Subtitle>
+              <ListItem.CheckBox
+                checked={item.isComplete}
+                iconType="material"
+                checkedIcon="check-box"
+                uncheckedIcon="check-box-outline-blank"
+                onPress={() => toggleItemIsComplete(item._id)}
+              />
+              <Button
+                type="clear"
+                onPress={() => deleteItem(item._id)}
+                icon={
+                  <Icon
+                    type="material"
+                    name="clear"
+                    size={12}
+                    color="#979797"
+                    tvParallaxProperties={undefined}
+                  />
+                }
+              />
+            </ListItem>
+          )}
+        />
+        <Button
+          title="Add To-Do"
+          buttonStyle={styles.addToDoButton}
+          onPress={() => setShowNewItemOverlay(true)}
+          icon={
+            <Icon
+              type="material"
+              name={'playlist-add'}
+              style={styles.showCompletedIcon}
+              color="#fff"
+              tvParallaxProperties={undefined}
             />
-            <Button
-              type="clear"
-              onPress={() => deleteItem(item._id)}
-              icon={<Icon name="times" size={12} color="#979797" />}
-            />
-          </ListItem>
-        ))}
-      </View>
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>
-          Log in with the same account on another device or simulator to see
-          your list sync in real-time
-        </Text>
+          }
+        />
       </View>
     </SafeAreaProvider>
   );
@@ -135,19 +175,36 @@ const styles = StyleSheet.create({
     marginTop: 32,
     paddingHorizontal: 24,
   },
-  footerText: {
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  footer: {
-    margin: 40,
-  },
   addToDoButton: {
     backgroundColor: '#00BAD4',
     borderRadius: 4,
     margin: 5,
   },
+  showCompletedButton: {
+    borderRadius: 4,
+    margin: 5,
+  },
+  showCompletedIcon: {
+    marginRight: 5,
+  },
   itemTitle: {
     flex: 1,
+  },
+  itemSubtitle: {
+    color: '#979797',
+    flex: 1,
+  },
+  list: {},
+  listFooter: {
+    backgroundColor: '#f00',
+  },
+  toggleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+  },
+  toggleText: {
+    flex: 1,
+    fontSize: 16,
   },
 });

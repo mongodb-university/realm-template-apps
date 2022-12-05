@@ -1,6 +1,6 @@
 import {createRealmContext} from '@realm/react';
 import {Item} from './ItemSchema';
 
-export default createRealmContext({
+export const realmContext = createRealmContext({
   schema: [Item],
 });
