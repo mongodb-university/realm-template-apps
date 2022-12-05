@@ -1,7 +1,8 @@
 import React, {useEffect, useReducer} from 'react';
 import {Pressable, StyleSheet} from 'react-native';
 import {Icon} from 'react-native-elements';
-import { ConnectionNotificationCallback } from 'realm';
+import {ConnectionNotificationCallback} from 'realm';
+import {useRerender} from './Hooks';
 import {realmContext} from './RealmContext';
 
 const {useRealm} = realmContext;
@@ -9,20 +10,18 @@ const {useRealm} = realmContext;
 export function OfflineModeButton() {
   const realm = useRealm();
 
-  // This forces a rerender when modifying the sync session
-  // https://reactjs.org/docs/hooks-faq.html#is-there-something-like-forceupdate
-  const [, rerender] = useReducer(x => x + 1, 0);
+  const rerender = useRerender();
 
   // Call the rerender function when the connection state changes
   useEffect(() => {
-    const notificationCallback: ConnectionNotificationCallback = (newState) => {
-      rerender()
-    }
+    const notificationCallback: ConnectionNotificationCallback = newState => {
+      rerender();
+    };
     realm.syncSession?.addConnectionNotification(notificationCallback);
     return () => {
-      realm.syncSession?.removeConnectionNotification(notificationCallback)
-    }
-  }, [realm, rerender])
+      realm.syncSession?.removeConnectionNotification(notificationCallback);
+    };
+  }, [realm, rerender]);
 
   return (
     <Pressable
