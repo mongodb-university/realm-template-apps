@@ -1,11 +1,6 @@
 package com.mongodb.app.ui.login
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,43 +15,26 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mongodb.app.ComposeItemActivity
 import com.mongodb.app.R
-import com.mongodb.app.TAG
-import com.mongodb.app.realmApp
+import com.mongodb.app.presentation.login.LoginAction
+import com.mongodb.app.presentation.login.LoginViewModel
 import com.mongodb.app.ui.theme.Blue
 import com.mongodb.app.ui.theme.Purple200
-import io.realm.kotlin.mongodb.Credentials
-import io.realm.kotlin.mongodb.exceptions.ConnectionException
-import io.realm.kotlin.mongodb.exceptions.InvalidCredentialsException
-import io.realm.kotlin.mongodb.exceptions.UserAlreadyExistsException
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-private enum class UserAction {
-    CREATE_ACCOUNT, LOGIN
-}
+private const val USABLE_WIDTH = 0.8F
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-fun LoginScaffold() {
-    val context = LocalContext.current
-
+fun LoginScaffold(loginViewModel: LoginViewModel) {
     Scaffold(
         content = {
             Column {
@@ -76,7 +54,7 @@ fun LoginScaffold() {
                     )
                 }
 
-                // Email and password
+                // Email, password, login/create account button and switch action
                 Box(
                     contentAlignment = Alignment.TopCenter,
                     modifier = Modifier
@@ -84,76 +62,78 @@ fun LoginScaffold() {
                         .fillMaxWidth()
                 ) {
                     Column {
-                        val userAction = remember { mutableStateOf(UserAction.LOGIN) }
-                        val email = remember { mutableStateOf("") }
-                        val password = remember { mutableStateOf("") }
-                        val actionButtonEnabled = remember { mutableStateOf(true) }
-
+                        // Email field
                         TextField(
-                            modifier = Modifier.fillMaxWidth(com.mongodb.app.USABLE_WIDTH),
-                            value = email.value,
+                            enabled = loginViewModel.state.value.enabled,
+                            modifier = Modifier.fillMaxWidth(USABLE_WIDTH),
+//                            colors = ExposedDropdownMenuDefaults.textFieldColors(containerColor = Color.White),
+                            value = loginViewModel.state.value.email,
                             maxLines = 2,
-                            onValueChange = { email.value = it },
+                            onValueChange = {
+                                loginViewModel.setEmail(it)
+                            },
                             label = { Text(stringResource(R.string.prompt_email)) }
                         )
-                        TextField(
-                            visualTransformation = PasswordVisualTransformation(),
-                            modifier = Modifier.fillMaxWidth(com.mongodb.app.USABLE_WIDTH),
-                            value = password.value,
-                            maxLines = 2,
-                            onValueChange = { password.value = it },
-                            label = { Text(stringResource(R.string.prompt_password)) }
-                        )
-                        Spacer(modifier = Modifier.height(40.dp))
-                        Button(
-                            enabled = actionButtonEnabled.value,
-                            colors = ButtonDefaults.buttonColors(containerColor = Purple200),
-                            modifier = Modifier.fillMaxWidth(com.mongodb.app.USABLE_WIDTH),
-                            onClick = {
-                                // Disable button until we get a response
-                                actionButtonEnabled.value = !actionButtonEnabled.value
 
-                                when (userAction.value) {
-                                    UserAction.CREATE_ACCOUNT ->
-                                        registerUser(
-                                            context,
-                                            email.value,
-                                            password.value,
-                                            actionButtonEnabled
-                                        )
-                                    UserAction.LOGIN -> {
-                                        login(
-                                            context,
-                                            email.value,
-                                            password.value,
-                                            actionButtonEnabled
-                                        )
-                                    }
+                        // Password field
+                        TextField(
+                            enabled = loginViewModel.state.value.enabled,
+                            visualTransformation = PasswordVisualTransformation(),
+                            modifier = Modifier.fillMaxWidth(USABLE_WIDTH),
+//                            colors = ExposedDropdownMenuDefaults.textFieldColors(containerColor = Color.White),
+                            value = loginViewModel.state.value.password,
+                            maxLines = 2,
+                            onValueChange = {
+                                loginViewModel.setPassword(it)
+                            },
+                            label = { Text(stringResource(R.string.prompt_password)) })
+
+                        Spacer(modifier = Modifier.height(40.dp))
+
+                        // Login/create account button
+                        Button(
+                            enabled = loginViewModel.state.value.enabled,
+                            colors = ButtonDefaults.buttonColors(containerColor = Purple200),
+                            modifier = Modifier.fillMaxWidth(USABLE_WIDTH),
+                            onClick = {
+                                val state = loginViewModel.state.value
+                                when (state.action) {
+                                    LoginAction.LOGIN -> loginViewModel.login(
+                                        state.email,
+                                        state.password
+                                    )
+                                    LoginAction.CREATE_ACCOUNT -> loginViewModel.createAccount(
+                                        state.email,
+                                        state.password
+                                    )
                                 }
-                            }
-                        ) {
-                            val actionText = when (userAction.value) {
-                                UserAction.CREATE_ACCOUNT -> stringResource(R.string.create_account)
-                                UserAction.LOGIN -> stringResource(R.string.log_in)
+                            }) {
+                            val actionText = when (loginViewModel.state.value.action) {
+                                LoginAction.CREATE_ACCOUNT -> stringResource(R.string.create_account)
+                                LoginAction.LOGIN -> stringResource(R.string.log_in)
                             }
                             Text(actionText)
                         }
+
                         Spacer(modifier = Modifier.height(40.dp))
+
+                        // Switch between login and create user
                         TextButton(
                             onClick = {
-                                when (userAction.value) {
-                                    UserAction.CREATE_ACCOUNT -> userAction.value = UserAction.LOGIN
-                                    UserAction.LOGIN -> userAction.value = UserAction.CREATE_ACCOUNT
+                                val state = loginViewModel.state.value
+                                when (state.action) {
+                                    LoginAction.LOGIN -> loginViewModel.switchToAction(LoginAction.CREATE_ACCOUNT)
+                                    LoginAction.CREATE_ACCOUNT -> loginViewModel.switchToAction(LoginAction.LOGIN)
                                 }
                             }
                         ) {
-                            val actionText = when (userAction.value) {
-                                UserAction.CREATE_ACCOUNT -> stringResource(R.string.does_not_have_account)
-                                UserAction.LOGIN -> stringResource(R.string.already_have_account)
+                            val actionText = when (loginViewModel.state.value.action) {
+                                LoginAction.CREATE_ACCOUNT -> stringResource(R.string.already_have_account)
+                                LoginAction.LOGIN -> stringResource(R.string.does_not_have_account)
                             }
                             Text(
                                 text = actionText,
-                                modifier = Modifier.fillMaxWidth(com.mongodb.app.USABLE_WIDTH),
+                                modifier = Modifier.fillMaxWidth(USABLE_WIDTH),
                                 textAlign = TextAlign.Center,
                                 color = Blue
                             )
@@ -163,87 +143,4 @@ fun LoginScaffold() {
             }
         }
     )
-}
-
-private fun registerUser(
-    context: Context,
-    email: String,
-    password: String,
-    actionButtonEnabled: MutableState<Boolean>
-) {
-    CoroutineScope(Dispatchers.IO).launch {
-        // Register a user using the Realm App
-        runCatching {
-            realmApp.emailPasswordAuth.registerUser(email, password)
-        }.onSuccess {
-            Log.v(TAG(), "user logged in")
-            login(context, email, password, actionButtonEnabled)
-        }.onFailure { ex: Throwable ->
-            Log.v(TAG(), "User failed to register with: ${ex.message}")
-            when (ex) {
-                is UserAlreadyExistsException -> {
-                    displayErrorMessage(context, "Failed to register. User already exists.")
-                }
-                else -> {
-                    displayErrorMessage(context, "Failed to register: ${ex.message}")
-                }
-            }
-
-            // Re-enable button if something failed
-            actionButtonEnabled.value = !actionButtonEnabled.value
-        }
-    }
-}
-
-private fun login(
-    context: Context,
-    email: String,
-    password: String,
-    actionButtonEnabled: MutableState<Boolean>
-) {
-    CoroutineScope(Dispatchers.IO).launch {
-        runCatching {
-            val creds = Credentials.emailPassword(email, password)
-            realmApp.login(creds)
-        }.onSuccess {
-            withContext(Dispatchers.Main) {
-                Log.v(TAG(), "user logged in")
-
-                // on a successful login, open the item view
-                context.startActivity(Intent(context, ComposeItemActivity::class.java))
-                (context as Activity).finish()
-            }
-        }.onFailure { ex: Throwable ->
-            when (ex) {
-                is InvalidCredentialsException -> {
-                    Log.v(TAG(), "User failed to log in with: ${ex.message}")
-                    displayErrorMessage(
-                        context,
-                        "Invalid username or password. Check your credentials and try again."
-                    )
-                }
-                is ConnectionException -> {
-                    Log.v(TAG(), "User failed to log in with: ${ex.message}")
-                    displayErrorMessage(
-                        context,
-                        "Could not connect to the authentication provider. Check your internet connection and try again."
-                    )
-                }
-                else -> {
-                    Log.e(TAG(), ex.toString())
-                    displayErrorMessage(context, "Error: $ex")
-                }
-            }
-            withContext(Dispatchers.Main) {
-                // re-enable the button after user login returns a result
-                actionButtonEnabled.value = !actionButtonEnabled.value
-            }
-        }
-    }
-}
-
-private fun displayErrorMessage(context: Context, message: String) {
-    CoroutineScope(Dispatchers.Main).launch {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-    }
 }
