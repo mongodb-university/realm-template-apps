@@ -1,12 +1,12 @@
 package com.mongodb.app.domain
 
+import io.realm.kotlin.types.ObjectId
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
-import org.mongodb.kbson.ObjectId
 
 class Item() : RealmObject {
     @PrimaryKey
-    var _id: ObjectId = ObjectId()
+    var _id: ObjectId = ObjectId.create()
     var isComplete: Boolean = false
     var summary: String = ""
     var owner_id: String = ""

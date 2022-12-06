@@ -3,9 +3,13 @@
 package com.mongodb.app
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,36 +28,109 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import com.mongodb.app.data.MockRepository
-import com.mongodb.app.data.RealmRepository
+import com.mongodb.app.data.RealmSyncRepository
 import com.mongodb.app.data.SyncRepository
+import com.mongodb.app.presentation.additem.AddItemEvent
+import com.mongodb.app.presentation.additem.AddItemViewModel
+import com.mongodb.app.presentation.subscriptiontype.SubscriptionTypeEvent
+import com.mongodb.app.presentation.subscriptiontype.SubscriptionTypeViewModel
+import com.mongodb.app.presentation.tasks.TaskViewModel
+import com.mongodb.app.presentation.toolbar.ToolbarEvent
+import com.mongodb.app.presentation.toolbar.ToolbarViewModel
 import com.mongodb.app.ui.tasks.AddItem
 import com.mongodb.app.ui.tasks.ShowMyOwnTasks
 import com.mongodb.app.ui.tasks.TaskAppToolbar
 import com.mongodb.app.ui.tasks.TaskList
 import com.mongodb.app.ui.theme.MyApplicationTheme
 import com.mongodb.app.ui.theme.Purple200
+import kotlinx.coroutines.launch
 
 class ComposeItemActivity : ComponentActivity() {
 
-    private lateinit var repository: SyncRepository
+    private val repository = RealmSyncRepository { _, error ->
+        lifecycleScope.launch {
+            // Catch write permission errors and notify user
+            if (error.message?.contains("CompensatingWrite") == true) {
+                Toast.makeText(this@ComposeItemActivity, getString(R.string.permissions_error), Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
+    private val toolbarViewModel: ToolbarViewModel by viewModels {
+        ToolbarViewModel.factory(repository, this)
+    }
+    private val addItemViewModel: AddItemViewModel by viewModels {
+        AddItemViewModel.factory(repository, this)
+    }
+    private val subscriptionTypeViewModel: SubscriptionTypeViewModel by viewModels {
+        SubscriptionTypeViewModel.factory(repository, this)
+    }
+    private val taskViewModel: TaskViewModel by viewModels {
+        TaskViewModel.factory(repository, this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            toolbarViewModel.toolbarEvent
+                .collect { toolbarEvent ->
+                    when (toolbarEvent) {
+                        ToolbarEvent.LogOut -> {
+                            startActivity(Intent(this@ComposeItemActivity, ComposeLoginActivity::class.java))
+                            finish()
+                        }
+                        is ToolbarEvent.Info -> {
+                            Log.e(TAG(), toolbarEvent.message)
+                        }
+                        is ToolbarEvent.Error -> {
+                            Log.e(TAG(), "${toolbarEvent.message}: ${toolbarEvent.throwable.message}")
+                        }
+                    }
+                }
+            addItemViewModel.addItemEvent
+                .collect { fabEvent ->
+                    when (fabEvent) {
+                        is AddItemEvent.Error -> {
+                            Log.e(TAG(), "${fabEvent.message}: ${fabEvent.throwable.message}")
+                        }
+                        is AddItemEvent.Info -> {
+                            Log.e(TAG(), fabEvent.message)
+                        }
+                    }
+                }
+            subscriptionTypeViewModel.subscriptionTypeEvent
+                .collect { subscriptionTypeEvent ->
+                    when (subscriptionTypeEvent) {
+                        is SubscriptionTypeEvent.Error -> {
+                            Log.e(TAG(), "${subscriptionTypeEvent.message}: ${subscriptionTypeEvent.throwable.message}")
+                        }
+                        is SubscriptionTypeEvent.Info -> {
+                            Log.e(TAG(), subscriptionTypeEvent.message)
+                        }
+                    }
+                }
+        }
+
         setContent {
-            repository = RealmRepository(this, remember { mutableStateListOf() })
             MyApplicationTheme {
-                TaskListScaffold(repository)
+                TaskListScaffold(
+                    repository,
+                    toolbarViewModel,
+                    addItemViewModel,
+                    subscriptionTypeViewModel,
+                    taskViewModel
+                )
             }
         }
     }
@@ -66,9 +143,15 @@ class ComposeItemActivity : ComponentActivity() {
 
 @Composable
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-fun TaskListScaffold(repository: SyncRepository) {
+fun TaskListScaffold(
+    repository: SyncRepository,
+    toolbarViewModel: ToolbarViewModel,
+    addItemViewModel: AddItemViewModel,
+    subscriptionTypeViewModel: SubscriptionTypeViewModel,
+    taskViewModel: TaskViewModel
+) {
     Scaffold(
-        topBar = { TaskAppToolbar(repository) },
+        topBar = { TaskAppToolbar(toolbarViewModel) },
         bottomBar = {
             BottomAppBar(
                 containerColor = Color.LightGray
@@ -84,15 +167,12 @@ fun TaskListScaffold(repository: SyncRepository) {
         },
         floatingActionButtonPosition = FabPosition.End,
         floatingActionButton = {
-            val openDialog: MutableState<Boolean> = remember { mutableStateOf(false) }
-            val taskSummary: MutableState<String> = remember { mutableStateOf("") }
-
             FloatingActionButton(
                 shape = MaterialTheme.shapes.small.copy(CornerSize(percent = 50)),
                 contentColor = Color.White,
                 containerColor = Purple200,
                 onClick = {
-                    openDialog.value = !openDialog.value
+                    addItemViewModel.openAddTaskDialog()
                 }
             ) {
                 Icon(
@@ -101,16 +181,16 @@ fun TaskListScaffold(repository: SyncRepository) {
                 )
             }
 
-            if (openDialog.value) {
-                AddItem(repository, openDialog, taskSummary)
+            if (addItemViewModel.addItemPopupVisible.value) {
+                AddItem(addItemViewModel)
             }
         },
         content = {
             Column {
                 Spacer(modifier = Modifier.height(61.dp))
                 Divider(color = Color.Red, modifier = Modifier.fillMaxWidth())
-                ShowMyOwnTasks(repository)
-                TaskList(repository)
+                ShowMyOwnTasks(subscriptionTypeViewModel)
+                TaskList(repository, taskViewModel)
             }
         }
     )
@@ -120,12 +200,19 @@ fun TaskListScaffold(repository: SyncRepository) {
 @Composable
 fun ItemActivityPreview() {
     MyApplicationTheme {
+        val repository = MockRepository()
         val tasks = (1..30).map { index ->
             MockRepository.getMockTask(index)
-        }.toMutableList()
-        val repository = MockRepository(remember { mutableStateListOf(*tasks.toTypedArray()) })
+        }.toMutableStateList()
+
         MyApplicationTheme {
-            TaskListScaffold(repository)
+            TaskListScaffold(
+                repository,
+                ToolbarViewModel(repository),
+                AddItemViewModel(repository),
+                SubscriptionTypeViewModel(repository),
+                TaskViewModel(repository, tasks)
+            )
         }
     }
 }

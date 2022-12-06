@@ -20,6 +20,8 @@ import kotlinx.coroutines.launch
 
 class ComposeLoginActivity : ComponentActivity() {
 
+    private val loginViewModel: LoginViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -30,7 +32,6 @@ class ComposeLoginActivity : ComponentActivity() {
             return
         }
 
-        val loginViewModel: LoginViewModel by viewModels()
 
         lifecycleScope.launch {
             // Subscribe to navigation and message-logging events

@@ -15,11 +15,11 @@ import io.realm.kotlin.ext.query
 import io.realm.kotlin.notifications.ResultsChange
 import io.realm.kotlin.notifications.UpdatedResults
 import io.realm.kotlin.query.RealmResults
+import io.realm.kotlin.types.ObjectId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import org.mongodb.kbson.ObjectId
 
 /**
  * Extends the Realm-provided RealmRecyclerViewAdapter to provide data

@@ -18,7 +18,7 @@
     <string name="cancel">Cancel</string>
     <string name="create">Create</string>
     <string name="item_summary">Item Summary</string>
-    <string name="permissions_error">You are not allowed to delete tasks that don\'t belong to you.</string>
+    <string name="permissions_error">You are not allowed to delete or modify tasks that don\'t belong to you.</string>
     <string name="show_all_tasks">Show all tasks</string>
     <string name="sync_message">Log in with the same account on another device or simulator to see your list sync in real-time</string>
 </resources>

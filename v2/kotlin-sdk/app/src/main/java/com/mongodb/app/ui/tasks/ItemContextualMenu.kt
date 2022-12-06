@@ -9,32 +9,25 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.mongodb.app.domain.Item
 import com.mongodb.app.R
 import com.mongodb.app.data.MockRepository
-import com.mongodb.app.data.SyncRepository
+import com.mongodb.app.domain.Item
+import com.mongodb.app.presentation.tasks.ItemContextualMenuViewModel
 import com.mongodb.app.ui.theme.MyApplicationTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
-fun ItemContextualMenu(repository: SyncRepository, task: Item) {
-    val expanded: MutableState<Boolean> = remember { mutableStateOf(false) }
-
+fun ItemContextualMenu(viewModel: ItemContextualMenuViewModel, task: Item) {
     Box(
         contentAlignment = Alignment.Center
     ) {
-        IconButton(onClick = {
-            expanded.value = true
-        }) {
+        IconButton(
+            onClick = {
+                viewModel.open()
+            }
+        ) {
             Icon(
                 imageVector = Icons.Default.MoreVert,
                 contentDescription = "Open Contextual Menu"
@@ -42,18 +35,15 @@ fun ItemContextualMenu(repository: SyncRepository, task: Item) {
         }
 
         DropdownMenu(
-            expanded = expanded.value,
+            expanded = viewModel.visible.value,
             onDismissRequest = {
-                expanded.value = false
+                viewModel.close()
             }
         ) {
             DropdownMenuItem(
                 text = { Text(text = stringResource(R.string.delete)) },
                 onClick = {
-                    expanded.value = false
-                    CoroutineScope(Dispatchers.IO).launch {
-                        repository.deleteTask(task)
-                    }
+                    viewModel.deleteTask(task)
                 }
             )
         }
@@ -64,9 +54,11 @@ fun ItemContextualMenu(repository: SyncRepository, task: Item) {
 @Composable
 fun ItemContextualMenuPreview() {
     MyApplicationTheme {
-        val repository = MockRepository(remember { mutableStateListOf() })
         MyApplicationTheme {
-            ItemContextualMenu(repository, Item())
+            ItemContextualMenu(
+                ItemContextualMenuViewModel(MockRepository()),
+                Item()
+            )
         }
     }
 }

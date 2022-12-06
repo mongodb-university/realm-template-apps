@@ -8,7 +8,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")
         classpath("com.android.tools.build:gradle:7.2.0")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20")
-        classpath("io.realm.kotlin:gradle-plugin:1.5.0") // DON'T FORGET TO UPDATE VERSION IN APP MODULE GRADLE
+        classpath("io.realm.kotlin:gradle-plugin:1.4.0") // DON'T FORGET TO UPDATE VERSION IN APP MODULE GRADLE
     }
 }
 

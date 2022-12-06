@@ -11,9 +11,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,16 +19,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mongodb.app.R
 import com.mongodb.app.data.MockRepository
-import com.mongodb.app.data.SyncRepository
 import com.mongodb.app.data.SubscriptionType
+import com.mongodb.app.presentation.subscriptiontype.SubscriptionTypeViewModel
 import com.mongodb.app.ui.theme.MyApplicationTheme
 import com.mongodb.app.ui.theme.Purple200
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
-fun ShowMyOwnTasks(repository: SyncRepository) {
+fun ShowMyOwnTasks(viewModel: SubscriptionTypeViewModel) {
     Row(
         modifier = Modifier
             .background(Color.LightGray)
@@ -46,29 +40,23 @@ fun ShowMyOwnTasks(repository: SyncRepository) {
             color = Color.Black
         )
         Spacer(modifier = Modifier.padding(8.dp))
-        OwnerSwitch(repository)
+        OwnerSwitch(viewModel)
     }
 }
 
 @Composable
-fun OwnerSwitch(repository: SyncRepository) {
-    val checkedState = remember {
-        mutableStateOf(repository.getActiveSubscriptionType())
-    }
-
+fun OwnerSwitch(viewModel: SubscriptionTypeViewModel) {
     Switch(
-        checked = when (checkedState.value) {
+        checked = when (viewModel.subscriptionType.value) {
             SubscriptionType.MINE -> false
             SubscriptionType.ALL -> true
         },
         onCheckedChange = {
-            checkedState.value = when (checkedState.value) {
+            val updatedSubscriptionType = when (viewModel.subscriptionType.value) {
                 SubscriptionType.MINE -> SubscriptionType.ALL
                 SubscriptionType.ALL -> SubscriptionType.MINE
             }
-            CoroutineScope(Dispatchers.IO).launch {
-                repository.updateSubscriptions(checkedState.value)
-            }
+            viewModel.updateSubscription(updatedSubscriptionType)
         },
         colors = SwitchDefaults.colors(
             checkedTrackColor = Purple200
@@ -80,9 +68,9 @@ fun OwnerSwitch(repository: SyncRepository) {
 @Composable
 fun ShowMyOwnTasksPreview() {
     MyApplicationTheme {
-        val repository = MockRepository(remember { mutableStateListOf() })
+        val repository = MockRepository()
         MyApplicationTheme {
-            ShowMyOwnTasks(repository)
+            ShowMyOwnTasks(SubscriptionTypeViewModel(repository))
         }
     }
 }

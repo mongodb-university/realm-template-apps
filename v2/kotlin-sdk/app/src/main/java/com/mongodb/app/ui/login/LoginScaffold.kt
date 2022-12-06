@@ -66,7 +66,6 @@ fun LoginScaffold(loginViewModel: LoginViewModel) {
                         TextField(
                             enabled = loginViewModel.state.value.enabled,
                             modifier = Modifier.fillMaxWidth(USABLE_WIDTH),
-//                            colors = ExposedDropdownMenuDefaults.textFieldColors(containerColor = Color.White),
                             value = loginViewModel.state.value.email,
                             maxLines = 2,
                             onValueChange = {
@@ -80,7 +79,6 @@ fun LoginScaffold(loginViewModel: LoginViewModel) {
                             enabled = loginViewModel.state.value.enabled,
                             visualTransformation = PasswordVisualTransformation(),
                             modifier = Modifier.fillMaxWidth(USABLE_WIDTH),
-//                            colors = ExposedDropdownMenuDefaults.textFieldColors(containerColor = Color.White),
                             value = loginViewModel.state.value.password,
                             maxLines = 2,
                             onValueChange = {

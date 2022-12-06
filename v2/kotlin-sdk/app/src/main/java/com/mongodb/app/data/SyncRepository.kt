@@ -1,10 +1,6 @@
 package com.mongodb.app.data
 
-import android.content.Context
-import android.widget.Toast
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.mongodb.app.domain.Item
-import com.mongodb.app.R
 import com.mongodb.app.realmApp
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
@@ -14,24 +10,24 @@ import io.realm.kotlin.mongodb.subscriptions
 import io.realm.kotlin.mongodb.sync.SyncConfiguration
 import io.realm.kotlin.mongodb.sync.SyncSession
 import io.realm.kotlin.mongodb.syncSession
-import io.realm.kotlin.notifications.InitialResults
 import io.realm.kotlin.notifications.ResultsChange
-import io.realm.kotlin.notifications.UpdatedResults
 import io.realm.kotlin.query.RealmQuery
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * repo for accessing Realm and Sync.
+ * Repository for accessing Realm Sync.
  */
 interface SyncRepository {
 
     /**
-     * Holds the [Item]s shown on screen at any given time. The entries are Realm frozen objects.
+     * Returns a flow with the tasks for the current subscription.
      */
-    val taskListState: SnapshotStateList<Item>
+    fun getTaskList(): Flow<ResultsChange<Item>>
 
     /**
      * Update the `isComplete` flag for a specific [Item].
@@ -82,9 +78,8 @@ interface SyncRepository {
 /**
  * Repo implementation used in runtime.
  */
-class RealmRepository constructor(
-    private val context: Context,
-    override val taskListState: SnapshotStateList<Item>
+class RealmSyncRepository(
+    onSyncError: (session: SyncSession, error: SyncException) -> Unit
 ) : SyncRepository {
 
     private val realm: Realm
@@ -100,16 +95,7 @@ class RealmRepository constructor(
                 add(getQuery(realm, activeSubscriptionType), activeSubscriptionType.name)
             }
             .errorHandler { session: SyncSession, error: SyncException ->
-                // Catch write permission errors and notify user
-                if (error.message?.contains("CompensatingWrite") == true) {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.permissions_error),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
+                onSyncError.invoke(session, error)
             }
             .waitForInitialRemoteData()
             .build()
@@ -119,37 +105,12 @@ class RealmRepository constructor(
         // Mutable states must be updated on the UI thread
         CoroutineScope(Dispatchers.Main).launch {
             realm.subscriptions.waitForSynchronization()
-            realm.query<Item>()
-                .asFlow()
-                .collect { event: ResultsChange<Item> ->
-                    when (event) {
-                        is InitialResults -> {
-                            taskListState.clear()
-                            taskListState.addAll(event.list)
-                        }
-                        is UpdatedResults -> {
-                            if (event.deletions.isNotEmpty() && taskListState.isNotEmpty()) {
-                                event.deletions.reversed().forEach {
-                                    taskListState.removeAt(it)
-                                }
-                            }
-                            if (event.insertions.isNotEmpty()) {
-                                event.insertions.forEach {
-                                    taskListState.add(it, event.list[it])
-                                }
-                            }
-                            if (event.changes.isNotEmpty()) {
-                                event.changes.forEach {
-                                    taskListState.removeAt(it)
-                                    taskListState.add(it, event.list[it])
-                                }
-                            }
-                        }
-                        else -> { /* No-op */
-                        }
-                    }
-                }
         }
+    }
+
+    override fun getTaskList(): Flow<ResultsChange<Item>> {
+        return realm.query<Item>()
+            .asFlow()
     }
 
     override suspend fun updateCompleteness(task: Item) {
@@ -178,7 +139,6 @@ class RealmRepository constructor(
             }
             add(query, subscriptionType.name)
         }
-        realm.subscriptions.waitForSynchronization(10.seconds)
     }
 
     override suspend fun deleteTask(task: Item) {
@@ -222,9 +182,8 @@ class RealmRepository constructor(
 /**
  * Mock repo for generating the Compose layout preview.
  */
-class MockRepository(
-    override val taskListState: SnapshotStateList<Item>
-) : SyncRepository {
+class MockRepository : SyncRepository {
+    override fun getTaskList(): Flow<ResultsChange<Item>> = flowOf()
     override suspend fun updateCompleteness(task: Item) = Unit
     override suspend fun addTask(taskSummary: String) = Unit
     override suspend fun updateSubscriptions(subscriptionType: SubscriptionType) = Unit
