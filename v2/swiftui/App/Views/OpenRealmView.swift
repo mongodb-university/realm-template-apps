@@ -8,6 +8,7 @@ struct OpenRealmView: View {
     @State var user: User
     @State var showMyItems = true
     @State var syncEnabled = true
+    // Configuration used to open the realm.
     @Environment(\.realmConfiguration) private var config
 
     var body: some View {
@@ -24,6 +25,10 @@ struct OpenRealmView: View {
             // Show the Items view.
         case .open(let realm):
             ItemsView(leadingBarButton: AnyView(LogoutButton()), user: user, showMyItems: $showMyItems, syncEnabled: $syncEnabled)
+                // showMyItems toggles the creation of a subscription
+                // When it's toggled on, only the original subscription is shown.
+                // When it's toggled off, *all* items are downloaded to the
+                // client, including from other users.
                 .onChange(of: showMyItems) { newValue in
                     let subs = realm.subscriptions
                     subs.update {
@@ -35,11 +40,16 @@ struct OpenRealmView: View {
                             }
                         }
                     }
+                // syncEnabled simulates a situation with no internet connection.
+                // While sync is not available, items can still be written and queried.
+                // When sync is resumed, items created or updated will sync to other the
+                // server, then other devices.
                 }.onChange(of: syncEnabled) { newValue in
                     let syncSession = realm.syncSession!
                     newValue ? syncSession.resume() : syncSession.suspend()
                 }.onAppear {
                     if let _ = realm.subscriptions.first(named: "all_items") {
+                        // Subscribed to all items from a previous session, set toggle accordingly
                         showMyItems = false
                     }
                 }
