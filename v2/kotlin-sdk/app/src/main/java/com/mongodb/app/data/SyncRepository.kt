@@ -12,6 +12,7 @@ import io.realm.kotlin.mongodb.sync.SyncSession
 import io.realm.kotlin.mongodb.syncSession
 import io.realm.kotlin.notifications.ResultsChange
 import io.realm.kotlin.query.RealmQuery
+import io.realm.kotlin.query.Sort
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -110,6 +111,7 @@ class RealmSyncRepository(
 
     override fun getTaskList(): Flow<ResultsChange<Item>> {
         return realm.query<Item>()
+            .sort(Pair("owner_id", Sort.ASCENDING))
             .asFlow()
     }
 

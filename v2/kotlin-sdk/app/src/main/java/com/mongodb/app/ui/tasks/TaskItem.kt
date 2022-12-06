@@ -39,8 +39,9 @@ fun TaskItem(
             .fillMaxWidth()
             .height(80.dp)
     ) {
+        // Guard against modifying some else's task - sync error callback would catch it though
         Checkbox(
-            enabled = true,
+            enabled = repository.isTaskMine(task),
             checked = task.isComplete,
             onCheckedChange = {
                 taskViewModel.updateCompleteness(task)
@@ -53,21 +54,23 @@ fun TaskItem(
                 color = Blue,
                 fontWeight = FontWeight.Bold
             )
-            Text(
-                text = when (repository.isTaskMine(task)) {
-                    true -> stringResource(R.string.mine)
-                    false -> "Someone else's - TODO" // TODO extract string to resources
-                },
-                style = MaterialTheme.typography.bodySmall
-            )
+            // Ownership text visible only if task is mine
+            if (repository.isTaskMine(task)) {
+                Text(
+                    text = stringResource(R.string.mine),
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
         }
 
-        // Delete icon
-        Row(
-            horizontalArrangement = Arrangement.End,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            ItemContextualMenu(itemContextualMenuViewModel, task)
+        // Delete icon visible only if task is mine
+        if (repository.isTaskMine(task)) {
+            Row(
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                ItemContextualMenu(itemContextualMenuViewModel, task)
+            }
         }
     }
 }
