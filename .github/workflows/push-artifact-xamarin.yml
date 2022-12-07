@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/push-to-artifact-repos
+      - uses: ./.github/actions/push-to-artifact-repo
         with:
           source: ./xamarin
           target_repo: mongodb/template-app-xamarin-todo.git
