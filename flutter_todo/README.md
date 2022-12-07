@@ -3,9 +3,29 @@
 A todo list application built with the [Realm Flutter SDK](https://www.mongodb.com/docs/realm/sdk/flutter/)
 and [Atlas Device Sync](https://www.mongodb.com/docs/atlas/app-services/sync/).
 
-## Getting Started
+## Configuration
 
-1. Clone and enter the project
+Ensure `flutter_todo/assets/config/realm.json` exists and contains the following properties:
+
+- **appId:** your Atlas App Services App ID.
+- **baseUrl:** the App Services backend URL. This should be https://realm.mongodb.com in most cases.
+
+### Cloning from GitHub
+
+If you have cloned this repository from the GitHub 
+[mongodb/template-app-dart-flutter-todo](https://github.com/mongodb/template-app-dart-flutter-todo.git) 
+repository, you must create a separate App Services App with Device Sync 
+enabled to use this client. You can find information about how to do this 
+in the Atlas App Services documentation page:
+[Template Apps -> Create a Template App](https://www.mongodb.com/docs/atlas/app-services/reference/template-apps/#create-a-template-app)
+
+Once you have created the App Services App, replace any value in this client's
+`appId` field with your App Services App ID. For help finding this ID, refer 
+to: [Find Your Project or App Id](https://www.mongodb.com/docs/atlas/app-services/reference/find-your-project-or-app-id/)
+
+## Run the App
+
+1. Enter the project
 2. `flutter pub get`
 3. Run the app:
    - on Windows, Linux and macOS `flutter run`
