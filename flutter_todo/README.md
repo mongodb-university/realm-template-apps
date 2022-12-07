@@ -37,3 +37,7 @@ to: [Find Your Project or App Id](https://www.mongodb.com/docs/atlas/app-service
 ## Build on the App
 
 Learn about how to build a feature on top of this application in the [Flutter Device Sync Tutorial](https://www.mongodb.com/docs/atlas/app-services/tutorial/flutter/).
+
+## Issues
+
+Please report issues with the template at https://github.com/mongodb-university/realm-template-apps/issues/new
