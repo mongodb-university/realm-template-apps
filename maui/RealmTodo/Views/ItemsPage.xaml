@@ -26,7 +26,7 @@
             <RowDefinition Height="60" />
         </Grid.RowDefinitions>
         <StackLayout Orientation="Horizontal"
-                     BackgroundColor="LightGray"
+                     BackgroundColor="LightSteelBlue"
                      Padding="20"
                      Spacing="15">
             <Label HorizontalTextAlignment="End"
@@ -37,7 +37,8 @@
         </StackLayout>
         <ListView ItemsSource="{Binding Items}"
                   SelectionMode="None"
-             Grid.Row="1">
+             Grid.Row="1"
+             BackgroundColor="White">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -51,10 +52,7 @@
                                     CommandParameter="{Binding .}"/>
                                 </Label.GestureRecognizers>
                             </Label>
-                            <Button Text="x"
-                                    FontSize="Large"
-                                    FontAttributes="Bold"
-                                    TextColor="Black"
+                            <Button ImageSource="close.png"
                                     VerticalOptions="Center" HorizontalOptions="End"
                                     Command="{Binding Path=BindingContext.DeleteItemCommand, Source={x:Reference itemsPage}}"
                                     CommandParameter="{Binding .}"
