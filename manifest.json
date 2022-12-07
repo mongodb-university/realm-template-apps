@@ -65,6 +65,16 @@
     "metadata_filename": "realm",
     "file_format": "json"
   },
+  "react-native-ts.todo.flex": {
+    "name": "React Native Todo App (TypeScript)",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "backends/flexible-sync",
+    "client_path": "react-native-ts",
+    "metadata_path": "react-native-ts",
+    "metadata_filename": "realm",
+    "file_format": "json"
+  },
   "xamarin.todo": {
     "name": "Xamarin Todo App (Partition-based Sync)",
     "repo_owner": "mongodb-university",

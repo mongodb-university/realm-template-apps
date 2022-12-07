@@ -1,0 +1,18 @@
+name: Push Artifact - Flutter
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "flutter_todo/**"
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/push-to-artifact-repos
+        with:
+          source: ./flutter_todo
+          target_repo: mongodb/template-app-dart-flutter-todo.git

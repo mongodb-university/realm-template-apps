@@ -1,0 +1,22 @@
+name: Push to Artifact Repo
+description: Call push-to-artifact-repo action.
+inputs:
+  source:
+    description: Path to copied source.
+    required: true
+  destination_repo:
+    description: Destination GitHub org/user and repository name (e.g. mongodb/some-artifact).
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: mongodb/push-to-artifact-repo
+      with:
+        email: chris.bush+arty-fact@mongodb.com
+        name: Arty Fact
+        branch: main
+        source: ${{ inputs.source }}
+        toRepo: https://${{ secrets.ARTIFACT_REPO_ACCESS_TOKEN }}@github.com/${{ inputs.target_repo }}
+        commitMessage: Automatic update
+
+          Initiated by ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
