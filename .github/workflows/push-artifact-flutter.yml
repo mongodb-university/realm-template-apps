@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "flutter_todo/**"
+#    paths:
+#      - "flutter_todo/**"
 
 jobs:
   push:
