@@ -8,7 +8,7 @@ namespace RealmTodo.Services
     {
         private const string appId = "todo-template-tldrx";
 
-        public static Realms.Sync.App App; //TODO
+        public static Realms.Sync.App App { get; private set; }
 
         public static string CurrentUserId => App.CurrentUser.Id;
 
