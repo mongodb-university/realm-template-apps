@@ -6,9 +6,11 @@ namespace RealmTodo.Services
 {
     public static class RealmService
     {
-        private const string appId = "";
+        private const string appId = "todo-template-tldrx";
 
-        public static Realms.Sync.App App;
+        public static Realms.Sync.App App; //TODO
+
+        public static string CurrentUserId => App.CurrentUser.Id;
 
         public static void Init()
         {
@@ -25,6 +27,11 @@ namespace RealmTodo.Services
         {
             var config = new FlexibleSyncConfiguration(App.CurrentUser);
             return Realm.GetInstance(config);
+        }
+
+        public static async Task LogoutAsync()
+        {
+            await App.CurrentUser.LogOutAsync();
         }
     }
 }

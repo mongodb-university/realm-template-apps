@@ -12,18 +12,22 @@ namespace RealmTodo.ViewModels
         [ObservableProperty]
         private string connectionStatusIcon = "wifi_on.png";
 
+        [ObservableProperty]
+        private bool isShowAllTasks;
+
+        [ObservableProperty]
+        private IQueryable<Item> items;
+
         private Realm realm;
         private string currentUserId;
-
-        public IQueryable<Item> Items { get; set; }
+        private bool isOnline = true;
 
         [RelayCommand]
         public async Task OnAppearing()
         {
-            realm = await RealmService.GetRealmAsync();
-            currentUserId = RealmService.App.CurrentUser.Id;
+            realm = RealmService.GetRealm();
+            currentUserId = RealmService.CurrentUserId;
             Items = realm.All<Item>();
-            OnPropertyChanged(nameof(Items));
 
             if (realm.Subscriptions.Count == 0)
             {
@@ -34,10 +38,9 @@ namespace RealmTodo.ViewModels
         [RelayCommand]
         public async Task Logout()
         {
-            await realm.WriteAsync(() =>
-            {
-                realm.RemoveAll<Item>();
-            });
+            await RealmService.App.CurrentUser.LogOutAsync();
+
+            await Shell.Current.GoToAsync($"//login");
         }
 
         [RelayCommand]
@@ -58,6 +61,11 @@ namespace RealmTodo.ViewModels
         [RelayCommand]
         public async Task EditItem(Item item)
         {
+            if (!await CheckItemOwnership(item))
+            {
+                return;
+            }
+
             var promptResult = await DialogService.ShowPromptAsync("Edit item", item.Summary);
 
             if (!string.IsNullOrEmpty(promptResult))
@@ -72,6 +80,11 @@ namespace RealmTodo.ViewModels
         [RelayCommand]
         public async Task DeleteItem(Item item)
         {
+            if (!await CheckItemOwnership(item))
+            {
+                return;
+            }
+
             await realm.WriteAsync(() =>
             {
                 realm.Remove(item);
@@ -79,10 +92,25 @@ namespace RealmTodo.ViewModels
         }
 
         [RelayCommand]
-        public async Task ChangeConnectionStatus()
+        public void ChangeConnectionStatus()
         {
-            ConnectionStatusIcon = "wifi_on.png";
-            OnPropertyChanged(nameof(Items));
+            isOnline = !isOnline;
+
+            if (isOnline)
+            {
+                realm.SyncSession.Start();
+            }
+            else
+            {
+                realm.SyncSession.Stop();
+            }
+
+            ConnectionStatusIcon = isOnline ? "wifi_on.png" : "wifi_off.png";
+        }
+
+        async partial void OnIsShowAllTasksChanged(bool value)
+        {
+            await ChangeSubscription(value ? SubscriptionType.All : SubscriptionType.Mine);
         }
 
         private async Task ChangeSubscription(SubscriptionType subType)
@@ -106,6 +134,17 @@ namespace RealmTodo.ViewModels
             });
 
             await realm.Subscriptions.WaitForSynchronizationAsync();
+        }
+
+        private async Task<bool> CheckItemOwnership(Item item)
+        {
+            if (!item.IsMine)
+            {
+                await DialogService.ShowAlertAsync("Error", "You cannot modify items not belonging to you", "OK");
+                return false;
+            }
+
+            return true;
         }
 
         private enum SubscriptionType

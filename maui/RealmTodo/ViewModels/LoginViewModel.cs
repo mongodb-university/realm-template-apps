@@ -49,10 +49,13 @@ namespace RealmTodo.ViewModels
         {
             try
             {
+                IsBusy = true;
                 await RealmService.App.LogInAsync(Credentials.EmailPassword(Email, Password));
+                IsBusy = false;
             }
             catch (Exception ex)
             {
+                IsBusy = false;
                 await DialogService.ShowAlertAsync("Login failed", ex.Message, "Ok");
                 return;
             }
@@ -62,13 +65,15 @@ namespace RealmTodo.ViewModels
 
         private async Task DoSignup()
         {
-
             try
             {
+                IsBusy = true;
                 await RealmService.App.EmailPasswordAuth.RegisterUserAsync(Email, Password);
+                IsBusy = false;
             }
             catch (Exception ex)
             {
+                IsBusy = false;
                 await DialogService.ShowAlertAsync("Sign up failed", ex.Message, "Ok");
                 return;
             }
@@ -87,16 +92,9 @@ namespace RealmTodo.ViewModels
             return true;
         }
 
-        //TODO Possible improvements:
-        // - Disable buttons when one is clicked
-        // - Show activity indicator on login/signup
-
         private async Task GoToMainPage()
         {
-            //TODO To remove! It was useful for testing
-            //await DialogService.ShowAlertAsync("MAIN PAGE", "Please specify both the email and the password", "Ok");
-
-            await Shell.Current.GoToAsync($"//{nameof(ItemsPage)}");
+            await Shell.Current.GoToAsync($"//items");
         }
 
     }

@@ -9,12 +9,12 @@
     <ShellContent
         Title="Login"
         ContentTemplate="{DataTemplate local:LoginPage}"
-        Route="LoginPage" />
+        Route="login" />
 
     <ShellContent
         Title="RealmTodo"
         ContentTemplate="{DataTemplate local:ItemsPage}"
-        Route="ItemsPage" />
+        Route="items" />
 
 </Shell>
 

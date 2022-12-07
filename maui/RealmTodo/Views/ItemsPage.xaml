@@ -33,7 +33,7 @@
                 Text="Show all tasks"
                 FontSize="Default"
                 HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
-            <Switch HorizontalOptions="End" VerticalOptions="Center"/>
+            <Switch HorizontalOptions="End" VerticalOptions="Center" IsToggled="{Binding IsShowAllTasks}" />
         </StackLayout>
         <ListView ItemsSource="{Binding Items}"
                   SelectionMode="None"
@@ -42,7 +42,7 @@
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Orientation="Horizontal" Padding="5">
-                            <CheckBox IsChecked="{Binding IsComplete}" VerticalOptions="Center"  />
+                            <CheckBox IsChecked="{Binding IsComplete}" VerticalOptions="Center" IsEnabled="{Binding IsMine}"  />
                             <Label Text="{Binding Summary}"
                             HorizontalOptions="FillAndExpand"
                             VerticalOptions="Center">
@@ -51,13 +51,15 @@
                                     CommandParameter="{Binding .}"/>
                                 </Label.GestureRecognizers>
                             </Label>
-                            <Button Text="X"
+                            <Button Text="x"
                                     FontSize="Large"
-                                    BackgroundColor="Transparent"
+                                    FontAttributes="Bold"
                                     TextColor="Black"
                                     VerticalOptions="Center" HorizontalOptions="End"
                                     Command="{Binding Path=BindingContext.DeleteItemCommand, Source={x:Reference itemsPage}}"
-                                    CommandParameter="{Binding .}"/>
+                                    CommandParameter="{Binding .}"
+                                    IsEnabled="{Binding IsMine}"
+                                    />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

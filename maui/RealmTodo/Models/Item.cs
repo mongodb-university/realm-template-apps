@@ -1,6 +1,6 @@
-﻿using System;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using Realms;
+using RealmTodo.Services;
 
 namespace RealmTodo.Models
 {
@@ -20,6 +20,8 @@ namespace RealmTodo.Models
 
         [MapTo("isComplete")]
         public bool IsComplete { get; set; }
+
+        public bool IsMine => OwnerId == RealmService.CurrentUserId;
     }
 }
 
