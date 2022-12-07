@@ -15,4 +15,5 @@ jobs:
       - uses: ./.github/actions/push-to-artifact-repo
         with:
           source: ./swiftui
-          target_repo: mongodb/template-app-swiftui-todo.git
+          destination_repo: mongodb/template-app-swiftui-todo.git
+          access_token: ${{ secrets.ARTIFACT_REPO_ACCESS_TOKEN }}
