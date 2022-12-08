@@ -12,7 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/push-to-artifact-repos
+      - uses: ./.github/actions/push-to-artifact-repo
         with:
           source: ./flutter_todo
-          target_repo: mongodb/template-app-dart-flutter-todo.git
+          destination_repo: mongodb/template-app-dart-flutter-todo.git
+          access_token: ${{ secrets.ARTIFACT_REPO_ACCESS_TOKEN }}
