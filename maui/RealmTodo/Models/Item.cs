@@ -10,6 +10,7 @@ namespace RealmTodo.Models
         [MapTo("_id")]
         public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
 
+
         [MapTo("owner_id")]
         [Required]
         public string OwnerId { get; set; }
