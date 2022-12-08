@@ -1,0 +1,33 @@
+{
+    "type": "flexible",
+    "state": "enabled",
+    "development_mode_enabled": true,
+    "service_name": "mongodb-atlas",
+    "database_name": "todo",
+    "permissions": {
+        "rules": {
+            "Item": [
+                {
+                    "name": "write-own-items",
+                    "applyWhen": {},
+                    "read": true,
+                    "write": {
+                        "owner_id": "%%user.id"
+                    }
+                }
+            ]
+        },
+        "defaultRoles": [
+            {
+                "name": "read-not-write",
+                "applyWhen": {},
+                "read": true,
+                "write": false
+            }
+        ]
+    },
+    "queryable_fields_names": [
+        "_id",
+        "owner_id"
+    ]
+}
