@@ -7,16 +7,19 @@ inputs:
   destination_repo:
     description: Destination GitHub org/user and repository name (e.g. mongodb/some-artifact).
     required: true
+  access_token:
+    description: The access token for the artifact repo.
+    required: true
 runs:
   using: composite
   steps:
-    - uses: mongodb/push-to-artifact-repo
+    - uses: mongodb/push-to-artifact-repo@main
       with:
         email: chris.bush+arty-fact@mongodb.com
         name: Arty Fact
         branch: main
         source: ${{ inputs.source }}
-        toRepo: https://${{ secrets.ARTIFACT_REPO_ACCESS_TOKEN }}@github.com/${{ inputs.target_repo }}
+        toRepo: https://${{ inputs.access_token }}@github.com/${{ inputs.destination_repo }}
         commitMessage: Automatic update
 
           Initiated by ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
