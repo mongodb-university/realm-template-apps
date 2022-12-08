@@ -7,59 +7,62 @@ struct OpenRealmView: View {
     // We must pass the user, so we can set the user.id when we create Item objects
     @State var user: User
     @State var showMyItems = true
-    @State var syncEnabled = true
+    @State var isInOfflineMode = false
     // Configuration used to open the realm.
     @Environment(\.realmConfiguration) private var config
 
     var body: some View {
         switch asyncOpen {
+        case .connecting:
             // Starting the Realm.asyncOpen process.
             // Show a progress view.
-        case .connecting:
             ProgressView()
+        case .waitingForUser:
             // Waiting for a user to be logged in before executing
             // Realm.asyncOpen.
-        case .waitingForUser:
             ProgressView("Waiting for user to log in...")
+        case .open(let realm):
             // The realm has been opened and is ready for use.
             // Show the Items view.
-        case .open(let realm):
-            ItemsView(leadingBarButton: AnyView(LogoutButton()), user: user, showMyItems: $showMyItems, syncEnabled: $syncEnabled)
+            ItemsView(leadingBarButton: AnyView(LogoutButton()), user: user, showMyItems: $showMyItems, isInOfflineMode: $isInOfflineMode)
                 // showMyItems toggles the creation of a subscription
-                // When it's toggled on, only the original subscription is shown.
+                // When it's toggled on, only the original subscription is shown -- "my_items".
                 // When it's toggled off, *all* items are downloaded to the
                 // client, including from other users.
                 .onChange(of: showMyItems) { newValue in
                     let subs = realm.subscriptions
                     subs.update {
                         if newValue {
-                            subs.remove(named: "all_items")
+                            subs.remove(named: Constants.allItems)
                         } else {
-                            if subs.first(named: "all_items") == nil {
-                                subs.append(QuerySubscription<Item>(name: "all_items"))
+                            if subs.first(named: Constants.allItems) == nil {
+                                subs.append(QuerySubscription<Item>(name: Constants.allItems))
                             }
                         }
                     }
-                // syncEnabled simulates a situation with no internet connection.
+                }
+                // isInOfflineMode simulates a situation with no internet connection.
                 // While sync is not available, items can still be written and queried.
-                // When sync is resumed, items created or updated will sync to other the
-                // server, then other devices.
-                }.onChange(of: syncEnabled) { newValue in
+                // When sync is resumed, items created or updated offline will upload to
+                // the server and changes from the server or other devices will be downloaded to the client.
+                .onChange(of: isInOfflineMode) { newValue in
                     let syncSession = realm.syncSession!
-                    newValue ? syncSession.resume() : syncSession.suspend()
-                }.onAppear {
-                    if let _ = realm.subscriptions.first(named: "all_items") {
-                        // Subscribed to all items from a previous session, set toggle accordingly
+                    newValue ? syncSession.suspend() : syncSession.resume()
+                }
+                .onAppear {
+                    if let _ = realm.subscriptions.first(named: Constants.allItems) {
+                        // The client was subscribed to all items from a previous
+                        // session, so set UI toggle accordingly
                         showMyItems = false
                     }
                 }
+        case .progress(let progress):
             // The realm is currently being downloaded from the server.
             // Show a progress view.
-        case .progress(let progress):
             ProgressView(progress)
+        case .error(let error):
             // Opening the Realm failed.
             // Show an error view.
-        case .error(let error):
             ErrorView(error: error)
         }
     }

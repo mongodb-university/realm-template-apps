@@ -14,7 +14,7 @@ struct ItemsView: View {
     @State var user: User
     @State var isInCreateItemView = false
     @Binding var showMyItems: Bool
-    @Binding var syncEnabled: Bool
+    @Binding var isInOfflineMode: Bool
 
     var body: some View {
         NavigationView {
@@ -30,9 +30,9 @@ struct ItemsView: View {
             .navigationBarItems(leading: self.leadingBarButton,
                                 trailing: HStack {
                 Button {
-                    syncEnabled = !syncEnabled
+                    isInOfflineMode = !isInOfflineMode
                 } label: {
-                    syncEnabled ? Image(systemName: "wifi") : Image(systemName: "wifi.slash")
+                    isInOfflineMode ? Image(systemName: "wifi.slash") : Image(systemName: "wifi")
                 }
                 Button {
                     isInCreateItemView = true

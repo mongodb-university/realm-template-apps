@@ -8,7 +8,6 @@ struct AppConfig {
     var baseUrl: String
 }
 
-
 /// Read the Realm.plist file and store the app ID and baseUrl to use elsewhere.
 func loadAppConfig() -> AppConfig {
     guard let path = Bundle.main.path(forResource: "Realm", ofType: "plist") else {

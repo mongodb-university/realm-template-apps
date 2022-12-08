@@ -13,7 +13,8 @@ struct ItemList: View {
             List {
                 ForEach(items) { item in
                     ItemRow(item: item)
-                }.onDelete(perform: $items.remove)
+                }
+                .onDelete(perform: $items.remove)
             }
             .listStyle(InsetListStyle())
             Spacer()
