@@ -20,7 +20,7 @@ import com.mongodb.app.ui.theme.Purple200
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddItem(viewModel: AddItemViewModel) {
+fun AddItemPrompt(viewModel: AddItemViewModel) {
     AlertDialog(
         containerColor = Color.White,
         onDismissRequest = {
@@ -71,7 +71,7 @@ fun AddItemPreview() {
         MyApplicationTheme {
             val repository = MockRepository()
             val viewModel = AddItemViewModel(repository)
-            AddItem(viewModel)
+            AddItemPrompt(viewModel)
         }
     }
 }

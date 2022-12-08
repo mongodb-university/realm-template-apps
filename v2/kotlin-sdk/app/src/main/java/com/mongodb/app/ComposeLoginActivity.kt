@@ -32,7 +32,6 @@ class ComposeLoginActivity : ComponentActivity() {
             return
         }
 
-
         lifecycleScope.launch {
             // Subscribe to navigation and message-logging events
             loginViewModel.event

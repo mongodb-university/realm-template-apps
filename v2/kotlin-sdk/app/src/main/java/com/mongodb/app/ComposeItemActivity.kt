@@ -46,7 +46,7 @@ import com.mongodb.app.presentation.subscriptiontype.SubscriptionTypeViewModel
 import com.mongodb.app.presentation.tasks.TaskViewModel
 import com.mongodb.app.presentation.toolbar.ToolbarEvent
 import com.mongodb.app.presentation.toolbar.ToolbarViewModel
-import com.mongodb.app.ui.tasks.AddItem
+import com.mongodb.app.ui.tasks.AddItemPrompt
 import com.mongodb.app.ui.tasks.ShowMyOwnTasks
 import com.mongodb.app.ui.tasks.TaskAppToolbar
 import com.mongodb.app.ui.tasks.TaskList
@@ -57,8 +57,11 @@ import kotlinx.coroutines.launch
 class ComposeItemActivity : ComponentActivity() {
 
     private val repository = RealmSyncRepository { _, error ->
+        // Sync errors come from a background thread so route the Toast through the UI thread
         lifecycleScope.launch {
-            // Catch write permission errors and notify user
+            // Catch write permission errors and notify user. This is just a 2nd line of defense
+            // since we prevent users from modifying someone else's tasks
+            // TODO the SDK does not have an enum for this type of error yet so make sure to update this once it has been added
             if (error.message?.contains("CompensatingWrite") == true) {
                 Toast.makeText(this@ComposeItemActivity, getString(R.string.permissions_error), Toast.LENGTH_SHORT)
                     .show()
@@ -90,34 +93,28 @@ class ComposeItemActivity : ComponentActivity() {
                             startActivity(Intent(this@ComposeItemActivity, ComposeLoginActivity::class.java))
                             finish()
                         }
-                        is ToolbarEvent.Info -> {
+                        is ToolbarEvent.Info ->
                             Log.e(TAG(), toolbarEvent.message)
-                        }
-                        is ToolbarEvent.Error -> {
+                        is ToolbarEvent.Error ->
                             Log.e(TAG(), "${toolbarEvent.message}: ${toolbarEvent.throwable.message}")
-                        }
                     }
                 }
             addItemViewModel.addItemEvent
                 .collect { fabEvent ->
                     when (fabEvent) {
-                        is AddItemEvent.Error -> {
+                        is AddItemEvent.Error ->
                             Log.e(TAG(), "${fabEvent.message}: ${fabEvent.throwable.message}")
-                        }
-                        is AddItemEvent.Info -> {
+                        is AddItemEvent.Info ->
                             Log.e(TAG(), fabEvent.message)
-                        }
                     }
                 }
             subscriptionTypeViewModel.subscriptionTypeEvent
                 .collect { subscriptionTypeEvent ->
                     when (subscriptionTypeEvent) {
-                        is SubscriptionTypeEvent.Error -> {
+                        is SubscriptionTypeEvent.Error ->
                             Log.e(TAG(), "${subscriptionTypeEvent.message}: ${subscriptionTypeEvent.throwable.message}")
-                        }
-                        is SubscriptionTypeEvent.Info -> {
-                            Log.e(TAG(), subscriptionTypeEvent.message)
-                        }
+                        is SubscriptionTypeEvent.Info ->
+                            Log.i(TAG(), subscriptionTypeEvent.message)
                     }
                 }
         }
@@ -182,7 +179,7 @@ fun TaskListScaffold(
             }
 
             if (addItemViewModel.addItemPopupVisible.value) {
-                AddItem(addItemViewModel)
+                AddItemPrompt(addItemViewModel)
             }
         },
         content = {

@@ -33,7 +33,7 @@ interface SyncRepository {
     /**
      * Update the `isComplete` flag for a specific [Item].
      */
-    suspend fun updateCompleteness(task: Item)
+    suspend fun toggleIsComplete(task: Item)
 
     /**
      * Adds a task that belongs to the current user using the specified [taskSummary].
@@ -115,7 +115,7 @@ class RealmSyncRepository(
             .asFlow()
     }
 
-    override suspend fun updateCompleteness(task: Item) {
+    override suspend fun toggleIsComplete(task: Item) {
         realm.write {
             val latestVersion = findLatest(task)
             latestVersion!!.isComplete = !latestVersion.isComplete
@@ -186,7 +186,7 @@ class RealmSyncRepository(
  */
 class MockRepository : SyncRepository {
     override fun getTaskList(): Flow<ResultsChange<Item>> = flowOf()
-    override suspend fun updateCompleteness(task: Item) = Unit
+    override suspend fun toggleIsComplete(task: Item) = Unit
     override suspend fun addTask(taskSummary: String) = Unit
     override suspend fun updateSubscriptions(subscriptionType: SubscriptionType) = Unit
     override suspend fun deleteTask(task: Item) = Unit

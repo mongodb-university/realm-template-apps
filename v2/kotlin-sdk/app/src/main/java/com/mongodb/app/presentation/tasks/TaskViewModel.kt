@@ -57,7 +57,7 @@ class TaskViewModel(
 
     fun updateCompleteness(task: Item) {
         CoroutineScope(Dispatchers.IO).launch {
-            repository.updateCompleteness(task)
+            repository.toggleIsComplete(task)
         }
     }
 
