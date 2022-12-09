@@ -4,12 +4,16 @@ on: pull_request
 
 jobs:
   validate:
-    name: Validate JSON
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 15.x
-      - run: npx ajv-cli validate -s manifest.schema.json -d manifest.json
+          node-version: 16.x
+      - name: Validate Manifest
+        working-directory: tools/validate-manifest
+        run: |
+          npm ci
+          npm run build
+          npm run test
+          node . validate ../../manifest.json
