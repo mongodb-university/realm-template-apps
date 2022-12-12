@@ -64,10 +64,12 @@ class _TodoListState extends State<TodoList> {
               ),
             ),
             styledBox(
-              child: const Text(
-                "Log in with the same account on another device to see your list sync in realm-time",
-                textAlign: TextAlign.left,
-              ),
+              child: Container(
+                  margin: EdgeInsets.fromLTRB(15, 0, 30, 15),
+                  child: const Text(
+                    "Log in with the same account on another device to see your list sync in realm-time",
+                    textAlign: TextAlign.left,
+                  )),
             ),
           ],
         ),
