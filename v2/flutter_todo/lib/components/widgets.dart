@@ -70,7 +70,6 @@ RadioListTile<bool> radioButton(String text, bool value, ValueNotifier<bool> con
 Widget styledBox({bool isHeader = false, Widget? child}) {
   return Container(
     width: double.infinity,
-    height: isHeader ? 50 : 70,
     decoration: BoxDecoration(
       color: const Color.fromRGBO(227, 252, 247, 1),
       border: Border(
