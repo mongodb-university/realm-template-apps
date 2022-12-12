@@ -89,9 +89,6 @@ class RealmServices with ChangeNotifier {
         item.isComplete = isComplete;
       }
     });
-    if (!offlineModeOn) {
-      await realm.syncSession.waitForUpload();
-    }
     notifyListeners();
   }
 
