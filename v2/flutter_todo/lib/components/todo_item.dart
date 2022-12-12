@@ -98,8 +98,8 @@ class TodoItem extends StatelessWidget {
       MaterialState.focused,
     };
     if (states.any(interactiveStates.contains)) {
-      return Colors.blue;
+      return forestGreenColor;
     }
-    return Colors.blue;
+    return forestGreenColor;
   }
 }

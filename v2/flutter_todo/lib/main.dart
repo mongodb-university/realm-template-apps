@@ -7,6 +7,8 @@ import 'package:flutter_todo/realm/app_services.dart';
 import 'package:flutter_todo/screens/homepage.dart';
 import 'package:flutter_todo/screens/log_in.dart';
 
+import 'components/widgets.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final realmConfig = json.decode(await rootBundle.loadString('assets/config/realm.json'));
@@ -37,7 +39,8 @@ class App extends StatelessWidget {
       child: MaterialApp(
         title: 'Realm Flutter Todo',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: forestGreenColor,
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: forestGreenColor),
         ),
         initialRoute: currentUser != null ? '/' : '/login',
         routes: {'/': (context) => const HomePage(), '/login': (context) => LogIn()},
@@ -45,3 +48,5 @@ class App extends StatelessWidget {
     );
   }
 }
+
+

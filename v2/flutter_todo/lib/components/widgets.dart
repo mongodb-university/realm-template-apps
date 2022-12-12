@@ -43,7 +43,7 @@ Widget cancelButton(BuildContext context) {
 Widget okButton(BuildContext context, String text, {void Function()? onPressed}) {
   return templateButton(
     context,
-    color: Colors.blue,
+    color: forestGreenColor,
     text: text,
     onPressed: onPressed,
   );
@@ -52,7 +52,7 @@ Widget okButton(BuildContext context, String text, {void Function()? onPressed})
 Widget deleteButton(BuildContext context, {void Function()? onPressed}) {
   return templateButton(
     context,
-    color: Colors.red,
+    color: darkRedColor,
     text: "Delete",
     onPressed: onPressed,
   );
@@ -67,15 +67,25 @@ RadioListTile<bool> radioButton(String text, bool value, ValueNotifier<bool> con
   );
 }
 
-Widget styledBox({Widget? child}) {
+Widget styledBox({bool isHeader = false, Widget? child}) {
   return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 15),
-      decoration: const BoxDecoration(color: Color.fromARGB(255, 205, 202, 202)),
+    width: double.infinity,
+    height: isHeader ? 50 : 70,
+    decoration: BoxDecoration(
+      color: const Color.fromRGBO(227, 252, 247, 1),
+      border: Border(
+          top: isHeader
+              ? BorderSide.none
+              : BorderSide(width: 2, color: forestGreenColor),
+          bottom: isHeader
+              ? BorderSide(width: 2, color: forestGreenColor)
+              : BorderSide.none),
+    ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(15, 8, 15, 8),
+      padding: const EdgeInsets.all(15),
         child: child,
-      ));
+    ),
+  );
 }
 
 Widget styledFloatingAddButton(BuildContext context, {required void Function() onPressed}) {
@@ -86,12 +96,13 @@ Widget styledFloatingAddButton(BuildContext context, {required void Function() o
       backgroundColor: Colors.white,
       onPressed: onPressed,
       tooltip: 'Add',
-      child: const Padding(
-        padding: EdgeInsets.all(3),
+      child: Padding(
+        padding: const EdgeInsets.all(3),
         child: CircleAvatar(
           radius: 26,
-          backgroundColor: Colors.blue,
-          child: Icon(Icons.add),
+          backgroundColor: forestGreenColor,
+          foregroundColor: Colors.white,
+          child: const Icon(Icons.add),
         ),
       ),
     ),
@@ -99,7 +110,7 @@ Widget styledFloatingAddButton(BuildContext context, {required void Function() o
 }
 
 SnackBar errorMessageWidget(String title, String message) {
-  final textColor = Color.fromARGB(255, 113, 18, 11);
+  final textColor = darkRedColor;
   return SnackBar(
       behavior: SnackBarBehavior.floating,
       backgroundColor: Colors.transparent,
@@ -123,3 +134,37 @@ SnackBar errorMessageWidget(String title, String message) {
                 )),
           )));
 }
+
+MaterialColor forestGreenColor = MaterialColor(
+  const Color.fromRGBO(0, 104, 74, 1).value,
+  const <int, Color>{
+    50: Color.fromRGBO(0, 104, 74, 0.1),
+    100: Color.fromRGBO(0, 104, 74, 0.2),
+    200: Color.fromRGBO(0, 104, 74, 0.3),
+    300: Color.fromRGBO(0, 104, 74, 0.4),
+    400: Color.fromRGBO(0, 104, 74, 0.5),
+    500: Color.fromRGBO(0, 104, 74, 0.6),
+    600: Color.fromRGBO(0, 104, 74, 0.7),
+    700: Color.fromRGBO(0, 104, 74, 0.8),
+    800: Color.fromRGBO(0, 104, 74, 0.9),
+    900: Color.fromRGBO(0, 104, 74, 1),
+  },
+);
+
+MaterialColor mistColor = MaterialColor(
+  const Color.fromRGBO(227, 252, 247, 1).value,
+  const <int, Color>{
+    50: Color.fromRGBO(227, 252, 247, 0.1),
+    100: Color.fromRGBO(227, 252, 247, 0.2),
+    200: Color.fromRGBO(227, 252, 247, 0.3),
+    300: Color.fromRGBO(227, 252, 247, 0.4),
+    400: Color.fromRGBO(227, 252, 247, 0.5),
+    500: Color.fromRGBO(227, 252, 247, 0.6),
+    600: Color.fromRGBO(227, 252, 247, 0.7),
+    700: Color.fromRGBO(227, 252, 247, 0.8),
+    800: Color.fromRGBO(227, 252, 247, 0.9),
+    900: Color.fromRGBO(227, 252, 247, 1),
+  },
+);
+
+Color get darkRedColor => const Color.fromARGB(255, 91, 29, 25);

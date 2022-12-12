@@ -42,13 +42,19 @@ class _LogInState extends State<LogIn> {
                 Text(_isLogin ? 'Log In' : 'Sign Up', style: const TextStyle(fontSize: 25)),
                 loginField(_emailController, labelText: "Email", hintText: "Enter valid email like abc@gmail.com"),
                 loginField(_passwordController, labelText: "Password", hintText: "Enter secure password", obscure: true),
-                const Text("Please login or register with a Device Sync user account.", textAlign: TextAlign.center),
-                const Text("This is separate from your Atlas Cloud login.", textAlign: TextAlign.center),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  child: Text(
+                      "Please login or register with a Device Sync user account. This is separate from your Atlas Cloud login.",
+                      textAlign: TextAlign.center),
+                ),
                 Container(
                   height: 50,
                   width: 250,
                   margin: const EdgeInsets.symmetric(vertical: 25),
-                  decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(20)),
+                  decoration: BoxDecoration(
+                      color: forestGreenColor,
+                      borderRadius: BorderRadius.circular(20)),
                   child: TextButton(
                     onPressed: () => _logInOrSignUpUser(context, _emailController.text, _passwordController.text),
                     child: Text(
@@ -64,7 +70,9 @@ class _LogInState extends State<LogIn> {
                     )),
                 Padding(
                   padding: const EdgeInsets.all(25),
-                  child: Text(_errorMessage ?? "", style: const TextStyle(color: Colors.red)),
+                  child: Text(_errorMessage ?? "",
+                      style: TextStyle(color: darkRedColor),
+                      textAlign: TextAlign.center),
                 ),
               ],
             ),

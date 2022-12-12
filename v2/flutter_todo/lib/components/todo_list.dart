@@ -32,6 +32,7 @@ class _TodoListState extends State<TodoList> {
         Column(
           children: [
             styledBox(
+              isHeader: true,
               child: Row(
                 children: [
                   const Expanded(child: Text("Show All Tasks", textAlign: TextAlign.right)),
