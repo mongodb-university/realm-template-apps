@@ -1,0 +1,19 @@
+name: Push Artifact - SwiftUI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "swiftui/**"
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/push-to-artifact-repo
+        with:
+          source: ./swiftui
+          destination_repo: mongodb/template-app-swiftui-todo.git
+          access_token: ${{ secrets.ARTIFACT_REPO_ACCESS_TOKEN }}

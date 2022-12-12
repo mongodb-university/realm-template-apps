@@ -1,0 +1,19 @@
+name: Push Artifact - Xamarin
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "xamarin/**"
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/push-to-artifact-repo
+        with:
+          source: ./xamarin
+          destination_repo: mongodb/template-app-xamarin-todo.git
+          access_token: ${{ secrets.ARTIFACT_REPO_ACCESS_TOKEN }}

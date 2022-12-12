@@ -3,9 +3,19 @@
 This is the main repo for all MongoDB App Services & Realm template starter app
 clients and backend configurations.
 
-A GitHub action uploads to the realm-template-apps S3 bucket. See [.github/workflows/zip-everything-and-upload-to-s3.yml](.github/workflows/zip-everything-and-upload-to-s3.yml).
+A GitHub Action uploads to the realm-template-apps S3 bucket. See [.github/workflows/zip-everything-and-upload-to-s3.yml](.github/workflows/zip-everything-and-upload-to-s3.yml).
 
 For bucket access, consult the Realm docs team.
+
+## Artifact Repos
+
+A GitHub Action creates "artifact repos" of a few subdirectories so that the client code can be examined and cloned easily.
+
+- https://github.com/mongodb/template-app-dart-flutter-todo
+- https://github.com/mongodb/template-app-kotlin-todo
+- https://github.com/mongodb/template-app-react-native-todo
+- https://github.com/mongodb/template-app-swiftui-todo
+- https://github.com/mongodb/template-app-xamarin-todo
 
 ## About "generated"
 
