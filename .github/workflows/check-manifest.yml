@@ -16,4 +16,4 @@ jobs:
           npm ci
           npm run build
           npm run test
-          node . validate ../../manifest.json
+          npm run validate ../../manifest.json
