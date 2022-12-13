@@ -26,12 +26,13 @@ class RealmServices with ChangeNotifier {
 
   Future<void> updateSubscriptions() async {
     realm.subscriptions.update((mutableSubscriptions) {
-      mutableSubscriptions.removeByName(queryAllName);
-      mutableSubscriptions.removeByName(queryMyItemsName);
+      mutableSubscriptions.clear();
       if (showAll) {
         mutableSubscriptions.add(realm.all<Item>(), name: queryAllName);
       } else {
-        mutableSubscriptions.add(realm.query<Item>(r'owner_id == $0', [currentUser?.id]), name: queryMyItemsName);
+        mutableSubscriptions.add(
+            realm.query<Item>(r'owner_id == $0', [currentUser?.id]),
+            name: queryMyItemsName);
       }
     });
     await realm.subscriptions.waitForSynchronization();
@@ -69,7 +70,8 @@ class RealmServices with ChangeNotifier {
   }
 
   void createItem(String summary, bool isComplete) {
-    final newItem = Item(ObjectId(), summary, currentUser!.id, isComplete: isComplete);
+    final newItem =
+        Item(ObjectId(), summary, currentUser!.id, isComplete: isComplete);
     realm.write<Item>(() => realm.add<Item>(newItem));
     notifyListeners();
   }
@@ -79,7 +81,8 @@ class RealmServices with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateItem(Item item, {String? summary, bool? isComplete}) async {
+  Future<void> updateItem(Item item,
+      {String? summary, bool? isComplete}) async {
     realm.write(() {
       if (summary != null) {
         item.summary = summary;
@@ -93,8 +96,8 @@ class RealmServices with ChangeNotifier {
 
   Future<void> close() async {
     if (currentUser != null) {
-    await currentUser?.logOut();
-    currentUser = null;
+      await currentUser?.logOut();
+      currentUser = null;
     }
     realm.close();
   }

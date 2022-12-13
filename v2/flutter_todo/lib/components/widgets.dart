@@ -108,15 +108,34 @@ Widget styledFloatingAddButton(BuildContext context, {required void Function() o
   );
 }
 
-void showSnackBar(BuildContext context, String title, String error,
+void showSnackBar(BuildContext context, SnackBar snackBar,
     {int durationInSeconds = 15}) {
   ScaffoldMessenger.of(context).hideCurrentSnackBar();
-  ScaffoldMessenger.of(context).showSnackBar(
-    errorMessageWidget(title, error),
-  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
   Future.delayed(Duration(seconds: durationInSeconds)).then((value) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
   });
+}
+
+SnackBar toastMessageWidget(String message) {
+  return SnackBar(
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      margin: const EdgeInsets.only(bottom: 50.0),
+      dismissDirection: DismissDirection.none,
+      elevation: 0,
+      content: SizedBox(
+          height: 105,
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  color: forestGreenColor,
+                  borderRadius: const BorderRadius.all(Radius.circular(8))),
+              child: Text(message, style: const TextStyle(color: Colors.white)),
+            ),
+          )));
 }
 
 SnackBar errorMessageWidget(String title, String message) {

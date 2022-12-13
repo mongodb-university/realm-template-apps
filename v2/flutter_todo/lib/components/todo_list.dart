@@ -36,17 +36,18 @@ class _TodoListState extends State<TodoList> {
               child: Row(
                 children: [
                   const Expanded(
-                      child:
-                          Text("Show All Tasks", textAlign: TextAlign.right)),
+                    child: Text("Show All Tasks", textAlign: TextAlign.right),
+                  ),
                   Switch(
                     value: realmServices.showAll,
                     onChanged: (value) async {
                       if (realmServices.offlineModeOn) {
-                        showSnackBar(context, "Offline mode",
-                            "Can not switch device sync subscripions in offline mode.");
-                      } else {
-                        await realmServices.switchSubscription(value);
+                        showSnackBar(
+                            context,
+                            toastMessageWidget(
+                                "Switching subscriptions does not affect Realm data when the sync is offline."));
                       }
+                      await realmServices.switchSubscription(value);
                     },
                   ),
                 ],
@@ -56,7 +57,9 @@ class _TodoListState extends State<TodoList> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                 child: StreamBuilder<RealmResultsChanges<Item>>(
-                  stream: realmServices.realm.all<Item>().changes,
+                  stream: realmServices.realm
+                      .query<Item>("TRUEPREDICATE SORT(_id ASC)")
+                      .changes,
                   builder: (context, snapshot) {
                     final data = snapshot.data;
 

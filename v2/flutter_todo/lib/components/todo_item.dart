@@ -24,10 +24,14 @@ class TodoItem extends StatelessWidget {
               value: item.isComplete,
               onChanged: (bool? value) async {
                 if (isMine) {
-                  await realmServices.updateItem(item, isComplete: value ?? false);
+                  await realmServices.updateItem(item,
+                      isComplete: value ?? false);
                 } else {
-                  showSnackBar(context, "Change not allowed!",
-                      "You are not allowed to change the status of \n tasks that don't belog to you.");
+                  showSnackBar(
+                    context,
+                    errorMessageWidget("Change not allowed!",
+                        "You are not allowed to change the status of \n tasks that don't belog to you."),
+                  );
                 }
               },
             ),
@@ -40,15 +44,19 @@ class TodoItem extends StatelessWidget {
             trailing: SizedBox(
               width: 25,
               child: PopupMenuButton<MenuOption>(
-                onSelected: (menuItem) => handleMenuClick(context, menuItem, item, realmServices),
+                onSelected: (menuItem) =>
+                    handleMenuClick(context, menuItem, item, realmServices),
                 itemBuilder: (context) => [
                   const PopupMenuItem<MenuOption>(
                     value: MenuOption.edit,
-                    child: ListTile(leading: Icon(Icons.edit), title: Text("Edit item")),
+                    child: ListTile(
+                        leading: Icon(Icons.edit), title: Text("Edit item")),
                   ),
                   const PopupMenuItem<MenuOption>(
                     value: MenuOption.delete,
-                    child: ListTile(leading: Icon(Icons.delete), title: Text("Delete item")),
+                    child: ListTile(
+                        leading: Icon(Icons.delete),
+                        title: Text("Delete item")),
                   ),
                 ],
               ),
@@ -58,7 +66,8 @@ class TodoItem extends StatelessWidget {
         : Container();
   }
 
-  void handleMenuClick(BuildContext context, MenuOption menuItem, Item item, RealmServices realmServices) {
+  void handleMenuClick(BuildContext context, MenuOption menuItem, Item item,
+      RealmServices realmServices) {
     bool isMine = (item.ownerId == realmServices.currentUser?.id);
     switch (menuItem) {
       case MenuOption.edit:
@@ -69,16 +78,22 @@ class TodoItem extends StatelessWidget {
             builder: (_) => Wrap(children: [ModifyItemForm(item)]),
           );
         } else {
-          showSnackBar(context, "Edit not allowed!",
-              "You are not allowed to edit tasks \nthat don't belog to you.");
+          showSnackBar(
+            context,
+            errorMessageWidget("Edit not allowed!",
+                "You are not allowed to edit tasks \nthat don't belog to you."),
+          );
         }
         break;
       case MenuOption.delete:
         if (isMine) {
           realmServices.deleteItem(item);
         } else {
-          showSnackBar(context, "Delete not allowed!",
-              "You are not allowed to delete tasks \n that don't belog to you.");
+          showSnackBar(
+            context,
+            errorMessageWidget("Delete not allowed!",
+                "You are not allowed to delete tasks \n that don't belog to you."),
+          );
         }
         break;
     }
