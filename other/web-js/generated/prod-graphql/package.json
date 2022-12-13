@@ -24,10 +24,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prettier": "npx prettier ./src --write",
-    "generate:prod-mql": "npx bluehawk copy . --destination=../generated/web-mql --ignore=realm.json --state=prod-mql",
-    "generate:prod-graphql": "npx bluehawk copy . --destination=../generated/web-graphql --ignore=realm.json --state=prod-graphql",
-    "generate:prod": "npm run generate:prod-mql && npm run generate:prod-graphql"
+    "prettier": "npx prettier ./src --write"
   },
   "eslintConfig": {
     "extends": [
