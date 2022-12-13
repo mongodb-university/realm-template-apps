@@ -9,15 +9,15 @@ Ensure realm-todo-dotnet/realm.json exists and contains the following properties
 
 ### Cloning from GitHub
 
-If you have cloned this repository from the GitHub 
-[mongodb/template-app-xamarin-todo](https://github.com/mongodb/template-app-xamarin-todo.git) 
-repository, you must create a separate App Services App with Device Sync 
-enabled to use this client. You can find information about how to do this 
+If you have cloned this repository from the GitHub
+[mongodb/template-app-xamarin-todo](https://github.com/mongodb/template-app-xamarin-todo.git)
+repository, you must create a separate App Services App with Device Sync
+enabled to use this client. You can find information about how to do this
 in the Atlas App Services documentation page:
 [Template Apps -> Create a Template App](https://www.mongodb.com/docs/atlas/app-services/reference/template-apps/#create-a-template-app)
 
 Once you have created the App Services App, replace any value in this client's
-`appId` field with your App Services App ID. For help finding this ID, refer 
+`appId` field with your App Services App ID. For help finding this ID, refer
 to: [Find Your Project or App Id](https://www.mongodb.com/docs/atlas/app-services/reference/find-your-project-or-app-id/)
 
 ## Run the app
@@ -28,17 +28,17 @@ to: [Find Your Project or App Id](https://www.mongodb.com/docs/atlas/app-service
 
 ## Issues
 
-Please report issues with the template at https://github.com/mongodb-university/realm-template-apps/issues/new
+Please report issues with the template at https://github.com/mongodb-university/realm-template-apps/issues/new .
 
 ## Changing the Namespace
 
-This app's namespace is ``RealmTemplateApp``. You do not need to change it, but if
+This app's namespace is `RealmTemplateApp`. You do not need to change it, but if
 you choose to, we offer these steps to help you with the process. Note that changing
 namespaces in VS solutions can be complicated and error-prone. We do not provide
 support for this process.
 
-1. With the Solution open in Visual Studio, in the ``Search`` menu,
-   choose ``Replace in Files``.
+1. With the Solution open in Visual Studio, in the `Search` menu,
+   choose `Replace in Files`.
 2. In the **Find** box, enter **RealmTemplateApp**.
 3. In the **Replace** box, enter your new namespace name.
 4. In the **Look in** drop-down, select **Directories**.
