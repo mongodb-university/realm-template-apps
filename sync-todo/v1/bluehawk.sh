@@ -2,6 +2,8 @@
 
 pushd "$(dirname "$0")"
 
+rm -r generated
+
 for client in client/*; do
   npx bluehawk copy -o generated/$(basename $client) $client/;
 done
