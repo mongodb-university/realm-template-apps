@@ -2,28 +2,24 @@
 
 This client demonstrates the corresponding permissions model backend.
 
+See https://www.mongodb.com/docs/atlas/app-services/sync/data-access-patterns/flexible-sync-permissions-guide
+
+## Usage
+
 First, install dependencies:
 
 ```
 npm install
 ```
 
-Then build:
+To clean, build, and run:
 
 ```
-npm run build
+npm run demo
 ```
 
-To run:
+The demo will print info to the console.
 
-```
-node .
-```
+## Issues
 
-Between runs, clean:
-
-```
-
-```
-
-The demo will print to the console.
+Please file issues here: https://github.com/mongodb-university/realm-template-apps/issues/new
