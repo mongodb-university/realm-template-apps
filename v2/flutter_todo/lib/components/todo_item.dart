@@ -26,16 +26,16 @@ class TodoItem extends StatelessWidget {
                 if (item.ownerId == realmServices.currentUser?.id) {
                   await realmServices.updateItem(item, isComplete: value ?? false);
                 } else {
-                  showError(context, "Change not allowed!", "You are not allowed to change the status of \n tasks that don't belog to you.");
+                  showSnackBar(context, "Change not allowed!",
+                      "You are not allowed to change the status of \n tasks that don't belog to you.");
                 }
               },
             ),
             title: Text(item.summary),
-            subtitle: Row(
-              children: [
-                Text(isMine ? '(mine) ' : '', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-                Text(item.isComplete ? 'Completed' : 'Incomplete'),
-              ],
+            subtitle: Text(
+              isMine ? '(mine) ' : '',
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.black),
             ),
             trailing: SizedBox(
               width: 25,
@@ -68,27 +68,19 @@ class TodoItem extends StatelessWidget {
             builder: (_) => Wrap(children: [ModifyItemForm(item)]),
           );
         } else {
-          showError(context, "Edit not allowed!", "You are not allowed to edit tasks \nthat don't belog to you.");
+          showSnackBar(context, "Edit not allowed!",
+              "You are not allowed to edit tasks \nthat don't belog to you.");
         }
         break;
       case MenuOption.delete:
         if (item.ownerId == realmServices.currentUser?.id) {
           realmServices.deleteItem(item);
         } else {
-          showError(context, "Delete not allowed!", "You are not allowed to delete tasks \n that don't belog to you.");
+          showSnackBar(context, "Delete not allowed!",
+              "You are not allowed to delete tasks \n that don't belog to you.");
         }
         break;
     }
-  }
-
-  void showError(BuildContext context, String title, String error, {int durationInSeconds = 15}) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      errorMessageWidget(title, error),
-    );
-    Future.delayed(Duration(seconds: durationInSeconds)).then((value) {
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    });
   }
 
   Color getColor(Set<MaterialState> states) {
