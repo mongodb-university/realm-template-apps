@@ -26,4 +26,9 @@ class AppServices with ChangeNotifier {
     notifyListeners();
     return loggedInUser;
   }
+
+  Future<void> logOut() async {
+    await currentUser?.logOut();
+    currentUser = null;
+  }
 }

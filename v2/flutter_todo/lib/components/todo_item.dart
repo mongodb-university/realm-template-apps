@@ -23,7 +23,7 @@ class TodoItem extends StatelessWidget {
               fillColor: MaterialStateProperty.resolveWith(getColor),
               value: item.isComplete,
               onChanged: (bool? value) async {
-                if (item.ownerId == realmServices.currentUser?.id) {
+                if (isMine) {
                   await realmServices.updateItem(item, isComplete: value ?? false);
                 } else {
                   showSnackBar(context, "Change not allowed!",
@@ -59,9 +59,10 @@ class TodoItem extends StatelessWidget {
   }
 
   void handleMenuClick(BuildContext context, MenuOption menuItem, Item item, RealmServices realmServices) {
+    bool isMine = (item.ownerId == realmServices.currentUser?.id);
     switch (menuItem) {
       case MenuOption.edit:
-        if (item.ownerId == realmServices.currentUser?.id) {
+        if (isMine) {
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
@@ -73,7 +74,7 @@ class TodoItem extends StatelessWidget {
         }
         break;
       case MenuOption.delete:
-        if (item.ownerId == realmServices.currentUser?.id) {
+        if (isMine) {
           realmServices.deleteItem(item);
         } else {
           showSnackBar(context, "Delete not allowed!",

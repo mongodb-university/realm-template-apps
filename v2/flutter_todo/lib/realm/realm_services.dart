@@ -24,7 +24,7 @@ class RealmServices with ChangeNotifier {
     }
   }
 
-  void updateSubscriptions() {
+  Future<void> updateSubscriptions() async {
     realm.subscriptions.update((mutableSubscriptions) {
       mutableSubscriptions.removeByName(queryAllName);
       mutableSubscriptions.removeByName(queryMyItemsName);
@@ -34,6 +34,7 @@ class RealmServices with ChangeNotifier {
         mutableSubscriptions.add(realm.query<Item>(r'owner_id == $0', [currentUser?.id]), name: queryMyItemsName);
       }
     });
+    await realm.subscriptions.waitForSynchronization();
   }
 
   Future<void> sessionSwitch() async {
@@ -45,8 +46,7 @@ class RealmServices with ChangeNotifier {
         isWaiting = true;
         notifyListeners();
         realm.syncSession.resume();
-        updateSubscriptions();
-        await realm.subscriptions.waitForSynchronization();
+        await updateSubscriptions();
       } finally {
         isWaiting = false;
       }
@@ -56,12 +56,11 @@ class RealmServices with ChangeNotifier {
 
   Future<void> switchSubscription(bool value) async {
     showAll = value;
-    updateSubscriptions();
     if (!offlineModeOn) {
       try {
         isWaiting = true;
         notifyListeners();
-        await realm.subscriptions.waitForSynchronization();
+        await updateSubscriptions();
       } finally {
         isWaiting = false;
       }
@@ -92,9 +91,11 @@ class RealmServices with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> logOutUser() async {
+  Future<void> close() async {
+    if (currentUser != null) {
     await currentUser?.logOut();
     currentUser = null;
+    }
     realm.close();
   }
 

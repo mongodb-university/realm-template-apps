@@ -1,12 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_todo/realm/app_services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/realm_services.dart';
 
 class TodoAppBar extends StatelessWidget with PreferredSizeWidget {
   TodoAppBar({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     final realmServices = Provider.of<RealmServices>(context);
@@ -15,7 +16,9 @@ class TodoAppBar extends StatelessWidget with PreferredSizeWidget {
       automaticallyImplyLeading: false,
       actions: <Widget>[
         IconButton(
-          icon: Icon(realmServices.offlineModeOn ? Icons.wifi_off_rounded : Icons.wifi_rounded),
+          icon: Icon(realmServices.offlineModeOn
+              ? Icons.wifi_off_rounded
+              : Icons.wifi_rounded),
           tooltip: 'Offline mode',
           onPressed: () async => await realmServices.sessionSwitch(),
         ),
@@ -29,7 +32,9 @@ class TodoAppBar extends StatelessWidget with PreferredSizeWidget {
   }
 
   Future<void> logOut(BuildContext context, RealmServices realmServices) async {
-    await realmServices.logOutUser();
+    final appServices = Provider.of<AppServices>(context);
+    appServices.logOut();
+    await realmServices.close();
     Navigator.pushNamed(context, '/login');
   }
 
