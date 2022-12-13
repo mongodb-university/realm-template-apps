@@ -10,8 +10,8 @@
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
     "backend_path": "sync-todo/v0/backend",
-    "client_path": "sync-todo/v0/ios-swift",
-    "metadata_path": "sync-todo/v0/ios-swift/App",
+    "client_path": "sync-todo/v0/client/ios-swift",
+    "metadata_path": "sync-todo/v0/client/ios-swift/App",
     "metadata_filename": "Realm",
     "file_format": "plist"
   },
