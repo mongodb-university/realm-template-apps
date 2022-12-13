@@ -32,7 +32,7 @@ class TodoAppBar extends StatelessWidget with PreferredSizeWidget {
   }
 
   Future<void> logOut(BuildContext context, RealmServices realmServices) async {
-    final appServices = Provider.of<AppServices>(context);
+    final appServices = Provider.of<AppServices>(context, listen: false);
     appServices.logOut();
     await realmServices.close();
     Navigator.pushNamed(context, '/login');
