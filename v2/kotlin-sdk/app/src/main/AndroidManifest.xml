@@ -12,12 +12,6 @@
         android:screenOrientation="portrait"
         android:theme="@style/Theme.App">
         <activity
-            android:name=".ItemActivity"
-            android:screenOrientation="nosensor" />
-        <activity
-            android:name=".LoginActivity"
-            android:screenOrientation="nosensor" />
-        <activity
             android:name=".ComposeItemActivity"
             android:screenOrientation="nosensor" />
         <activity

@@ -136,6 +136,13 @@ fun LoginScaffold(loginViewModel: LoginViewModel) {
                                 color = Blue
                             )
                         }
+
+                        // Text with clarification on Atlas Cloud account vs Device Sync account
+                        Text(
+                            text = stringResource(R.string.account_clarification),
+                            modifier = Modifier.fillMaxWidth(USABLE_WIDTH),
+                            textAlign = TextAlign.Center
+                        )
                     }
                 }
             }
