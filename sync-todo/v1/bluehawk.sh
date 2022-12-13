@@ -9,7 +9,6 @@ done
 cp template-realm.json generated/flutter_todo/assets/config/realm.json
 cp template-realm.json generated/react-native/realm.json
 cp template-realm.json generated/xamarin/realm-todo-dotnet/realm.json
-cp template-realm.plist generated/ios-swift/App/Realm.plist
 cp template-realm.plist generated/swiftui/App/Realm.plist
 cp template-realm.xml generated/android-kotlin/app/src/main/res/values/realm.xml
 cp template-realm.xml generated/kotlin-sdk/app/src/main/res/values/realm.xml
