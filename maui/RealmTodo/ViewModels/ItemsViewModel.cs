@@ -27,8 +27,8 @@ namespace RealmTodo.ViewModels
         public async Task OnAppearing()
         {
             realm = RealmService.GetRealm();
-            currentUserId = RealmService.CurrentUserId;
-            Items = realm.All<Item>();
+            currentUserId = RealmService.CurrentUser.Id;
+            Items = realm.All<Item>().OrderBy(i => i.OwnerId);
 
             if (realm.Subscriptions.Count == 0)
             {
@@ -52,8 +52,10 @@ namespace RealmTodo.ViewModels
         public async Task Logout()
         {
             IsBusy = true;
-            await RealmService.App.CurrentUser.LogOutAsync();
+            await RealmService.LogoutAsync();
             IsBusy = false;
+
+            realm.Dispose();
 
             await Shell.Current.GoToAsync($"//login");
         }

@@ -35,38 +35,40 @@
                 HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
             <Switch HorizontalOptions="End" VerticalOptions="Center" IsToggled="{Binding IsShowAllTasks}" />
         </StackLayout>
-        <CollectionView ItemsSource="{Binding Items}"
+        <ListView ItemsSource="{Binding Items}"
                   SelectionMode="None"
              Grid.Row="1"
              BackgroundColor="White">
-            <CollectionView.ItemTemplate>
+            <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Orientation="Horizontal" Padding="5">
-                        <CheckBox IsChecked="{Binding IsComplete}" VerticalOptions="Center" IsEnabled="{Binding IsMine}"  />
-                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
-                            <StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding Path=BindingContext.EditItemCommand, Source={x:Reference itemsPage}}"
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal" Padding="5">
+                            <CheckBox IsChecked="{Binding IsComplete}" VerticalOptions="Center" IsEnabled="{Binding IsMine}"  />
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Path=BindingContext.EditItemCommand, Source={x:Reference itemsPage}}"
                                     CommandParameter="{Binding .}"/>
-                            </StackLayout.GestureRecognizers>
-                            <Label Text="{Binding Summary}"
+                                </StackLayout.GestureRecognizers>
+                                <Label Text="{Binding Summary}"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="Center"/>
-                            <Label Text="(mine)"
+                                <Label Text="(mine)"
                                    FontSize="Small"
                                    Margin="15"
                                    VerticalOptions="Center" HorizontalOptions="End" IsVisible="{Binding IsMine}"/>
-                        </StackLayout>
-                        <Button ImageSource="close.png"
+                            </StackLayout>
+                            <Button ImageSource="close.png"
                                     BackgroundColor="Transparent"
                                     VerticalOptions="Center" HorizontalOptions="End"
                                     Command="{Binding Path=BindingContext.DeleteItemCommand, Source={x:Reference itemsPage}}"
                                     CommandParameter="{Binding .}"
                                     IsEnabled="{Binding IsMine}"
                                     />
-                    </StackLayout>
+                        </StackLayout>
+                    </ViewCell>
                 </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+            </ListView.ItemTemplate>
+        </ListView>
         <Border BackgroundColor="White"
                 StrokeThickness="0"
                Padding="8" Grid.Row="2">

@@ -21,7 +21,7 @@ namespace RealmTodo.Models
         [MapTo("isComplete")]
         public bool IsComplete { get; set; }
 
-        public bool IsMine => OwnerId == RealmService.CurrentUserId;
+        public bool IsMine => OwnerId == RealmService.CurrentUser.Id;
     }
 }
 

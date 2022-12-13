@@ -10,14 +10,14 @@ namespace RealmTodo.ViewModels
 {
     public partial class LoginViewModel : BaseViewModel
     {
-        public string Email { get; set; }
+        public string Email { get; set; } = "alice@gmail.com"; //TODO FOR TESTING
 
-        public string Password { get; set; }
+        public string Password { get; set; } = "123456";
 
         [RelayCommand]
         public async Task OnAppearing()
         {
-            if (RealmService.App.CurrentUser != null)
+            if (RealmService.CurrentUser != null)
             {
                 await GoToMainPage();
             }
@@ -50,7 +50,7 @@ namespace RealmTodo.ViewModels
             try
             {
                 IsBusy = true;
-                await RealmService.App.LogInAsync(Credentials.EmailPassword(Email, Password));
+                await RealmService.LoginAsync(Email, Password);
                 IsBusy = false;
             }
             catch (Exception ex)
@@ -68,7 +68,7 @@ namespace RealmTodo.ViewModels
             try
             {
                 IsBusy = true;
-                await RealmService.App.EmailPasswordAuth.RegisterUserAsync(Email, Password);
+                await RealmService.RegisterAsync(Email, Password);
                 IsBusy = false;
             }
             catch (Exception ex)
@@ -94,7 +94,7 @@ namespace RealmTodo.ViewModels
 
         private async Task GoToMainPage()
         {
-            await Shell.Current.GoToAsync($"//items");
+            await Shell.Current.GoToAsync($"///items");
         }
 
     }
