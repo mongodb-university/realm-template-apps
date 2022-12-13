@@ -108,6 +108,17 @@ Widget styledFloatingAddButton(BuildContext context, {required void Function() o
   );
 }
 
+void showSnackBar(BuildContext context, String title, String error,
+    {int durationInSeconds = 15}) {
+  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  ScaffoldMessenger.of(context).showSnackBar(
+    errorMessageWidget(title, error),
+  );
+  Future.delayed(Duration(seconds: durationInSeconds)).then((value) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  });
+}
+
 SnackBar errorMessageWidget(String title, String message) {
   final textColor = darkRedColor;
   return SnackBar(

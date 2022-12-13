@@ -35,10 +35,19 @@ class _TodoListState extends State<TodoList> {
               isHeader: true,
               child: Row(
                 children: [
-                  const Expanded(child: Text("Show All Tasks", textAlign: TextAlign.right)),
+                  const Expanded(
+                      child:
+                          Text("Show All Tasks", textAlign: TextAlign.right)),
                   Switch(
                     value: realmServices.showAll,
-                    onChanged: (value) async => await realmServices.switchSubscription(value),
+                    onChanged: (value) async {
+                      if (realmServices.offlineModeOn) {
+                        showSnackBar(context, "Offline mode",
+                            "Can not switch device sync subscripions in offline mode.");
+                      } else {
+                        await realmServices.switchSubscription(value);
+                      }
+                    },
                   ),
                 ],
               ),
@@ -57,7 +66,9 @@ class _TodoListState extends State<TodoList> {
                     return ListView.builder(
                       shrinkWrap: true,
                       itemCount: results.realm.isClosed ? 0 : results.length,
-                      itemBuilder: (context, index) => results[index].isValid ? TodoItem(results[index]) : Container(),
+                      itemBuilder: (context, index) => results[index].isValid
+                          ? TodoItem(results[index])
+                          : Container(),
                     );
                   },
                 ),
