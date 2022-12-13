@@ -14,7 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mongodb.app.R
 import com.mongodb.app.data.MockRepository
-import com.mongodb.app.presentation.additem.AddItemViewModel
+import com.mongodb.app.presentation.tasks.AddItemViewModel
 import com.mongodb.app.ui.theme.MyApplicationTheme
 import com.mongodb.app.ui.theme.Purple200
 

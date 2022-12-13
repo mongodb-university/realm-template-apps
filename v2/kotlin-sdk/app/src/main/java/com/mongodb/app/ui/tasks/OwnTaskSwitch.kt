@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.mongodb.app.R
 import com.mongodb.app.data.MockRepository
 import com.mongodb.app.data.SubscriptionType
-import com.mongodb.app.presentation.subscriptiontype.SubscriptionTypeViewModel
+import com.mongodb.app.presentation.tasks.SubscriptionTypeViewModel
 import com.mongodb.app.ui.theme.MyApplicationTheme
 import com.mongodb.app.ui.theme.Purple200
 

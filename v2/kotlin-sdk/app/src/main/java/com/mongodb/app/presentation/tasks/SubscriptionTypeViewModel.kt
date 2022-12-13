@@ -1,4 +1,4 @@
-package com.mongodb.app.presentation.subscriptiontype
+package com.mongodb.app.presentation.tasks
 
 import android.os.Bundle
 import androidx.compose.runtime.MutableState

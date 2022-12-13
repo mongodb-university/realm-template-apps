@@ -1,4 +1,4 @@
-package com.mongodb.app.presentation.additem
+package com.mongodb.app.presentation.tasks
 
 import android.os.Bundle
 import androidx.compose.runtime.MutableState
@@ -42,7 +42,7 @@ class AddItemViewModel(
     }
 
     fun closeAddTaskDialog() {
-        _addItemPopupVisible.value = false
+        cleanUpAndClose()
     }
 
     fun updateTaskSummary(taskSummary: String) {
@@ -62,8 +62,13 @@ class AddItemViewModel(
                     _addItemEvent.emit(AddItemEvent.Error("There was an error while adding the task '$taskSummary'", it))
                 }
             }
-            _addItemPopupVisible.value = false
+            cleanUpAndClose()
         }
+    }
+
+    private fun cleanUpAndClose() {
+        _taskSummary.value = ""
+        _addItemPopupVisible.value = false
     }
 
     companion object {
