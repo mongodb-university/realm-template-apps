@@ -87,6 +87,18 @@ class ComposeItemActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
+            taskViewModel.event
+                .collect {
+                    Log.i(TAG(), "Tried to modify or remove a task that doesn't belong to the current user.")
+                    Toast.makeText(
+                        this@ComposeItemActivity,
+                        getString(R.string.permissions_warning),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+        }
+
+        lifecycleScope.launch {
             toolbarViewModel.toolbarEvent
                 .collect { toolbarEvent ->
                     when (toolbarEvent) {
@@ -100,6 +112,9 @@ class ComposeItemActivity : ComponentActivity() {
                             Log.e(TAG(), "${toolbarEvent.message}: ${toolbarEvent.throwable.message}")
                     }
                 }
+        }
+
+        lifecycleScope.launch {
             addItemViewModel.addItemEvent
                 .collect { fabEvent ->
                     when (fabEvent) {
@@ -109,6 +124,9 @@ class ComposeItemActivity : ComponentActivity() {
                             Log.e(TAG(), fabEvent.message)
                     }
                 }
+        }
+
+        lifecycleScope.launch {
             subscriptionTypeViewModel.subscriptionTypeEvent
                 .collect { subscriptionTypeEvent ->
                     when (subscriptionTypeEvent) {
@@ -116,6 +134,14 @@ class ComposeItemActivity : ComponentActivity() {
                             Log.e(TAG(), "${subscriptionTypeEvent.message}: ${subscriptionTypeEvent.throwable.message}")
                         is SubscriptionTypeEvent.Info ->
                             Log.i(TAG(), subscriptionTypeEvent.message)
+                        SubscriptionTypeEvent.PermissionsEvent -> {
+                            Log.i(TAG(), "Tried to switch subscription while offline.")
+                            Toast.makeText(
+                                this@ComposeItemActivity,
+                                getString(R.string.unable_to_switch),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
         }
@@ -188,7 +214,7 @@ fun TaskListScaffold(
             Column {
                 Spacer(modifier = Modifier.height(61.dp))
                 Divider(color = Color.Red, modifier = Modifier.fillMaxWidth())
-                ShowMyOwnTasks(subscriptionTypeViewModel)
+                ShowMyOwnTasks(subscriptionTypeViewModel, toolbarViewModel)
                 TaskList(repository, taskViewModel)
             }
         }

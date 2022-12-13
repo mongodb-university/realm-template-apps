@@ -15,12 +15,20 @@ import io.realm.kotlin.notifications.ResultsChange
 import io.realm.kotlin.notifications.UpdatedResults
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
-class TaskViewModel(
+object TaskViewEvent
+
+class TaskViewModel constructor(
     private val repository: SyncRepository,
     val taskListState: SnapshotStateList<Item> = mutableStateListOf()
 ) : ViewModel() {
+
+    private val _event: MutableSharedFlow<TaskViewEvent> = MutableSharedFlow()
+    val event: Flow<TaskViewEvent>
+        get() = _event
 
     init {
         viewModelScope.launch {
@@ -55,11 +63,19 @@ class TaskViewModel(
         }
     }
 
-    fun updateCompleteness(task: Item) {
+    fun toggleIsComplete(task: Item) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.toggleIsComplete(task)
         }
     }
+
+    fun showPermissionsMessage() {
+        viewModelScope.launch {
+            _event.emit(TaskViewEvent)
+        }
+    }
+
+    fun isTaskMine(task: Item): Boolean = repository.isTaskMine(task)
 
     companion object {
         fun factory(

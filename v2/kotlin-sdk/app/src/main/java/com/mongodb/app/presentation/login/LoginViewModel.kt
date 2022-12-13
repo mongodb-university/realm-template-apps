@@ -4,7 +4,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.mongodb.app.data.AuthRepository
 import com.mongodb.app.data.RealmAuthRepository
 import com.mongodb.app.realmApp
@@ -17,7 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 /**
  * Types of UX events triggered by user actions.
@@ -89,9 +87,7 @@ class LoginViewModel : ViewModel() {
             runCatching {
                 authRepository.createAccount(email, password)
             }.onSuccess {
-                withContext(Dispatchers.Main) {
-                    _event.emit(LoginEvent.ShowMessage(EventSeverity.INFO, "User created successfully."))
-                }
+                _event.emit(LoginEvent.ShowMessage(EventSeverity.INFO, "User created successfully."))
                 login(email, password)
             }.onFailure { ex: Throwable ->
                 _state.value = state.value.copy(enabled = true)
@@ -99,9 +95,7 @@ class LoginViewModel : ViewModel() {
                     is UserAlreadyExistsException -> "Failed to register. User already exists."
                     else -> "Failed to register: ${ex.message}"
                 }
-                withContext(Dispatchers.Main) {
-                    _event.emit(LoginEvent.ShowMessage(EventSeverity.ERROR, message))
-                }
+                _event.emit(LoginEvent.ShowMessage(EventSeverity.ERROR, message))
             }
         }
     }
@@ -115,9 +109,7 @@ class LoginViewModel : ViewModel() {
             runCatching {
                 realmApp.login(Credentials.emailPassword(email, password))
             }.onSuccess {
-                withContext(Dispatchers.Main) {
-                    _event.emit(LoginEvent.GoToTasks(EventSeverity.INFO, "User logged in successfully."))
-                }
+                _event.emit(LoginEvent.GoToTasks(EventSeverity.INFO, "User logged in successfully."))
             }.onFailure { ex: Throwable ->
                 _state.value = state.value.copy(enabled = true)
                 val message = when (ex) {
@@ -125,9 +117,7 @@ class LoginViewModel : ViewModel() {
                     is ConnectionException -> "Could not connect to the authentication provider. Check your internet connection and try again."
                     else -> "Error: $ex"
                 }
-                withContext(Dispatchers.Main) {
-                    _event.emit(LoginEvent.ShowMessage(EventSeverity.ERROR, message))
-                }
+                _event.emit(LoginEvent.ShowMessage(EventSeverity.ERROR, message))
             }
         }
     }

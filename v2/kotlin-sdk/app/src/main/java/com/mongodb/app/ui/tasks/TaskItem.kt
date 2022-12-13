@@ -24,10 +24,10 @@ import com.mongodb.app.presentation.tasks.ItemContextualMenuViewModel
 import com.mongodb.app.presentation.tasks.TaskViewModel
 import com.mongodb.app.ui.theme.Blue
 import com.mongodb.app.ui.theme.MyApplicationTheme
+import kotlinx.coroutines.flow.MutableSharedFlow
 
 @Composable
 fun TaskItem(
-    repository: SyncRepository,
     taskViewModel: TaskViewModel,
     itemContextualMenuViewModel: ItemContextualMenuViewModel,
     task: Item
@@ -41,10 +41,13 @@ fun TaskItem(
     ) {
         // Guard against modifying some else's task - sync error callback would catch it though
         Checkbox(
-            enabled = repository.isTaskMine(task),
             checked = task.isComplete,
             onCheckedChange = {
-                taskViewModel.updateCompleteness(task)
+                if (taskViewModel.isTaskMine(task)) {
+                    taskViewModel.toggleIsComplete(task)
+                } else {
+                    taskViewModel.showPermissionsMessage()
+                }
             }
         )
         Column {
@@ -55,7 +58,7 @@ fun TaskItem(
                 fontWeight = FontWeight.Bold
             )
             // Ownership text visible only if task is mine
-            if (repository.isTaskMine(task)) {
+            if (taskViewModel.isTaskMine(task)) {
                 Text(
                     text = stringResource(R.string.mine),
                     style = MaterialTheme.typography.bodySmall
@@ -63,15 +66,15 @@ fun TaskItem(
             }
         }
 
-        // Delete icon visible only if task is mine
-        if (repository.isTaskMine(task)) {
+        // Delete icon
+//        if (repository.isTaskMine(task)) {
             Row(
                 horizontalArrangement = Arrangement.End,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 ItemContextualMenu(itemContextualMenuViewModel, task)
             }
-        }
+//        }
     }
 }
 
@@ -80,10 +83,10 @@ fun TaskItem(
 fun TaskItemPreview() {
     MyApplicationTheme {
         val repository = MockRepository()
+        val taskViewModel = TaskViewModel(repository)
         TaskItem(
-            repository,
-            TaskViewModel(repository),
-            ItemContextualMenuViewModel(repository),
+            taskViewModel,
+            ItemContextualMenuViewModel(repository, taskViewModel),
             MockRepository.getMockTask(42)
         )
     }

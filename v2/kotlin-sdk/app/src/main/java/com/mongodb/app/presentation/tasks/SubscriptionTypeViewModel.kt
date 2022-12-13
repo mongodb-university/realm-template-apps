@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.savedstate.SavedStateRegistryOwner
 import com.mongodb.app.data.SubscriptionType
 import com.mongodb.app.data.SyncRepository
@@ -19,6 +20,7 @@ import kotlinx.coroutines.withContext
 
 sealed class SubscriptionTypeEvent {
     class Info(val message: String) : SubscriptionTypeEvent()
+    object PermissionsEvent : SubscriptionTypeEvent()
     class Error(val message: String, val throwable: Throwable) : SubscriptionTypeEvent()
 }
 
@@ -50,6 +52,12 @@ class SubscriptionTypeViewModel(
                     _subscriptionTypeEvent.emit(SubscriptionTypeEvent.Error("There was an error while switching to '${subscriptionType.name}'", it))
                 }
             }
+        }
+    }
+
+    fun showOfflineMessage() {
+        viewModelScope.launch {
+            _subscriptionTypeEvent.emit(SubscriptionTypeEvent.PermissionsEvent)
         }
     }
 

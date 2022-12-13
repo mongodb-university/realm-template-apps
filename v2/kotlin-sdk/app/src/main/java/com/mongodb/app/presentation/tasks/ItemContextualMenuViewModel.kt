@@ -8,10 +8,13 @@ import com.mongodb.app.data.SyncRepository
 import com.mongodb.app.domain.Item
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
-class ItemContextualMenuViewModel(
-    private val repository: SyncRepository
+class ItemContextualMenuViewModel constructor(
+    private val repository: SyncRepository,
+    private val taskViewModel: TaskViewModel
 ) : ViewModel() {
 
     private val _visible: MutableState<Boolean> = mutableStateOf(false)
@@ -28,10 +31,14 @@ class ItemContextualMenuViewModel(
 
     fun deleteTask(task: Item) {
         CoroutineScope(Dispatchers.IO).launch {
-            runCatching {
-                repository.deleteTask(task)
-                close()
+            if (repository.isTaskMine(task)) {
+                runCatching {
+                    repository.deleteTask(task)
+                }
+            } else {
+                taskViewModel.showPermissionsMessage()
             }
         }
+        close()
     }
 }

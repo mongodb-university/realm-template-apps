@@ -26,9 +26,8 @@ fun TaskList(
         val taskList = taskViewModel.taskListState
         items(taskList.size) { index: Int ->
             TaskItem(
-                repository,
                 taskViewModel,
-                ItemContextualMenuViewModel(repository),
+                ItemContextualMenuViewModel(repository, taskViewModel),
                 taskList[index]
             )
             Divider()

@@ -21,11 +21,15 @@ import com.mongodb.app.R
 import com.mongodb.app.data.MockRepository
 import com.mongodb.app.data.SubscriptionType
 import com.mongodb.app.presentation.tasks.SubscriptionTypeViewModel
+import com.mongodb.app.presentation.tasks.ToolbarViewModel
 import com.mongodb.app.ui.theme.MyApplicationTheme
 import com.mongodb.app.ui.theme.Purple200
 
 @Composable
-fun ShowMyOwnTasks(viewModel: SubscriptionTypeViewModel) {
+fun ShowMyOwnTasks(
+    viewModel: SubscriptionTypeViewModel,
+    toolbarViewModel: ToolbarViewModel
+) {
     Row(
         modifier = Modifier
             .background(Color.LightGray)
@@ -40,23 +44,30 @@ fun ShowMyOwnTasks(viewModel: SubscriptionTypeViewModel) {
             color = Color.Black
         )
         Spacer(modifier = Modifier.padding(8.dp))
-        OwnerSwitch(viewModel)
+        OwnerSwitch(viewModel, toolbarViewModel)
     }
 }
 
 @Composable
-fun OwnerSwitch(viewModel: SubscriptionTypeViewModel) {
+fun OwnerSwitch(
+    viewModel: SubscriptionTypeViewModel,
+    toolbarViewModel: ToolbarViewModel
+) {
     Switch(
         checked = when (viewModel.subscriptionType.value) {
             SubscriptionType.MINE -> false
             SubscriptionType.ALL -> true
         },
         onCheckedChange = {
-            val updatedSubscriptionType = when (viewModel.subscriptionType.value) {
-                SubscriptionType.MINE -> SubscriptionType.ALL
-                SubscriptionType.ALL -> SubscriptionType.MINE
+            if (toolbarViewModel.offlineMode.value) {
+                viewModel.showOfflineMessage()
+            } else {
+                val updatedSubscriptionType = when (viewModel.subscriptionType.value) {
+                    SubscriptionType.MINE -> SubscriptionType.ALL
+                    SubscriptionType.ALL -> SubscriptionType.MINE
+                }
+                viewModel.updateSubscription(updatedSubscriptionType)
             }
-            viewModel.updateSubscription(updatedSubscriptionType)
         },
         colors = SwitchDefaults.colors(
             checkedTrackColor = Purple200
@@ -70,7 +81,10 @@ fun ShowMyOwnTasksPreview() {
     MyApplicationTheme {
         val repository = MockRepository()
         MyApplicationTheme {
-            ShowMyOwnTasks(SubscriptionTypeViewModel(repository))
+            ShowMyOwnTasks(
+                SubscriptionTypeViewModel(repository),
+                ToolbarViewModel(repository)
+            )
         }
     }
 }

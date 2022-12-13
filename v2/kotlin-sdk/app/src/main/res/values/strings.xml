@@ -22,4 +22,6 @@
     <string name="show_all_tasks">Show all tasks</string>
     <string name="sync_message">Log in with the same account on another device or simulator to see your list sync in real-time</string>
     <string name="account_clarification">Please log in or register with a Device Sync user account. This is separate from your Atlas Cloud login.</string>
+    <string name="unable_to_switch">You can only switch between all tasks and yours when you\'re online.</string>
+    <string name="permissions_warning">You can only modify or remove tasks that belong to you.</string>
 </resources>
