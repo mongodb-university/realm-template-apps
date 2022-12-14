@@ -39,9 +39,9 @@
     "name": "Android Kotlin Todo App",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
-    "backend_path": "sync-todo/v1/backend",
-    "client_path": "sync-todo/v1/generated/android-kotlin",
-    "metadata_path": "sync-todo/v1/generated/android-kotlin/app/src/main/res/values",
+    "backend_path": "sync-todo/v0/backend",
+    "client_path": "sync-todo/v0/client/android-kotlin",
+    "metadata_path": "sync-todo/v0/client/android-kotlin/app/src/main/res/values",
     "metadata_filename": "realm",
     "file_format": "xml"
   },
