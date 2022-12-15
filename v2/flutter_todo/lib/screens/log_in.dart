@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/components/widgets.dart';
 import 'package:flutter_todo/realm/app_services.dart';
@@ -48,21 +49,11 @@ class _LogInState extends State<LogIn> {
                       "Please login or register with a Device Sync user account. This is separate from your Atlas Cloud login.",
                       textAlign: TextAlign.center),
                 ),
-                Container(
-                  height: 50,
-                  width: 250,
-                  margin: const EdgeInsets.symmetric(vertical: 25),
-                  decoration: BoxDecoration(
-                      color: forestGreenColor,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: TextButton(
-                    onPressed: () => _logInOrSignUpUser(context, _emailController.text, _passwordController.text),
+                loginButton(context,
                     child: Text(
-                      _isLogin ? "Log in" : "Sign up",
-                      style: const TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                  ),
-                ),
+                      _isLogin ? "Log in" : "Sign up"),
+                    onPressed: () => _logInOrSignUpUser(context,
+                        _emailController.text, _passwordController.text)),
                 TextButton(
                     onPressed: () => setState(() => _isLogin = !_isLogin),
                     child: Text(
@@ -71,7 +62,7 @@ class _LogInState extends State<LogIn> {
                 Padding(
                   padding: const EdgeInsets.all(25),
                   child: Text(_errorMessage ?? "",
-                      style: TextStyle(color: darkRedColor),
+                      style: errorTextStyle(context),
                       textAlign: TextAlign.center),
                 ),
               ],

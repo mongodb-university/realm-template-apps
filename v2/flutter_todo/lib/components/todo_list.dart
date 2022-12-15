@@ -32,6 +32,7 @@ class _TodoListState extends State<TodoList> {
         Column(
           children: [
             styledBox(
+              context,
               isHeader: true,
               child: Row(
                 children: [
@@ -42,10 +43,9 @@ class _TodoListState extends State<TodoList> {
                     value: realmServices.showAll,
                     onChanged: (value) async {
                       if (realmServices.offlineModeOn) {
-                        showSnackBar(
-                            context,
-                            toastMessageWidget(
-                                "Switching subscriptions does not affect Realm data when the sync is offline."));
+                        infoMessageSnackBar(context,
+                                "Switching subscriptions does not affect Realm data when the sync is offline.")
+                            .show(context);
                       }
                       await realmServices.switchSubscription(value);
                     },
@@ -78,6 +78,7 @@ class _TodoListState extends State<TodoList> {
               ),
             ),
             styledBox(
+              context,
               child: Container(
                   margin: const EdgeInsets.fromLTRB(15, 0, 40, 15),
                   child: const Text(
@@ -89,13 +90,6 @@ class _TodoListState extends State<TodoList> {
         ),
         realmServices.isWaiting ? waitingIndicator() : Container(),
       ],
-    );
-  }
-
-  Container waitingIndicator() {
-    return Container(
-      color: Colors.black.withOpacity(0.2),
-      child: const Center(child: CircularProgressIndicator()),
     );
   }
 }

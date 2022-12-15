@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo/theme.dart';
 
 Widget formLayout(BuildContext context, Widget? contentWidget) {
   return Padding(
-      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Container(
           color: Colors.grey.shade100,
           padding: const EdgeInsets.fromLTRB(50, 25, 50, 25),
@@ -11,17 +13,44 @@ Widget formLayout(BuildContext context, Widget? contentWidget) {
           )));
 }
 
-Widget loginField(TextEditingController controller, {String? labelText, String? hintText, bool? obscure}) {
+Widget loginField(TextEditingController controller,
+    {String? labelText, String? hintText, bool? obscure}) {
   return Padding(
     padding: const EdgeInsets.all(15),
     child: TextField(
         obscureText: obscure ?? false,
         controller: controller,
-        decoration: InputDecoration(border: const OutlineInputBorder(), labelText: labelText, hintText: hintText)),
+        decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            labelText: labelText,
+            hintText: hintText)),
   );
 }
 
-Widget templateButton(BuildContext context, {Color color = Colors.grey, String text = "button", void Function()? onPressed}) {
+Widget loginButton(BuildContext context,
+    {void Function()? onPressed, Widget? child}) {
+  return Container(
+    height: 50,
+    width: 250,
+    margin: const EdgeInsets.symmetric(vertical: 25),
+    child: ElevatedButton(
+      style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+          textStyle: MaterialStateProperty.all<TextStyle>(
+              const TextStyle(color: Colors.white, fontSize: 20)),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)))),
+      onPressed: onPressed,
+      child: child,
+    ),
+  );
+}
+
+Widget templateButton(BuildContext context,
+    {Color color = Colors.grey,
+    String text = "button",
+    void Function()? onPressed}) {
   return Container(
     margin: const EdgeInsets.symmetric(horizontal: 10),
     child: ElevatedButton(
@@ -40,7 +69,8 @@ Widget cancelButton(BuildContext context) {
   );
 }
 
-Widget okButton(BuildContext context, String text, {void Function()? onPressed}) {
+Widget okButton(BuildContext context, String text,
+    {void Function()? onPressed}) {
   return templateButton(
     context,
     color: forestGreenColor,
@@ -58,7 +88,8 @@ Widget deleteButton(BuildContext context, {void Function()? onPressed}) {
   );
 }
 
-RadioListTile<bool> radioButton(String text, bool value, ValueNotifier<bool> controller) {
+RadioListTile<bool> radioButton(
+    String text, bool value, ValueNotifier<bool> controller) {
   return RadioListTile(
     title: Text(text),
     value: value,
@@ -67,27 +98,19 @@ RadioListTile<bool> radioButton(String text, bool value, ValueNotifier<bool> con
   );
 }
 
-Widget styledBox({bool isHeader = false, Widget? child}) {
+Widget styledBox(BuildContext context, {bool isHeader = false, Widget? child}) {
   return Container(
     width: double.infinity,
-    decoration: BoxDecoration(
-      color: const Color.fromRGBO(227, 252, 247, 1),
-      border: Border(
-          top: isHeader
-              ? BorderSide.none
-              : BorderSide(width: 2, color: forestGreenColor),
-          bottom: isHeader
-              ? BorderSide(width: 2, color: forestGreenColor)
-              : BorderSide.none),
-    ),
-      child: Padding(
+    decoration: headerFooterBoxDecoration(context, isHeader),
+    child: Padding(
       padding: const EdgeInsets.all(15),
-        child: child,
+      child: child,
     ),
   );
 }
 
-Widget styledFloatingAddButton(BuildContext context, {required void Function() onPressed}) {
+Widget styledFloatingAddButton(BuildContext context,
+    {required void Function() onPressed}) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 5),
     child: FloatingActionButton(
@@ -99,7 +122,7 @@ Widget styledFloatingAddButton(BuildContext context, {required void Function() o
         padding: const EdgeInsets.all(3),
         child: CircleAvatar(
           radius: 26,
-          backgroundColor: forestGreenColor,
+          backgroundColor: Theme.of(context).primaryColor,
           foregroundColor: Colors.white,
           child: const Icon(Icons.add),
         ),
@@ -108,92 +131,62 @@ Widget styledFloatingAddButton(BuildContext context, {required void Function() o
   );
 }
 
-void showSnackBar(BuildContext context, SnackBar snackBar,
-    {int durationInSeconds = 15}) {
+extension ShowSnack on SnackBar {
+  void show(BuildContext context, {int durationInSeconds = 15}) {
   ScaffoldMessenger.of(context).hideCurrentSnackBar();
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(this);
   Future.delayed(Duration(seconds: durationInSeconds)).then((value) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
   });
 }
+}
 
-SnackBar toastMessageWidget(String message) {
+SnackBar infoMessageSnackBar(BuildContext context, String message) {
   return SnackBar(
       behavior: SnackBarBehavior.floating,
-      backgroundColor: Colors.transparent,
-      margin: const EdgeInsets.only(bottom: 50.0),
-      dismissDirection: DismissDirection.none,
       elevation: 0,
+      backgroundColor: Colors.transparent,
+      margin: const EdgeInsets.only(bottom: 200.0),
+      dismissDirection: DismissDirection.none,
       content: SizedBox(
           height: 105,
           child: Center(
             child: Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  color: forestGreenColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(8))),
-              child: Text(message, style: const TextStyle(color: Colors.white)),
+              decoration: infoBoxDecoration(context),
+              child: Text(message,
+                  style: infoTextStyle(context), textAlign: TextAlign.center),
             ),
           )));
 }
 
-SnackBar errorMessageWidget(String title, String message) {
-  final textColor = darkRedColor;
+SnackBar errorMessageSnackBar(
+    BuildContext context, String title, String message) {
   return SnackBar(
       behavior: SnackBarBehavior.floating,
-      backgroundColor: Colors.transparent,
-      margin: const EdgeInsets.only(bottom: 100.0),
-      dismissDirection: DismissDirection.none,
       elevation: 0,
+      backgroundColor: Colors.transparent,
+      margin: const EdgeInsets.only(bottom: 200.0),
+      dismissDirection: DismissDirection.none,
       content: SizedBox(
           height: 105,
           child: Center(
             child: Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    color: const Color.fromARGB(255, 244, 223, 221),
-                    borderRadius: const BorderRadius.all(Radius.circular(8))),
+                decoration: errorBoxDecoration(context),
                 child: Column(
                   children: [
-                    Text(title, style: TextStyle(color: textColor, fontWeight: FontWeight.bold)),
-                    Expanded(child: Text(message, style: TextStyle(color: textColor))),
+                    Text(title, style: errorTextStyle(context, bold: true)),
+                    Expanded(
+                        child: Text(message, style: errorTextStyle(context))),
                   ],
                 )),
           )));
 }
 
-MaterialColor forestGreenColor = MaterialColor(
-  const Color.fromRGBO(0, 104, 74, 1).value,
-  const <int, Color>{
-    50: Color.fromRGBO(0, 104, 74, 0.1),
-    100: Color.fromRGBO(0, 104, 74, 0.2),
-    200: Color.fromRGBO(0, 104, 74, 0.3),
-    300: Color.fromRGBO(0, 104, 74, 0.4),
-    400: Color.fromRGBO(0, 104, 74, 0.5),
-    500: Color.fromRGBO(0, 104, 74, 0.6),
-    600: Color.fromRGBO(0, 104, 74, 0.7),
-    700: Color.fromRGBO(0, 104, 74, 0.8),
-    800: Color.fromRGBO(0, 104, 74, 0.9),
-    900: Color.fromRGBO(0, 104, 74, 1),
-  },
-);
-
-MaterialColor mistColor = MaterialColor(
-  const Color.fromRGBO(227, 252, 247, 1).value,
-  const <int, Color>{
-    50: Color.fromRGBO(227, 252, 247, 0.1),
-    100: Color.fromRGBO(227, 252, 247, 0.2),
-    200: Color.fromRGBO(227, 252, 247, 0.3),
-    300: Color.fromRGBO(227, 252, 247, 0.4),
-    400: Color.fromRGBO(227, 252, 247, 0.5),
-    500: Color.fromRGBO(227, 252, 247, 0.6),
-    600: Color.fromRGBO(227, 252, 247, 0.7),
-    700: Color.fromRGBO(227, 252, 247, 0.8),
-    800: Color.fromRGBO(227, 252, 247, 0.9),
-    900: Color.fromRGBO(227, 252, 247, 1),
-  },
-);
-
-Color get darkRedColor => const Color.fromARGB(255, 91, 29, 25);
+Container waitingIndicator() {
+  return Container(
+    color: Colors.black.withOpacity(0.2),
+    child: const Center(child: CircularProgressIndicator()),
+  );
+}

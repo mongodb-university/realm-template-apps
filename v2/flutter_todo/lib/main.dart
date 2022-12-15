@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_todo/realm/realm_services.dart';
+import 'package:flutter_todo/theme.dart';
 import 'dart:convert';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/app_services.dart';
@@ -38,10 +39,7 @@ class App extends StatelessWidget {
       onWillPop: () async => false,
       child: MaterialApp(
         title: 'Realm Flutter Todo',
-        theme: ThemeData(
-          primarySwatch: forestGreenColor,
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: forestGreenColor),
-        ),
+        theme: appThemeData(),
         initialRoute: currentUser != null ? '/' : '/login',
         routes: {'/': (context) => const HomePage(), '/login': (context) => LogIn()},
       ),

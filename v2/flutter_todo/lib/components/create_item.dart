@@ -42,7 +42,7 @@ class _CreateItemFormState extends State<CreateItemForm> {
 
   @override
   Widget build(BuildContext context) {
-    TextTheme myTextTheme = Theme.of(context).textTheme;
+    TextTheme theme = Theme.of(context).textTheme;
     return formLayout(
         context,
         Form(
@@ -51,7 +51,7 @@ class _CreateItemFormState extends State<CreateItemForm> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text("Create a new item", style: myTextTheme.headline6),
+              Text("Create a new item", style: theme.headline6),
               TextFormField(
                 controller: _itemEditingController,
                 validator: (value) => (value ?? "").isEmpty ? "Please enter some text" : null,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/components/modify_item.dart';
 import 'package:flutter_todo/components/widgets.dart';
+import 'package:flutter_todo/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:flutter_todo/realm/realm_services.dart';
@@ -19,27 +20,22 @@ class TodoItem extends StatelessWidget {
     return item.isValid
         ? ListTile(
             leading: Checkbox(
-              checkColor: Colors.white,
-              fillColor: MaterialStateProperty.resolveWith(getColor),
               value: item.isComplete,
               onChanged: (bool? value) async {
                 if (isMine) {
                   await realmServices.updateItem(item,
                       isComplete: value ?? false);
                 } else {
-                  showSnackBar(
-                    context,
-                    errorMessageWidget("Change not allowed!",
-                        "You are not allowed to change the status of \n tasks that don't belog to you."),
-                  );
+                  errorMessageSnackBar(context, "Change not allowed!",
+                          "You are not allowed to change the status of \n tasks that don't belog to you.")
+                      .show(context);
                 }
               },
             ),
             title: Text(item.summary),
             subtitle: Text(
               isMine ? '(mine) ' : '',
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold, color: Colors.black),
+              style: boldTextStyle(),
             ),
             trailing: SizedBox(
               width: 25,
@@ -78,36 +74,20 @@ class TodoItem extends StatelessWidget {
             builder: (_) => Wrap(children: [ModifyItemForm(item)]),
           );
         } else {
-          showSnackBar(
-            context,
-            errorMessageWidget("Edit not allowed!",
-                "You are not allowed to edit tasks \nthat don't belog to you."),
-          );
+          errorMessageSnackBar(context, "Edit not allowed!",
+                  "You are not allowed to edit tasks \nthat don't belog to you.")
+              .show(context);
         }
         break;
       case MenuOption.delete:
         if (isMine) {
           realmServices.deleteItem(item);
         } else {
-          showSnackBar(
-            context,
-            errorMessageWidget("Delete not allowed!",
-                "You are not allowed to delete tasks \n that don't belog to you."),
-          );
+          errorMessageSnackBar(context, "Delete not allowed!",
+                  "You are not allowed to delete tasks \n that don't belog to you.")
+              .show(context);
         }
         break;
     }
-  }
-
-  Color getColor(Set<MaterialState> states) {
-    const Set<MaterialState> interactiveStates = <MaterialState>{
-      MaterialState.pressed,
-      MaterialState.hovered,
-      MaterialState.focused,
-    };
-    if (states.any(interactiveStates.contains)) {
-      return forestGreenColor;
-    }
-    return forestGreenColor;
   }
 }
