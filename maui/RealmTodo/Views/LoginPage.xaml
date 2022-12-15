@@ -12,6 +12,7 @@
         <toolkit:EventToCommandBehavior
             EventName="Appearing"
             Command="{Binding AppearingCommand}" />
+        <toolkit:StatusBarBehavior StatusBarColor="#023430" StatusBarStyle="LightContent" />
     </ContentPage.Behaviors>
     <VerticalStackLayout
         Padding="30"
