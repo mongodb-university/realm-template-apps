@@ -111,7 +111,7 @@ class RealmSyncRepository(
 
     override fun getTaskList(): Flow<ResultsChange<Item>> {
         return realm.query<Item>()
-            .sort(Pair("owner_id", Sort.ASCENDING))
+            .sort(Pair("_id", Sort.ASCENDING))
             .asFlow()
     }
 
