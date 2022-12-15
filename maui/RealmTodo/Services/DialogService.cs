@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Views;
 using RealmTodo.Views;
 
@@ -22,6 +25,12 @@ namespace RealmTodo.Services
             var popup = new BusyPopup();
             Application.Current.MainPage.ShowPopup(popup);
             return () => popup.Close();
+        }
+
+        public static Task ShowToast(string text)
+        {
+            var toast = Toast.Make(text, ToastDuration.Short);
+            return toast.Show();
         }
     }
 }

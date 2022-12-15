@@ -24,28 +24,14 @@ namespace RealmTodo.ViewModels
         private bool isOnline = true;
 
         [RelayCommand]
-        public async Task OnAppearing()
+        public void OnAppearing()
         {
             realm = RealmService.GetMainThreadRealm();
             currentUserId = RealmService.CurrentUser.Id;
             Items = realm.All<Item>().OrderBy(i => i.OwnerId);
 
-            if (realm.Subscriptions.Count == 0)
-            {
-                await ChangeSubscription(SubscriptionType.Mine);
-            }
-            else
-            {
-                var activeSubscription = realm.Subscriptions.First();
-                if (activeSubscription.Name == "all")
-                {
-                    IsShowAllTasks = true;
-                }
-                else
-                {
-                    IsShowAllTasks = false;
-                }
-            }
+            var currentSubscriptionType = RealmService.GetCurrentSubscriptionType(realm);
+            IsShowAllTasks = currentSubscriptionType == SubscriptionType.All;
         }
 
         [RelayCommand]
@@ -125,44 +111,15 @@ namespace RealmTodo.ViewModels
 
         async partial void OnIsShowAllTasksChanged(bool value)
         {
-            await ChangeSubscription(value ? SubscriptionType.All : SubscriptionType.Mine);
-        }
+            await RealmService.SetSubscription(realm, value ? SubscriptionType.All : SubscriptionType.Mine);
 
-        private async Task ChangeSubscription(SubscriptionType subType)
-        {
-            var activeSubscription = realm.Subscriptions.FirstOrDefault();
-
-            if (activeSubscription?.Name == "all" && subType == SubscriptionType.All
-                || activeSubscription?.Name == "mine" && subType == SubscriptionType.Mine)
+            if (!isOnline)
             {
-                return;
+                await DialogService.ShowToast("Switching subscriptions does not affect Realm data when the sync is offline.");
             }
-
-            realm.Subscriptions.Update(() =>
-            {
-                realm.Subscriptions.RemoveAll(true);
-
-                IQueryable<Item> query = null;
-                string queryName = null;
-
-                if (subType == SubscriptionType.Mine)
-                {
-                    query = realm.All<Item>().Where(i => i.OwnerId == currentUserId);
-                    queryName = "mine";
-                }
-                else
-                {
-                    query = realm.All<Item>();
-                    queryName = "all";
-                }
-
-                realm.Subscriptions.Add(query, new SubscriptionOptions { Name = queryName });
-            });
-
-            await realm.Subscriptions.WaitForSynchronizationAsync();
         }
 
-        private async Task<bool> CheckItemOwnership(Item item)
+        private static async Task<bool> CheckItemOwnership(Item item)
         {
             if (!item.IsMine)
             {
@@ -171,12 +128,6 @@ namespace RealmTodo.ViewModels
             }
 
             return true;
-        }
-
-        private enum SubscriptionType
-        {
-            Mine,
-            All,
         }
     }
 }
