@@ -4,7 +4,7 @@
              x:Class="RealmTodo.Views.ItemsPage"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:vm="clr-namespace:RealmTodo.ViewModels"
-             BackgroundColor="BlanchedAlmond"
+             BackgroundColor="#E3FCF7"
              x:Name="itemsPage">
     <ContentPage.Behaviors>
         <toolkit:EventToCommandBehavior
@@ -26,7 +26,7 @@
             <RowDefinition Height="60" />
         </Grid.RowDefinitions>
         <StackLayout Orientation="Horizontal"
-                     BackgroundColor="LightSteelBlue"
+                     BackgroundColor="#E3FCF7"
                      Padding="20"
                      Spacing="15">
             <Label HorizontalTextAlignment="End"
@@ -81,7 +81,7 @@
         </Border>
         <Label Grid.Row="3"
                Padding="10"
-               BackgroundColor="BlanchedAlmond"
+               BackgroundColor="#E3FCF7"
             Text="Log in with the same account on another device or simulator to see your list sync in real-time"
             FontSize="Micro"
             HorizontalTextAlignment="Center"/>
