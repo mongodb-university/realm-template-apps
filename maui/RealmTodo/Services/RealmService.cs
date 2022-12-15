@@ -10,6 +10,8 @@ namespace RealmTodo.Services
 
         private static Realms.Sync.App app;
 
+        private static Realm mainThreadRealm;
+
         public static User CurrentUser => app.CurrentUser;
 
         public static void Init()
@@ -17,16 +19,15 @@ namespace RealmTodo.Services
             app = Realms.Sync.App.Create(appId);
         }
 
-        public static async Task<Realm> GetRealmAsync()
+        public static Realm GetMainThreadRealm()
         {
-            var config = new FlexibleSyncConfiguration(app.CurrentUser);
-            return await Realm.GetInstanceAsync(config);
-        }
+            if (mainThreadRealm == null)
+            {
+                var config = new FlexibleSyncConfiguration(app.CurrentUser);
+                mainThreadRealm = Realm.GetInstance(config);
+            }
 
-        public static Realm GetRealm()
-        {
-            var config = new FlexibleSyncConfiguration(app.CurrentUser);
-            return Realm.GetInstance(config);
+            return mainThreadRealm;
         }
 
         public static async Task RegisterAsync(string email, string password)
@@ -42,6 +43,8 @@ namespace RealmTodo.Services
         public static async Task LogoutAsync()
         {
             await app.CurrentUser.LogOutAsync();
+            mainThreadRealm?.Dispose();
+            mainThreadRealm = null;
         }
     }
 }

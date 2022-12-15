@@ -26,7 +26,7 @@ namespace RealmTodo.ViewModels
         [RelayCommand]
         public async Task OnAppearing()
         {
-            realm = RealmService.GetRealm();
+            realm = RealmService.GetMainThreadRealm();
             currentUserId = RealmService.CurrentUser.Id;
             Items = realm.All<Item>().OrderBy(i => i.OwnerId);
 
@@ -54,8 +54,6 @@ namespace RealmTodo.ViewModels
             IsBusy = true;
             await RealmService.LogoutAsync();
             IsBusy = false;
-
-            realm.Dispose();
 
             await Shell.Current.GoToAsync($"//login");
         }
