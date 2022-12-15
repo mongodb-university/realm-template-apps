@@ -92,7 +92,7 @@ namespace RealmTodo.ViewModels
             return true;
         }
 
-        static private async Task GoToMainPage()
+        private async Task GoToMainPage()
         {
             await Shell.Current.GoToAsync($"//items");
         }

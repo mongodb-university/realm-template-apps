@@ -109,17 +109,7 @@ namespace RealmTodo.ViewModels
             ConnectionStatusIcon = isOnline ? "wifi_on.png" : "wifi_off.png";
         }
 
-        async partial void OnIsShowAllTasksChanged(bool value)
-        {
-            await RealmService.SetSubscription(realm, value ? SubscriptionType.All : SubscriptionType.Mine);
-
-            if (!isOnline)
-            {
-                await DialogService.ShowToast("Switching subscriptions does not affect Realm data when the sync is offline.");
-            }
-        }
-
-        private static async Task<bool> CheckItemOwnership(Item item)
+        private async Task<bool> CheckItemOwnership(Item item)
         {
             if (!item.IsMine)
             {
@@ -128,6 +118,16 @@ namespace RealmTodo.ViewModels
             }
 
             return true;
+        }
+
+        async partial void OnIsShowAllTasksChanged(bool value)
+        {
+            await RealmService.SetSubscription(realm, value ? SubscriptionType.All : SubscriptionType.Mine);
+
+            if (!isOnline)
+            {
+                await DialogService.ShowToast("Switching subscriptions does not affect Realm data when the sync is offline.");
+            }
         }
     }
 }
