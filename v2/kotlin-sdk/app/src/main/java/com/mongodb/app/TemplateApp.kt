@@ -17,8 +17,7 @@ class TemplateApp: Application() {
 
     override fun onCreate() {
         super.onCreate()
-//        realmApp = App.create(getString(R.string.realm_app_id))
-        realmApp = App.create("application-0-qgjpm") // TODO change to template app
+        realmApp = App.create(getString(R.string.realm_app_id))
 
         Log.v(TAG(), "Initialized the Realm App configuration for: ${realmApp.configuration.appId}")
     }
