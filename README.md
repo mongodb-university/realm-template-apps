@@ -3,15 +3,44 @@
 This is the main repo for all MongoDB App Services & Realm template starter app
 clients and backend configurations.
 
-A GitHub action uploads to the realm-template-apps S3 bucket. See [.github/workflows/zip-everything-and-upload-to-s3.yml](.github/workflows/zip-everything-and-upload-to-s3.yml).
+A GitHub Action uploads to the realm-template-apps S3 bucket. See [.github/workflows/zip-everything-and-upload-to-s3.yml](.github/workflows/zip-everything-and-upload-to-s3.yml).
 
 For bucket access, consult the Realm docs team.
+
+## Lay of the Land
+
+- **manifest.json**: Tells the App Services server which templates correspond to
+  which backends and various other configuration details. This must be updated
+  whenever you want to expose a new app or move anything around.
+- **sync-todo/**: _The_ template app. Even though App Services can tie any app
+  from this repo into the template app infrastructure, when people refer to
+
+  "the template app", they usually mean this one. Comes in many clients and has
+  had many versions.
+- **other/**: All other apps.
+- **tools/**: Useful things for working within this repo.
+
+## Sync-todo Versions
+
+- **v0**: (Deprecated) A partition-based sync "task tracker" app.
+- **v1**: (Current) The task tracker app, now with flexible sync!
+- **v2**: (Upcoming) A todo app with a flexible sync backend that has a few new nifty features.
 
 ## About "generated"
 
 ⚠️ If the path contains `/generated/`, don't edit it directly! This is generated
 from another source, probably using
 [Bluehawk](https://github.com/mongodb-university/bluehawk).
+
+## Artifact Repos
+
+A GitHub Action creates "artifact repos" of a few subdirectories so that the client code can be examined and cloned easily.
+
+- https://github.com/mongodb/template-app-dart-flutter-todo
+- https://github.com/mongodb/template-app-kotlin-todo
+- https://github.com/mongodb/template-app-react-native-todo
+- https://github.com/mongodb/template-app-swiftui-todo
+- https://github.com/mongodb/template-app-xamarin-todo
 
 ## Adding a New Template App
 
@@ -21,8 +50,8 @@ from another source, probably using
    Bluehawk to copy each app to its own subdirectory within the
    `generated` directory.
 
-2. Be sure your project uses a `realm.json` file to get the app id and
-   base url info:
+2. Be sure your project uses a `realm.json` file (or `.xml`, or `.plist`...) to
+   get the app id and base url info:
 
    ```
    {
@@ -69,20 +98,20 @@ from another source, probably using
      template.
 
    metadata_path, metadata_filename, and file_format are all required if
-   client_path set. When Realm instantiates the template, it adds the generated
-   backend app ID (and base URL) to a file that the instantiated client then reads
-   to know which backend app to use.
+   client_path is set. When Realm instantiates the template, it adds the
+   generated backend app ID (and base URL) to a file that the instantiated
+   client then reads to know which backend app to use.
 
    - **metadata_path:** The relative path from the root of this repo to the
      directory where your client reads the Realm metadata file.
    - **metadata_filename:** The actual name of the Realm metadata file. Probably
      "Realm" or "realm".
    - **file_format:** One of "json", "xml", or "plist" -- whichever your client
-     knows how to read. Realm produces a metadata file with the given
+     knows how to read. App Services produces a metadata file with the given
      file_format as file extension in the format specified.
 
 4. When you merge your branch, a Github action zips everything up and uploads to
-   an s3 bucket. Upon the next reload of App Services (usually around release
+   an S3 bucket. Upon the next reload of App Services (usually around release
    time but can be requested any time), App Services pulls the zip file down and
    makes the templates within available to the CLI.
 
@@ -92,3 +121,16 @@ from another source, probably using
    this template immediately. You _should_ be safe to work on this template at
    your leisure. However, people can create apps with this template via the
    `cli` soon after you merge.
+
+## Tips & Tricks
+
+Many of the template source directories now follow this structure:
+
+- **backend:** The backend configuration.
+- **client:** The client(s) source code.
+- **generated:** Contains generated code. Don't edit this directly!
+- **bluehawk.sh:** Generally bluehawks whatever's in client/ and puts it in
+  generated/. This keeps the client source clean when consumed by the backend or
+  viewed on an artifact repo.
+- **realm-template.{json|xml|plist}:** Copied after bluehawking to the client(s)
+  in the generated directory. This scrubs the app ID used in development.

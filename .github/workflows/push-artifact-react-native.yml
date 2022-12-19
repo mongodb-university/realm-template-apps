@@ -5,14 +5,15 @@ on:
     branches:
       - main
     paths:
-      - "react-native/**"
+      - "sync-todo/v1/generated/react-native/**"
 
 jobs:
   push:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/push-to-artifact-repos
+      - uses: ./.github/actions/push-to-artifact-repo
         with:
-          source: ./react-native
-          target_repo: mongodb/template-app-react-native-todo.git
+          source: ./sync-todo/v1/generated/react-native
+          destination_repo: mongodb/template-app-react-native-todo.git
+          access_token: ${{ secrets.ARTIFACT_REPO_ACCESS_TOKEN }}
