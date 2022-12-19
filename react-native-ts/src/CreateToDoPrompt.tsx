@@ -1,9 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text, Input, Button} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
-
-Icon.loadFont(); // load FontFamily font
 
 type Props = {
   onSubmit: ({summary}: {summary: string}) => void;
