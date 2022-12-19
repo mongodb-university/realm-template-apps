@@ -61,7 +61,7 @@ export const validate = async ({
       checker.checkEqual(repo_owner, "mongodb-university");
 
       checker.checkPathFormat(backend_path);
-      await checker.checkDirectoryExists(backend_path);
+      await checker.checkIsActuallyBackend(backend_path);
 
       const hasClient = templateSpec.client_path !== undefined;
       if (hasClient) {
@@ -115,6 +115,7 @@ class CheckReporter {
     if (!result) {
       this.errors.push(`${this.templateSpecId}: ${failMessage}`);
     }
+    return result;
   };
 
   check = async (expression: () => Promise<boolean>, failMessage: string) => {
@@ -131,11 +132,12 @@ class CheckReporter {
     failMessage: string
   ) => {
     const path = Path.resolve(this.basePath, pathIn);
-    await this.check(async () => {
+    return this.check(async () => {
       try {
         const stats = await fs.stat(path);
         return predicate(stats, path);
       } catch (e) {
+        console.error(e);
         return false;
       }
     }, `${path}: ${failMessage}`);
@@ -147,6 +149,22 @@ class CheckReporter {
   checkDirectoryExists = async (path: string) =>
     this.checkStats(path, (s) => s.isDirectory(), "Not a directory");
 
+  checkDirectoryContents = async (
+    path: string,
+    predicate: (contents: string[]) => Promise<boolean> | boolean,
+    failMessage: string
+  ) => {
+    return this.check(async () => {
+      try {
+        const contents = await fs.readdir(Path.resolve(this.basePath, path));
+        return predicate(contents);
+      } catch (e) {
+        console.error(e);
+        return false;
+      }
+    }, failMessage);
+  };
+
   checkRegex = (r: RegExp, v: string, failMessage: string) =>
     this.checkSync(r.test(v), failMessage);
 
@@ -155,5 +173,14 @@ class CheckReporter {
       /^[^(..?)?/].*[^/]$/,
       path,
       "paths should not have leading or trailing slashes!"
+    );
+
+  checkIsActuallyBackend = async (path: string) =>
+    this.checkDirectoryContents(
+      path,
+      (contents) =>
+        contents.includes("app_config.json") ||
+        contents.includes("realm_config.json"),
+      `${path} does not appear to be a backend configuration`
     );
 }

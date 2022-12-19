@@ -33,6 +33,22 @@ describe("validate", () => {
     const { errors } = await validateJson({ json, manifestPath });
     expect(errors).toStrictEqual(["must NOT have additional properties"]);
   });
+
+  it("checks that backend_path actually looks like a backend configuration", async () => {
+    const json = `{
+  "x": {
+    "name": "x",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "commands"
+  }
+}`;
+    const { errors } = await validateJson({ json, manifestPath });
+    expect(errors).toStrictEqual([
+      "x: commands does not appear to be a backend configuration",
+    ]);
+  });
+
   it("checks config problems", async () => {
     const json = `{
   "x": {
@@ -56,7 +72,9 @@ describe("validate", () => {
     expect(errors[2]).toBe(
       "x: paths should not have leading or trailing slashes!"
     );
-    expect(errors[3]).toMatch("no/leading/dot/slashes: Not a directory");
+    expect(errors[3]).toMatch(
+      "x: ./no/leading/dot/slashes does not appear to be a backend configuration"
+    );
     expect(errors[4]).toMatch("no/leading/slash: Not a directory");
     expect(errors[5]).toMatch("no/trailing/slash/Realm.plist: Not a file");
     expect(errors[6]).toBe(
