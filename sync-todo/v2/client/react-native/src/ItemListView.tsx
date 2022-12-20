@@ -2,17 +2,27 @@ import React, {useCallback, useState, useEffect} from 'react';
 import {BSON} from 'realm';
 import {useUser} from '@realm/react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {Alert, FlatList, StyleSheet, Switch, Text, View} from 'react-native';
+import {
+  Alert,
+  FlatList,
+  RecyclerViewBackedScrollViewComponent,
+  StyleSheet,
+  Switch,
+  Text,
+  View,
+} from 'react-native';
 import {Button, Overlay, ListItem, Icon} from 'react-native-elements';
 
 import {CreateToDoPrompt} from './CreateToDoPrompt';
 import {realmContext} from './RealmContext';
 
 import {Item} from './ItemSchema';
+import {COLORS} from './Colors';
 
 const {useRealm, useQuery} = realmContext;
 
 const itemSubscriptionName = 'items';
+const ownItemsSubscriptionName = 'ownItems';
 
 export function ItemListView() {
   const realm = useRealm();
@@ -20,23 +30,33 @@ export function ItemListView() {
   const user = useUser();
 
   const [showNewItemOverlay, setShowNewItemOverlay] = useState(false);
-  const [showAllItems, setShowAllItems] = useState(false);
+
+  // This state will be used to toggle between showing all items and only showing the current user's items
+  // This is initialized based on which subscription is already active
+  const [showAllItems, setShowAllItems] = useState(
+    !!realm.subscriptions.findByName(itemSubscriptionName),
+  );
 
   // This effect will initialize the subscription to the items collection
   // By default it will filter out all items that do not belong to the current user
+  // If the user toggles the switch to show all items, the subscription will be updated to show all items
+  // The old subscription will be removed and the new subscription will be added
+  // This allows for tracking the state of the toggle switch by the name of the subscription
   useEffect(() => {
-    const subscribedItems = showAllItems
-      ? realm.objects(Item)
-      : realm.objects(Item).filtered(`owner_id == "${user?.id}"`);
-    // initialize the subscriptions
-    const updateSubscriptions = async () => {
-      await realm.subscriptions.update(mutableSubs => {
-        // subscribe to all of the logged in user's to-do items
-        // use the same name as the initial subscription to update it
-        mutableSubs.add(subscribedItems, {name: itemSubscriptionName});
+    if (showAllItems) {
+      realm.subscriptions.update(mutableSubs => {
+        mutableSubs.removeByName(ownItemsSubscriptionName);
+        mutableSubs.add(realm.objects(Item), {name: itemSubscriptionName});
       });
-    };
-    updateSubscriptions();
+    } else {
+      realm.subscriptions.update(mutableSubs => {
+        mutableSubs.removeByName(itemSubscriptionName);
+        mutableSubs.add(
+          realm.objects(Item).filtered(`owner_id == "${user?.id}"`),
+          {name: ownItemsSubscriptionName},
+        );
+      });
+    }
   }, [realm, user, showAllItems]);
 
   // createItem() takes in a summary and then creates an Item object with that summary
@@ -94,7 +114,15 @@ export function ItemListView() {
         <View style={styles.toggleRow}>
           <Text style={styles.toggleText}>Show All Tasks</Text>
           <Switch
-            onValueChange={() => setShowAllItems(!showAllItems)}
+            trackColor={{true: '#00ED64'}}
+            onValueChange={() => {
+              if (realm.syncSession?.state !== 'active') {
+                Alert.alert(
+                  'Switching subscriptions does not affect Realm data when the sync is offline.',
+                );
+              }
+              setShowAllItems(!showAllItems);
+            }}
             value={showAllItems}
           />
         </View>
@@ -111,7 +139,6 @@ export function ItemListView() {
         <FlatList
           keyExtractor={item => item._id.toString()}
           data={items}
-          style={styles.list}
           renderItem={({item}) => (
             <ListItem
               key={`${item._id}`}
@@ -127,6 +154,7 @@ export function ItemListView() {
               </ListItem.Subtitle>
               <ListItem.CheckBox
                 checked={item.isComplete}
+                checkedColor={COLORS.primary}
                 iconType="material"
                 checkedIcon="check-box"
                 uncheckedIcon="check-box-outline-blank"
@@ -176,7 +204,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   addToDoButton: {
-    backgroundColor: '#00BAD4',
+    backgroundColor: COLORS.primary,
     borderRadius: 4,
     margin: 5,
   },
@@ -193,10 +221,6 @@ const styles = StyleSheet.create({
   itemSubtitle: {
     color: '#979797',
     flex: 1,
-  },
-  list: {},
-  listFooter: {
-    backgroundColor: '#f00',
   },
   toggleRow: {
     flexDirection: 'row',

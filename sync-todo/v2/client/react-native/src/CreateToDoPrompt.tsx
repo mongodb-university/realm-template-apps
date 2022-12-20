@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text, Input, Button} from 'react-native-elements';
+import {COLORS} from './Colors';
 
 type Props = {
   onSubmit: ({summary}: {summary: string}) => void;
@@ -41,5 +42,6 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     width: 280,
+    backgroundColor: COLORS.primary,
   },
 });

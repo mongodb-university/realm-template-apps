@@ -4,6 +4,7 @@ import {useApp} from '@realm/react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {StyleSheet, Text, View, Alert} from 'react-native';
 import {Input, Button, Icon} from 'react-native-elements';
+import {COLORS} from './Colors';
 
 export function WelcomeView(): React.ReactElement {
   const [email, setEmail] = useState('');
@@ -44,6 +45,10 @@ export function WelcomeView(): React.ReactElement {
     <SafeAreaProvider>
       <View style={styles.viewWrapper}>
         <Text style={styles.title}>My Sync App</Text>
+        <Text style={styles.subtitle}>
+          Please log in or register with a Device Sync user account. This is
+          separate from your Atlas Cloud login.
+        </Text>
         <Input
           placeholder="email"
           onChangeText={setEmail}
@@ -76,6 +81,7 @@ export function WelcomeView(): React.ReactElement {
             <Button
               title="Already have an account? Log In"
               type="clear"
+              titleStyle={styles.secondaryButton}
               onPress={() => setIsInSignUpMode(!isInSignUpMode)}
             />
           </>
@@ -89,6 +95,7 @@ export function WelcomeView(): React.ReactElement {
             <Button
               title="Don't have an account? Create Account"
               type="clear"
+              titleStyle={styles.secondaryButton}
               onPress={() => setIsInSignUpMode(!isInSignUpMode)}
             />
           </>
@@ -107,7 +114,17 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
   },
+  subtitle: {
+    fontSize: 14,
+    padding: 10,
+    color: 'gray',
+    textAlign: 'center',
+  },
   mainButton: {
     width: 350,
+    backgroundColor: COLORS.primary,
+  },
+  secondaryButton: {
+    color: COLORS.primary,
   },
 });
