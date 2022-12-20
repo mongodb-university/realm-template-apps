@@ -6,7 +6,7 @@ namespace RealmTodo.Services
 {
     public static class RealmService
     {
-        private const string appId = "todo-template-tldrx";
+        private const string appId = "****";
 
         private static Realms.Sync.App app;
 
