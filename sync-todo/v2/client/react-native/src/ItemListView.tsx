@@ -2,7 +2,15 @@ import React, {useCallback, useState, useEffect} from 'react';
 import {BSON} from 'realm';
 import {useUser} from '@realm/react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {Alert, FlatList, StyleSheet, Switch, Text, View} from 'react-native';
+import {
+  Alert,
+  FlatList,
+  RecyclerViewBackedScrollViewComponent,
+  StyleSheet,
+  Switch,
+  Text,
+  View,
+} from 'react-native';
 import {Button, Overlay, ListItem, Icon} from 'react-native-elements';
 
 import {CreateToDoPrompt} from './CreateToDoPrompt';
@@ -14,6 +22,7 @@ import {COLORS} from './Colors';
 const {useRealm, useQuery} = realmContext;
 
 const itemSubscriptionName = 'items';
+const ownItemsSubscriptionName = 'ownItems';
 
 export function ItemListView() {
   const realm = useRealm();
@@ -21,23 +30,37 @@ export function ItemListView() {
   const user = useUser();
 
   const [showNewItemOverlay, setShowNewItemOverlay] = useState(false);
-  const [showAllItems, setShowAllItems] = useState(false);
+
+  // This state will be used to toggle between showing all items and only showing the current user's items
+  // This is initialized based on which subscription is already active
+  const [showAllItems, setShowAllItems] = useState(
+    !!realm.subscriptions.findByName(itemSubscriptionName),
+  );
 
   // This effect will initialize the subscription to the items collection
   // By default it will filter out all items that do not belong to the current user
+  // If the user toggles the switch to show all items, the subscription will be updated to show all items
+  // The old subscription will be removed and the new subscription will be added
+  // This allows for tracking the state of the toggle switch by the name of the subscription
   useEffect(() => {
-    const subscribedItems = showAllItems
-      ? realm.objects(Item)
-      : realm.objects(Item).filtered(`owner_id == "${user?.id}"`);
-    // initialize the subscriptions
-    const updateSubscriptions = async () => {
-      await realm.subscriptions.update(mutableSubs => {
-        // subscribe to all of the logged in user's to-do items
-        // use the same name as the initial subscription to update it
-        mutableSubs.add(subscribedItems, {name: itemSubscriptionName});
+    if (showAllItems) {
+      realm.subscriptions.update(mutableSubs => {
+        if (realm.subscriptions.findByName(ownItemsSubscriptionName)) {
+          mutableSubs.removeByName(ownItemsSubscriptionName);
+        }
+        mutableSubs.add(realm.objects(Item), {name: itemSubscriptionName});
       });
-    };
-    updateSubscriptions();
+    } else {
+      realm.subscriptions.update(mutableSubs => {
+        if (realm.subscriptions.findByName(itemSubscriptionName)) {
+          mutableSubs.removeByName(itemSubscriptionName);
+        }
+        mutableSubs.add(
+          realm.objects(Item).filtered(`owner_id == "${user?.id}"`),
+          {name: ownItemsSubscriptionName},
+        );
+      });
+    }
   }, [realm, user, showAllItems]);
 
   // createItem() takes in a summary and then creates an Item object with that summary
