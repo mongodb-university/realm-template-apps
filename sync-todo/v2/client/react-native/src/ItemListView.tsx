@@ -95,7 +95,15 @@ export function ItemListView() {
         <View style={styles.toggleRow}>
           <Text style={styles.toggleText}>Show All Tasks</Text>
           <Switch
-            onValueChange={() => setShowAllItems(!showAllItems)}
+            trackColor={{true: '#00ED64'}}
+            onValueChange={() => {
+              if (realm.syncSession?.state !== 'active') {
+                Alert.alert(
+                  'Switching subscriptions does not affect Realm data when the sync is offline.',
+                );
+              }
+              setShowAllItems(!showAllItems);
+            }}
             value={showAllItems}
           />
         </View>
