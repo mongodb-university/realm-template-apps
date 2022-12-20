@@ -10,9 +10,9 @@ namespace RealmTodo.ViewModels
 {
     public partial class LoginViewModel : BaseViewModel
     {
-        public string Email { get; set; } = "alice@gmail.com"; //TODO FOR TESTING
+        public string Email { get; set; }
 
-        public string Password { get; set; } = "123456";
+        public string Password { get; set; }
 
         [RelayCommand]
         public async Task OnAppearing()
