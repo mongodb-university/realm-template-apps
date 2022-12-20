@@ -33,7 +33,7 @@ struct LoginView: View {
                 }
                 .disabled(isLoggingIn)
                 .frame(width: 150, height: 50)
-                .background(Color.blue)
+                .background(Color(red: 0.25, green: 0.59, blue: 0.22))
                 .foregroundColor(.white)
                 .clipShape(Capsule())
                 Button("Create Account") {
@@ -46,7 +46,7 @@ struct LoginView: View {
                 }
                 .disabled(isLoggingIn)
                 .frame(width: 150, height: 50)
-                .background(Color.blue)
+                .background(Color(red: 0.25, green: 0.59, blue: 0.22))
                 .foregroundColor(.white)
                 .clipShape(Capsule())
                 Text("Please log in or register with a Device Sync user account. This is separate from your Atlas Cloud login")
