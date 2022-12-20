@@ -28,7 +28,7 @@ namespace RealmTodo.ViewModels
         {
             realm = RealmService.GetMainThreadRealm();
             currentUserId = RealmService.CurrentUser.Id;
-            Items = realm.All<Item>().OrderBy(i => i.OwnerId);
+            Items = realm.All<Item>().OrderBy(i => i.Id);
 
             var currentSubscriptionType = RealmService.GetCurrentSubscriptionType(realm);
             IsShowAllTasks = currentSubscriptionType == SubscriptionType.All;
