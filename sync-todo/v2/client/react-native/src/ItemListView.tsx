@@ -9,6 +9,7 @@ import {CreateToDoPrompt} from './CreateToDoPrompt';
 import {realmContext} from './RealmContext';
 
 import {Item} from './ItemSchema';
+import {COLORS} from './Colors';
 
 const {useRealm, useQuery} = realmContext;
 
@@ -111,7 +112,6 @@ export function ItemListView() {
         <FlatList
           keyExtractor={item => item._id.toString()}
           data={items}
-          style={styles.list}
           renderItem={({item}) => (
             <ListItem
               key={`${item._id}`}
@@ -127,6 +127,7 @@ export function ItemListView() {
               </ListItem.Subtitle>
               <ListItem.CheckBox
                 checked={item.isComplete}
+                checkedColor={COLORS.primary}
                 iconType="material"
                 checkedIcon="check-box"
                 uncheckedIcon="check-box-outline-blank"
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   addToDoButton: {
-    backgroundColor: '#00BAD4',
+    backgroundColor: COLORS.primary,
     borderRadius: 4,
     margin: 5,
   },
@@ -193,10 +194,6 @@ const styles = StyleSheet.create({
   itemSubtitle: {
     color: '#979797',
     flex: 1,
-  },
-  list: {},
-  listFooter: {
-    backgroundColor: '#f00',
   },
   toggleRow: {
     flexDirection: 'row',
