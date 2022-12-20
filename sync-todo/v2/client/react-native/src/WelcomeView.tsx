@@ -44,6 +44,10 @@ export function WelcomeView(): React.ReactElement {
     <SafeAreaProvider>
       <View style={styles.viewWrapper}>
         <Text style={styles.title}>My Sync App</Text>
+        <Text style={styles.subtitle}>
+          Please log in or register with a Device Sync user account. This is
+          separate from your Atlas Cloud login.
+        </Text>
         <Input
           placeholder="email"
           onChangeText={setEmail}
@@ -106,6 +110,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
+  },
+  subtitle: {
+    fontSize: 14,
+    padding: 10,
+    color: 'gray',
+    textAlign: 'center',
   },
   mainButton: {
     width: 350,
