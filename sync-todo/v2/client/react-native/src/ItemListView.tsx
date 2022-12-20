@@ -45,16 +45,12 @@ export function ItemListView() {
   useEffect(() => {
     if (showAllItems) {
       realm.subscriptions.update(mutableSubs => {
-        if (realm.subscriptions.findByName(ownItemsSubscriptionName)) {
-          mutableSubs.removeByName(ownItemsSubscriptionName);
-        }
+        mutableSubs.removeByName(ownItemsSubscriptionName);
         mutableSubs.add(realm.objects(Item), {name: itemSubscriptionName});
       });
     } else {
       realm.subscriptions.update(mutableSubs => {
-        if (realm.subscriptions.findByName(itemSubscriptionName)) {
-          mutableSubs.removeByName(itemSubscriptionName);
-        }
+        mutableSubs.removeByName(itemSubscriptionName);
         mutableSubs.add(
           realm.objects(Item).filtered(`owner_id == "${user?.id}"`),
           {name: ownItemsSubscriptionName},
