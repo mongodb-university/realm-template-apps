@@ -10,6 +10,10 @@ namespace RealmTodo.Services
     public static class RealmService
     {
         private const string appId = "****";
+        ...
+    }
+    ...
+}
 ```
 
 Replace this string `appId` value with your App Services App ID. For help 
