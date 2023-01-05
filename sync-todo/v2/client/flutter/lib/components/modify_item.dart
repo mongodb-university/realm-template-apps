@@ -3,6 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:flutter_todo/realm/realm_services.dart';
 import 'package:flutter_todo/components/widgets.dart';
+// :emphasize-start:
+import 'package:flutter_todo/components/select_priority.dart';
+// :emphasize-end:
 
 class ModifyItemForm extends StatefulWidget {
   final Item item;
@@ -17,14 +20,25 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
   final Item item;
   late TextEditingController _summaryController;
   late ValueNotifier<bool> _isCompleteController;
+// :emphasize-start:
+  late int? _priority;
+  void _setPriority(int priority) {
+    setState(() {
+      _priority = priority;
+    });
+  }
+  // :emphasize-end:
 
   _ModifyItemFormState(this.item);
 
   @override
   void initState() {
     _summaryController = TextEditingController(text: item.summary);
-    _isCompleteController = ValueNotifier<bool>(item.isComplete)..addListener(() => setState(() {}));
-
+    _isCompleteController = ValueNotifier<bool>(item.isComplete)
+      ..addListener(() => setState(() {}));
+    // :emphasize-start:
+    _priority = widget.item.priority;
+    // :emphasize-end:
     super.initState();
   }
 
@@ -50,9 +64,14 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
                 Text("Update your item", style: myTextTheme.headline6),
                 TextFormField(
                   controller: _summaryController,
-                  validator: (value) => (value ?? "").isEmpty ? "Please enter some text" : null,
+                  validator: (value) =>
+                      (value ?? "").isEmpty ? "Please enter some text" : null,
                 ),
-                StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+                // :emphasize-start:
+                SelectPriority(_priority ?? PriorityLevel.medium, _setPriority),
+                // :emphasize-end:
+                StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
                   return Column(
                     children: <Widget>[
                       radioButton("Complete", true, _isCompleteController),
@@ -66,9 +85,19 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       cancelButton(context),
-                      deleteButton(context, onPressed: () => delete(realmServices, item, context)),
+                      deleteButton(context,
+                          onPressed: () =>
+                              delete(realmServices, item, context)),
+                      // :emphasize-start:
                       okButton(context, "Update",
-                          onPressed: () async => await update(context, realmServices, item, _summaryController.text, _isCompleteController.value)),
+                          onPressed: () async => await update(
+                              context,
+                              realmServices,
+                              item,
+                              _summaryController.text,
+                              _isCompleteController.value,
+                              _priority)),
+                      // :emphasize-end:
                     ],
                   ),
                 ),
@@ -76,12 +105,16 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
             )));
   }
 
-  Future<void> update(BuildContext context, RealmServices realmServices, Item item, String summary, bool isComplete) async {
+  // :emphasize-start:
+  Future<void> update(BuildContext context, RealmServices realmServices,
+      Item item, String summary, bool isComplete, int? priority) async {
     if (_formKey.currentState!.validate()) {
-      await realmServices.updateItem(item, summary: summary, isComplete: isComplete);
+      await realmServices.updateItem(item,
+          summary: summary, isComplete: isComplete, priority: priority);
       Navigator.pop(context);
     }
   }
+  // :emphasize-end:
 
   void delete(RealmServices realmServices, Item item, BuildContext context) {
     realmServices.deleteItem(item);

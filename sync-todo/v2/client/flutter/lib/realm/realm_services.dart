@@ -3,8 +3,12 @@ import 'package:realm/realm.dart';
 import 'package:flutter/material.dart';
 
 class RealmServices with ChangeNotifier {
-  static const String queryAllName = "getAllItemsSubscriptoion";
-  static const String queryMyItemsName = "getMyItemsSubscriptoion";
+  static const String queryAllName = "getAllItemsSubscription";
+  static const String queryMyItemsName = "getMyItemsSubscription";
+  // :emphasize-start:
+  static const String queryMyHighPriorityItemsName =
+      "getMyHighPriorityItemsSubscription";
+  // :emphasize-end:
 
   bool showAll = false;
   bool offlineModeOn = false;
@@ -17,10 +21,15 @@ class RealmServices with ChangeNotifier {
     if (app.currentUser != null || currentUser != app.currentUser) {
       currentUser ??= app.currentUser;
       realm = Realm(Configuration.flexibleSync(currentUser!, [Item.schema]));
-      showAll = (realm.subscriptions.findByName(queryAllName) != null);
-      if (realm.subscriptions.isEmpty) {
+      // :emphasize-start:
+      // Check if subscription has been updated
+      final subscriptionChanged =
+          realm.subscriptions.findByName(queryAllName) != null ? true : false;
+
+      if (realm.subscriptions.isEmpty || subscriptionChanged) {
         updateSubscriptions();
       }
+      // :emphasize-end:
     }
   }
 
@@ -30,9 +39,14 @@ class RealmServices with ChangeNotifier {
       if (showAll) {
         mutableSubscriptions.add(realm.all<Item>(), name: queryAllName);
       } else {
+        // :emphasize-start:
         mutableSubscriptions.add(
-            realm.query<Item>(r'owner_id == $0', [currentUser?.id]),
-            name: queryMyItemsName);
+            realm.query<Item>(
+              r'owner_id == $0 AND priority <= $1',
+              [currentUser?.id, PriorityLevel.high],
+            ),
+            name: queryMyHighPriorityItemsName);
+        // :emphasize-end:
       }
     });
     await realm.subscriptions.waitForSynchronization();
@@ -69,9 +83,11 @@ class RealmServices with ChangeNotifier {
     notifyListeners();
   }
 
-  void createItem(String summary, bool isComplete) {
-    final newItem =
-        Item(ObjectId(), summary, currentUser!.id, isComplete: isComplete);
+// :emphasize-start:
+  void createItem(String summary, bool isComplete, int? priority) {
+    final newItem = Item(ObjectId(), summary, currentUser!.id,
+        isComplete: isComplete, priority: priority);
+    // :emphasize-end:
     realm.write<Item>(() => realm.add<Item>(newItem));
     notifyListeners();
   }
@@ -82,7 +98,11 @@ class RealmServices with ChangeNotifier {
   }
 
   Future<void> updateItem(Item item,
-      {String? summary, bool? isComplete}) async {
+      // :emphasize-start:
+      {String? summary,
+      bool? isComplete,
+      int? priority}) async {
+    // :emphasize-end:
     realm.write(() {
       if (summary != null) {
         item.summary = summary;
@@ -90,6 +110,11 @@ class RealmServices with ChangeNotifier {
       if (isComplete != null) {
         item.isComplete = isComplete;
       }
+      // :emphasize-start:
+      if (priority != null) {
+        item.priority = priority;
+      }
+      // :emphasize-end:
     });
     notifyListeners();
   }
@@ -108,3 +133,12 @@ class RealmServices with ChangeNotifier {
     super.dispose();
   }
 }
+
+// :emphasize-start:
+abstract class PriorityLevel {
+  static int severe = 0;
+  static int high = 1;
+  static int medium = 2;
+  static int low = 3;
+}
+// :emphasize-end:

@@ -32,7 +32,17 @@ class TodoItem extends StatelessWidget {
                 }
               },
             ),
-            title: Text(item.summary),
+            // :emphasize-start:
+            title: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: _PriorityIndicator(item.priority),
+                ),
+                SizedBox(width: 175, child: Text(item.summary)),
+              ],
+            ),
+            // :emphasize-end:
             subtitle: Text(
               isMine ? '(mine) ' : '',
               style: boldTextStyle(),
@@ -91,3 +101,31 @@ class TodoItem extends StatelessWidget {
     }
   }
 }
+
+// :emphasize-start:
+class _PriorityIndicator extends StatelessWidget {
+  final int? priority;
+  const _PriorityIndicator(this.priority, {Key? key}) : super(key: key);
+  Widget getIconForPriority(int? priority) {
+    if (priority == PriorityLevel.low) {
+      return const Icon(Icons.keyboard_arrow_down, color: Colors.blue);
+    } else if (priority == PriorityLevel.medium) {
+      return const Icon(Icons.circle, color: Colors.grey);
+    } else if (priority == PriorityLevel.high) {
+      return const Icon(Icons.keyboard_arrow_up, color: Colors.orange);
+    } else if (priority == PriorityLevel.severe) {
+      return const Icon(
+        Icons.block,
+        color: Colors.red,
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return getIconForPriority(priority);
+  }
+}
+// :emphasize-end:
