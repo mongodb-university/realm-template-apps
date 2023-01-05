@@ -70,8 +70,8 @@
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
     "backend_path": "sync-todo/v2/backend",
-    "client_path": "react-native-ts",
-    "metadata_path": "react-native-ts",
+    "client_path": "sync-todo/v2/client/react-native",
+    "metadata_path": "sync-todo/v2/client/react-native",
     "metadata_filename": "realm",
     "file_format": "json"
   },
