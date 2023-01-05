@@ -1,8 +1,12 @@
+// :snippet-start: modify-item
+// ... other imports
+// :remove-start:
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:flutter_todo/realm/realm_services.dart';
 import 'package:flutter_todo/components/widgets.dart';
+// :remove-end:
 // :emphasize-start:
 import 'package:flutter_todo/components/select_priority.dart';
 // :emphasize-end:
@@ -20,6 +24,7 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
   final Item item;
   late TextEditingController _summaryController;
   late ValueNotifier<bool> _isCompleteController;
+
 // :emphasize-start:
   late int? _priority;
   void _setPriority(int priority) {
@@ -61,15 +66,20 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
+                // ... Text and TextFormField widgets
+                // :remove-start:
                 Text("Update your item", style: myTextTheme.headline6),
                 TextFormField(
                   controller: _summaryController,
                   validator: (value) =>
                       (value ?? "").isEmpty ? "Please enter some text" : null,
                 ),
+                // :remove-end:
                 // :emphasize-start:
                 SelectPriority(_priority ?? PriorityLevel.medium, _setPriority),
                 // :emphasize-end:
+                // ... StatefulBuilder widget
+                // :remove-start:
                 StatefulBuilder(
                     builder: (BuildContext context, StateSetter setState) {
                   return Column(
@@ -79,6 +89,7 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
                     ],
                   );
                 }),
+                // :remove-end:
                 Padding(
                   padding: const EdgeInsets.only(top: 15),
                   child: Row(
@@ -108,16 +119,19 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
   // :emphasize-start:
   Future<void> update(BuildContext context, RealmServices realmServices,
       Item item, String summary, bool isComplete, int? priority) async {
+    // :emphasize-end:
     if (_formKey.currentState!.validate()) {
+      // :emphasize-start:
       await realmServices.updateItem(item,
           summary: summary, isComplete: isComplete, priority: priority);
+      // :emphasize-end:
       Navigator.pop(context);
     }
   }
-  // :emphasize-end:
 
   void delete(RealmServices realmServices, Item item, BuildContext context) {
     realmServices.deleteItem(item);
     Navigator.pop(context);
   }
 }
+//:snippet-end:

@@ -2,13 +2,18 @@ import 'package:flutter_todo/realm/schemas.dart';
 import 'package:realm/realm.dart';
 import 'package:flutter/material.dart';
 
+// :snippet-start: realm-services
+// :snippet-start: update-subscription-query
+// ... imports
 class RealmServices with ChangeNotifier {
   static const String queryAllName = "getAllItemsSubscription";
   static const String queryMyItemsName = "getMyItemsSubscription";
+  // :state-start: update-subscription-query
   // :emphasize-start:
   static const String queryMyHighPriorityItemsName =
       "getMyHighPriorityItemsSubscription";
   // :emphasize-end:
+  // :state-end:
 
   bool showAll = false;
   bool offlineModeOn = false;
@@ -17,6 +22,8 @@ class RealmServices with ChangeNotifier {
   User? currentUser;
   App app;
 
+  // ... RealmServices initializer
+  // :state-start: update-subscription-query
   RealmServices(this.app) {
     if (app.currentUser != null || currentUser != app.currentUser) {
       currentUser ??= app.currentUser;
@@ -51,7 +58,12 @@ class RealmServices with ChangeNotifier {
     });
     await realm.subscriptions.waitForSynchronization();
   }
+  // :state-end:
 
+  // :state-start: update-subscription-query
+  // ... other methods
+  // :state-end:
+  // :state-remove-start: update-subscription-query
   Future<void> sessionSwitch() async {
     offlineModeOn = !offlineModeOn;
     if (offlineModeOn) {
@@ -132,7 +144,9 @@ class RealmServices with ChangeNotifier {
     realm.close();
     super.dispose();
   }
+  // :state-remove-end:
 }
+// :snippet-end:
 
 // :emphasize-start:
 abstract class PriorityLevel {
@@ -142,3 +156,4 @@ abstract class PriorityLevel {
   static int low = 3;
 }
 // :emphasize-end:
+// :snippet-end:

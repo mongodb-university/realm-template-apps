@@ -1,11 +1,18 @@
+// :snippet-start: create-item
+// ... other imports
+// :remove-start:
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/components/widgets.dart';
 import 'package:flutter_todo/realm/realm_services.dart';
 import 'package:provider/provider.dart';
+// :remove-end:
 // :emphasize-start:
 import 'package:flutter_todo/components/select_priority.dart';
 // :emphasize-end:
 
+// ... CreateItemAction widget
+
+// :remove-start:
 class CreateItemAction extends StatelessWidget {
   const CreateItemAction({Key? key}) : super(key: key);
 
@@ -19,6 +26,7 @@ class CreateItemAction extends StatelessWidget {
             ));
   }
 }
+// :remove-end:
 
 class CreateItemForm extends StatefulWidget {
   const CreateItemForm({Key? key}) : super(key: key);
@@ -42,6 +50,8 @@ class _CreateItemFormState extends State<CreateItemForm> {
   }
   // :emphasize-end:
 
+  // ... initState() and dispose() @override functions
+  // :remove-start:
   @override
   void initState() {
     _itemEditingController = TextEditingController();
@@ -53,6 +63,7 @@ class _CreateItemFormState extends State<CreateItemForm> {
     _itemEditingController.dispose();
     super.dispose();
   }
+  // :remove-end:
 
   @override
   Widget build(BuildContext context) {
@@ -65,15 +76,20 @@ class _CreateItemFormState extends State<CreateItemForm> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              // ... Text and TextFormField widgets
+              // :remove-start:
               Text("Create a new item", style: theme.headline6),
               TextFormField(
                 controller: _itemEditingController,
                 validator: (value) =>
                     (value ?? "").isEmpty ? "Please enter some text" : null,
               ),
+              // :remove-end:
               // :emphasize-start:
               SelectPriority(_priority, _setPriority),
               // :emphasize-end:
+              // ... Padding widget
+              // :remove-start:
               Padding(
                 padding: const EdgeInsets.only(top: 15),
                 child: Row(
@@ -88,6 +104,7 @@ class _CreateItemFormState extends State<CreateItemForm> {
                   ],
                 ),
               ),
+              // :remove-end:
             ],
           ),
         ));
@@ -103,3 +120,4 @@ class _CreateItemFormState extends State<CreateItemForm> {
     }
   }
 }
+// :snippet-end:

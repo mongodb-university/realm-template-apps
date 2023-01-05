@@ -1,3 +1,6 @@
+// :snippet-start: todo-item
+// ... imports
+// :remove-start:
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/components/modify_item.dart';
 import 'package:flutter_todo/components/widgets.dart';
@@ -5,6 +8,7 @@ import 'package:flutter_todo/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:flutter_todo/realm/realm_services.dart';
+// :remove-end:
 
 enum MenuOption { edit, delete }
 
@@ -19,6 +23,8 @@ class TodoItem extends StatelessWidget {
     bool isMine = (item.ownerId == realmServices.currentUser?.id);
     return item.isValid
         ? ListTile(
+            // ... leading property and child content
+            // :remove-start:
             leading: Checkbox(
               value: item.isComplete,
               onChanged: (bool? value) async {
@@ -32,6 +38,7 @@ class TodoItem extends StatelessWidget {
                 }
               },
             ),
+            // :remove-end:
             // :emphasize-start:
             title: Row(
               children: [
@@ -43,6 +50,8 @@ class TodoItem extends StatelessWidget {
               ],
             ),
             // :emphasize-end:
+            // ... subtitle, trailing, and shape properties with child content
+            // :remove-start:
             subtitle: Text(
               isMine ? '(mine) ' : '',
               style: boldTextStyle(),
@@ -68,10 +77,13 @@ class TodoItem extends StatelessWidget {
               ),
             ),
             shape: const Border(bottom: BorderSide()),
+            // :remove-end:
           )
         : Container();
   }
 
+  // ... handleMenuClick() function
+  // :remove-start:
   void handleMenuClick(BuildContext context, MenuOption menuItem, Item item,
       RealmServices realmServices) {
     bool isMine = (item.ownerId == realmServices.currentUser?.id);
@@ -100,6 +112,7 @@ class TodoItem extends StatelessWidget {
         break;
     }
   }
+  // :remove-end:
 }
 
 // :emphasize-start:
@@ -129,3 +142,4 @@ class _PriorityIndicator extends StatelessWidget {
   }
 }
 // :emphasize-end:
+// :snippet-end:
