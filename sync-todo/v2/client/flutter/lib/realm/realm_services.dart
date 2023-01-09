@@ -30,14 +30,11 @@ class RealmServices with ChangeNotifier {
       currentUser ??= app.currentUser;
       realm = Realm(Configuration.flexibleSync(currentUser!, [Item.schema]));
       // :emphasize-start:
-      // Check if subscription has been updated
-      final subscriptionChanged =
-          realm.subscriptions.findByName(queryMyHighPriorityItemsName)?.name !=
-                  null
-              ? true
-              : false;
+      // Check if subscription previously exists on the realm
+      final subscriptionDoesNotExists =
+          realm.subscriptions.findByName(queryMyHighPriorityItemsName) == null;
 
-      if (realm.subscriptions.isEmpty || subscriptionChanged) {
+      if (realm.subscriptions.isEmpty || subscriptionDoesNotExists) {
         updateSubscriptions();
       }
       // :emphasize-end:
@@ -190,15 +187,12 @@ class _RealmServicesAgain with ChangeNotifier {
       currentUser ??= app.currentUser;
       realm = Realm(Configuration.flexibleSync(currentUser!, [Item.schema]));
       // :emphasize-start:
-      // Check if subscription has been updated
-      final subscriptionChanged = realm.subscriptions
-                  .findByName(queryMyHighOrNoPriorityItemsName)
-                  ?.name !=
-              queryAllName
-          ? true
-          : false;
+      // Check if subscription previously exists on the realm
+      final subscriptionDoesNotExists =
+          realm.subscriptions.findByName(queryMyHighOrNoPriorityItemsName) ==
+              null;
 
-      if (realm.subscriptions.isEmpty || subscriptionChanged) {
+      if (realm.subscriptions.isEmpty || subscriptionDoesNotExists) {
         updateSubscriptions();
       }
       // :emphasize-end:
