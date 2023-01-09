@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 // :snippet-start: realm-services
 // :snippet-start: update-subscription-query
 // ... imports
+
 class RealmServices with ChangeNotifier {
   static const String queryAllName = "getAllItemsSubscription";
   static const String queryMyItemsName = "getMyItemsSubscription";
@@ -31,7 +32,10 @@ class RealmServices with ChangeNotifier {
       // :emphasize-start:
       // Check if subscription has been updated
       final subscriptionChanged =
-          realm.subscriptions.findByName(queryAllName) != null ? true : false;
+          realm.subscriptions.findByName(queryMyHighPriorityItemsName)?.name !=
+                  null
+              ? true
+              : false;
 
       if (realm.subscriptions.isEmpty || subscriptionChanged) {
         updateSubscriptions();
@@ -155,5 +159,72 @@ abstract class PriorityLevel {
   static int medium = 2;
   static int low = 3;
 }
+
 // :emphasize-end:
 // :snippet-end:
+// :replace-start: {
+//    "terms": {
+//       "_RealmServicesAgain": "RealmServices"
+//    }
+// }
+// :snippet-start: sync-no-priority
+class _RealmServicesAgain with ChangeNotifier {
+  static const String queryAllName = "getAllItemsSubscription";
+  static const String queryMyItemsName = "getMyItemsSubscription";
+  static const String queryMyHighPriorityItemsName =
+      "getMyHighPriorityItemsSubscription";
+  // :emphasize-start:
+  static const String queryMyHighOrNoPriorityItemsName =
+      "getMyHighOrNoPriorityItemsSubscription";
+  // :emphasize-end:
+
+  bool showAll = false;
+  bool offlineModeOn = false;
+  bool isWaiting = false;
+  late Realm realm;
+  User? currentUser;
+  App app;
+
+  _RealmServicesAgain(this.app) {
+    if (app.currentUser != null || currentUser != app.currentUser) {
+      currentUser ??= app.currentUser;
+      realm = Realm(Configuration.flexibleSync(currentUser!, [Item.schema]));
+      // :emphasize-start:
+      // Check if subscription has been updated
+      final subscriptionChanged = realm.subscriptions
+                  .findByName(queryMyHighOrNoPriorityItemsName)
+                  ?.name !=
+              queryAllName
+          ? true
+          : false;
+
+      if (realm.subscriptions.isEmpty || subscriptionChanged) {
+        updateSubscriptions();
+      }
+      // :emphasize-end:
+    }
+  }
+
+  Future<void> updateSubscriptions() async {
+    realm.subscriptions.update((mutableSubscriptions) {
+      mutableSubscriptions.clear();
+      if (showAll) {
+        mutableSubscriptions.add(realm.all<Item>(), name: queryAllName);
+      } else {
+        // :emphasize-start:
+        mutableSubscriptions.add(
+            realm.query<Item>(
+              r'owner_id == $0 AND priority IN {$1, $2, $3}',
+              [currentUser?.id, PriorityLevel.high, PriorityLevel.severe, null],
+            ),
+            name: queryMyHighPriorityItemsName);
+        // :emphasize-end:
+      }
+    });
+    await realm.subscriptions.waitForSynchronization();
+  }
+
+  // ... other methods
+}
+// :snippet-end:
+// :replace-end:
