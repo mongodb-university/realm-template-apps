@@ -1,24 +1,22 @@
 {
-    "bsonType": "object",
-    "properties": {
-        "_id": {
-            "bsonType": "objectId"
-        },
-        "isComplete": {
-            "bsonType": "bool"
-        },
-        "owner_id": {
-            "bsonType": "string"
-        },
-        "summary": {
-            "bsonType": "string"
-        }
+  "bsonType": "object",
+  "properties": {
+    "_id": {
+      "bsonType": "objectId"
     },
-    "required": [
-        "_id",
-        "owner_id",
-        "summary",
-        "isComplete"
-    ],
-    "title": "Item"
+    "isComplete": {
+      "bsonType": "bool"
+    },
+    "owner_id": {
+      "bsonType": "string"
+    },
+    "summary": {
+      "bsonType": "string"
+    },
+    "priority": {
+      "bsonType": "int"
+    }
+  },
+  "required": ["_id", "owner_id", "summary", "isComplete"],
+  "title": "Item"
 }
