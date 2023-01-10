@@ -23,16 +23,21 @@ class RealmServices with ChangeNotifier {
   User? currentUser;
   App app;
 
-  // ... RealmServices initializer
+  // :state-remove-start: update-subscription-query
+  // ... RealmServices initializer and updateSubscriptions(),
+  //     sessionSwitch() and switchSubscription() methods
+  // :state-remove-end:
   // :state-start: update-subscription-query
   RealmServices(this.app) {
     if (app.currentUser != null || currentUser != app.currentUser) {
       currentUser ??= app.currentUser;
       realm = Realm(Configuration.flexibleSync(currentUser!, [Item.schema]));
+      showAll = (realm.subscriptions.findByName(queryAllName) != null);
       // :emphasize-start:
       // Check if subscription previously exists on the realm
       final subscriptionDoesNotExists =
-          realm.subscriptions.findByName(queryMyHighPriorityItemsName) == null;
+          (realm.subscriptions.findByName(queryMyHighPriorityItemsName) ==
+              null);
 
       if (realm.subscriptions.isEmpty || subscriptionDoesNotExists) {
         updateSubscriptions();
@@ -61,10 +66,7 @@ class RealmServices with ChangeNotifier {
   }
   // :state-end:
 
-  // :state-start: update-subscription-query
-  // ... other methods
-  // :state-end:
-  // :state-remove-start: update-subscription-query
+  // :remove-start:
   Future<void> sessionSwitch() async {
     offlineModeOn = !offlineModeOn;
     if (offlineModeOn) {
@@ -95,7 +97,12 @@ class RealmServices with ChangeNotifier {
     }
     notifyListeners();
   }
+  // :remove-end:
 
+  // :state-start: update-subscription-query
+  // ... other methods
+  // :state-end:
+  // :state-remove-start: update-subscription-query
 // :emphasize-start:
   void createItem(String summary, bool isComplete, int? priority) {
     final newItem = Item(ObjectId(), summary, currentUser!.id,
