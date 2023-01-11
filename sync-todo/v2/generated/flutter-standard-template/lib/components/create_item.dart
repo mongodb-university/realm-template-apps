@@ -54,7 +54,8 @@ class _CreateItemFormState extends State<CreateItemForm> {
               Text("Create a new item", style: theme.headline6),
               TextFormField(
                 controller: _itemEditingController,
-                validator: (value) => (value ?? "").isEmpty ? "Please enter some text" : null,
+                validator: (value) =>
+                    (value ?? "").isEmpty ? "Please enter some text" : null,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 15),
@@ -62,8 +63,10 @@ class _CreateItemFormState extends State<CreateItemForm> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     cancelButton(context),
-                    Consumer<RealmServices>(builder: (context, realmServices, child) {
-                      return okButton(context, "Create", onPressed: () => save(realmServices, context));
+                    Consumer<RealmServices>(
+                        builder: (context, realmServices, child) {
+                      return okButton(context, "Create",
+                          onPressed: () => save(realmServices, context));
                     }),
                   ],
                 ),

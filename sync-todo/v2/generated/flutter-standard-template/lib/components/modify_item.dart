@@ -23,7 +23,8 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
   @override
   void initState() {
     _summaryController = TextEditingController(text: item.summary);
-    _isCompleteController = ValueNotifier<bool>(item.isComplete)..addListener(() => setState(() {}));
+    _isCompleteController = ValueNotifier<bool>(item.isComplete)
+      ..addListener(() => setState(() {}));
 
     super.initState();
   }
@@ -50,9 +51,11 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
                 Text("Update your item", style: myTextTheme.headline6),
                 TextFormField(
                   controller: _summaryController,
-                  validator: (value) => (value ?? "").isEmpty ? "Please enter some text" : null,
+                  validator: (value) =>
+                      (value ?? "").isEmpty ? "Please enter some text" : null,
                 ),
-                StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+                StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
                   return Column(
                     children: <Widget>[
                       radioButton("Complete", true, _isCompleteController),
@@ -66,9 +69,16 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       cancelButton(context),
-                      deleteButton(context, onPressed: () => delete(realmServices, item, context)),
+                      deleteButton(context,
+                          onPressed: () =>
+                              delete(realmServices, item, context)),
                       okButton(context, "Update",
-                          onPressed: () async => await update(context, realmServices, item, _summaryController.text, _isCompleteController.value)),
+                          onPressed: () async => await update(
+                              context,
+                              realmServices,
+                              item,
+                              _summaryController.text,
+                              _isCompleteController.value)),
                     ],
                   ),
                 ),
@@ -76,9 +86,11 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
             )));
   }
 
-  Future<void> update(BuildContext context, RealmServices realmServices, Item item, String summary, bool isComplete) async {
+  Future<void> update(BuildContext context, RealmServices realmServices,
+      Item item, String summary, bool isComplete) async {
     if (_formKey.currentState!.validate()) {
-      await realmServices.updateItem(item, summary: summary, isComplete: isComplete);
+      await realmServices.updateItem(item,
+          summary: summary, isComplete: isComplete);
       Navigator.pop(context);
     }
   }

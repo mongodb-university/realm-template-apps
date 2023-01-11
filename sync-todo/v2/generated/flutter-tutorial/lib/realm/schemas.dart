@@ -11,4 +11,5 @@ class _Item {
   late String summary;
   @MapTo('owner_id')
   late String ownerId;
+  // TUTORIAL: Add `priority` field here
 }

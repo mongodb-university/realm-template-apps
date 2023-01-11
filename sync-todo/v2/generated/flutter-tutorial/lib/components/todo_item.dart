@@ -32,6 +32,7 @@ class TodoItem extends StatelessWidget {
                 }
               },
             ),
+            // TUTORIAL: Replace `title` Text widget with code from tutorial
             title: Text(item.summary),
             subtitle: Text(
               isMine ? '(mine) ' : '',
@@ -91,3 +92,5 @@ class TodoItem extends StatelessWidget {
     }
   }
 }
+
+// TUTORIAL: Add `_PriorityIndicator` widget

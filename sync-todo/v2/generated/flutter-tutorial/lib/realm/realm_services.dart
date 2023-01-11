@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class RealmServices with ChangeNotifier {
   static const String queryAllName = "getAllItemsSubscription";
   static const String queryMyItemsName = "getMyItemsSubscription";
+  // TUTORIAL: Add `queryMyHighPriorityItemsName`
 
   bool showAll = false;
   bool offlineModeOn = false;
@@ -18,6 +19,8 @@ class RealmServices with ChangeNotifier {
       currentUser ??= app.currentUser;
       realm = Realm(Configuration.flexibleSync(currentUser!, [Item.schema]));
       showAll = (realm.subscriptions.findByName(queryAllName) != null);
+      // TUTORIAL: Check if subscription doesn't exist
+      // and update below `if` statement
       if (realm.subscriptions.isEmpty) {
         updateSubscriptions();
       }
@@ -31,6 +34,7 @@ class RealmServices with ChangeNotifier {
         mutableSubscriptions.add(realm.all<Item>(), name: queryAllName);
       } else {
         mutableSubscriptions.add(
+            // TUTORIAL: Update subscription query
             realm.query<Item>(r'owner_id == $0', [currentUser?.id]),
             name: queryMyItemsName);
       }
@@ -69,8 +73,10 @@ class RealmServices with ChangeNotifier {
     notifyListeners();
   }
 
+  // TUTORIAL: Add `int priority` parameter to createItem()
   void createItem(String summary, bool isComplete) {
     final newItem =
+        // TUTORIAL: Add `priority` to `Item`
         Item(ObjectId(), summary, currentUser!.id, isComplete: isComplete);
     realm.write<Item>(() => realm.add<Item>(newItem));
     notifyListeners();
@@ -81,6 +87,8 @@ class RealmServices with ChangeNotifier {
     notifyListeners();
   }
 
+  // TUTORIAL: Add `int priority` parameter to updateItem()
+  // and make arguments named with `{}`.
   Future<void> updateItem(Item item,
       {String? summary, bool? isComplete}) async {
     realm.write(() {
@@ -90,6 +98,7 @@ class RealmServices with ChangeNotifier {
       if (isComplete != null) {
         item.isComplete = isComplete;
       }
+      // TUTORIAL: Add if statement check for adding `priority`
     });
     notifyListeners();
   }
@@ -108,3 +117,5 @@ class RealmServices with ChangeNotifier {
     super.dispose();
   }
 }
+
+// TUTORIAL: Add `PriorityLevel` abstract class
