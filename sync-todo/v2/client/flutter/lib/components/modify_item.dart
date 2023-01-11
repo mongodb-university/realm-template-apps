@@ -3,6 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:flutter_todo/realm/realm_services.dart';
 import 'package:flutter_todo/components/widgets.dart';
+// :state-start: tutorial
+// TUTORIAL: Import 'select_priority.dart'
+// :state-end:
 
 class ModifyItemForm extends StatefulWidget {
   final Item item;
@@ -17,13 +20,20 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
   final Item item;
   late TextEditingController _summaryController;
   late ValueNotifier<bool> _isCompleteController;
+  // :state-start: tutorial
+  // TUTORIAL: Add `_priority` variable and _setPriority() function
+  // :state-end:
 
   _ModifyItemFormState(this.item);
 
   @override
   void initState() {
     _summaryController = TextEditingController(text: item.summary);
-    _isCompleteController = ValueNotifier<bool>(item.isComplete)..addListener(() => setState(() {}));
+    _isCompleteController = ValueNotifier<bool>(item.isComplete)
+      ..addListener(() => setState(() {}));
+    // :state-start: tutorial
+    // TUTORIAL: Add `_priority` from widget
+    // :state-end:
 
     super.initState();
   }
@@ -50,9 +60,14 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
                 Text("Update your item", style: myTextTheme.headline6),
                 TextFormField(
                   controller: _summaryController,
-                  validator: (value) => (value ?? "").isEmpty ? "Please enter some text" : null,
+                  validator: (value) =>
+                      (value ?? "").isEmpty ? "Please enter some text" : null,
                 ),
-                StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+                // :state-start: tutorial
+                // TUTORIAL: Add `SelectPriority` widget here
+                // :state-end:
+                StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
                   return Column(
                     children: <Widget>[
                       radioButton("Complete", true, _isCompleteController),
@@ -66,9 +81,19 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       cancelButton(context),
-                      deleteButton(context, onPressed: () => delete(realmServices, item, context)),
+                      deleteButton(context,
+                          onPressed: () =>
+                              delete(realmServices, item, context)),
+                      // :state-start: tutorial
+                      // TUTORIAL: Add `_priority` to okButton()
+                      // :state-end:
                       okButton(context, "Update",
-                          onPressed: () async => await update(context, realmServices, item, _summaryController.text, _isCompleteController.value)),
+                          onPressed: () async => await update(
+                              context,
+                              realmServices,
+                              item,
+                              _summaryController.text,
+                              _isCompleteController.value)),
                     ],
                   ),
                 ),
@@ -76,9 +101,17 @@ class _ModifyItemFormState extends State<ModifyItemForm> {
             )));
   }
 
-  Future<void> update(BuildContext context, RealmServices realmServices, Item item, String summary, bool isComplete) async {
+  // :state-start: tutorial
+  // TUTORIAL: Add `priority` to parameters
+  // :state-end:
+  Future<void> update(BuildContext context, RealmServices realmServices,
+      Item item, String summary, bool isComplete) async {
     if (_formKey.currentState!.validate()) {
-      await realmServices.updateItem(item, summary: summary, isComplete: isComplete);
+      // :state-start: tutorial
+      // TUTORIAL: Add `priority` to updateItem() call
+      // :state-end:
+      await realmServices.updateItem(item,
+          summary: summary, isComplete: isComplete);
       Navigator.pop(context);
     }
   }

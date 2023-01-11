@@ -11,4 +11,7 @@ class _Item {
   late String summary;
   @MapTo('owner_id')
   late String ownerId;
+  // :state-start: tutorial
+  // TUTORIAL: Add `priority` field here
+  // :state-end:
 }

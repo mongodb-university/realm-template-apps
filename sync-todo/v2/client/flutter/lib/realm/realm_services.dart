@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 class RealmServices with ChangeNotifier {
   static const String queryAllName = "getAllItemsSubscription";
   static const String queryMyItemsName = "getMyItemsSubscription";
+  // :state-start: tutorial
+  // TUTORIAL: Add `queryMyHighPriorityItemsName`
+  // :state-end:
 
   bool showAll = false;
   bool offlineModeOn = false;
@@ -18,6 +21,10 @@ class RealmServices with ChangeNotifier {
       currentUser ??= app.currentUser;
       realm = Realm(Configuration.flexibleSync(currentUser!, [Item.schema]));
       showAll = (realm.subscriptions.findByName(queryAllName) != null);
+      // :state-start: tutorial
+      // TUTORIAL: Check if subscription doesn't exist
+      // and update below `if` statement
+      // :state-end:
       if (realm.subscriptions.isEmpty) {
         updateSubscriptions();
       }
@@ -31,6 +38,9 @@ class RealmServices with ChangeNotifier {
         mutableSubscriptions.add(realm.all<Item>(), name: queryAllName);
       } else {
         mutableSubscriptions.add(
+            // :state-start: tutorial
+            // TUTORIAL: Update subscription query
+            // :state-end:
             realm.query<Item>(r'owner_id == $0', [currentUser?.id]),
             name: queryMyItemsName);
       }
@@ -69,8 +79,14 @@ class RealmServices with ChangeNotifier {
     notifyListeners();
   }
 
+  // :state-start: tutorial
+  // TUTORIAL: Add `int priority` parameter to createItem()
+  // :state-end:
   void createItem(String summary, bool isComplete) {
     final newItem =
+        // :state-start: tutorial
+        // TUTORIAL: Add `priority` to `Item`
+        // :state-end:
         Item(ObjectId(), summary, currentUser!.id, isComplete: isComplete);
     realm.write<Item>(() => realm.add<Item>(newItem));
     notifyListeners();
@@ -81,6 +97,10 @@ class RealmServices with ChangeNotifier {
     notifyListeners();
   }
 
+  // :state-start: tutorial
+  // TUTORIAL: Add `int priority` parameter to updateItem()
+  // and make arguments named with `{}`.
+  // :state-end:
   Future<void> updateItem(Item item,
       {String? summary, bool? isComplete}) async {
     realm.write(() {
@@ -90,6 +110,9 @@ class RealmServices with ChangeNotifier {
       if (isComplete != null) {
         item.isComplete = isComplete;
       }
+      // :state-start: tutorial
+      // TUTORIAL: Add if statement check for adding `priority`
+      // :state-end:
     });
     notifyListeners();
   }
@@ -108,3 +131,7 @@ class RealmServices with ChangeNotifier {
     super.dispose();
   }
 }
+
+// :state-start: tutorial
+// TUTORIAL: Add `PriorityLevel` abstract class
+// :state-end:

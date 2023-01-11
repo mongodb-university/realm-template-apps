@@ -3,6 +3,9 @@ import 'package:flutter_todo/components/widgets.dart';
 import 'package:flutter_todo/realm/realm_services.dart';
 import 'package:provider/provider.dart';
 
+// :state-start: tutorial
+// TUTORIAL: Import 'select_priority.dart'
+// :state-end:
 class CreateItemAction extends StatelessWidget {
   const CreateItemAction({Key? key}) : super(key: key);
 
@@ -27,6 +30,9 @@ class CreateItemForm extends StatefulWidget {
 class _CreateItemFormState extends State<CreateItemForm> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _itemEditingController;
+  // :state-start: tutorial
+  // TUTORIAL: Add `_priority` variable and _setPriority() function
+  // :state-end:
 
   @override
   void initState() {
@@ -54,16 +60,22 @@ class _CreateItemFormState extends State<CreateItemForm> {
               Text("Create a new item", style: theme.headline6),
               TextFormField(
                 controller: _itemEditingController,
-                validator: (value) => (value ?? "").isEmpty ? "Please enter some text" : null,
+                validator: (value) =>
+                    (value ?? "").isEmpty ? "Please enter some text" : null,
               ),
+              // :state-start: tutorial
+              // TUTORIAL: Add `SelectPriority` widget here
+              // :state-end:
               Padding(
                 padding: const EdgeInsets.only(top: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     cancelButton(context),
-                    Consumer<RealmServices>(builder: (context, realmServices, child) {
-                      return okButton(context, "Create", onPressed: () => save(realmServices, context));
+                    Consumer<RealmServices>(
+                        builder: (context, realmServices, child) {
+                      return okButton(context, "Create",
+                          onPressed: () => save(realmServices, context));
                     }),
                   ],
                 ),
@@ -76,6 +88,9 @@ class _CreateItemFormState extends State<CreateItemForm> {
   void save(RealmServices realmServices, BuildContext context) {
     if (_formKey.currentState!.validate()) {
       final summary = _itemEditingController.text;
+      // :state-start: tutorial
+      // TUTORIAL: Add `_priority` to createItem() method call
+      // :state-end:
       realmServices.createItem(summary, false);
       Navigator.pop(context);
     }
