@@ -99,9 +99,9 @@
     "name": "Flutter Todo App",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
-    "backend_path": "sync-todo/v1/backend",
-    "client_path": "sync-todo/v1/generated/flutter_todo",
-    "metadata_path": "sync-todo/v1/generated/flutter_todo/assets/config",
+    "backend_path": "sync-todo/v2/backend",
+    "client_path": "sync-todo/v2/generated/flutter-standard-template",
+    "metadata_path": "sync-todo/v2/generated/flutter-standard-template/assets/config",
     "metadata_filename": "realm",
     "file_format": "json"
   },
@@ -111,7 +111,7 @@
     "repo_name": "realm-template-apps",
     "backend_path": "sync-todo/v2/backend",
     "client_path": "sync-todo/v2/generated/flutter-tutorial",
-    "metadata_path": "sync-todo/v1/generated/flutter-tutorial/assets/config",
+    "metadata_path": "sync-todo/v2/generated/flutter-tutorial/assets/config",
     "metadata_filename": "realm",
     "file_format": "json"
   },
