@@ -105,6 +105,16 @@
     "metadata_filename": "realm",
     "file_format": "json"
   },
+  "flutter.tutorial": {
+    "name": "Flutter Todo App - Tutorial",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "sync-todo/v2/backend",
+    "client_path": "sync-todo/v2/generated/flutter-tutorial",
+    "metadata_path": "sync-todo/v1/generated/flutter-tutorial/assets/config",
+    "metadata_filename": "realm",
+    "file_format": "json"
+  },
   "kotlin.todo.flex": {
     "name": "Kotlin Todo App",
     "repo_owner": "mongodb-university",

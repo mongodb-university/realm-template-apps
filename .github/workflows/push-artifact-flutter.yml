@@ -5,18 +5,23 @@ on:
     branches:
       - main
     paths:
-      - "sync-todo/v1/generated/flutter_todo/**"
+      - "sync-todo/v2/client/flutter/**"
 
 jobs:
   push:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - name: copy template-realm.json to app pre-bluehawking
+        uses: canastro/copy-file-action@master
+        source: ./sync-todo/v2/template-realm.json
+        target: ./sync-todo/v2/client/flutter/assets/config/realm.json
       - uses: ./.github/actions/push-to-artifact-repo
         with:
           email: chris.bush+arty-fact@mongodb.com
           name: Arty Fact
           states: main tutorial
-          source: ./sync-todo/v1/generated/flutter_todo
+          source: ./sync-todo/v2/client/flutter
           destination_repo: mongodb/template-app-dart-flutter-todo.git
           access_token: ${{ secrets.ARTIFACT_REPO_ACCESS_TOKEN }}

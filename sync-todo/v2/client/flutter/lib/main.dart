@@ -57,7 +57,8 @@ class App extends StatelessWidget {
 
 // :remove-start:
 // NOTE: Have to add the below bluehawk state tag with the `main` state
-// to make Arty Fact push to the Flutter repo in both the `main` and `tutorial` branches.
+// to make Arty Fact push to the Flutter repo in both the `main` and `tutorial` branches
+// in the `push-artifact-flutter.yml` Github Action.
 // The `main` branch corresponds to the standard version of the template.
 // The `tutorial` branch corresponds to the annotated tutorial version which
 // has comments noting where to put the changes required by the tutorial.
