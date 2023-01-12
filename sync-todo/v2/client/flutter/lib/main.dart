@@ -12,18 +12,22 @@ import 'components/widgets.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final realmConfig = json.decode(await rootBundle.loadString('assets/config/realm.json'));
+  final realmConfig =
+      json.decode(await rootBundle.loadString('assets/config/realm.json'));
   String appId = realmConfig['appId'];
   Uri baseUrl = Uri.parse(realmConfig['baseUrl']);
 
-
   return runApp(MultiProvider(providers: [
-    ChangeNotifierProvider<AppServices>(create: (_) => AppServices(appId, baseUrl)),
+    ChangeNotifierProvider<AppServices>(
+        create: (_) => AppServices(appId, baseUrl)),
     ChangeNotifierProxyProvider<AppServices, RealmServices?>(
         // RealmServices can only be initialized only if the user is logged in.
         create: (context) => null,
-        update: (BuildContext context, AppServices appServices, RealmServices? realmServices) {
-          return appServices.app.currentUser != null ? RealmServices(appServices.app) : null;
+        update: (BuildContext context, AppServices appServices,
+            RealmServices? realmServices) {
+          return appServices.app.currentUser != null
+              ? RealmServices(appServices.app)
+              : null;
         }),
   ], child: const App()));
 }
@@ -33,7 +37,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentUser = Provider.of<RealmServices?>(context, listen: false)?.currentUser;
+    final currentUser =
+        Provider.of<RealmServices?>(context, listen: false)?.currentUser;
 
     return WillPopScope(
       onWillPop: () async => false,
@@ -41,10 +46,21 @@ class App extends StatelessWidget {
         title: 'Realm Flutter Todo',
         theme: appThemeData(),
         initialRoute: currentUser != null ? '/' : '/login',
-        routes: {'/': (context) => const HomePage(), '/login': (context) => LogIn()},
+        routes: {
+          '/': (context) => const HomePage(),
+          '/login': (context) => LogIn()
+        },
       ),
     );
   }
 }
 
-
+// :remove-start:
+// NOTE: Have to add the below bluehawk state tag with the `main` state
+// to make Arty Fact push to the Flutter repo in both the `main` and `tutorial` branches.
+// The `main` branch corresponds to the standard version of the template.
+// The `tutorial` branch corresponds to the annotated tutorial version which
+// has comments noting where to put the changes required by the tutorial.
+// :remove-end:
+// :state-start: main
+// :state-end:
