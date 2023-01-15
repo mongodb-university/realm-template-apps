@@ -10,6 +10,7 @@ namespace RealmTodo.ViewModels
 {
     public partial class ItemsViewModel : BaseViewModel
     {
+
         [ObservableProperty]
         private string connectionStatusIcon = "wifi_on.png";
 
@@ -53,7 +54,7 @@ namespace RealmTodo.ViewModels
         [RelayCommand]
         public async Task AddItem()
         {
-            var promptResult = await DialogService.ShowPromptAsync("New item");
+            var newItem = new Item() { OwnerId = currentUserId };
 
             NewItemSummary = String.Empty;
 
@@ -66,11 +67,11 @@ namespace RealmTodo.ViewModels
 
                 await realm.WriteAsync(() =>
                 {
-                    var item = new Item() { OwnerId = currentUserId, IsComplete = false, Summary = promptResult };
-                    realm.Add(item);
+                    realm.Add(newItem);
                 });
             }
         }
+
 
         [RelayCommand]
         public async Task EditItem(Item item)
