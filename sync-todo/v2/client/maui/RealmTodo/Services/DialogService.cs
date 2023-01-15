@@ -15,9 +15,18 @@ namespace RealmTodo.Services
             return Application.Current.MainPage.DisplayAlert(title, message, accept);
         }
 
-        public static Task<string> ShowPromptAsync(string title, string initialValue = "")
+        public async static Task<bool> ShowPromptAsync(Item item, ItemsViewModel itemsViewModel)
         {
-            return Application.Current.MainPage.DisplayPromptAsync(title, "", initialValue: initialValue);
+            try
+            {
+                var popup = new NewItemPopup(itemsViewModel);
+                var result = await Application.Current.MainPage.ShowPopupAsync(popup);
+                return (bool)result;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
         public static Action ShowActivityIndicator()

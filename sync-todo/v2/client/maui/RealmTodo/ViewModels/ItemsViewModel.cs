@@ -19,6 +19,12 @@ namespace RealmTodo.ViewModels
         [ObservableProperty]
         private IQueryable<Item> items;
 
+        [ObservableProperty]
+        private string newItemSummary;
+
+        [ObservableProperty]
+        private string dialogTitle;
+
         private Realm realm;
         private string currentUserId;
         private bool isOnline = true;
@@ -49,8 +55,15 @@ namespace RealmTodo.ViewModels
         {
             var promptResult = await DialogService.ShowPromptAsync("New item");
 
-            if (!string.IsNullOrEmpty(promptResult))
+            NewItemSummary = String.Empty;
+
+            DialogTitle = "Add New Item";
+            var newItemResult = await DialogService.ShowPromptAsync(newItem, this);
+
+            if (newItemResult)
             {
+                newItem.Summary = NewItemSummary;
+
                 await realm.WriteAsync(() =>
                 {
                     var item = new Item() { OwnerId = currentUserId, IsComplete = false, Summary = promptResult };
@@ -66,14 +79,15 @@ namespace RealmTodo.ViewModels
             {
                 return;
             }
+            NewItemSummary = item.Summary;
 
-            var promptResult = await DialogService.ShowPromptAsync("Edit item", item.Summary);
-
-            if (!string.IsNullOrEmpty(promptResult))
+            DialogTitle = "Edit Item";
+            var editedItemResult = await DialogService.ShowPromptAsync(item, this);
+            if (editedItemResult)
             {
                 await realm.WriteAsync(() =>
                 {
-                    item.Summary = promptResult;
+                    item.Summary = NewItemSummary;
                 });
             }
         }
