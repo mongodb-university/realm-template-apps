@@ -10,7 +10,6 @@ namespace RealmTodo.ViewModels
 {
     public partial class ItemsViewModel : BaseViewModel
     {
-
         [ObservableProperty]
         private string connectionStatusIcon = "wifi_on.png";
 
@@ -19,12 +18,6 @@ namespace RealmTodo.ViewModels
 
         [ObservableProperty]
         private IQueryable<Item> items;
-
-        [ObservableProperty]
-        private string newItemSummary;
-
-        [ObservableProperty]
-        private string dialogTitle;
 
         private Realm realm;
         private string currentUserId;
@@ -54,24 +47,9 @@ namespace RealmTodo.ViewModels
         [RelayCommand]
         public async Task AddItem()
         {
-            var newItem = new Item() { OwnerId = currentUserId };
-
-            NewItemSummary = String.Empty;
-
-            DialogTitle = "Add New Item";
-            var newItemResult = await DialogService.ShowPromptAsync(newItem, this);
-
-            if (newItemResult)
-            {
-                newItem.Summary = NewItemSummary;
-
-                await realm.WriteAsync(() =>
-                {
-                    realm.Add(newItem);
-                });
-            }
+            var item = new Dictionary<string, object>() { { "item", new Item() } };
+            await Shell.Current.GoToAsync($"//newitem", item);
         }
-
 
         [RelayCommand]
         public async Task EditItem(Item item)
@@ -80,17 +58,8 @@ namespace RealmTodo.ViewModels
             {
                 return;
             }
-            NewItemSummary = item.Summary;
-
-            DialogTitle = "Edit Item";
-            var editedItemResult = await DialogService.ShowPromptAsync(item, this);
-            if (editedItemResult)
-            {
-                await realm.WriteAsync(() =>
-                {
-                    item.Summary = NewItemSummary;
-                });
-            }
+            var itemParameter = new Dictionary<string, object>() { { "item", item } };
+            await Shell.Current.GoToAsync($"//newitem", itemParameter);
         }
 
         [RelayCommand]

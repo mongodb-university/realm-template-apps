@@ -16,5 +16,10 @@
         ContentTemplate="{DataTemplate local:ItemsPage}"
         Route="items" />
 
+    <ShellContent
+        Title="NewItemPage"
+        ContentTemplate="{DataTemplate local:EditItemPage}"
+        Route="newitem" />
+
 </Shell>
 
