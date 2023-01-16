@@ -15,6 +15,5 @@
         Title="RealmTodo"
         ContentTemplate="{DataTemplate local:ItemsPage}"
         Route="items" />
-
 </Shell>
 

@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Views;
+using RealmTodo.Models;
 using RealmTodo.Views;
+using RealmTodo.ViewModels;
 
 namespace RealmTodo.Services
 {
@@ -13,11 +15,6 @@ namespace RealmTodo.Services
         public static Task ShowAlertAsync(string title, string message, string accept)
         {
             return Application.Current.MainPage.DisplayAlert(title, message, accept);
-        }
-
-        public static Task<string> ShowPromptAsync(string title, string initialValue = "")
-        {
-            return Application.Current.MainPage.DisplayPromptAsync(title, "", initialValue: initialValue);
         }
 
         public static Action ShowActivityIndicator()

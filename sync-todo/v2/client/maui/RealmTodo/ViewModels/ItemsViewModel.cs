@@ -47,16 +47,7 @@ namespace RealmTodo.ViewModels
         [RelayCommand]
         public async Task AddItem()
         {
-            var promptResult = await DialogService.ShowPromptAsync("New item");
-
-            if (!string.IsNullOrEmpty(promptResult))
-            {
-                await realm.WriteAsync(() =>
-                {
-                    var item = new Item() { OwnerId = currentUserId, IsComplete = false, Summary = promptResult };
-                    realm.Add(item);
-                });
-            }
+            await Shell.Current.GoToAsync($"itemEdit");
         }
 
         [RelayCommand]
@@ -66,16 +57,8 @@ namespace RealmTodo.ViewModels
             {
                 return;
             }
-
-            var promptResult = await DialogService.ShowPromptAsync("Edit item", item.Summary);
-
-            if (!string.IsNullOrEmpty(promptResult))
-            {
-                await realm.WriteAsync(() =>
-                {
-                    item.Summary = promptResult;
-                });
-            }
+            var itemParameter = new Dictionary<string, object>() { { "item", item } };
+            await Shell.Current.GoToAsync($"itemEdit", itemParameter);
         }
 
         [RelayCommand]
