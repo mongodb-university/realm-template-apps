@@ -47,8 +47,7 @@ namespace RealmTodo.ViewModels
         [RelayCommand]
         public async Task AddItem()
         {
-            var item = new Dictionary<string, object>() { { "item", new Item() } };
-            await Shell.Current.GoToAsync($"//newitem", item);
+            await Shell.Current.GoToAsync($"itemEdit");
         }
 
         [RelayCommand]
@@ -59,7 +58,7 @@ namespace RealmTodo.ViewModels
                 return;
             }
             var itemParameter = new Dictionary<string, object>() { { "item", item } };
-            await Shell.Current.GoToAsync($"//newitem", itemParameter);
+            await Shell.Current.GoToAsync($"itemEdit", itemParameter);
         }
 
         [RelayCommand]

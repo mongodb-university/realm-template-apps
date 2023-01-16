@@ -9,11 +9,11 @@
     </ContentPage.BindingContext>
      <VerticalStackLayout Padding="10">
         <Label 
-            Text="{Binding DialogTitle}"
+            Text="{Binding PageHeader}"
             VerticalOptions="Center" 
             HorizontalOptions="Center"
             TextColor="{DynamicResource Primary}"/>
-        <Entry Text="{Binding NewOrChangedItem.Summary}" Placeholder="Item Summary"  PlaceholderColor="#787878"/>
+        <Entry Text="{Binding Summary}" Placeholder="Item Summary"  PlaceholderColor="#787878"/>
         
         <HorizontalStackLayout >
             <Button  Margin="0,0,20,0" Text="OK" Command="{Binding SaveItemCommand}"/>

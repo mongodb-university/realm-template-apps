@@ -1,6 +1,7 @@
 ﻿using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Realms;
 using RealmTodo.Models;
 using RealmTodo.Services;
 
@@ -9,48 +10,56 @@ namespace RealmTodo.ViewModels
     public partial class EditItemViewModel : BaseViewModel, IQueryAttributable
     {
         [ObservableProperty]
-        private Item newOrChangedItem;
+        private Item initialItem;
 
         [ObservableProperty]
-        private string dialogTitle;
+        private string summary;
 
-        private Realms.Realm realm;
-        private string currentUserId;
+        [ObservableProperty]
+        private string pageHeader;
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
-            realm = RealmService.GetMainThreadRealm();
-            currentUserId = RealmService.CurrentUser.Id;
-
-            NewOrChangedItem = query["item"] as Item;
-
-
-            if (NewOrChangedItem.OwnerId == null) //we're creating a new Item
+            if (query.Count > 0 && query["item"] != null) // we're editing an Item
             {
-                NewOrChangedItem.OwnerId = currentUserId;
-                DialogTitle = "Create a New Item";
+                InitialItem = query["item"] as Item;
+                Summary = InitialItem.Summary;
+                PageHeader = $"Modify Item {InitialItem.Id}";
             }
-            else //we're editing an existing item
+            else // we're creating a new item
             {
-                DialogTitle = $"Modify Item {NewOrChangedItem.Id}";
+                Summary = "";
+                PageHeader = "Create a New Item";
             }
         }
 
         [RelayCommand]
         public async Task SaveItem()
         {
+            var realm = RealmService.GetMainThreadRealm();
             await realm.WriteAsync(() =>
             {
-                realm.Add(newOrChangedItem);
+                if (InitialItem != null) // editing an item
+                {
+                    InitialItem.Summary = Summary;
+                }
+                else // creating a new item
+                {
+                    realm.Add(new Item()
+                    {
+                        OwnerId = RealmService.CurrentUser.Id,
+                        Summary = summary
+                    });
+                }
             });
 
-            await Shell.Current.GoToAsync($"//items");
+            await Shell.Current.GoToAsync("..");
         }
 
         [RelayCommand]
         public async Task Cancel()
         {
-            await Shell.Current.GoToAsync($"//items");
+            await Shell.Current.GoToAsync("..");
         }
     }
 }

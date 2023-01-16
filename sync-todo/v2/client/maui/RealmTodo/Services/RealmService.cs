@@ -6,7 +6,7 @@ namespace RealmTodo.Services
 {
     public static class RealmService
     {
-        private const string appId = "appId";
+        private const string appId = "yettanothertemplatetest-gtwra";
 
         private static Realms.Sync.App app;
 
