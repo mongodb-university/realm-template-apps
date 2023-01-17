@@ -26,7 +26,8 @@ namespace RealmTodo.Services
             using StreamReader reader = new StreamReader(fileStream);
             var fileContent = await reader.ReadToEndAsync();
 
-            var config = JsonSerializer.Deserialize<RealmAppConfig>(fileContent);
+            var config = JsonSerializer.Deserialize<RealmAppConfig>(fileContent,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true});
 
             var appConfiguration = new Realms.Sync.AppConfiguration(config.AppId)
             {

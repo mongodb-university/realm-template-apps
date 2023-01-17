@@ -1,4 +1,4 @@
 ﻿{
-  "AppId": "todo-template-tldrx",
-  "BaseUrl": "https://realm.mongodb.com"
+  "appId": "todo-template-tldrx",
+  "baseUrl": "https://realm.mongodb.com"
 }
