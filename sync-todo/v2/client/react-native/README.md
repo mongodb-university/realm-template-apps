@@ -1,17 +1,20 @@
 # React Native Template App
 
 ## Prerequisites
+
 - Make sure your system is setup to run a React Native application by following the [setup guide](https://reactnative.dev/docs/environment-setup)
 - Set up an Atlas account and [deploy a cluster](https://www.mongodb.com/docs/atlas/tutorial/deploy-free-tier-cluster/)
 - Set up an application in App Services.
-    -  You can use the [`realm-cli`](https://www.mongodb.com/docs/atlas/app-services/cli/) to set up the backend and download a copy of this template:
-		```
-		realm-cli apps create -n "<App Name>" --template "react-native-ts.todo.flex"
-		```
+  - You can use the [`realm-cli`](https://www.mongodb.com/docs/atlas/app-services/cli/) to set up the backend and download a copy of this template:
+
+
+      ```
+      realm-cli apps create -n "<App Name>" --template "react-native-ts.todo.flex"
+      ```
 
 ## Configuration
 
-Ensure `realm.json` exists and contains the following properties:
+Ensure `atlasConfig.json` exists and contains the following properties:
 
 - **appId:** your Atlas App Services App ID.
 - **baseUrl:** the App Services backend URL. This should be https://realm.mongodb.com in most cases.
@@ -32,12 +35,13 @@ to: [Find Your Project or App Id](https://www.mongodb.com/docs/atlas/app-service
 ### Download the Client as a Zip File
 
 If you have downloaded this client as a .zip file from the Atlas App Services
-UI, it does not contain the App Services App ID. You must replace any value 
-in this client's `appId` field in `realm.json` with your 
-App Services App ID. For help finding this ID, refer to: 
+UI, it does not contain the App Services App ID. You must replace any value
+in this client's `appId` field in `atlasConfig.json` with your
+App Services App ID. For help finding this ID, refer to:
 [Find Your Project or App Id](https://www.mongodb.com/docs/atlas/app-services/reference/find-your-project-or-app-id/)
 
 ## How to Run the Application:
+
 - Make sure you are in this directory
 - `npm install`
 - `npx pod-install` if on Mac

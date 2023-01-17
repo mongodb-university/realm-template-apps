@@ -1,7 +1,7 @@
 import SwiftUI
 import RealmSwift
 
-/// This method loads app config details from a Realm.plist we generate
+/// This method loads app config details from a atlasConfig.plist we generate
 /// for the template apps.
 /// When you create your own Realm app, use your preferred method
 /// to store and access app configuration details.

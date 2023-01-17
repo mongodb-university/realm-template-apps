@@ -5,7 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {AppProvider, UserProvider} from '@realm/react';
 
-import {appId, baseUrl} from '../realm.json';
+import {appId, baseUrl} from '../atlasConfig.json';
 import {LogoutButton} from './LogoutButton';
 import {WelcomeView} from './WelcomeView';
 import {ItemListView} from './ItemListView';

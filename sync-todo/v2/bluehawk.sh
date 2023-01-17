@@ -8,10 +8,10 @@ for client in client/*; do
   npx bluehawk copy -o generated/$(basename $client) $client/;
 done
 
-cp template-realm.json generated/flutter/assets/config/realm.json
-cp template-realm.json generated/react-native/realm.json
-cp template-realm.plist generated/swiftui/App/Realm.plist
-cp template-realm.xml generated/kotlin-sdk/app/src/main/res/values/realm.xml
+cp template-atlasConfig.json generated/flutter/assets/config/atlasConfig.json
+cp template-atlasConfig.json generated/react-native/atlasConfig.json
+cp template-atlasConfig.plist generated/swiftui/App/atlasConfig.plist
+cp template-atlasConfig.xml generated/kotlin-sdk/app/src/main/res/values/atlasConfig.xml
 # cp template-realm.json generated/maui/realm-todo-dotnet/realm.json
 
 popd
