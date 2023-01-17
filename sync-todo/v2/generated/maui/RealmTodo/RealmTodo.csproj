@@ -33,12 +33,13 @@
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.png" Color="#00684A" />
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\mongodb.png" Color="#00684A"/>
+		<MauiSplashScreen Include="Resources\Splash\mongodb.png" Color="#00684A" />
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*svg " />
 		<MauiFont Include="Resources\Fonts\*" />
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+		<MauiAsset Include="atlasConfig.json" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
@@ -54,6 +55,7 @@
 		<None Remove="CommunityToolkit.Maui" />
 		<None Remove="Realm" />
 		<None Remove="Services\" />
+		<None Remove="atlasConfig.json" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Models\" />

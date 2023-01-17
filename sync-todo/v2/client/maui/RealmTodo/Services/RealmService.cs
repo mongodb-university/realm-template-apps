@@ -22,7 +22,7 @@ namespace RealmTodo.Services
                 return;
             }
 
-            using Stream fileStream = await FileSystem.Current.OpenAppPackageFileAsync("realm.json");
+            using Stream fileStream = await FileSystem.Current.OpenAppPackageFileAsync("atlasConfig.json");
             using StreamReader reader = new StreamReader(fileStream);
             var fileContent = await reader.ReadToEndAsync();
 
