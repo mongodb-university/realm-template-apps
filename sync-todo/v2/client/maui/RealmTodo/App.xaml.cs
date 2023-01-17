@@ -8,8 +8,6 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        RealmService.Init();
-
         MainPage = new AppShell();
     }
 }

@@ -1,4 +1,5 @@
-﻿using Realms;
+﻿using System.Text.Json;
+using Realms;
 using Realms.Sync;
 using RealmTodo.Models;
 
@@ -6,7 +7,7 @@ namespace RealmTodo.Services
 {
     public static class RealmService
     {
-        private const string appId = "****";
+        private static bool serviceInitialised;
 
         private static Realms.Sync.App app;
 
@@ -14,9 +15,28 @@ namespace RealmTodo.Services
 
         public static User CurrentUser => app.CurrentUser;
 
-        public static void Init()
+        public static async Task Init()
         {
-            app = Realms.Sync.App.Create(appId);
+            if (serviceInitialised)
+            {
+                return;
+            }
+
+            using Stream fileStream = await FileSystem.Current.OpenAppPackageFileAsync("realm.json");
+            using StreamReader reader = new StreamReader(fileStream);
+            var fileContent = await reader.ReadToEndAsync();
+
+            var config = JsonSerializer.Deserialize<RealmAppConfig>(fileContent,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true});
+
+            var appConfiguration = new Realms.Sync.AppConfiguration(config.AppId)
+            {
+                BaseUri = new Uri(config.BaseUrl)
+            };
+
+            app = Realms.Sync.App.Create(appConfiguration);
+
+            serviceInitialised = true;
         }
 
         public static Realm GetMainThreadRealm()
@@ -122,6 +142,13 @@ namespace RealmTodo.Services
     {
         Mine,
         All,
+    }
+
+    public class RealmAppConfig
+    {
+        public string AppId { get; set; }
+
+        public string BaseUrl { get; set; }
     }
 }
 
