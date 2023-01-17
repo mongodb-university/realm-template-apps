@@ -70,9 +70,9 @@
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
     "backend_path": "sync-todo/v2/backend",
-    "client_path": "sync-todo/v2/client/react-native",
-    "metadata_path": "sync-todo/v2/client/react-native",
-    "metadata_filename": "realm",
+    "client_path": "sync-todo/v2/generated/react-native",
+    "metadata_path": "sync-todo/v2/generated/react-native",
+    "metadata_filename": "atlasConfig",
     "file_format": "json"
   },
   "xamarin.todo": {
