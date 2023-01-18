@@ -15,7 +15,7 @@ func loadAppConfig() -> AppConfig {
     }
     // Any errors here indicate that the atlasConfig.plist file has not been formatted properly.
     // Expected key/values:
-    //      "appId": "your Realm app ID"
+    //      "appId": "your App Services app ID"
     let data = NSData(contentsOfFile: path)! as Data
     let realmPropertyList = try! PropertyListSerialization.propertyList(from: data, format: nil) as! [String: Any]
     let appId = realmPropertyList["appId"]! as! String
