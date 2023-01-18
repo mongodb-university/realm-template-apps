@@ -17,7 +17,11 @@ class TemplateApp: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        realmApp = App.create(getString(R.string.realm_app_id))
+        realmApp = App.create(
+            AppConfiguration.Builder(getString(R.string.realm_app_id))
+                .baseUrl(getString(R.string.realm_base_url))
+                .build()
+        )
 
         Log.v(TAG(), "Initialized the Realm App configuration for: ${realmApp.configuration.appId}")
     }
