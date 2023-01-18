@@ -3,7 +3,7 @@ import RealmSwift
 
 /// This method loads app config details from a atlasConfig.plist we generate
 /// for the template apps.
-/// When you create your own Realm app, use your preferred method
+/// When you create your own Atlas Device Sync app, use your preferred method
 /// to store and access app configuration details.
 let theAppConfig = loadAppConfig()
 
