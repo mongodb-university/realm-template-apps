@@ -3,19 +3,19 @@ import RealmSwift
 
 /// This method loads app config details from a atlasConfig.plist we generate
 /// for the template apps.
-/// When you create your own Realm app, use your preferred method
+/// When you create your own Atlas Device Sync app, use your preferred method
 /// to store and access app configuration details.
 let theAppConfig = loadAppConfig()
 
-let realmApp = App(id: theAppConfig.appId, configuration: AppConfiguration(baseURL: theAppConfig.baseUrl, transport: nil, localAppName: nil, localAppVersion: nil))
+let app = App(id: theAppConfig.appId, configuration: AppConfiguration(baseURL: theAppConfig.baseUrl, transport: nil, localAppName: nil, localAppVersion: nil))
 
 @main
 struct realmSwiftUIApp: SwiftUI.App {
-    @StateObject var errorHandler = ErrorHandler(app: realmApp)
+    @StateObject var errorHandler = ErrorHandler(app: app)
 
     var body: some Scene {
         WindowGroup {
-            ContentView(app: realmApp)
+            ContentView(app: app)
                 .environmentObject(errorHandler)
                 .alert(Text("Error"), isPresented: .constant(errorHandler.error != nil)) {
                     Button("OK", role: .cancel) { errorHandler.error = nil }

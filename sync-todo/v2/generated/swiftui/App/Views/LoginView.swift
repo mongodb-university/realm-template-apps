@@ -60,7 +60,7 @@ struct LoginView: View {
     /// Logs in with an existing user.
     func login(email: String, password: String) async {
         do {
-            let user = try await realmApp.login(credentials: Credentials.emailPassword(email: email, password: password))
+            let user = try await app.login(credentials: Credentials.emailPassword(email: email, password: password))
             print("Successfully logged in user: \(user)")
         } catch {
             print("Failed to log in user: \(error.localizedDescription)")
@@ -71,7 +71,7 @@ struct LoginView: View {
     /// Registers a new user with the email/password authentication provider.
     func signUp(email: String, password: String) async {
         do {
-            try await realmApp.emailPasswordAuth.registerUser(email: email, password: password)
+            try await app.emailPasswordAuth.registerUser(email: email, password: password)
             print("Successfully registered user")
             await login(email: email, password: password)
         } catch {

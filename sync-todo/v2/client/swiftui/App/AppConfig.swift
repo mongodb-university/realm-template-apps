@@ -17,8 +17,8 @@ func loadAppConfig() -> AppConfig {
     // Expected key/values:
     //      "appId": "your App Services app ID"
     let data = NSData(contentsOfFile: path)! as Data
-    let realmPropertyList = try! PropertyListSerialization.propertyList(from: data, format: nil) as! [String: Any]
-    let appId = realmPropertyList["appId"]! as! String
-    let baseUrl = realmPropertyList["baseUrl"]! as! String
+    let atlasConfigPropertyList = try! PropertyListSerialization.propertyList(from: data, format: nil) as! [String: Any]
+    let appId = atlasConfigPropertyList["appId"]! as! String
+    let baseUrl = atlasConfigPropertyList["baseUrl"]! as! String
     return AppConfig(appId: appId, baseUrl: baseUrl)
 }
