@@ -9,7 +9,7 @@
 
 
       ```
-      realm-cli apps create -n "<App Name>" --template "react-native-ts.todo.flex"
+      realm-cli apps create -n "<App Name>" --template "react-native.todo.v2"
       ```
 
 ## Configuration
