@@ -72,7 +72,7 @@
         <Border BackgroundColor="White"
                 StrokeThickness="0"
                Padding="8" Grid.Row="2">
-            <Button 
+            <Button
                 Margin="5"
                 Text="Add new To-do"
                 FontSize="Medium"

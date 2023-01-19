@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using Realms;
 using Realms.Sync;
 using RealmTodo.Models;

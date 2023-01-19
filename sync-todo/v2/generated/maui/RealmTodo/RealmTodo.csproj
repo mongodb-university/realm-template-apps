@@ -75,5 +75,8 @@
 		<MauiXaml Update="Views\BusyPopup.xaml">
 		  <SubType></SubType>
 		</MauiXaml>
+		<MauiXaml Update="Views\NewEditItemPage.xaml">
+		  <SubType></SubType>
+		</MauiXaml>
 	</ItemGroup>
 </Project>
