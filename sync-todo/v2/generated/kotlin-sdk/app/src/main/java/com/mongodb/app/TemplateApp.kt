@@ -19,8 +19,8 @@ class TemplateApp: Application() {
     override fun onCreate() {
         super.onCreate()
         app = App.create(
-            AppConfiguration.Builder(getString(R.string.app_id))
-                .baseUrl(getString(R.string.base_url))
+            AppConfiguration.Builder(getString(R.string.realm_app_id))
+                .baseUrl(getString(R.string.realm_base_url))
                 .build()
         )
 
