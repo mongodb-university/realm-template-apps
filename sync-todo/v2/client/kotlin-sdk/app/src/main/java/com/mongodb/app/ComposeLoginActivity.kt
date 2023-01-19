@@ -26,7 +26,7 @@ class ComposeLoginActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // Fast-track task list screen if we are logged in
-        if (realmApp.currentUser != null) {
+        if (app.currentUser != null) {
             startActivity(Intent(this, ComposeItemActivity::class.java))
             finish()
             return

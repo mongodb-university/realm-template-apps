@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Realm App</string>
+    <string name="app_name">My Sync App</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
