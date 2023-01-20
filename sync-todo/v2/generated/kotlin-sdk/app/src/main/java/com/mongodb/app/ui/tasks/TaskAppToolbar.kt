@@ -16,7 +16,7 @@ import com.mongodb.app.R
 import com.mongodb.app.data.MockRepository
 import com.mongodb.app.presentation.tasks.ToolbarEvent
 import com.mongodb.app.presentation.tasks.ToolbarViewModel
-import com.mongodb.app.realmApp
+import com.mongodb.app.app
 import com.mongodb.app.ui.theme.MyApplicationTheme
 import com.mongodb.app.ui.theme.Purple200
 import kotlinx.coroutines.CoroutineScope
@@ -61,7 +61,7 @@ fun TaskAppToolbar(viewModel: ToolbarViewModel) {
                 onClick = {
                     CoroutineScope(Dispatchers.IO).launch {
                         runCatching {
-                            realmApp.currentUser?.logOut()
+                            app.currentUser?.logOut()
                         }.onSuccess {
                             viewModel.logOut()
                         }.onFailure {

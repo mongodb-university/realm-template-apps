@@ -1,6 +1,6 @@
 package com.mongodb.app.data
 
-import com.mongodb.app.realmApp
+import com.mongodb.app.app
 import io.realm.kotlin.mongodb.Credentials
 
 /**
@@ -23,10 +23,10 @@ interface AuthRepository {
  */
 object RealmAuthRepository : AuthRepository {
     override suspend fun createAccount(email: String, password: String) {
-        realmApp.emailPasswordAuth.registerUser(email, password)
+        app.emailPasswordAuth.registerUser(email, password)
     }
 
     override suspend fun login(email: String, password: String) {
-        realmApp.login(Credentials.emailPassword(email, password))
+        app.login(Credentials.emailPassword(email, password))
     }
 }
