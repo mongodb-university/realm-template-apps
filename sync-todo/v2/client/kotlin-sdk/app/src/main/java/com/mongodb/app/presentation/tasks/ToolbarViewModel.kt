@@ -9,16 +9,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.savedstate.SavedStateRegistryOwner
-import com.mongodb.app.data.AuthRepository
-import com.mongodb.app.data.RealmAuthRepository
 import com.mongodb.app.data.SyncRepository
-import com.mongodb.app.realmApp
-import io.realm.kotlin.mongodb.Credentials
-import io.realm.kotlin.mongodb.exceptions.ConnectionException
-import io.realm.kotlin.mongodb.exceptions.InvalidCredentialsException
-import io.realm.kotlin.mongodb.exceptions.UserAlreadyExistsException
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch

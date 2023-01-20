@@ -1,7 +1,7 @@
 package com.mongodb.app.data
 
 import com.mongodb.app.domain.Item
-import com.mongodb.app.realmApp
+import com.mongodb.app.app
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.mongodb.User
@@ -86,7 +86,7 @@ class RealmSyncRepository(
     private val realm: Realm
     private val config: SyncConfiguration
     private val currentUser: User
-        get() = realmApp.currentUser!!
+        get() = app.currentUser!!
 
     init {
         config = SyncConfiguration.Builder(currentUser, setOf(Item::class))

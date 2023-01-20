@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.mongodb.app.data.AuthRepository
 import com.mongodb.app.data.RealmAuthRepository
-import com.mongodb.app.realmApp
+import com.mongodb.app.app
 import io.realm.kotlin.mongodb.Credentials
 import io.realm.kotlin.mongodb.exceptions.ConnectionException
 import io.realm.kotlin.mongodb.exceptions.InvalidCredentialsException
@@ -107,7 +107,7 @@ class LoginViewModel : ViewModel() {
 
         CoroutineScope(Dispatchers.IO).launch {
             runCatching {
-                realmApp.login(Credentials.emailPassword(email, password))
+                app.login(Credentials.emailPassword(email, password))
             }.onSuccess {
                 _event.emit(LoginEvent.GoToTasks(EventSeverity.INFO, "User logged in successfully."))
             }.onFailure { ex: Throwable ->
