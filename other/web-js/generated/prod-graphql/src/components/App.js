@@ -1,11 +1,13 @@
-import { AppBar, Toolbar, Button, Typography } from "@material-ui/core";
+import { AppBar, Toolbar, Button, Typography } from "@mui/material";
 import { WelcomePage } from "./WelcomePage";
 import { TodoItemsPage } from "./TodoItemsPage";
 import { RealmAppProvider, useRealmApp } from "./RealmApp";
 import { ThemeProvider } from "./Theme";
 import { AppName } from "./AppName";
-import { appId } from "../realm.json";
+import appConfig from "../realm.json";
 import "./App.css";
+
+const { appId } = appConfig;
 
 export default function AppWithRealm() {
   return (

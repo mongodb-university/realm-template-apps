@@ -1,6 +1,8 @@
 import React from "react";
 import * as Realm from "realm-web";
-import { baseUrl } from "../realm.json";
+import appConfig from "../realm.json";
+
+const { baseUrl } = appConfig;
 
 function createRealmApp(id) {
   return new Realm.App({ id, baseUrl });

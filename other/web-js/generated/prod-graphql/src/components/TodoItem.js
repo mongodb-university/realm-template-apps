@@ -6,8 +6,8 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-} from "@material-ui/core";
-import ClearIcon from "@material-ui/icons/Clear";
+} from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
 
 export function TodoItem({ todo, todoActions }) {
   return (

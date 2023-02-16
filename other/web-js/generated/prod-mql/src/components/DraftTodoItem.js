@@ -6,15 +6,16 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  withStyles,
-} from "@material-ui/core";
-import ClearIcon from "@material-ui/icons/Clear";
+} from "@mui/material";
+import { withStyles } from "tss-react/mui";
+import ClearIcon from "@mui/icons-material/Clear";
 
-const ListItemWithTwoSecondaryActions = withStyles({
+const ListItemWithTwoSecondaryActions = withStyles(ListItem, {
   secondaryAction: {
     paddingRight: "120px",
   },
-})(ListItem);
+});
+
 
 export function DraftTodoItem({ todo, todoActions, draftTodoActions }) {
   return (
