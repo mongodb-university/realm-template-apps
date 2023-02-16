@@ -1,7 +1,8 @@
-import path from "path";
 import { Container, Link } from "@mui/material";
 import { API_TYPE_NAME } from "./AppName";
-import { appUrl } from "../realm.json";
+import appConfig from "../realm.json";
+
+const { appUrl } = appConfig;
 
 export function MoreInfo() {
   return (
@@ -36,8 +37,7 @@ export function MoreInfoTemplateAndDocs() {
 function appendUrlPath(baseUrl, pathAddition) {
   // "new URL" overrides any existing path, so we need to work around it
   const baseUrlPath = new URL(baseUrl).pathname;
-  const fullPath = path.join(baseUrlPath, pathAddition);
-  return new URL(fullPath, baseUrl).href;
+  return new URL(baseUrlPath + pathAddition, baseUrl).href;
 }
 
 const graphiqlUrl = appendUrlPath(appUrl, "/graphql/explore");

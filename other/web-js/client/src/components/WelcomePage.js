@@ -66,8 +66,13 @@ export function WelcomePage() {
             onFormSubmit({ email, password });
           }}
         >
-          <Typography component="h2" variant="h4" gutterBottom>
-            {isSignup ? "Sign Up" : "Log In"}
+          <Typography component="h2" variant="h4">
+            Welcome!
+          </Typography>
+          <Typography component="subtitle1" gutterBottom>
+            {isSignup
+              ? "Enter your email and a password to create a new account."
+              : "Enter your email and a password to log in with an existing account."}
           </Typography>
           <NonAuthErrorAlert />
           <TextField
@@ -95,7 +100,8 @@ export function WelcomePage() {
                     onMouseDown={(e) => {
                       e.preventDefault();
                     }}
-                    size="large">
+                    size="large"
+                  >
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
