@@ -8,9 +8,9 @@ import {
   Card,
   Typography,
   InputAdornment,
-} from "@material-ui/core";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
+} from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useRealmApp } from "./RealmApp";
 import { MoreInfoTemplateAndDocs } from "./MoreInfo";
 import { toggleBoolean } from "../utils";
@@ -95,7 +95,7 @@ export function WelcomePage() {
                     onMouseDown={(e) => {
                       e.preventDefault();
                     }}
-                  >
+                    size="large">
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>

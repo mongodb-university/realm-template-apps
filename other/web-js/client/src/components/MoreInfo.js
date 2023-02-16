@@ -1,5 +1,5 @@
 import path from "path";
-import { Container, Link } from "@material-ui/core";
+import { Container, Link } from "@mui/material";
 import { API_TYPE_NAME } from "./AppName";
 import { appUrl } from "../realm.json";
 
