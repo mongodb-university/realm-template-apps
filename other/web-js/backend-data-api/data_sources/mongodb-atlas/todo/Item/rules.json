@@ -1,0 +1,34 @@
+{
+    "database": "todo",
+    "collection": "Item",
+    "roles": [
+        {
+            "name": "owner",
+            "apply_when": {
+                "owner_id": "%%user.id"
+            },
+            "fields": {
+               "_id": {
+                    "write": true,
+                    "read": true
+                },
+                "isComplete": {
+                    "write": true,
+                    "read": true
+                },
+                "owner_id": {
+                    "write": true,
+                    "read": true
+                },
+                "summary": {
+                    "write": true,
+                    "read": true
+                }
+            },
+            "insert": true,
+            "delete": true,
+            "search": true,
+            "additional_fields": {}
+        }
+    ]
+}
