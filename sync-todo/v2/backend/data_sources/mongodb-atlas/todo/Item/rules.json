@@ -1,6 +1,6 @@
 {
-  "collection": "todo",
-  "database": "Item",
+  "database": "todo",
+  "collection": "Item",
   "roles": [
     {
       "name": "write-own-items",
