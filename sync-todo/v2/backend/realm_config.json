@@ -1,7 +1,8 @@
 {
-    "app_id": "todo-sync-jxgjv",
+    "app_id": "todo-sync-xbrma",
     "config_version": 20210101,
     "name": "Todo-Sync",
-    "location": "US-OR",
-    "deployment_model": "LOCAL"
+    "location": "US-VA",
+    "provider_region": "aws-us-east-1",
+    "deployment_model": "GLOBAL"
 }
