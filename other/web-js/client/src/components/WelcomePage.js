@@ -46,7 +46,7 @@ export function WelcomePage() {
     clearErrors();
     try {
       if (isSignup) {
-        await realmApp.emailPasswordAuth.registerUser(email, password);
+        await realmApp.emailPasswordAuth.registerUser({ email, password });
       }
       await realmApp.logIn(Realm.Credentials.emailPassword(email, password));
     } catch (err) {
