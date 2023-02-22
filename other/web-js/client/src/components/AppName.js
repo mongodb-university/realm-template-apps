@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 
 // :state-start: development
 const API_TYPE = process.env.REACT_APP_API_TYPE;

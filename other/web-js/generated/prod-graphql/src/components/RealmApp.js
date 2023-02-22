@@ -1,6 +1,8 @@
 import React from "react";
 import * as Realm from "realm-web";
-import { baseUrl } from "../realm.json";
+import appConfig from "../realm.json";
+
+const { baseUrl } = appConfig;
 
 function createRealmApp(id) {
   return new Realm.App({ id, baseUrl });
@@ -26,10 +28,19 @@ export function RealmAppProvider({ appId, children }) {
   );
   // Wrap the current user's logOut function to remove the logged out user from state
   const logOut = React.useCallback(async () => {
-    await currentUser?.logOut();
-    await realmApp.removeUser(currentUser);
+    try {
+      const user = realmApp.currentUser;
+      await user?.logOut();
+      await realmApp.removeUser(user);
+    } catch (err) {
+      console.error(err);
+    }
+    // In this App there will only be one logged in user at a time, so
+    // the new current user will be null. If you add support for
+    // multiple simultaneous user logins, this updates to another logged
+    // in account if one exists.
     setCurrentUser(realmApp.currentUser);
-  }, [realmApp, currentUser]);
+  }, [realmApp]);
 
   // Override the App's currentUser & logIn properties + include the app-level logout function
   const realmAppContext = React.useMemo(() => {

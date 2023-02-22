@@ -2,7 +2,7 @@ import React from "react";
 import { useWatch } from "./useWatch";
 import { useCollection } from "./useCollection";
 import { useRealmApp } from "../components/RealmApp";
-import { dataSourceName } from "../realm.json";
+import appConfig from "../realm.json";
 import {
   addValueAtIndex,
   replaceValueAtIndex,
@@ -10,6 +10,8 @@ import {
   removeValueAtIndex,
   getTodoIndex,
 } from "../utils";
+
+const { dataSourceName } = appConfig;
 
 export function useTodos() {
   // Set up a list of todos in state
