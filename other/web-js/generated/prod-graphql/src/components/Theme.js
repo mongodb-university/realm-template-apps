@@ -1,7 +1,8 @@
 import {
   ThemeProvider as MuiThemeProvider,
-  createMuiTheme,
-} from "@material-ui/core";
+  createTheme,
+  StyledEngineProvider,
+} from "@mui/material/styles";
 import { colors } from "../colors";
 
 const themeConfig = {
@@ -11,8 +12,12 @@ const themeConfig = {
   },
 }
 
-const theme = createMuiTheme(themeConfig);
+const theme = createTheme(themeConfig);
 
 export function ThemeProvider({ children }) {
-  return <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>;
+  return (
+    <StyledEngineProvider injectFirst>
+      <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
+    </StyledEngineProvider>
+  );
 }

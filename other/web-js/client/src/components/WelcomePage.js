@@ -8,9 +8,9 @@ import {
   Card,
   Typography,
   InputAdornment,
-} from "@material-ui/core";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
+} from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useRealmApp } from "./RealmApp";
 import { MoreInfoTemplateAndDocs } from "./MoreInfo";
 import { toggleBoolean } from "../utils";
@@ -46,7 +46,7 @@ export function WelcomePage() {
     clearErrors();
     try {
       if (isSignup) {
-        await realmApp.emailPasswordAuth.registerUser(email, password);
+        await realmApp.emailPasswordAuth.registerUser({ email, password });
       }
       await realmApp.logIn(Realm.Credentials.emailPassword(email, password));
     } catch (err) {
@@ -66,8 +66,13 @@ export function WelcomePage() {
             onFormSubmit({ email, password });
           }}
         >
-          <Typography component="h2" variant="h4" gutterBottom>
-            {isSignup ? "Sign Up" : "Log In"}
+          <Typography component="h2" variant="h4">
+            Welcome!
+          </Typography>
+          <Typography variant="subtitle1" gutterBottom>
+            {isSignup
+              ? "Enter your email and a password to create a new account."
+              : "Enter your email and a password to log in with an existing account."}
           </Typography>
           <NonAuthErrorAlert />
           <TextField
@@ -95,6 +100,7 @@ export function WelcomePage() {
                     onMouseDown={(e) => {
                       e.preventDefault();
                     }}
+                    size="large"
                   >
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>

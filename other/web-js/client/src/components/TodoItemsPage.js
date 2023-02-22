@@ -5,8 +5,8 @@ import {
   Typography,
   List,
   LinearProgress,
-} from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import { useTodos } from "../hooks/useTodos";
 import { TodoItem } from "./TodoItem";
 import { useDraftTodos } from "../hooks/useDraftTodos";
