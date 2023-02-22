@@ -1,0 +1,23 @@
+{
+  "roles": [
+    {
+      "name": "author-subscriber",
+      "apply_when": {},
+      "document_filters": {
+        "read": {
+          "owner_id": {
+            "$in": "%%user.custom_data.subscribedTo"
+          }
+        },
+        "write": {
+          "owner_id": "%%user.id"
+        }
+      },
+      "read": true,
+      "write": true,
+      "insert": true,
+      "delete": true,
+      "search": true
+    }
+  ]
+}
