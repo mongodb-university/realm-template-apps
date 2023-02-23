@@ -1,30 +1,21 @@
-import { getAppLocation } from "./client-api";
 import { ClientApi } from "./client-api";
 
-// return {
-//   id: appId,
-//   currentUser,
-//   // registerUser, // DataApi.client.registerUser
-//   // logIn, // DataApi.client.logIn
-//   // logOut, // DataApi.client.logOut
-// };
-
 export class DataApi {
-  static async constructBaseUrl(appId) {
-    const { deployment_model, hostname } = await getAppLocation(appId);
+  static constructBaseUrl(appId, location) {
+    const { deployment_model, cloud, region } = location;
     if (deployment_model === "LOCAL") {
-      const [region, cloud] = new URL(hostname).host.split(".");
       return `https://${region}.${cloud}.data.mongodb-api.com/app/${appId}/endpoint/data/v1/`;
     } else {
       return `https://data.mongodb-api.com/app/${appId}/endpoint/data/v1/`;
     }
   }
 
-  constructor(appId) {
+  constructor(config) {
+    const { appId, cloud, region, onAuthChange } = config;
     this.appId = appId;
     this.currentUser = null;
-    this.baseUrl = DataApi.constructBaseUrl(appId);
-    this.client = new ClientApi(appId);
+    this.baseUrl = DataApi.constructBaseUrl(appId, { cloud, region });
+    this.client = new ClientApi({ appId, cloud, region, onAuthChange });
   }
 
   // logIn(provider: string, credentials: object): Promise<void>
@@ -33,9 +24,12 @@ export class DataApi {
     this.currentUser = this.client.currentUser;
   }
   // logOut(provider: string, credentials: object): Promise<void>
-  async logIn(provider, credentials) {
-    await this.client.logIn(provider, credentials);
+  async logOut(provider, credentials) {
+    await this.client.logOut();
     this.currentUser = this.client.currentUser;
+  }
+  async registerUser(provider, credentials) {
+    await this.client.registerUser(provider, credentials);
   }
 
   // type FindOneInput = {
@@ -176,13 +170,14 @@ export class DataApi {
       method: "POST",
       headers: {
         "Content-Type": "application/ejson",
+        "Accept": "application/ejson",
         Authorization: `Bearer ${this.currentUser.access_token}`,
       },
       body: JSON.stringify(input),
     });
     const response = await resp.json();
 
-    if (resp.status === 200) {
+    if (resp.status === 200 || resp.status === 201) {
       return response;
     } else {
       throw new Error(response);

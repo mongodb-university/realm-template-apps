@@ -1,6 +1,7 @@
 // :state-start: development
 import { useTodos as useGraphqlTodos } from "./useTodos_graphql";
 import { useTodos as useMqlTodos } from "./useTodos_mql";
+import { useTodos as useDataApiTodos } from "./useTodos_data-api";
 import { useTodos as useLocalTodos } from "./useTodos_local";
 import { API_TYPE_NAME } from "../components/AppName";
 
@@ -12,6 +13,10 @@ switch (API_TYPE_NAME) {
   }
   case "MQL": {
     useTodos = useMqlTodos;
+    break;
+  }
+  case "Data API": {
+    useTodos = useDataApiTodos;
     break;
   }
   case "Local": {

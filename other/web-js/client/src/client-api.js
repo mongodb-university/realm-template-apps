@@ -30,31 +30,39 @@ export class ClientApi {
   static constructBaseUrl(appId, deployment) {
     const { deployment_model, cloud, region } = deployment;
     if (deployment_model === "GLOBAL") {
-      return `https://realm.mongodb.com/api/client/v2.0/app/${appId}/`;
+      return `https://realm.mongodb.com/api/client/v2.0/app/${appId}`;
     }
     if (!cloud || !region) {
       throw new Error(
         `Must specify a cloud provider and region for LOCAL Apps. e.g. { "cloud": "aws", "region": "us-east-1" }`
       );
     }
-    return `https://${region}.${cloud}.realm.mongodb.com/api/client/v2.0/app/${appId}/`;
+    return `https://${region}.${cloud}.realm.mongodb.com/api/client/v2.0/app/${appId}`;
   }
 
-  constructor(appId) {
+  constructor(config) {
+    const { appId, deployment_model, cloud, region, onAuthChange } = config;
     this.appId = appId;
     this.currentUser = null;
-
-    const { deployment_model, hostname } = ClientApi.getAppLocation(appId);
-    this.deployment =
-      deployment_model === "GLOBAL"
-        ? { deployment_model }
-        : { deployment_model, ...ClientApi.getLocalCloudRegion(hostname) };
+    this.deployment = {
+      deployment_model: deployment_model ?? ((cloud || region) ? "LOCAL" : "GLOBAL"),
+      cloud,
+      region
+    };
     this.baseUrl = ClientApi.constructBaseUrl(appId, this.deployment);
+    this.onAuthChange = onAuthChange;
   }
 
   // endpointUrl(path: string): string;
   endpointUrl(path) {
-    return new URL(path, this.baseUrl).href;
+    const url = new URL(
+      // The full path, e.g. /apps/{appId}/auth/providers/{provider}/login
+      new URL(this.baseUrl).pathname + path,
+      // The base URL, e.g. https://{region}.{cloud}.realm.mongodb.com/api/client/v2.0/app/{appId
+      this.baseUrl
+    )
+    // Return the string representation of the URL instead of a URL object.
+    return url.href;
   }
 
   // registerUser(provider: string, credentials: LoginCredentials): Promise<void>;
@@ -86,11 +94,11 @@ export class ClientApi {
   // logIn(provider: string, credentials: LoginCredentials): Session;
   async logIn(provider, credentials) {
     const url = this.endpointUrl(`/auth/providers/${provider}/login`);
-
     const resp = await fetch(url, {
       method: "POST",
+      cache: "no-cache",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(credentials),
     });
@@ -102,7 +110,14 @@ export class ClientApi {
       //   refresh_token: "eyJhbGciOiJIUzI1BiIsInE5cCI6IkpXVCJ9.eyJiYWFzX2RhdGEiOm51bGwsImJhYXNfZGV2aWNlX2lkIjoiNjNmNTA0YTc1ZGRlOTFlNmY2MGJhMDlhIiwiYmFhc19kb21haW5faWQiOiI1Y2RiMTI0MDhlMjMyYWM0Zjk1ODdmZTgiLCJiYWFzX2lkIjoiNjNmNTA0YTc1ZGRlOTFlNmY2MGJhMDlkIiwiYmFhc19pZGVudGl0eSI6eyJpZCI6IjYzZjUwNGE3NWRkZTkxZTZmNjBiYTA5Mi1qenBncGhsY3puZXpxaXJkb3ljemNwc20iLCJwcm92aWRlcl90eXBlIjoiYW5vbi11c2VyIiwicHJvdmlkZXJfaWQiOiI1ZDQ4OTJlMzU1OGViYjk4Y2VkNmU5MWYifSwiZXhwIjozMjUzODAxODk1LCJpYXQiOjE2NzcwMDE4OTUsInN0aXRjaF9kYXRhIjpudWxsLCJzdGl0Y2hfZGV2SWQiOiI2M2Y1MDRhNzVkZGU5MWU2ZjYwYmEwOWEiLCJzdGl0Y2hfZG9tYWluSWQiOiI1Y2RiMTI0MDhlMjMyYWM0Zjk1ODdmZTgiLCJzdGl0Y2hfaWQiOiI2M2Y1MDRhNzVkZGU5MWU2ZjYwYmEwOWQiLCJzdGl0Y2hfaWRlbnQiOnsiaWQiOiI2M2Y1MDRhNzVkZGU5MWU2ZjYwYmEwOTItanpwZ3BobGN6bmV6cWlyZG95Y3pjcHNtIiwicHJvdmlkZXJfdHlwZSI6ImFub24tdXNlciIsInByb3ZpZGVyX2lkIjoiNWQ0ODkyZTM1NThlYmI5OGNlZDZlOTFmIn0sInN1YiI6IjYzZjUwNGE3NWRkZTkxZTZmNjBiYTA5NSIsInR5cCI6InJlZnJlc2gifQ.k1o_4RQ1diSewmXynIqiC0bxVAdvYJmw3L1358T3UJk",
       //   user_id: "63f504a25dde21e6f10ba025"
       // }
-      return response;
+      const response = await resp.json();
+      this.currentUser = {
+        id: response.user_id,
+        access_token: response.access_token,
+        refresh_token: response.refresh_token,
+      };
+      this.onAuthChange?.(this.currentUser)
+      return this.currentUser;
     } else {
       const error = await resp.json();
       // Example error: {
@@ -116,6 +131,7 @@ export class ClientApi {
 
   async logout() {
     this.currentUser = null;
+    this.onAuthChange?.(this.currentUser);
   }
 
   // refreshSession(input: { appId: string, refresh_token: string }): Session;
@@ -144,7 +160,3 @@ export class ClientApi {
     }
   }
 }
-
-
-const api = new ClientApi("test-jioyy");
-console.log(api.baseUrl);

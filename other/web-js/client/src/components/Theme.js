@@ -27,6 +27,15 @@ switch (API_TYPE) {
     };
     break;
   }
+  case "data-api": {
+    themeConfig = {
+      palette: {
+        primary: colors.blue,
+        secondary: colors.blue,
+      },
+    };
+    break;
+  }
   // :state-start: development
   case "local": {
     themeConfig = {

@@ -1,7 +1,12 @@
-import React, { useMemo } from "react";
-import { useApp } from "../components/DataApi";
+import React from "react";
 import appConfig from "../realm.json";
 import { useDataApi } from "./useDataApi";
+import {
+  addValueAtIndex,
+  updateValueAtIndex,
+  removeValueAtIndex,
+  getTodoIndex,
+} from "../utils";
 
 const { dataSourceName } = appConfig;
 
@@ -13,15 +18,13 @@ const taskCollection = {
 
 export function useTodos() {
   // Set up a list of todos in state
-  const app = useApp();
+  const api = useDataApi();
   const [todos, setTodos] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
-  const api = useDataApi();
-
   // Fetch all todos on load and whenever our collection changes (e.g. if the current user changes)
   React.useEffect(() => {
-    if (app.currentUser) {
+    if (api.currentUser) {
       (async () => {
         try {
           const { documents } = await api.find({
@@ -35,19 +38,28 @@ export function useTodos() {
         }
       })();
     }
-  }, [app.currentUser?.id]);
+  }, [api, api.currentUser?.id]);
 
   // Given a draft todo, format it and then insert it
   const saveTodo = async (draftTodo) => {
     if (draftTodo.summary) {
-      draftTodo._partition = app.currentUser.id;
       try {
+        const document = {
+          ...draftTodo,
+          _partition: api.currentUser.id,
+        };
         await api.insertOne({
           ...taskCollection,
-          document: draftTodo,
+          document,
+        });
+        setTodos((oldTodos) => {
+          const idx = oldTodos.length;
+          return addValueAtIndex(oldTodos, idx, {
+            ...document,
+          });
         });
       } catch (err) {
-        if (err.error.match(/^Duplicate key error/)) {
+        if (err.error?.match(/^Duplicate key error/)) {
           console.warn(
             `The following error means that we tried to insert a todo multiple times (i.e. an existing todo has the same _id). In this app we just catch the error and move on. In your app, you might want to debounce the save input or implement an additional loading state to avoid sending the request in the first place.`
           );
@@ -64,6 +76,12 @@ export function useTodos() {
       filter: { _id: todo._id },
       update: { $set: { isComplete: !todo.isComplete } },
     });
+    setTodos((oldTodos) => {
+      const idx = getTodoIndex(oldTodos, todo);
+      return updateValueAtIndex(oldTodos, idx, (val) => {
+        return { ...val, isComplete: !val.isComplete };
+      });
+    });
   };
 
   // Delete a given todo
@@ -71,6 +89,10 @@ export function useTodos() {
     await api.deleteOne({
       ...taskCollection,
       filter: { _id: todo._id }
+    });
+    setTodos((oldTodos) => {
+      const idx = getTodoIndex(oldTodos, todo);
+      return removeValueAtIndex(oldTodos, idx);
     });
   };
 

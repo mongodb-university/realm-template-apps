@@ -6,6 +6,7 @@ const API_TYPE = process.env.REACT_APP_API_TYPE;
 const API_TYPE_NAMES = {
   graphql: "GraphQL",
   mql: "MQL",
+  "data-api": "Data API",
   local: "Local",
 };
 

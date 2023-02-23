@@ -11,13 +11,41 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+// :state-start: prod-mql, prod-graphql
 import { useApp } from "./RealmApp";
+// :state-end:
+// :state-start: prod-data-api
+import { useDataApi } from "../hooks/useDataApi";
+// :state-end:
 import { MoreInfoTemplateAndDocs } from "./MoreInfo";
 import { toggleBoolean } from "../utils";
 import { useErrorAlert } from "../hooks/useErrorAlert";
+// :state-start: development
+import { API_TYPE_NAME } from "../components/AppName";
+const useAppServices = API_TYPE_NAME === "Data API" ? useDataApi : useApp;
+// :state-end:
+
 
 export function WelcomePage() {
-  const app = useApp();
+  // :state-start: development
+  const app = useAppServices();
+  console.log("app", app)
+  const logIn = app.logIn.bind(app);
+  const registerUser =
+    app.emailPasswordAuth?.registerUser.bind(app.emailPasswordAuth) ??
+    app.registerUser.bind(app);
+  // :state-end:
+  // :state-uncomment-start: prod-mql, prod-graphql
+  // const app = useApp();
+  // const logIn = app.logIn;
+  // const registerUser = app.emailPasswordAuth.registerUser;
+  // :state-uncomment-end:
+  // :state-uncomment-start: prod-data-api
+  // const api = useDataApi();
+  // const logIn = api.logIn;
+  // const registerUser = api.registerUser("local-userpass", { email, password });
+  // :state-uncomment-end:
+
   // Track whether the user is logging in or signing up for a new account
   const [isSignup, setIsSignup] = React.useState(false);
   const toggleIsSignup = () => {
@@ -46,13 +74,26 @@ export function WelcomePage() {
     clearErrors();
     try {
       if (isSignup) {
-<<<<<<< HEAD
-        await realmApp.emailPasswordAuth.registerUser({ email, password });
-=======
-        await app.emailPasswordAuth.registerUser({ email, password });
->>>>>>> 1679622 (WIP - Data API Template App Client)
+        // :state-uncomment-start: prod-mql, prod-graphql
+        await registerUser({ email, password });
+        // :state-uncomment-end:
+        // :state-uncomment-start: data-api
+        await registerUser("local-userpass", { email, password });
+        // :state-uncomment-end:
       }
-      await app.logIn(Realm.Credentials.emailPassword(email, password));
+      // :state-start: development
+      if (API_TYPE_NAME === "Data API") {
+        await logIn("local-userpass", { email, password });
+      } else {
+        await logIn(Realm.Credentials.emailPassword(email, password));
+      }
+      // :state-end:
+      // :state-uncomment-start: prod-mql, prod-graphql
+      // await logIn(Realm.Credentials.emailPassword(email, password));
+      // :state-uncomment-end:
+      // :state-uncomment-start: data-api
+      // await logIn("local-userpass", { email, password });
+      // :state-uncomment-end:
     } catch (err) {
       handleAuthenticationError(err, setError);
     }
@@ -71,7 +112,7 @@ export function WelcomePage() {
           }}
         >
           <Typography component="h2" variant="h4">
-            Welcome!
+            Welcome! {app.currentUser ? app.currentUser.id ?? app.currentUser.user_id : "nobody here"}
           </Typography>
           <Typography variant="subtitle1" gutterBottom>
             {isSignup

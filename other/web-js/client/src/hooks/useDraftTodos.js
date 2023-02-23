@@ -1,12 +1,28 @@
 import React from "react";
+// :state-start: prod-mql, prod-graphql
 import * as Realm from "realm-web";
+// :state-end:
+// :state-start: development
+import { API_TYPE_NAME } from "../components/AppName";
+// :state-end:
 
 export function useDraftTodos() {
   const [drafts, setDrafts] = React.useState([]);
 
   const createDraftTodo = () => {
     const draftTodo = {
-      _id: new Realm.BSON.ObjectID(),
+      // :state-start: development
+      _id:
+        API_TYPE_NAME === "Data API"
+          ? { $oid: new Realm.BSON.ObjectId().toHexString() }
+          : new Realm.BSON.ObjectId(),
+      // :state-end:
+      // :state-uncomment-start: prod-mql, prod-graphql
+      // _id: new Realm.BSON.ObjectID(),
+      // :state-uncomment-end:
+      // :state-uncomment-start: prod-data-api
+      // _id: { $oid: new Realm.BSON.ObjectId().toHexString() },
+      // :state-uncomment-end:
       summary: "",
       isComplete: false,
     };

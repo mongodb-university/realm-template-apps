@@ -1,3 +1,6 @@
+// :state-start: development
+import { API_TYPE_NAME } from "./components/AppName";
+// :state-end:
 export const toggleBoolean = (prev) => !prev;
 
 const isValidArrayIndex = (arr, idx) => {
@@ -32,8 +35,20 @@ export function removeValueAtIndex(arr, idx) {
   return [...arr.slice(0, idx), ...arr.slice(idx + 1)];
 }
 
+export const getTodoId = (todo) => {
+  // :state-start: development
+  return API_TYPE_NAME === "Data API" ? todo._id.$oid : todo._id.toHexString();
+  // :state-end:
+  // :state-uncomment-start: prod-mql, prod-graphql
+  // return todo._id.$oid
+  // :state-uncomment-end:
+  // :state-uncomment-start: prod-data-api
+  // return todo._id.toHexString()
+  // :state-uncomment-end:
+};
+
 export const isSameTodo = (todo1, todo2) =>
-  String(todo1?._id) === String(todo2?._id);
+  getTodoId(todo1) === getTodoId(todo2);
 
 export const getTodoIndex = (todos, todo) => {
   const idx = todos.findIndex((t) => isSameTodo(t, todo));
