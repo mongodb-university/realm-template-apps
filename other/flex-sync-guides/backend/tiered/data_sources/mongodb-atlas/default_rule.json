@@ -1,0 +1,40 @@
+{
+  "roles": [
+    {
+      "name": "admin",
+      "apply_when": {
+        "%%user.custom_data.isTeamAdmin": true
+      },
+      "document_filters": {
+        "read": {
+          "team": "%%user.custom_data.team"
+        },
+        "write": {
+          "team": "%%user.custom_data.team"
+        }
+      },
+      "read": true,
+      "write": true,
+      "insert": true,
+      "delete": true,
+      "search": true
+    },
+    {
+      "name": "user",
+      "apply_when": {},
+      "document_filters": {
+        "read": {
+          "team": "%%user.custom_data.team"
+        },
+        "write": {
+          "owner_id": "%%user.id"
+        }
+      },
+      "read": true,
+      "write": true,
+      "insert": true,
+      "delete": true,
+      "search": true
+    }
+  ]
+}
