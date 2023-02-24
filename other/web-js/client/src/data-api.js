@@ -13,18 +13,23 @@ export class DataApi {
   constructor(config) {
     const { appId, cloud, region, onAuthChange } = config;
     this.appId = appId;
-    this.currentUser = null;
     this.baseUrl = DataApi.constructBaseUrl(appId, { cloud, region });
     this.client = new ClientApi({ appId, cloud, region, onAuthChange });
+    this.currentUser = this.client.currentUser;
   }
 
   // logIn(provider: string, credentials: object): Promise<void>
   async logIn(provider, credentials) {
+    // try {
+    //   await this.client.logIn(provider, credentials);
+    // } catch (err) {
+    //   console.error(err)
+    // }
     await this.client.logIn(provider, credentials);
     this.currentUser = this.client.currentUser;
   }
-  // logOut(provider: string, credentials: object): Promise<void>
-  async logOut(provider, credentials) {
+  // logOut(): Promise<void>
+  async logOut() {
     await this.client.logOut();
     this.currentUser = this.client.currentUser;
   }

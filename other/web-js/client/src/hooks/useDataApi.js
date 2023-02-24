@@ -4,7 +4,6 @@ import { DataApi } from "../data-api";
 const DataApiContext = createContext(null);
 
 export const DataApiProvider = ({ appId, location, children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
 
   const deployment_model = location.deployment_model ??
     (location.cloud || location.region ? "LOCAL" : "GLOBAL");
@@ -21,6 +20,8 @@ export const DataApiProvider = ({ appId, location, children }) => {
       }
     });
   }, [appId, deployment_model, cloud, region])
+
+  const [currentUser, setCurrentUser] = useState(api.currentUser);
 
   const contextValue = useMemo(() => {
     return {

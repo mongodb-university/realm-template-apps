@@ -24,10 +24,17 @@ function MoreInfoItem({ children }) {
 }
 
 export function MoreInfoTemplateAndDocs() {
+  const docsPath =
+    {
+      "Data API": "/docs/atlas/app-services/data-api/",
+      GraphQL: "/docs/atlas/app-services/graphql/",
+      MQL: "/docs/atlas/app-services/",
+    }[API_TYPE_NAME] ?? "/docs/atlas/app-services/";
+  const docsLink = new URL(docsPath, "https://mongodb.com");
   return (
     <MoreInfoItem>
       <span>Built with the Atlas App Services {API_TYPE_NAME} Template</span> |{" "}
-      <Link target="_blank" href="https://docs.mongodb.com/realm">
+      <Link target="_blank" href={docsLink}>
         Docs
       </Link>
     </MoreInfoItem>

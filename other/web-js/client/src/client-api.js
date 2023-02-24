@@ -1,73 +1,60 @@
-// type EmailPasswordInput = {
-//   email: string,
-//   password: string,
-// };
-// type Session = {
-//   access_token: string,
-//   device_id: string,
-//   refresh_token: string,
-//   user_id: string,
-// };
-
 export class ClientApi {
-  static async getAppLocation(appId) {
-    const resp = await fetch(
-      `https://realm.mongodb.com/api/client/v2.0/app/${appId}/location`
-    );
-    if (resp.status === 200) {
-      const location = await resp.json();
-      return location;
-    } else {
-      throw new Error(`Error: ${resp.error}`);
-    }
-  }
+  // static async getAppLocation(appId) {
+  //   const resp = await fetch(
+  //     `https://realm.mongodb.com/api/client/v2.0/app/${this.appId}/location`
+  //   );
+  //   if (resp.status === 200) {
+  //     const location = await resp.json();
+  //     return location;
+  //   } else {
+  //     throw new Error(`Error: ${resp.error}`);
+  //   }
+  // }
 
-  static getLocalCloudRegion(hostname) {
-    const [region, cloud] = new URL(hostname).host.split(".");
-    return { region, cloud };
-  }
+  // static getLocalCloudRegion(hostname) {
+  //   const [region, cloud] = new URL(hostname).host.split(".");
+  //   return { region, cloud };
+  // }
 
-  static constructBaseUrl(appId, deployment) {
+  static constructBaseUrl(deployment) {
     const { deployment_model, cloud, region } = deployment;
     if (deployment_model === "GLOBAL") {
-      return `https://realm.mongodb.com/api/client/v2.0/app/${appId}`;
+      return `https://realm.mongodb.com/api/client/v2.0`;
     }
     if (!cloud || !region) {
       throw new Error(
         `Must specify a cloud provider and region for LOCAL Apps. e.g. { "cloud": "aws", "region": "us-east-1" }`
       );
     }
-    return `https://${region}.${cloud}.realm.mongodb.com/api/client/v2.0/app/${appId}`;
+    return `https://${region}.${cloud}.realm.mongodb.com/api/client/v2.0`;
   }
 
   constructor(config) {
     const { appId, deployment_model, cloud, region, onAuthChange } = config;
     this.appId = appId;
-    this.currentUser = null;
+    this.credentialStorage = new CredentialStorage(appId);
+    this.currentUser = this.credentialStorage.get("currentUser");
     this.deployment = {
-      deployment_model: deployment_model ?? ((cloud || region) ? "LOCAL" : "GLOBAL"),
+      deployment_model:
+        deployment_model ?? (cloud || region ? "LOCAL" : "GLOBAL"),
       cloud,
-      region
+      region,
     };
-    this.baseUrl = ClientApi.constructBaseUrl(appId, this.deployment);
+    this.baseUrl = ClientApi.constructBaseUrl(this.deployment);
     this.onAuthChange = onAuthChange;
   }
 
   // endpointUrl(path: string): string;
   endpointUrl(path) {
-    const url = new URL(
-      // The full path, e.g. /apps/{appId}/auth/providers/{provider}/login
-      new URL(this.baseUrl).pathname + path,
-      // The base URL, e.g. https://{region}.{cloud}.realm.mongodb.com/api/client/v2.0/app/{appId
-      this.baseUrl
-    )
-    // Return the string representation of the URL instead of a URL object.
+    const url = new URL(path, this.baseUrl);
     return url.href;
   }
 
   // registerUser(provider: string, credentials: LoginCredentials): Promise<void>;
   async registerUser(provider, credentials) {
-    const url = this.endpointUrl(`/auth/providers/${provider}/register`);
+    const url = this.endpointUrl(
+      `/api/client/v2.0/app/${this.appId}/auth/providers/${provider}/register`
+    );
 
     const resp = await fetch(url, {
       method: "POST",
@@ -91,14 +78,23 @@ export class ClientApi {
     }
   }
 
+  // type Session = {
+  //   access_token: string,
+  //   device_id: string,
+  //   refresh_token: string,
+  //   user_id: string,
+  // };
+
   // logIn(provider: string, credentials: LoginCredentials): Session;
   async logIn(provider, credentials) {
-    const url = this.endpointUrl(`/auth/providers/${provider}/login`);
+    const url = this.endpointUrl(
+      `/api/client/v2.0/app/${this.appId}/auth/providers/${provider}/login`
+    );
     const resp = await fetch(url, {
       method: "POST",
       cache: "no-cache",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(credentials),
     });
@@ -116,7 +112,8 @@ export class ClientApi {
         access_token: response.access_token,
         refresh_token: response.refresh_token,
       };
-      this.onAuthChange?.(this.currentUser)
+      this.credentialStorage.set("currentUser", this.currentUser);
+      this.onAuthChange?.(this.currentUser);
       return this.currentUser;
     } else {
       const error = await resp.json();
@@ -129,14 +126,15 @@ export class ClientApi {
     }
   }
 
-  async logout() {
+  async logOut() {
     this.currentUser = null;
+    this.credentialStorage.set("currentUser", this.currentUser);
     this.onAuthChange?.(this.currentUser);
   }
 
   // refreshSession(input: { appId: string, refresh_token: string }): Session;
   async refreshSession({ refresh_token }) {
-    const url = this.endpointUrl(`/auth/session`);
+    const url = this.endpointUrl(`/api/client/v2.0/app/${this.appId}/auth/session`);
 
     const resp = await fetch(url, {
       method: "POST",
@@ -158,5 +156,29 @@ export class ClientApi {
       // }
       throw new Error(error.error);
     }
+  }
+}
+
+// CredentialStorage is a lightweight wrapper around localStorage that
+// lets users stay logged in across page refreshes.
+export class CredentialStorage {
+  constructor(id) {
+    this.namespace = `@${id}`;
+  }
+  namespacedKey(key) {
+    return `${this.namespace}/${key}`;
+  }
+  get(key) {
+    const data = localStorage.getItem(this.namespacedKey(key));
+    return JSON.parse(data);
+  }
+  set(key, data) {
+    localStorage.setItem(this.namespacedKey(key), JSON.stringify(data));
+  }
+  delete(key) {
+    localStorage.removeItem(this.namespacedKey(key));
+  }
+  clearAll() {
+    localStorage.clear();
   }
 }

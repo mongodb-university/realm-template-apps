@@ -29,8 +29,8 @@ const useAppServices = API_TYPE_NAME === "Data API" ? useDataApi : useApp;
 export function WelcomePage() {
   // :state-start: development
   const app = useAppServices();
-  console.log("app", app)
   const logIn = app.logIn.bind(app);
+  // const logIn = app.logIn
   const registerUser =
     app.emailPasswordAuth?.registerUser.bind(app.emailPasswordAuth) ??
     app.registerUser.bind(app);
@@ -74,11 +74,18 @@ export function WelcomePage() {
     clearErrors();
     try {
       if (isSignup) {
+        // :state-start: development
+        if(API_TYPE_NAME === "Data API") {
+          await registerUser("local-userpass", { email, password });
+        } else {
+          await registerUser({ email, password });
+        }
+        // :state-end:
         // :state-uncomment-start: prod-mql, prod-graphql
-        await registerUser({ email, password });
+        // await registerUser({ email, password });
         // :state-uncomment-end:
         // :state-uncomment-start: data-api
-        await registerUser("local-userpass", { email, password });
+        // await registerUser("local-userpass", { email, password });
         // :state-uncomment-end:
       }
       // :state-start: development
@@ -112,7 +119,7 @@ export function WelcomePage() {
           }}
         >
           <Typography component="h2" variant="h4">
-            Welcome! {app.currentUser ? app.currentUser.id ?? app.currentUser.user_id : "nobody here"}
+            Welcome!
           </Typography>
           <Typography variant="subtitle1" gutterBottom>
             {isSignup
