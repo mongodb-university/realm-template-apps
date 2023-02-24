@@ -1,9 +1,15 @@
 import { AppBar, Toolbar, Button, Typography } from "@mui/material";
 import { WelcomePage } from "./WelcomePage";
 import { TodoItemsPage } from "./TodoItemsPage";
-// :state-start: prod-mql prod-graphql
+// :state-start: development
 import { AppProvider, useApp } from "./RealmApp";
 // :state-end:
+// :state-uncomment-start: prod-mql
+// import { AppProvider, useApp } from "./RealmApp";
+// :state-uncomment-end:
+// :state-uncomment-start: prod-graphql
+// import { AppProvider, useApp } from "./RealmApp";
+// :state-uncomment-end:
 // :state-start: prod-data-api
 import { DataApiProvider, useDataApi } from "../hooks/useDataApi";
 // :state-end:
@@ -29,7 +35,7 @@ export default function ProvidedApp() {
   );
 }
 // :state-end:
-// :state-uncomment-start: prod-mql prod-graphql
+// :state-uncomment-start: prod-mql
 // export default function ProvidedApp() {
 //   return (
 //     <ThemeProvider>
@@ -40,12 +46,22 @@ export default function ProvidedApp() {
 //   );
 // }
 // :state-uncomment-end:
-
+// :state-uncomment-start: prod-graphql
+// export default function ProvidedApp() {
+//   return (
+//     <ThemeProvider>
+//       <AppProvider appId={appId}>
+//         <App />
+//       </AppProvider>
+//     </ThemeProvider>
+//   );
+// }
+// :state-uncomment-end:
 // :state-uncomment-start: prod-data-api
 // export default function ProvidedApp() {
 //   return (
 //     <ThemeProvider>
-//       <DataApiProvider appId={appId}>
+//       <DataApiProvider appId={appId} location={location}>
 //         <App />
 //       </DataApiProvider>
 //     </ThemeProvider>
@@ -53,13 +69,14 @@ export default function ProvidedApp() {
 // }
 // :state-uncomment-end:
 
-// const useAppServices = API_TYPE_NAME === "Data API" ? useDataApi : useApp;
-
 function App() {
   // :state-start: development
   const { currentUser, logOut } = (API_TYPE_NAME === "Data API" ? useDataApi : useApp)();
   // :state-end:
-  // :state-uncomment-start: prod-mql prod-graphql
+  // :state-uncomment-start: prod-mql
+  // const { currentUser, logOut } = useApp();
+  // :state-uncomment-end:
+  // :state-uncomment-start: prod-graphql
   // const { currentUser, logOut } = useApp();
   // :state-uncomment-end:
   // :state-uncomment-start: prod-data-api

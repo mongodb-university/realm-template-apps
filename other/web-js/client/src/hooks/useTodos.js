@@ -38,3 +38,6 @@ export { useTodos };
 // :state-uncomment-start: prod-graphql
 // export { useTodos } from "./useTodos_graphql"
 // :state-uncomment-end:
+// :state-uncomment-start: prod-data-api
+// export { useTodos } from "./useTodos_data-api"
+// :state-uncomment-end:

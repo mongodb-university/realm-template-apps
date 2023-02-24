@@ -11,9 +11,15 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-// :state-start: prod-mql prod-graphql
+// :state-start: development
 import { useApp } from "./RealmApp";
 // :state-end:
+// :state-uncomment-start: prod-mql
+// import { useApp } from "./RealmApp";
+// :state-uncomment-end:
+// :state-uncomment-start: prod-graphql
+// import { useApp } from "./RealmApp";
+// :state-uncomment-end:
 // :state-start: prod-data-api
 import { useDataApi } from "../hooks/useDataApi";
 // :state-end:
@@ -29,7 +35,10 @@ export function WelcomePage() {
   // :state-start: development
   const app = useAppServices();
   // :state-end:
-  // :state-uncomment-start: prod-mql prod-graphql
+  // :state-uncomment-start: prod-mql
+  // const app = useApp();
+  // :state-uncomment-end:
+  // :state-uncomment-start: prod-graphql
   // const app = useApp();
   // :state-uncomment-end:
   // :state-uncomment-start: prod-data-api
@@ -73,7 +82,10 @@ export function WelcomePage() {
         await app.logIn(Realm.Credentials.emailPassword(email, password));
       }
       // :state-end:
-      // :state-uncomment-start: prod-mql prod-graphql
+      // :state-uncomment-start: prod-mql
+      // await app.logIn(Realm.Credentials.emailPassword(email, password));
+      // :state-uncomment-end:
+      // :state-uncomment-start: prod-graphql
       // await app.logIn(Realm.Credentials.emailPassword(email, password));
       // :state-uncomment-end:
       // :state-uncomment-start: data-api
