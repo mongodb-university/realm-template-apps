@@ -1,7 +1,7 @@
 // :state-start: development
 import { API_TYPE_NAME } from "./components/AppName";
 // :state-end:
-// :state-start: prod-mql, prod-graphql
+// :state-start: prod-mql prod-graphql
 import * as Realm from "realm-web";
 // :state-end:
 // :state-start: prod-data-api
@@ -47,7 +47,7 @@ export const createObjectId = () => {
     ? EJSON.serialize(new ObjectId())
     : new Realm.BSON.ObjectId();
   // :state-end:
-  // :state-uncomment-start: prod-mql, prod-graphql
+  // :state-uncomment-start: prod-mql prod-graphql
   // return new Realm.BSON.ObjectID()
   // :state-uncomment-end:
   // :state-uncomment-start: prod-data-api
@@ -59,7 +59,7 @@ export const getTodoId = (todo) => {
   // :state-start: development
   return API_TYPE_NAME === "Data API" ? todo._id.$oid : todo._id.toHexString();
   // :state-end:
-  // :state-uncomment-start: prod-mql, prod-graphql
+  // :state-uncomment-start: prod-mql prod-graphql
   // return todo._id.$oid
   // :state-uncomment-end:
   // :state-uncomment-start: prod-data-api

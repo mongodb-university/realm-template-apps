@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-// :state-start: prod-mql, prod-graphql
+// :state-start: prod-mql prod-graphql
 import { useApp } from "./RealmApp";
 // :state-end:
 // :state-start: prod-data-api
@@ -29,7 +29,7 @@ export function WelcomePage() {
   // :state-start: development
   const app = useAppServices();
   // :state-end:
-  // :state-uncomment-start: prod-mql, prod-graphql
+  // :state-uncomment-start: prod-mql prod-graphql
   // const app = useApp();
   // :state-uncomment-end:
   // :state-uncomment-start: prod-data-api
@@ -73,7 +73,7 @@ export function WelcomePage() {
         await app.logIn(Realm.Credentials.emailPassword(email, password));
       }
       // :state-end:
-      // :state-uncomment-start: prod-mql, prod-graphql
+      // :state-uncomment-start: prod-mql prod-graphql
       // await app.logIn(Realm.Credentials.emailPassword(email, password));
       // :state-uncomment-end:
       // :state-uncomment-start: data-api

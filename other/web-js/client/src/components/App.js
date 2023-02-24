@@ -1,7 +1,7 @@
 import { AppBar, Toolbar, Button, Typography } from "@mui/material";
 import { WelcomePage } from "./WelcomePage";
 import { TodoItemsPage } from "./TodoItemsPage";
-// :state-start: prod-mql, prod-graphql
+// :state-start: prod-mql prod-graphql
 import { AppProvider, useApp } from "./RealmApp";
 // :state-end:
 // :state-start: prod-data-api
@@ -29,7 +29,7 @@ export default function ProvidedApp() {
   );
 }
 // :state-end:
-// :state-uncomment-start: prod-mql, prod-graphql
+// :state-uncomment-start: prod-mql prod-graphql
 // export default function ProvidedApp() {
 //   return (
 //     <ThemeProvider>
@@ -59,7 +59,7 @@ function App() {
   // :state-start: development
   const { currentUser, logOut } = (API_TYPE_NAME === "Data API" ? useDataApi : useApp)();
   // :state-end:
-  // :state-uncomment-start: prod-mql, prod-graphql
+  // :state-uncomment-start: prod-mql prod-graphql
   // const { currentUser, logOut } = useApp();
   // :state-uncomment-end:
   // :state-uncomment-start: prod-data-api
