@@ -43,7 +43,6 @@ export function TodoItemsPage() {
           <List style={{ width: "100%" }}>
             {todos.map((todo) => (
               <TodoItem
-                // :state-start: development
                 key={getTodoId(todo)}
                 todo={todo}
                 todoActions={todoActions}

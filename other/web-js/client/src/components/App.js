@@ -53,11 +53,11 @@ export default function ProvidedApp() {
 // }
 // :state-uncomment-end:
 
-const useAppServices = API_TYPE_NAME === "Data API" ? useDataApi : useApp;
+// const useAppServices = API_TYPE_NAME === "Data API" ? useDataApi : useApp;
 
 function App() {
   // :state-start: development
-  const { currentUser, logOut } = useAppServices();
+  const { currentUser, logOut } = (API_TYPE_NAME === "Data API" ? useDataApi : useApp)();
   // :state-end:
   // :state-uncomment-start: prod-mql, prod-graphql
   // const { currentUser, logOut } = useApp();

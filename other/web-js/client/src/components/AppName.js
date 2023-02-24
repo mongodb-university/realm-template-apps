@@ -24,6 +24,9 @@ if (!API_TYPE_NAME) {
 // :state-uncomment-start: prod-graphql
 // export const API_TYPE_NAME = "GraphQL"
 // :state-uncomment-end:
+// :state-uncomment-start: prod-data-api
+// export const API_TYPE_NAME = "Data API"
+// :state-uncomment-end:
 
 export function AppName() {
   return (

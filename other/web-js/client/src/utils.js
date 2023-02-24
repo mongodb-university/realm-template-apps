@@ -1,6 +1,12 @@
 // :state-start: development
 import { API_TYPE_NAME } from "./components/AppName";
 // :state-end:
+// :state-start: prod-mql, prod-graphql
+import * as Realm from "realm-web";
+// :state-end:
+// :state-start: prod-data-api
+import { EJSON, ObjectId } from "bson";
+// :state-end:
 export const toggleBoolean = (prev) => !prev;
 
 const isValidArrayIndex = (arr, idx) => {
@@ -34,6 +40,20 @@ export function removeValueAtIndex(arr, idx) {
   }
   return [...arr.slice(0, idx), ...arr.slice(idx + 1)];
 }
+
+export const createObjectId = () => {
+  // :state-start: development
+  return API_TYPE_NAME === "Data API"
+    ? EJSON.serialize(new ObjectId())
+    : new Realm.BSON.ObjectId();
+  // :state-end:
+  // :state-uncomment-start: prod-mql, prod-graphql
+  // return new Realm.BSON.ObjectID()
+  // :state-uncomment-end:
+  // :state-uncomment-start: prod-data-api
+  // return EJSON.serialize(new ObjectId())
+  // :state-uncomment-end:
+};
 
 export const getTodoId = (todo) => {
   // :state-start: development

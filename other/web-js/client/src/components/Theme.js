@@ -36,7 +36,6 @@ switch (API_TYPE) {
     };
     break;
   }
-  // :state-start: development
   case "local": {
     themeConfig = {
       palette: {
@@ -46,7 +45,6 @@ switch (API_TYPE) {
     };
     break;
   }
-  // :state-end:
   default: {
     throw new Error(
       `Invalid REACT_APP_API_TYPE: "${API_TYPE}". Specify "graphql", "mql", or "local" instead.`
@@ -68,6 +66,14 @@ switch (API_TYPE) {
 //     primary: colors.purple,
 //     secondary: colors.purple,
 //   },
+// }
+// :state-uncomment-end:
+// :state-uncomment-start: prod-data-api
+// const themeConfig = {
+//   palette: {
+//     primary: colors.blue,
+//     secondary: colors.blue,
+//   }
 // }
 // :state-uncomment-end:
 

@@ -1,3 +1,5 @@
+import jwtDecode from "jwt-decode";
+
 export class ClientApi {
   // static async getAppLocation(appId) {
   //   const resp = await fetch(
@@ -29,8 +31,7 @@ export class ClientApi {
     return `https://${region}.${cloud}.realm.mongodb.com/api/client/v2.0`;
   }
 
-  constructor(config) {
-    const { appId, deployment_model, cloud, region, onAuthChange } = config;
+  constructor({ appId, deployment_model, cloud, region, onAuthChange }) {
     this.appId = appId;
     this.credentialStorage = new CredentialStorage(appId);
     this.currentUser = this.credentialStorage.get("currentUser");
@@ -45,17 +46,26 @@ export class ClientApi {
   }
 
   // endpointUrl(path: string): string;
-  endpointUrl(path) {
-    const url = new URL(path, this.baseUrl);
-    return url.href;
-  }
-
-  // registerUser(provider: string, credentials: LoginCredentials): Promise<void>;
-  async registerUser(provider, credentials) {
-    const url = this.endpointUrl(
-      `/api/client/v2.0/app/${this.appId}/auth/providers/${provider}/register`
+  endpointUrl = (path) => {
+    if (!path.startsWith("/")) {
+      throw new Error(`Path must start with a slash ("/")`);
+    }
+    const url = new URL(
+      `/api/client/v2.0/app/${this.appId}${path}`,
+      this.baseUrl
     );
+    return url.href;
+  };
 
+  setCurrentUser = (user) => {
+    this.currentUser = user;
+    this.credentialStorage.set("currentUser", this.currentUser);
+    this.onAuthChange?.(this.currentUser);
+  };
+
+  registerUser = async (provider, credentials) => {
+    console.log("[C] registerUser", provider, credentials);
+    const url = this.endpointUrl(`/auth/providers/${provider}/register`);
     const resp = await fetch(url, {
       method: "POST",
       headers: {
@@ -63,7 +73,6 @@ export class ClientApi {
       },
       body: JSON.stringify(credentials),
     });
-
     if (resp.status === 201) {
       // Status 201 means the user was created. There is no response body.
       return;
@@ -76,20 +85,10 @@ export class ClientApi {
       // }
       throw new Error(`${error.code}: ${error.error}`);
     }
-  }
+  };
 
-  // type Session = {
-  //   access_token: string,
-  //   device_id: string,
-  //   refresh_token: string,
-  //   user_id: string,
-  // };
-
-  // logIn(provider: string, credentials: LoginCredentials): Session;
-  async logIn(provider, credentials) {
-    const url = this.endpointUrl(
-      `/api/client/v2.0/app/${this.appId}/auth/providers/${provider}/login`
-    );
+  logIn = async (provider, credentials) => {
+    const url = this.endpointUrl(`/auth/providers/${provider}/login`);
     const resp = await fetch(url, {
       method: "POST",
       cache: "no-cache",
@@ -107,13 +106,11 @@ export class ClientApi {
       //   user_id: "63f504a25dde21e6f10ba025"
       // }
       const response = await resp.json();
-      this.currentUser = {
+      this.setCurrentUser({
         id: response.user_id,
         access_token: response.access_token,
         refresh_token: response.refresh_token,
-      };
-      this.credentialStorage.set("currentUser", this.currentUser);
-      this.onAuthChange?.(this.currentUser);
+      });
       return this.currentUser;
     } else {
       const error = await resp.json();
@@ -124,18 +121,35 @@ export class ClientApi {
       // }
       throw new Error(`${error.code}: ${error.error}`);
     }
-  }
+  };
 
-  async logOut() {
-    this.currentUser = null;
-    this.credentialStorage.set("currentUser", this.currentUser);
-    this.onAuthChange?.(this.currentUser);
-  }
+  logOut = async () => {
+    this.setCurrentUser(null);
+  };
 
-  // refreshSession(input: { appId: string, refresh_token: string }): Session;
-  async refreshSession({ refresh_token }) {
-    const url = this.endpointUrl(`/api/client/v2.0/app/${this.appId}/auth/session`);
+  refreshExpiredAccessToken = async () => {
+    if (!this.currentUser) {
+      throw new Error(
+        "Must be authenticated to call refreshExpiredAccessToken()"
+      );
+    }
+    const { access_token, refresh_token } = this.currentUser;
+    const { exp } = jwtDecode(access_token);
+    const now = new Date().getTime() / 1000;
+    const hasExpiredAccessToken = now >= exp;
+    if (hasExpiredAccessToken) {
+      // If the access token has expired then we need to refresh it.
+      const refreshed = await this.refreshSession({ refresh_token });
+      this.setCurrentUser({
+        ...this.currentUser,
+        access_token: refreshed.access_token,
+      });
+    }
+    return this.currentUser;
+  };
 
+  refreshSession = async ({ refresh_token }) => {
+    const url = this.endpointUrl(`/auth/session`);
     const resp = await fetch(url, {
       method: "POST",
       headers: {
@@ -143,7 +157,6 @@ export class ClientApi {
         Authorization: `Bearer ${refresh_token}}`,
       },
     });
-
     if (resp.status === 200) {
       // Example 200 Response: {
       //   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYWFzX2RldmljZV9pZCI6IjYzZjUxNWNhNmVmZDZkMjU1OTk5M2U2YiIsImJhYXNfZG9tYWluX2lkIjoiNWNkYjEyNDA4ZTIzMmFjNGY5NTg3ZmU4IiwiZXhwIjoxNjc3MDA5MzI0LCJpYXQiOjE2NzcwMDc1MjQsImlzcyI6IjYzZjUxYTM3ZDI0M2VmZTY1YWFhMGZmZCIsInN0aXRjaF9kZXZJZCI6IjYzZjUxNWNhNmVmZDZkMjU1OTk5M2U2YiIsInN0aXRjaF9kb21haW5JZCI6IjVjZGIxMjQwOGUyMzJhYzRmOTU4N2ZlOCIsInN1YiI6IjYzZjUxNWNhNmVmZDZkMjU1OTk5M2U1ZSIsInR5cCI6ImFjY2VzcyJ9.rbB5ZW8e88P-VKPTYNZYyCM3RKl77FuW_kBf29POr24"
@@ -156,11 +169,23 @@ export class ClientApi {
       // }
       throw new Error(error.error);
     }
-  }
+  };
+
+  emailPasswordAuth = {
+    registerUser: async ({ email, password }) => {
+      return await this.registerUser("local-userpass", { email, password });
+    },
+
+    logIn: async ({ email, password }) => {
+      return await this.logIn("local-userpass", { email, password });
+    },
+  };
 }
 
 // CredentialStorage is a lightweight wrapper around localStorage that
-// lets users stay logged in across page refreshes.
+// lets users stay logged in across page refreshes. You could replace
+// this with your own implementation if you wanted to use a different
+// storage mechanism.
 export class CredentialStorage {
   constructor(id) {
     this.namespace = `@${id}`;

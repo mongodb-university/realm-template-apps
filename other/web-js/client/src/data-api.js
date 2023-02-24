@@ -14,28 +14,41 @@ export class DataApi {
     const { appId, cloud, region, onAuthChange } = config;
     this.appId = appId;
     this.baseUrl = DataApi.constructBaseUrl(appId, { cloud, region });
-    this.client = new ClientApi({ appId, cloud, region, onAuthChange });
+    this.client = new ClientApi({
+      appId,
+      cloud,
+      region,
+      onAuthChange: (newCurrentUser) => {
+        this.currentUser = newCurrentUser;
+        onAuthChange?.(this.currentUser);
+      },
+    });
     this.currentUser = this.client.currentUser;
   }
 
-  // logIn(provider: string, credentials: object): Promise<void>
-  async logIn(provider, credentials) {
-    // try {
-    //   await this.client.logIn(provider, credentials);
-    // } catch (err) {
-    //   console.error(err)
-    // }
-    await this.client.logIn(provider, credentials);
-    this.currentUser = this.client.currentUser;
-  }
-  // logOut(): Promise<void>
-  async logOut() {
-    await this.client.logOut();
-    this.currentUser = this.client.currentUser;
-  }
-  async registerUser(provider, credentials) {
+  registerUser = async (provider, credentials) => {
+    console.log("[D] registerUser", provider, credentials);
     await this.client.registerUser(provider, credentials);
-  }
+  };
+
+  logIn = async (provider, credentials) => {
+    console.log("[D] logIn", provider, credentials);
+    await this.client.logIn(provider, credentials);
+  };
+
+  logOut = async () => {
+    await this.client.logOut();
+  };
+
+  emailPasswordAuth = {
+    registerUser: async ({ email, password }) => {
+      return await this.registerUser("local-userpass", { email, password });
+    },
+
+    logIn: async ({ email, password }) => {
+      return await this.logIn("local-userpass", { email, password });
+    }
+  };
 
   // type FindOneInput = {
   //   dataSource: string;
@@ -49,9 +62,9 @@ export class DataApi {
   // }
   // findOne(input: FindOneInput): Promise<FindOneResult>;
 
-  async findOne(input) {
+  findOne = async (input) => {
     return this.action("findOne", input);
-  }
+  };
 
   // type FindInput = {
   //   dataSource: string;
@@ -68,9 +81,9 @@ export class DataApi {
   // }
   // find(input: FindInput): Promise<FindResult>;
 
-  async find(input) {
+  find = async (input) => {
     return this.action("find", input);
-  }
+  };
 
   // type InsertOneInput = {
   //   dataSource: string;
@@ -83,9 +96,9 @@ export class DataApi {
   // }
   //
   // insertOne(input: InsertOneInput): Promise<InsertOneResult>;
-  async insertOne(input) {
+  insertOne = async (input) => {
     return this.action("insertOne", input);
-  }
+  };
 
   // type InsertManyInput = {
   //   dataSource: string;
@@ -98,9 +111,9 @@ export class DataApi {
   // }
 
   // insertMany(input: InsertManyInput): Promise<InsertManyResult>;
-  async insertMany(input) {
+  insertMany = async (input) => {
     return this.action("insertMany", input);
-  }
+  };
 
   // type UpdateInput = {
   //   dataSource: string;
@@ -117,14 +130,14 @@ export class DataApi {
   // }
 
   // updateOne(input: UpdateInput): Promise<UpdateResult>;
-  async updateOne(input) {
+  updateOne = async (input) => {
     return this.action("updateOne", input);
-  }
+  };
 
   // updateMany(input: UpdateInput): Promise<UpdateResult>;
-  async updateMany(input) {
+  updateMany = async (input) => {
     return this.action("updateMany", input);
-  }
+  };
 
   // type ReplaceOneInput = {
   //   dataSource: string;
@@ -141,9 +154,9 @@ export class DataApi {
   // }
 
   // replaceOne(input: ReplaceOneInput): Promise<ReplaceOneResult>;
-  async replaceOne(input) {
+  replaceOne = async (input) => {
     return this.action("replaceOne", input);
-  }
+  };
 
   // type DeleteInput = {
   //   dataSource: string;
@@ -156,26 +169,29 @@ export class DataApi {
   // }
 
   // deleteOne(input: DeleteInput): Promise<DeleteResult>;
-  async deleteOne(input) {
+  deleteOne = async (input) => {
     return this.action("deleteOne", input);
-  }
+  };
   // deleteMany(input: DeleteInput): Promise<DeleteResult>;
-  async deleteMany(input) {
+  deleteMany = async (input) => {
     return this.action("deleteMany", input);
-  }
+  };
 
   // action(action: string, input: object): Promise<Response>;
   async action(action, input) {
     if (!this.currentUser) {
       throw new Error(`Must be logged in to call a Data API action endpoint`);
     }
+    // If the current user access token is expired, try to refresh the
+    // session and get a new access token.
+    await this.client.refreshExpiredAccessToken();
 
     const url = new URL(`action/${action}`, this.baseUrl).href;
     const resp = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/ejson",
-        "Accept": "application/ejson",
+        Accept: "application/ejson",
         Authorization: `Bearer ${this.currentUser.access_token}`,
       },
       body: JSON.stringify(input),

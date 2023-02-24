@@ -25,25 +25,15 @@ import { API_TYPE_NAME } from "../components/AppName";
 const useAppServices = API_TYPE_NAME === "Data API" ? useDataApi : useApp;
 // :state-end:
 
-
 export function WelcomePage() {
   // :state-start: development
   const app = useAppServices();
-  const logIn = app.logIn.bind(app);
-  // const logIn = app.logIn
-  const registerUser =
-    app.emailPasswordAuth?.registerUser.bind(app.emailPasswordAuth) ??
-    app.registerUser.bind(app);
   // :state-end:
   // :state-uncomment-start: prod-mql, prod-graphql
   // const app = useApp();
-  // const logIn = app.logIn;
-  // const registerUser = app.emailPasswordAuth.registerUser;
   // :state-uncomment-end:
   // :state-uncomment-start: prod-data-api
-  // const api = useDataApi();
-  // const logIn = api.logIn;
-  // const registerUser = api.registerUser("local-userpass", { email, password });
+  // const app = useDataApi();
   // :state-uncomment-end:
 
   // Track whether the user is logging in or signing up for a new account
@@ -74,32 +64,20 @@ export function WelcomePage() {
     clearErrors();
     try {
       if (isSignup) {
-        // :state-start: development
-        if(API_TYPE_NAME === "Data API") {
-          await registerUser("local-userpass", { email, password });
-        } else {
-          await registerUser({ email, password });
-        }
-        // :state-end:
-        // :state-uncomment-start: prod-mql, prod-graphql
-        // await registerUser({ email, password });
-        // :state-uncomment-end:
-        // :state-uncomment-start: data-api
-        // await registerUser("local-userpass", { email, password });
-        // :state-uncomment-end:
+        await app.emailPasswordAuth.registerUser({ email, password });
       }
       // :state-start: development
       if (API_TYPE_NAME === "Data API") {
-        await logIn("local-userpass", { email, password });
+        await app.logIn("local-userpass", { email, password });
       } else {
-        await logIn(Realm.Credentials.emailPassword(email, password));
+        await app.logIn(Realm.Credentials.emailPassword(email, password));
       }
       // :state-end:
       // :state-uncomment-start: prod-mql, prod-graphql
-      // await logIn(Realm.Credentials.emailPassword(email, password));
+      // await app.logIn(Realm.Credentials.emailPassword(email, password));
       // :state-uncomment-end:
       // :state-uncomment-start: data-api
-      // await logIn("local-userpass", { email, password });
+      // await app.logIn("local-userpass", { email, password });
       // :state-uncomment-end:
     } catch (err) {
       handleAuthenticationError(err, setError);
