@@ -13,6 +13,7 @@ import { useDraftTodos } from "../hooks/useDraftTodos";
 import { DraftTodoItem } from "./DraftTodoItem";
 import { useShowLoader } from "../hooks/util-hooks";
 import { MoreInfo } from "./MoreInfo";
+import { getTodoId } from "../utils";
 
 export function TodoItemsPage() {
   const { loading, todos, ...todoActions } = useTodos();
@@ -42,14 +43,14 @@ export function TodoItemsPage() {
           <List style={{ width: "100%" }}>
             {todos.map((todo) => (
               <TodoItem
-                key={String(todo._id)}
+                key={getTodoId(todo)}
                 todo={todo}
                 todoActions={todoActions}
               />
             ))}
             {draftTodos.map((draft) => (
               <DraftTodoItem
-                key={String(draft._id)}
+                key={getTodoId(draft)}
                 todo={draft}
                 todoActions={todoActions}
                 draftTodoActions={draftTodoActions}

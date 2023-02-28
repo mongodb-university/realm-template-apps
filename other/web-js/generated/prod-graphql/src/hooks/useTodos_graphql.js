@@ -3,7 +3,7 @@ import { ApolloClient, gql, HttpLink, InMemoryCache } from "@apollo/client";
 import jwt_decode from "jwt-decode";
 import { useWatch } from "./useWatch";
 import { useCollection } from "./useCollection";
-import { useRealmApp } from "../components/RealmApp";
+import { useApp } from "../components/RealmApp";
 import appConfig from "../realm.json";
 import {
   addValueAtIndex,
@@ -16,27 +16,27 @@ import {
 const { baseUrl, dataSourceName } = appConfig;
 
 function useApolloClient() {
-  const realmApp = useRealmApp();
-  if (!realmApp.currentUser) {
-    throw new Error(`You must be logged in to Realm to call useApolloClient()`);
+  const app = useApp();
+  if (!app.currentUser) {
+    throw new Error(`You must be logged in to call useApolloClient()`);
   }
 
   const client = React.useMemo(() => {
-    const graphqlUri = `${baseUrl}/api/client/v2.0/app/${realmApp.id}/graphql`;
+    const graphqlUri = `${baseUrl}/api/client/v2.0/app/${app.id}/graphql`;
     // Local apps should use a local URI!
-    // const graphqlUri = `https://us-east-1.aws.stitch.mongodb.com/api/client/v2.0/app/${realmApp.id}/graphql`
+    // const graphqlUri = `https://us-east-1.aws.stitch.mongodb.com/api/client/v2.0/app/${app.id}/graphql`
 
     async function getValidAccessToken() {
       // An already logged in user's access token might be expired. We decode the token and check its
       // expiration to find out whether or not their current access token is stale.
-      const { exp } = jwt_decode(realmApp.currentUser.accessToken);
+      const { exp } = jwt_decode(app.currentUser.accessToken);
       const isExpired = Date.now() >= exp * 1000;
       if (isExpired) {
         // To manually refresh the user's expired access token, we refresh their custom data
-        await realmApp.currentUser.refreshCustomData();
+        await app.currentUser.refreshCustomData();
       }
       // The user's access token is now guaranteed to be valid (unless their account is disabled or deleted)
-      return realmApp.currentUser.accessToken;
+      return app.currentUser.accessToken;
     }
 
     return new ApolloClient({
@@ -53,14 +53,14 @@ function useApolloClient() {
       }),
       cache: new InMemoryCache(),
     });
-  }, [realmApp.currentUser, realmApp.id]);
+  }, [app.currentUser, app.id]);
 
   return client;
 }
 
 export function useTodos() {
   // Get a graphql client and set up a list of todos in state
-  const realmApp = useRealmApp();
+  const app = useApp();
   const graphql = useApolloClient();
   const [todos, setTodos] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -142,7 +142,7 @@ export function useTodos() {
   // Given a draft todo, format it and then insert it with a mutation
   const saveTodo = async (draftTodo) => {
     if (draftTodo.summary) {
-      draftTodo._partition = realmApp.currentUser.id;
+      draftTodo._partition = app.currentUser.id;
       try {
         await graphql.mutate({
           mutation: gql`

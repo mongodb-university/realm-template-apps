@@ -1,4 +1,4 @@
-import * as Realm from "realm-web";
+import { EJSON, ObjectId } from "bson";
 export const toggleBoolean = (prev) => !prev;
 
 const isValidArrayIndex = (arr, idx) => {
@@ -34,11 +34,11 @@ export function removeValueAtIndex(arr, idx) {
 }
 
 export const createObjectId = () => {
-  return new Realm.BSON.ObjectID()
+  return EJSON.serialize(new ObjectId())
 };
 
 export const getTodoId = (todo) => {
-  return todo._id.toHexString()
+  return todo._id.$oid
 };
 
 export const isSameTodo = (todo1, todo2) =>

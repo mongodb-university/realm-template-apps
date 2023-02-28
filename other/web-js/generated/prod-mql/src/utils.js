@@ -1,3 +1,4 @@
+import * as Realm from "realm-web";
 export const toggleBoolean = (prev) => !prev;
 
 const isValidArrayIndex = (arr, idx) => {
@@ -32,8 +33,16 @@ export function removeValueAtIndex(arr, idx) {
   return [...arr.slice(0, idx), ...arr.slice(idx + 1)];
 }
 
+export const createObjectId = () => {
+  return new Realm.BSON.ObjectID()
+};
+
+export const getTodoId = (todo) => {
+  return todo._id.toHexString()
+};
+
 export const isSameTodo = (todo1, todo2) =>
-  String(todo1?._id) === String(todo2?._id);
+  getTodoId(todo1) === getTodoId(todo2);
 
 export const getTodoIndex = (todos, todo) => {
   const idx = todos.findIndex((t) => isSameTodo(t, todo));

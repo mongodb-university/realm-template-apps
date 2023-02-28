@@ -1,5 +1,5 @@
 import React from "react";
-import { useRealmApp } from "../components/RealmApp";
+import { useApp } from "../components/RealmApp";
 
 /**
  * Returns a MongoDB Collection client object
@@ -11,9 +11,9 @@ import { useRealmApp } from "../components/RealmApp";
  * @returns {Realm.Services.MongoDB.MongoDBCollection<DocType>} config.collection - The name of the collection.
  */
 export function useCollection({ cluster = "mongodb-atlas", db, collection }) {
-  const realmApp = useRealmApp();
+  const app = useApp();
   return React.useMemo(() => {
-    const mdb = realmApp.currentUser.mongoClient(cluster);
+    const mdb = app.currentUser.mongoClient(cluster);
     return mdb.db(db).collection(collection);
-  }, [realmApp.currentUser, cluster, db, collection]);
+  }, [app.currentUser, cluster, db, collection]);
 }

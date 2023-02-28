@@ -1,7 +1,7 @@
 import { AppBar, Toolbar, Button, Typography } from "@mui/material";
 import { WelcomePage } from "./WelcomePage";
 import { TodoItemsPage } from "./TodoItemsPage";
-import { AppProvider, useApp } from "./RealmApp";
+import { DataApiProvider, useDataApi } from "../hooks/useDataApi";
 import { ThemeProvider } from "./Theme";
 import { AppName } from "./AppName";
 import appConfig from "../realm.json";
@@ -11,15 +11,15 @@ const { appId } = appConfig;
 export default function ProvidedApp() {
   return (
     <ThemeProvider>
-      <AppProvider appId={appId}>
+      <DataApiProvider appId={appId} location={location}>
         <App />
-      </AppProvider>
+      </DataApiProvider>
     </ThemeProvider>
   );
 }
 
 function App() {
-  const { currentUser, logOut } = useApp();
+  const { currentUser, logOut } = useDataApi();
   return (
     <div className="App">
       <AppBar position="sticky">

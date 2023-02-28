@@ -11,13 +11,14 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useRealmApp } from "./RealmApp";
+import { useApp } from "./RealmApp";
 import { MoreInfoTemplateAndDocs } from "./MoreInfo";
 import { toggleBoolean } from "../utils";
 import { useErrorAlert } from "../hooks/useErrorAlert";
 
 export function WelcomePage() {
-  const realmApp = useRealmApp();
+  const app = useApp();
+
   // Track whether the user is logging in or signing up for a new account
   const [isSignup, setIsSignup] = React.useState(false);
   const toggleIsSignup = () => {
@@ -46,9 +47,9 @@ export function WelcomePage() {
     clearErrors();
     try {
       if (isSignup) {
-        await realmApp.emailPasswordAuth.registerUser({ email, password });
+        await app.emailPasswordAuth.registerUser({ email, password });
       }
-      await realmApp.logIn(Realm.Credentials.emailPassword(email, password));
+      await app.logIn(Realm.Credentials.emailPassword(email, password));
     } catch (err) {
       handleAuthenticationError(err, setError);
     }
@@ -134,7 +135,7 @@ function handleAuthenticationError(err, setError) {
       other: "Something went wrong. Try again in a little bit.",
     }));
     console.warn(
-      "Something went wrong with a Realm login or signup request. See the following error for details."
+      "Something went wrong with a login or signup request. See the following error for details."
     );
     console.error(err);
   };

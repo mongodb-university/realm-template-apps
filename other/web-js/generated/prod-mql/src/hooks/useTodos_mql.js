@@ -1,7 +1,7 @@
 import React from "react";
 import { useWatch } from "./useWatch";
 import { useCollection } from "./useCollection";
-import { useRealmApp } from "../components/RealmApp";
+import { useApp } from "../components/RealmApp";
 import appConfig from "../realm.json";
 import {
   addValueAtIndex,
@@ -15,7 +15,7 @@ const { dataSourceName } = appConfig;
 
 export function useTodos() {
   // Set up a list of todos in state
-  const realmApp = useRealmApp();
+  const app = useApp();
   const [todos, setTodos] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
@@ -88,7 +88,7 @@ export function useTodos() {
   // Given a draft todo, format it and then insert it
   const saveTodo = async (draftTodo) => {
     if (draftTodo.summary) {
-      draftTodo._partition = realmApp.currentUser.id;
+      draftTodo._partition = app.currentUser.id;
       try {
         await taskCollection.insertOne(draftTodo);
       } catch (err) {

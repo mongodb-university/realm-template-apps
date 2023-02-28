@@ -1,12 +1,12 @@
 import React from "react";
-import * as Realm from "realm-web";
+import { createObjectId } from "../utils";
 
 export function useDraftTodos() {
   const [drafts, setDrafts] = React.useState([]);
 
   const createDraftTodo = () => {
     const draftTodo = {
-      _id: new Realm.BSON.ObjectID(),
+      _id: createObjectId(),
       summary: "",
       isComplete: false,
     };

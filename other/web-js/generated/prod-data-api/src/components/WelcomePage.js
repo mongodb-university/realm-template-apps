@@ -11,13 +11,13 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useApp } from "./RealmApp";
+import { useDataApi } from "../hooks/useDataApi";
 import { MoreInfoTemplateAndDocs } from "./MoreInfo";
 import { toggleBoolean } from "../utils";
 import { useErrorAlert } from "../hooks/useErrorAlert";
 
 export function WelcomePage() {
-  const app = useApp();
+  const app = useDataApi();
 
   // Track whether the user is logging in or signing up for a new account
   const [isSignup, setIsSignup] = React.useState(false);
@@ -49,7 +49,6 @@ export function WelcomePage() {
       if (isSignup) {
         await app.emailPasswordAuth.registerUser({ email, password });
       }
-      await app.logIn(Realm.Credentials.emailPassword(email, password));
     } catch (err) {
       handleAuthenticationError(err, setError);
     }
