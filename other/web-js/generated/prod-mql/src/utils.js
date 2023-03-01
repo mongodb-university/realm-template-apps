@@ -38,7 +38,10 @@ export const createObjectId = () => {
 };
 
 export const getTodoId = (todo) => {
-  return todo._id.toHexString()
+  if (todo._id instanceof Realm.BSON.ObjectId) {
+    return todo._id.toHexString();
+  }
+  return todo._id
 };
 
 export const isSameTodo = (todo1, todo2) =>
@@ -47,4 +50,4 @@ export const isSameTodo = (todo1, todo2) =>
 export const getTodoIndex = (todos, todo) => {
   const idx = todos.findIndex((t) => isSameTodo(t, todo));
   return idx >= 0 ? idx : null;
-};
+}

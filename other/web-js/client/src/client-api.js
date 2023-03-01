@@ -9,7 +9,7 @@ export class ClientApi {
   //     const location = await resp.json();
   //     return location;
   //   } else {
-  //     throw new Error(`Error: ${resp.error}`);
+  //     throw new ClientApiError(await resp.json());
   //   }
   // }
 
@@ -48,7 +48,7 @@ export class ClientApi {
   // endpointUrl(path: string): string;
   endpointUrl = (path) => {
     if (!path.startsWith("/")) {
-      throw new Error(`Path must start with a slash ("/")`);
+      throw new Error(`Client API path must start with a slash ("/")`);
     }
     const url = new URL(
       `/api/client/v2.0/app/${this.appId}${path}`,
@@ -64,7 +64,6 @@ export class ClientApi {
   };
 
   registerUser = async (provider, credentials) => {
-    console.log("[C] registerUser", provider, credentials);
     const url = this.endpointUrl(`/auth/providers/${provider}/register`);
     const resp = await fetch(url, {
       method: "POST",
@@ -77,13 +76,7 @@ export class ClientApi {
       // Status 201 means the user was created. There is no response body.
       return;
     } else {
-      const error = await resp.json();
-      // Example error: {
-      //   error: 'name already in use',
-      //   error_code: 'AccountNameInUse',
-      //   link: 'https://realm.mongodb.com/groups/{groupId}/apps/{appId}/logs?co_id=63f506d9d243efe65aa33430'
-      // }
-      throw new Error(`${error.code}: ${error.error}`);
+      throw new ClientApiError(await resp.json());
     }
   };
 
@@ -113,13 +106,7 @@ export class ClientApi {
       });
       return this.currentUser;
     } else {
-      const error = await resp.json();
-      // Example error: {
-      //   error: 'invalid username or password',
-      //   error_code: 'InvalidUsernamePassword',
-      //   link: 'https://realm.mongodb.com/groups/{groupId}/apps/{appId}/logs?co_id=63f506d9d243efe65aa33430'
-      // }
-      throw new Error(`${error.code}: ${error.error}`);
+      throw new ClientApiError(await resp.json());
     }
   };
 
@@ -163,11 +150,7 @@ export class ClientApi {
       // }
       return await resp.json();
     } else {
-      const error = await resp.json();
-      // Example error: {
-      //   error: 'signing method (alg) is unspecified.',
-      // }
-      throw new Error(error.error);
+      throw new ClientApiError(await resp.json());
     }
   };
 
@@ -205,5 +188,22 @@ export class CredentialStorage {
   }
   clearAll() {
     localStorage.clear();
+  }
+}
+
+// A wrapper around JavaScript's built-in Error object that represents
+// errors returned by the Client API.
+// Example error: {
+//   error: 'name already in use',
+//   error_code: 'AccountNameInUse',
+//   link: 'https://realm.mongodb.com/groups/{groupId}/apps/{appId}/logs?co_id=63f506d9d243efe65aa33430'
+// }
+export class ClientApiError extends Error {
+  constructor({ error, error_code, link }) {
+    super(error);
+    this.name = "ClientApiError";
+    this.error = error;
+    this.error_code = error_code;
+    this.link = link;
   }
 }

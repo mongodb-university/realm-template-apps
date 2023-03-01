@@ -1,5 +1,7 @@
 import React from "react";
+// :state-start: prod-mql prod-graphql
 import * as Realm from "realm-web";
+// :state-end:
 import {
   Container,
   TextField,
@@ -22,6 +24,7 @@ import { useApp } from "./RealmApp";
 // :state-uncomment-end:
 // :state-start: prod-data-api
 import { useDataApi } from "../hooks/useDataApi";
+import { ClientApiError } from "../client-api";
 // :state-end:
 import { MoreInfoTemplateAndDocs } from "./MoreInfo";
 import { toggleBoolean } from "../utils";
@@ -119,6 +122,7 @@ export function WelcomePage() {
           <NonAuthErrorAlert />
           <TextField
             id="input-email"
+            data-testid="input-email"
             name="email"
             label="Email Address"
             variant="outlined"
@@ -127,6 +131,7 @@ export function WelcomePage() {
           />
           <TextField
             id="input-password"
+            data-testid="input-password"
             type={showPassword ? "text" : "password"}
             name="password"
             label="Password"
@@ -150,10 +155,18 @@ export function WelcomePage() {
               ),
             }}
           />
-          <Button type="submit" variant="contained" color="primary">
+          <Button
+            id="submit-button"
+            data-testid="submit-button"
+            type="submit"
+            variant="contained"
+            color="primary"
+          >
             {isSignup ? "Create Account" : "Log In"}
           </Button>
           <button
+            id="toggle-auth-type-button"
+            // data-testid="toggle-auth-type-button"
             type="button"
             className="link-button"
             onClick={() => toggleIsSignup()}
@@ -180,11 +193,29 @@ function handleAuthenticationError(err, setError) {
     );
     console.error(err);
   };
-  if (err instanceof Realm.MongoDBRealmError) {
-    const { error, statusCode } = err;
-    const errorType = error || statusCode;
+  // :state-start: development
+  if (err instanceof Realm.MongoDBRealmError || err instanceof ClientApiError) {
+    const { error, message, statusCode, status_code } = err;
+    const errorType = error || message || statusCode || status_code;
+    // :state-end:
+    // :state-uncomment-start: prod-mql
+    // if (err instanceof Realm.MongoDBRealmError) {
+    //   const { error, statusCode } = err;
+    //   const errorType = error || statusCode;
+    // :state-uncomment-end:
+    // :state-uncomment-start: prod-graphql
+    // if (err instanceof Realm.MongoDBRealmError) {
+    //   const { error, statusCode } = err;
+    //   const errorType = error || statusCode;
+    // :state-uncomment-end:
+    // :state-uncomment-start: data-api
+    // if (err instanceof ClientApiError) {
+    //   const { error, status_code } = err;
+    //   const errorType = error || status_code;
+    // :state-uncomment-end:
     switch (errorType) {
       case "invalid username":
+      case "email invalid":
         setError((prevError) => ({
           ...prevError,
           email: "Invalid email address.",

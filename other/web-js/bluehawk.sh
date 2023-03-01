@@ -27,7 +27,7 @@ function remove_unused_dependencies() {
   # Construct a jq expression to remove the unused dependencies. The
   # final expression resemables the following:
   # jq_expr="del(.dependencies[\"bson\"], .dependencies[\"crypto-browserify\"], .dependencies[\"jwt-decode\"])"
-  jq_expr=""
+  local jq_expr=""
   for dependency in "${unused_dependencies[@]}"; do
     dep_str=".dependencies[\"$dependency\"]"
     if [ -z "$jq_expr" ]; then

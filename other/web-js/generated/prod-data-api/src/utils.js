@@ -47,4 +47,4 @@ export const isSameTodo = (todo1, todo2) =>
 export const getTodoIndex = (todos, todo) => {
   const idx = todos.findIndex((t) => isSameTodo(t, todo));
   return idx >= 0 ? idx : null;
-};
+}

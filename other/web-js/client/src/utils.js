@@ -66,13 +66,25 @@ export const createObjectId = () => {
 
 export const getTodoId = (todo) => {
   // :state-start: development
-  return API_TYPE_NAME === "Data API" ? todo._id.$oid : todo._id.toHexString();
+  if (todo._id instanceof Realm.BSON.ObjectId) {
+    return todo._id.toHexString();
+  } else if (todo._id instanceof Object) {
+    return todo._id.$oid;
+  } else {
+    return todo._id;
+  }
   // :state-end:
   // :state-uncomment-start: prod-mql
-  // return todo._id.toHexString()
+  // if (todo._id instanceof Realm.BSON.ObjectId) {
+  //   return todo._id.toHexString();
+  // }
+  // return todo._id
   // :state-uncomment-end:
   // :state-uncomment-start: prod-graphql
-  // return todo._id.toHexString()
+  // if (todo._id instanceof Realm.BSON.ObjectId) {
+  //   return todo._id.toHexString();
+  // }
+  // return todo._id
   // :state-uncomment-end:
   // :state-uncomment-start: prod-data-api
   // return todo._id.$oid
@@ -85,4 +97,4 @@ export const isSameTodo = (todo1, todo2) =>
 export const getTodoIndex = (todos, todo) => {
   const idx = todos.findIndex((t) => isSameTodo(t, todo));
   return idx >= 0 ? idx : null;
-};
+}

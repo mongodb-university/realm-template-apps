@@ -28,10 +28,17 @@ export function useTodos() {
 
   // Fetch all todos on load and whenever our collection changes (e.g. if the current user changes)
   React.useEffect(() => {
-    taskCollection.find({}).then((fetchedTodos) => {
-      setTodos(fetchedTodos);
-      setLoading(false);
-    });
+    let shouldUpdate = true;
+    const fetchTodos = taskCollection.find({})
+    if (shouldUpdate) {
+      fetchTodos.then((fetchedTodos) => {
+        setTodos(fetchedTodos);
+        setLoading(false);
+      });
+    }
+    return () => {
+      shouldUpdate = false;
+    }
   }, [taskCollection]);
 
   // Use a MongoDB change stream to reactively update state when operations succeed

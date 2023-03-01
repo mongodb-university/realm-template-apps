@@ -27,7 +27,6 @@ export class DataApi {
   }
 
   registerUser = async (provider, credentials) => {
-    console.log("[D] registerUser", provider, credentials);
     await this.client.registerUser(provider, credentials);
   };
 
