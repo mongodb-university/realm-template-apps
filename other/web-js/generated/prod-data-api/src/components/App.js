@@ -8,6 +8,7 @@ import appConfig from "../realm.json";
 import "./App.css";
 const { appId } = appConfig;
 
+const location = { deployment_model: "GLOBAL" };
 export default function ProvidedApp() {
   return (
     <ThemeProvider>

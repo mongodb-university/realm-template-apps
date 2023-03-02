@@ -14,6 +14,7 @@ export function TodoItem({ todo, todoActions }) {
     <ListItem>
       <ListItemIcon>
         <Checkbox
+          data-testid="todo-checkbox"
           edge="start"
           color="primary"
           checked={todo.isComplete}
@@ -25,6 +26,7 @@ export function TodoItem({ todo, todoActions }) {
       <ListItemText>{todo.summary}</ListItemText>
       <ListItemSecondaryAction>
         <IconButton
+          data-testid="todo-delete-button"
           edge="end"
           size="small"
           onClick={() => {

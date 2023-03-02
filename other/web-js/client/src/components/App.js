@@ -58,6 +58,7 @@ export default function ProvidedApp() {
 // }
 // :state-uncomment-end:
 // :state-uncomment-start: prod-data-api
+// const location = { deployment_model: "GLOBAL" };
 // export default function ProvidedApp() {
 //   return (
 //     <ThemeProvider>

@@ -11,6 +11,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
     "bson": "^5.0.1",
+    "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
     "jwt-decode": "^3.1.2",
     "react": "^18.2.0",
@@ -23,7 +24,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test",
+    "test": "craco test --clearCache && craco test --watchAll=false --forceExit",
     "prettier": "npx prettier ./src --write"
   },
   "eslintConfig": {

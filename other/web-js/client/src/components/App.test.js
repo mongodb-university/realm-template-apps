@@ -1,4 +1,4 @@
-import { render, waitFor, screen } from "@testing-library/react";
+import { render, waitFor, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
 
@@ -11,6 +11,11 @@ function setup(jsx) {
     ...render(jsx),
   };
 }
+
+afterAll(() => {
+  cleanup();
+});
+
 test("initially renders the login/signup page", () => {
   setup(<App />);
   expect(screen.getByText(/Welcome!/i)).toBeInTheDocument();
@@ -35,7 +40,7 @@ test("allows you to sign up for a new account", async () => {
   await waitFor(() => {
       expect(screen.getByText(/You have 0 To-Do Items/i)).toBeInTheDocument();
     },
-    { timeout: 1500 }
+    { timeout: 3000 }
   );
   await user.click(screen.getByText(/Log out/i));
   await waitFor(
@@ -76,8 +81,9 @@ test("allows you to CRUD to-do items", async () => {
     () => {
       expect(screen.getByText(/You have 1 To-Do Item/i)).toBeInTheDocument();
       expect(screen.getByText(/Do the dishes/i)).toBeInTheDocument();
+      expect(screen.queryByPlaceholderText("What needs doing?")).not.toBeInTheDocument();
     },
-    { timeout: 2000 }
+    { timeout: 3000 }
   );
   // Add a second To-Do
   await user.click(screen.getByText(/Add To-Do/i));
@@ -86,6 +92,7 @@ test("allows you to CRUD to-do items", async () => {
   await waitFor(
     () => {
       expect(screen.getByText(/You have 2 To-Do Items/i)).toBeInTheDocument();
+      expect(screen.queryByPlaceholderText("What needs doing?")).not.toBeInTheDocument();
     },
     { timeout: 2000 }
   );

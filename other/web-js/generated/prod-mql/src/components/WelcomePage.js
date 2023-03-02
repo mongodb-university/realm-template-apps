@@ -78,6 +78,7 @@ export function WelcomePage() {
           <NonAuthErrorAlert />
           <TextField
             id="input-email"
+            data-testid="input-email"
             name="email"
             label="Email Address"
             variant="outlined"
@@ -86,6 +87,7 @@ export function WelcomePage() {
           />
           <TextField
             id="input-password"
+            data-testid="input-password"
             type={showPassword ? "text" : "password"}
             name="password"
             label="Password"
@@ -109,10 +111,18 @@ export function WelcomePage() {
               ),
             }}
           />
-          <Button type="submit" variant="contained" color="primary">
+          <Button
+            id="submit-button"
+            data-testid="submit-button"
+            type="submit"
+            variant="contained"
+            color="primary"
+          >
             {isSignup ? "Create Account" : "Log In"}
           </Button>
           <button
+            id="toggle-auth-type-button"
+            // data-testid="toggle-auth-type-button"
             type="button"
             className="link-button"
             onClick={() => toggleIsSignup()}
@@ -144,6 +154,7 @@ function handleAuthenticationError(err, setError) {
     const errorType = error || statusCode;
     switch (errorType) {
       case "invalid username":
+      case "email invalid":
         setError((prevError) => ({
           ...prevError,
           email: "Invalid email address.",

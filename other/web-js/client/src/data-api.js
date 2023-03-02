@@ -31,7 +31,6 @@ export class DataApi {
   };
 
   logIn = async (provider, credentials) => {
-    console.log("[D] logIn", provider, credentials);
     await this.client.logIn(provider, credentials);
   };
 

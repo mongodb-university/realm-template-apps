@@ -1,5 +1,4 @@
 import React from "react";
-import * as Realm from "realm-web";
 import {
   Container,
   TextField,
@@ -12,6 +11,7 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useDataApi } from "../hooks/useDataApi";
+import { ClientApiError } from "../client-api";
 import { MoreInfoTemplateAndDocs } from "./MoreInfo";
 import { toggleBoolean } from "../utils";
 import { useErrorAlert } from "../hooks/useErrorAlert";
@@ -77,6 +77,7 @@ export function WelcomePage() {
           <NonAuthErrorAlert />
           <TextField
             id="input-email"
+            data-testid="input-email"
             name="email"
             label="Email Address"
             variant="outlined"
@@ -85,6 +86,7 @@ export function WelcomePage() {
           />
           <TextField
             id="input-password"
+            data-testid="input-password"
             type={showPassword ? "text" : "password"}
             name="password"
             label="Password"
@@ -108,10 +110,18 @@ export function WelcomePage() {
               ),
             }}
           />
-          <Button type="submit" variant="contained" color="primary">
+          <Button
+            id="submit-button"
+            data-testid="submit-button"
+            type="submit"
+            variant="contained"
+            color="primary"
+          >
             {isSignup ? "Create Account" : "Log In"}
           </Button>
           <button
+            id="toggle-auth-type-button"
+            // data-testid="toggle-auth-type-button"
             type="button"
             className="link-button"
             onClick={() => toggleIsSignup()}
@@ -138,11 +148,12 @@ function handleAuthenticationError(err, setError) {
     );
     console.error(err);
   };
-  if (err instanceof Realm.MongoDBRealmError) {
-    const { error, statusCode } = err;
-    const errorType = error || statusCode;
+  if (err instanceof ClientApiError) {
+    const { error, status_code } = err;
+    const errorType = error || status_code;
     switch (errorType) {
       case "invalid username":
+      case "email invalid":
         setError((prevError) => ({
           ...prevError,
           email: "Invalid email address.",

@@ -23,7 +23,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test",
+    "test": "craco test --clearCache && craco test --watchAll=false --forceExit",
     "prettier": "npx prettier ./src --write"
   },
   "eslintConfig": {

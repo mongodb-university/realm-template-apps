@@ -197,22 +197,22 @@ function handleAuthenticationError(err, setError) {
   if (err instanceof Realm.MongoDBRealmError || err instanceof ClientApiError) {
     const { error, message, statusCode, status_code } = err;
     const errorType = error || message || statusCode || status_code;
-    // :state-end:
-    // :state-uncomment-start: prod-mql
-    // if (err instanceof Realm.MongoDBRealmError) {
-    //   const { error, statusCode } = err;
-    //   const errorType = error || statusCode;
-    // :state-uncomment-end:
-    // :state-uncomment-start: prod-graphql
-    // if (err instanceof Realm.MongoDBRealmError) {
-    //   const { error, statusCode } = err;
-    //   const errorType = error || statusCode;
-    // :state-uncomment-end:
-    // :state-uncomment-start: data-api
-    // if (err instanceof ClientApiError) {
-    //   const { error, status_code } = err;
-    //   const errorType = error || status_code;
-    // :state-uncomment-end:
+  // :state-end:
+  // :state-uncomment-start: prod-mql
+  // if (err instanceof Realm.MongoDBRealmError) {
+  //   const { error, statusCode } = err;
+  //   const errorType = error || statusCode;
+  // :state-uncomment-end:
+  // :state-uncomment-start: prod-graphql
+  // if (err instanceof Realm.MongoDBRealmError) {
+  //   const { error, statusCode } = err;
+  //   const errorType = error || statusCode;
+  // :state-uncomment-end:
+  // :state-uncomment-start: prod-data-api
+  // if (err instanceof ClientApiError) {
+  //   const { error, status_code } = err;
+  //   const errorType = error || status_code;
+  // :state-uncomment-end:
     switch (errorType) {
       case "invalid username":
       case "email invalid":
