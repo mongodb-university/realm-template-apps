@@ -10,10 +10,10 @@ import {
 
 const { dataSourceName } = appConfig;
 
-const taskCollection = {
+const todoItemCollection = {
   dataSource: dataSourceName,
   database: "todo",
-  collection: "Task",
+  collection: "Item",
 }
 
 export function useTodos() {
@@ -28,7 +28,7 @@ export function useTodos() {
       (async () => {
         try {
           const { documents } = await api.find({
-            ...taskCollection,
+            ...todoItemCollection,
             filter: {},
           });
           setTodos(documents);
@@ -46,10 +46,10 @@ export function useTodos() {
       try {
         const document = {
           ...draftTodo,
-          _partition: api.currentUser.id,
+          owner_id: api.currentUser.id,
         };
         await api.insertOne({
-          ...taskCollection,
+          ...todoItemCollection,
           document,
         });
         setTodos((oldTodos) => {
@@ -72,7 +72,7 @@ export function useTodos() {
   // Toggle whether or not a given todo is complete
   const toggleTodo = async (todo) => {
     await api.updateOne({
-      ...taskCollection,
+      ...todoItemCollection,
       filter: { _id: todo._id },
       update: { $set: { isComplete: !todo.isComplete } },
     });
@@ -87,7 +87,7 @@ export function useTodos() {
   // Delete a given todo
   const deleteTodo = async (todo) => {
     await api.deleteOne({
-      ...taskCollection,
+      ...todoItemCollection,
       filter: { _id: todo._id }
     });
     setTodos((oldTodos) => {

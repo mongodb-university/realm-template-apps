@@ -73,6 +73,7 @@ for state in ${states[@]}; do
       )
       unused_dependencies=(
         "bson"
+        "buffer"
         "crypto-browserify"
         "stream-browserify"
       )
@@ -90,6 +91,7 @@ for state in ${states[@]}; do
       unused_dependencies=(
         "@apollo/client"
         "bson"
+        "buffer"
         "crypto-browserify"
         "graphql"
         "jwt-decode"
@@ -121,8 +123,7 @@ for state in ${states[@]}; do
   cd $root_dir
   npx bluehawk copy --state $state -o generated/$state client/;
   cp template-realm.json generated/$state/src/realm.json
-  # Modify the generated artifact project to use a more specific name
-  # and to remove unused files and dependencies
+  # Modify the generated artifact project for things Bluehawk can't do
   cd $output_dir
   rename_project $project_name
   remove_unused_files "${unused_files[@]}"
