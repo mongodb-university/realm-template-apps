@@ -49,6 +49,7 @@ export function WelcomePage() {
       if (isSignup) {
         await app.emailPasswordAuth.registerUser({ email, password });
       }
+      await app.logIn("local-userpass", { email, password });
     } catch (err) {
       handleAuthenticationError(err, setError);
     }
@@ -121,7 +122,6 @@ export function WelcomePage() {
           </Button>
           <button
             id="toggle-auth-type-button"
-            // data-testid="toggle-auth-type-button"
             type="button"
             className="link-button"
             onClick={() => toggleIsSignup()}

@@ -122,7 +122,6 @@ export function WelcomePage() {
           </Button>
           <button
             id="toggle-auth-type-button"
-            // data-testid="toggle-auth-type-button"
             type="button"
             className="link-button"
             onClick={() => toggleIsSignup()}

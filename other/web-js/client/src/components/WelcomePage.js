@@ -91,7 +91,7 @@ export function WelcomePage() {
       // :state-uncomment-start: prod-graphql
       // await app.logIn(Realm.Credentials.emailPassword(email, password));
       // :state-uncomment-end:
-      // :state-uncomment-start: data-api
+      // :state-uncomment-start: prod-data-api
       // await app.logIn("local-userpass", { email, password });
       // :state-uncomment-end:
     } catch (err) {
@@ -166,7 +166,6 @@ export function WelcomePage() {
           </Button>
           <button
             id="toggle-auth-type-button"
-            // data-testid="toggle-auth-type-button"
             type="button"
             className="link-button"
             onClick={() => toggleIsSignup()}
