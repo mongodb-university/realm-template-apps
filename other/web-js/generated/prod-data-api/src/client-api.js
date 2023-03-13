@@ -1,34 +1,20 @@
 import jwtDecode from "jwt-decode";
 
+/**
+ * Connects to a MongoDB Atlas App Services App's client API over HTTPS
+ */
 export class ClientApi {
-  // static async getAppLocation(appId) {
-  //   const resp = await fetch(
-  //     `https://realm.mongodb.com/api/client/v2.0/app/${this.appId}/location`
-  //   );
-  //   if (resp.status === 200) {
-  //     const location = await resp.json();
-  //     return location;
-  //   } else {
-  //     throw new ClientApiError(await resp.json());
-  //   }
-  // }
-
-  // static getLocalCloudRegion(hostname) {
-  //   const [region, cloud] = new URL(hostname).host.split(".");
-  //   return { region, cloud };
-  // }
-
   static constructBaseUrl(deployment) {
     const { deployment_model, cloud, region } = deployment;
     if (deployment_model === "GLOBAL") {
-      return `https://realm.mongodb.com/api/client/v2.0`;
+      return `https://realm.mongodb.com/api/client/v2.0/`;
     }
     if (!cloud || !region) {
       throw new Error(
         `Must specify a cloud provider and region for LOCAL Apps. e.g. { "cloud": "aws", "region": "us-east-1" }`
       );
     }
-    return `https://${region}.${cloud}.realm.mongodb.com/api/client/v2.0`;
+    return `https://${region}.${cloud}.realm.mongodb.com/api/client/v2.0/`;
   }
 
   constructor({ appId, deployment_model, cloud, region, onAuthChange }) {
@@ -37,7 +23,7 @@ export class ClientApi {
     this.currentUser = this.credentialStorage.get("currentUser");
     this.deployment = {
       deployment_model:
-        deployment_model ?? (cloud || region ? "LOCAL" : "GLOBAL"),
+        deployment_model ?? (cloud || region) ? "LOCAL" : "GLOBAL",
       cloud,
       region,
     };
@@ -51,18 +37,20 @@ export class ClientApi {
       throw new Error(`Client API path must start with a slash ("/")`);
     }
     const url = new URL(
-      `/api/client/v2.0/app/${this.appId}${path}`,
+      `app/${this.appId}` + path,
       this.baseUrl
     );
     return url.href;
   };
 
+  // setCurrentUser(user: User | null): void;
   setCurrentUser = (user) => {
     this.currentUser = user;
     this.credentialStorage.set("currentUser", this.currentUser);
     this.onAuthChange?.(this.currentUser);
   };
 
+  // registerUser(provider: string, credentials: any): Promise<void>
   registerUser = async (provider, credentials) => {
     const url = this.endpointUrl(`/auth/providers/${provider}/register`);
     const resp = await fetch(url, {
@@ -80,6 +68,7 @@ export class ClientApi {
     }
   };
 
+  // logIn(provider: string, credentials: any): Promise<void>
   logIn = async (provider, credentials) => {
     const url = this.endpointUrl(`/auth/providers/${provider}/login`);
     const resp = await fetch(url, {
@@ -110,10 +99,12 @@ export class ClientApi {
     }
   };
 
+  // logOut(): Promise<void>
   logOut = async () => {
     this.setCurrentUser(null);
   };
 
+  // refreshExpiredAccessToken(): Promise<User>
   refreshExpiredAccessToken = async () => {
     if (!this.currentUser) {
       throw new Error(
@@ -135,6 +126,7 @@ export class ClientApi {
     return this.currentUser;
   };
 
+  // refreshSession(input: { refresh_token: string }): Promise<User>
   refreshSession = async ({ refresh_token }) => {
     const url = this.endpointUrl(`/auth/session`);
     const resp = await fetch(url, {
@@ -155,20 +147,23 @@ export class ClientApi {
   };
 
   emailPasswordAuth = {
+    // registerUser(credentials: { email: string, password: string }): Promise<User>
     registerUser: async ({ email, password }) => {
       return await this.registerUser("local-userpass", { email, password });
     },
-
+    // logIn(credentials: { email: string, password: string }): Promise<User>
     logIn: async ({ email, password }) => {
       return await this.logIn("local-userpass", { email, password });
     },
   };
 }
 
-// CredentialStorage is a lightweight wrapper around localStorage that
-// lets users stay logged in across page refreshes. You could replace
-// this with your own implementation if you wanted to use a different
-// storage mechanism.
+/**
+ * CredentialStorage is a lightweight wrapper around localStorage that
+ * lets users stay logged in across page refreshes. You could replace
+ * this with your own implementation if you wanted to use a different
+ * storage mechanism.
+ */
 export class CredentialStorage {
   constructor(id) {
     this.namespace = `@${id}`;
@@ -198,7 +193,15 @@ export class CredentialStorage {
 //   error_code: 'AccountNameInUse',
 //   link: 'https://realm.mongodb.com/groups/{groupId}/apps/{appId}/logs?co_id=63f506d9d243efe65aa33430'
 // }
+/**
+ * @typedef {Object} ClientApiError
+ * @property {string} name - The name of the error type: "ClientApiError"
+ * @property {string} error - A human-readable error message.
+ * @property {string} error_code - A machine-readable error code.
+ * @property {string} link - A link to a related application log in the App Services UI.
+ */
 export class ClientApiError extends Error {
+  // constructor(input: { error: string, error_code: string, link: string }): ClientApiError
   constructor({ error, error_code, link }) {
     super(error);
     this.name = "ClientApiError";

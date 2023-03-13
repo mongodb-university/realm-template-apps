@@ -1,5 +1,8 @@
 import { ClientApi } from "./client-api";
 
+/**
+ * Connects to a MongoDB Atlas App Services App's Data API over HTTPS
+ */
 export class DataApi {
   static constructBaseUrl(appId, location) {
     const { deployment_model, cloud, region } = location;
@@ -10,8 +13,13 @@ export class DataApi {
     }
   }
 
-  constructor(config) {
-    const { appId, cloud, region, onAuthChange } = config;
+  // constructor(config: {
+  //   appId: string;
+  //   cloud?: string;
+  //   region?: string;
+  //   onAuthChange?: (currentUser: User) => void;
+  // }): DataApi;
+  constructor({ appId, cloud, region, onAuthChange }) {
     this.appId = appId;
     this.baseUrl = DataApi.constructBaseUrl(appId, { cloud, region });
     this.client = new ClientApi({
@@ -26,27 +34,68 @@ export class DataApi {
     this.currentUser = this.client.currentUser;
   }
 
+  // registerUser(provider: string, credentials: any): Promise<void>
   registerUser = async (provider, credentials) => {
     await this.client.registerUser(provider, credentials);
   };
 
+  // logIn(provider: string, credentials: any): Promise<void>
   logIn = async (provider, credentials) => {
     await this.client.logIn(provider, credentials);
   };
 
+  // logOut(): Promise<void>
   logOut = async () => {
     await this.client.logOut();
   };
 
+  /**
+   * An email/password authentication wrapper around the generic auth
+   * methods.
+   */
   emailPasswordAuth = {
+    // registerUser(credentials: { email: string, password: string }): Promise<void>
     registerUser: async ({ email, password }) => {
       return await this.registerUser("local-userpass", { email, password });
     },
-
+    // logIn(credentials: { email: string, password: string }): Promise<void>
     logIn: async ({ email, password }) => {
       return await this.logIn("local-userpass", { email, password });
-    }
+    },
   };
+
+  /**
+   * Calls a requested Data API action endpoint.
+   * @param {string} action The name of a Data API action to perform, e.g. "insertOne"
+   * @param {object} input The request body for the action.
+   * @returns {object} The response body for the action.
+   */
+  async action(action, input) {
+    if (!this.currentUser) {
+      throw new Error(`Must be logged in to call a Data API action endpoint`);
+    }
+    // If the current user access token is expired, try to refresh the
+    // session and get a new access token.
+    await this.client.refreshExpiredAccessToken();
+
+    const url = new URL(`action/${action}`, this.baseUrl).href;
+    const resp = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/ejson",
+        Accept: "application/ejson",
+        Authorization: `Bearer ${this.currentUser.access_token}`,
+      },
+      body: JSON.stringify(input),
+    });
+    const response = await resp.json();
+
+    if (resp.status === 200 || resp.status === 201) {
+      return response;
+    } else {
+      throw new Error(response);
+    }
+  }
 
   // type FindOneInput = {
   //   dataSource: string;
@@ -59,7 +108,6 @@ export class DataApi {
   //   document: object;
   // }
   // findOne(input: FindOneInput): Promise<FindOneResult>;
-
   findOne = async (input) => {
     return this.action("findOne", input);
   };
@@ -78,7 +126,6 @@ export class DataApi {
   //   documents: object[];
   // }
   // find(input: FindInput): Promise<FindResult>;
-
   find = async (input) => {
     return this.action("find", input);
   };
@@ -107,7 +154,6 @@ export class DataApi {
   // type InsertManyResult = {
   //   insertedIds: string[];
   // }
-
   // insertMany(input: InsertManyInput): Promise<InsertManyResult>;
   insertMany = async (input) => {
     return this.action("insertMany", input);
@@ -126,12 +172,10 @@ export class DataApi {
   //   modifiedCount: number;
   //   upsertedId?: string;
   // }
-
   // updateOne(input: UpdateInput): Promise<UpdateResult>;
   updateOne = async (input) => {
     return this.action("updateOne", input);
   };
-
   // updateMany(input: UpdateInput): Promise<UpdateResult>;
   updateMany = async (input) => {
     return this.action("updateMany", input);
@@ -150,7 +194,6 @@ export class DataApi {
   //   modifiedCount: number;
   //   upsertedId?: string;
   // }
-
   // replaceOne(input: ReplaceOneInput): Promise<ReplaceOneResult>;
   replaceOne = async (input) => {
     return this.action("replaceOne", input);
@@ -165,7 +208,6 @@ export class DataApi {
   // type DeleteResult = {
   //   deletedCount: number;
   // }
-
   // deleteOne(input: DeleteInput): Promise<DeleteResult>;
   deleteOne = async (input) => {
     return this.action("deleteOne", input);
@@ -174,32 +216,4 @@ export class DataApi {
   deleteMany = async (input) => {
     return this.action("deleteMany", input);
   };
-
-  // action(action: string, input: object): Promise<Response>;
-  async action(action, input) {
-    if (!this.currentUser) {
-      throw new Error(`Must be logged in to call a Data API action endpoint`);
-    }
-    // If the current user access token is expired, try to refresh the
-    // session and get a new access token.
-    await this.client.refreshExpiredAccessToken();
-
-    const url = new URL(`action/${action}`, this.baseUrl).href;
-    const resp = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/ejson",
-        Accept: "application/ejson",
-        Authorization: `Bearer ${this.currentUser.access_token}`,
-      },
-      body: JSON.stringify(input),
-    });
-    const response = await resp.json();
-
-    if (resp.status === 200 || resp.status === 201) {
-      return response;
-    } else {
-      throw new Error(response);
-    }
-  }
 }

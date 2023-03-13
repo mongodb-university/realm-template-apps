@@ -2,7 +2,10 @@ import { render, waitFor, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
 
-const TEST_USERNAME = `test-user-${Date.now()}@example.com`;
+const now = Date.now();
+const nonce = Math.floor(10000 * Math.random());
+
+const TEST_USERNAME = `test-user-${now}-${nonce}@example.com`;
 const TEST_PASSWORD = "Password123";
 
 function setup(jsx) {
@@ -49,7 +52,7 @@ test("allows you to sign up for a new account", async () => {
     },
     { timeout: 1500 }
   );
-});
+}, 8000);
 
 test("allows you to log in with an existing account", async () => {
   const { user } = setup(<App />);
@@ -120,7 +123,7 @@ test("allows you to CRUD to-do items", async () => {
     },
     { timeout: 2000 }
   );
-});
+}, 15000);
 
 test("allows you to log out", async () => {
   const { user } = setup(<App />);
