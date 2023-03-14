@@ -28,6 +28,9 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test --clearCache && craco test --watchAll=false --forceExit",
+    "test:graphql": "REACT_APP_API_TYPE=graphql npm run test",
+    "test:mql": "REACT_APP_API_TYPE=mql npm run test",
+    "test:data-api": "REACT_APP_API_TYPE=data-api npm run test",
     "prettier": "npx prettier ./src --write"
   },
   "eslintConfig": {

@@ -42,6 +42,26 @@ function remove_unused_dependencies() {
   mv package.json.tmp package.json
 }
 
+function remove_unused_package_json_scripts() {
+  local unused_package_json_scripts=("$@")
+  # Construct a jq expression to remove the unused dependencies. The
+  # final expression resemables the following:
+  # jq_expr="del(.dependencies[\"test:graphql\"], .dependencies[\"test:mql\"], .dependencies[\"test:data-api\"])"
+  local jq_expr=""
+  for script in "${unused_package_json_scripts[@]}"; do
+    dep_str=".scripts[\"$script\"]"
+    if [ -z "$jq_expr" ]; then
+      jq_expr=$dep_str
+    else
+      jq_expr="${jq_expr}, ${dep_str}"
+    fi
+  done
+  jq_expr="del(${jq_expr})"
+
+  jq "$jq_expr" package.json >> package.json.tmp
+  mv package.json.tmp package.json
+}
+
 function modify_craco_config() {
   local state=$1
   if [ $state != "prod-data-api" ]; then
@@ -77,6 +97,11 @@ for state in ${states[@]}; do
         "crypto-browserify"
         "stream-browserify"
       )
+      unused_package_json_scripts=(
+        "test:graphql"
+        "test:mql"
+        "test:data-api"
+      )
       ;;
     "prod-mql")
       project_name="template-web-mql"
@@ -97,6 +122,11 @@ for state in ${states[@]}; do
         "jwt-decode"
         "stream-browserify"
       )
+      unused_package_json_scripts=(
+        "test:graphql"
+        "test:mql"
+        "test:data-api"
+      )
       ;;
     "prod-data-api")
       project_name="template-web-data-api"
@@ -113,6 +143,11 @@ for state in ${states[@]}; do
         "graphql"
         "realm-web"
       )
+      unused_package_json_scripts=(
+        "test:graphql"
+        "test:mql"
+        "test:data-api"
+      )
       ;;
     *)
       echo "Unknown state: $state"
@@ -128,6 +163,7 @@ for state in ${states[@]}; do
   rename_project $project_name
   remove_unused_files "${unused_files[@]}"
   remove_unused_dependencies "${unused_dependencies[@]}"
+  remove_unused_package_json_scripts "${unused_package_json_scripts[@]}"
   npm install --package-lock-only
   modify_craco_config $state
 

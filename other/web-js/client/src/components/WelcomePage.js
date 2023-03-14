@@ -122,7 +122,6 @@ export function WelcomePage() {
           <NonAuthErrorAlert />
           <TextField
             id="input-email"
-            data-testid="input-email"
             name="email"
             label="Email Address"
             variant="outlined"
