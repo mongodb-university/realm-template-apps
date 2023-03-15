@@ -132,7 +132,7 @@ export class ClientApi {
    * });
    */
   logIn = async (provider, credentials) => {
-    const url = this.endpointUrl(`/auth/providers/${provider}/login`);
+    const url = this.#endpointUrl(`/auth/providers/${provider}/login`);
     const response = await fetch(url, {
       method: "POST",
       cache: "no-cache",
@@ -198,7 +198,7 @@ export class ClientApi {
    * @returns {Promise<{ access_token: User["access_token"] }>}
    */
   refreshSession = async ({ refresh_token }) => {
-    const url = this.endpointUrl(`/auth/session`);
+    const url = this.#endpointUrl(`/auth/session`);
     const response = await fetch(url, {
       method: "POST",
       headers: {

@@ -2,14 +2,11 @@ import { AppBar, Toolbar, Button, Typography } from "@mui/material";
 import { WelcomePage } from "./WelcomePage";
 import { TodoItemsPage } from "./TodoItemsPage";
 // :state-start: development
+import { API_TYPE_NAME } from "../components/AppName";
+// :state-end:
+// :state-start: prod-mql prod-graphql
 import { AppProvider, useApp } from "./RealmApp";
 // :state-end:
-// :state-uncomment-start: prod-mql
-// import { AppProvider, useApp } from "./RealmApp";
-// :state-uncomment-end:
-// :state-uncomment-start: prod-graphql
-// import { AppProvider, useApp } from "./RealmApp";
-// :state-uncomment-end:
 // :state-start: prod-data-api
 import { DataApiProvider, useDataApi } from "../hooks/useDataApi";
 // :state-end:
@@ -17,9 +14,6 @@ import { ThemeProvider } from "./Theme";
 import { AppName } from "./AppName";
 import appConfig from "../realm.json";
 import "./App.css";
-// :state-start: development
-import { API_TYPE_NAME } from "../components/AppName";
-// :state-end:
 const { appId } = appConfig;
 
 // :state-start: development

@@ -1,4 +1,6 @@
 import React from "react";
+import { useDataApi } from "../hooks/useDataApi";
+import { ClientApiError } from "../client-api";
 import {
   Container,
   TextField,
@@ -10,9 +12,7 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useDataApi } from "../hooks/useDataApi";
-import { ClientApiError } from "../client-api";
-import { MoreInfoTemplateAndDocs } from "./MoreInfo";
+import { MoreInfoDocsLink } from "./MoreInfo";
 import { toggleBoolean } from "../utils";
 import { useErrorAlert } from "../hooks/useErrorAlert";
 
@@ -78,7 +78,6 @@ export function WelcomePage() {
           <NonAuthErrorAlert />
           <TextField
             id="input-email"
-            data-testid="input-email"
             name="email"
             label="Email Address"
             variant="outlined"
@@ -132,7 +131,7 @@ export function WelcomePage() {
           </button>
         </form>
       </Card>
-      <MoreInfoTemplateAndDocs />
+      <MoreInfoDocsLink />
     </Container>
   );
 }

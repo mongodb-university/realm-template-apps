@@ -1,7 +1,7 @@
 import jwtDecode from "jwt-decode";
 
 /**
- * Connects to a MongoDB Atlas App Services App's client API over HTTPS
+ * Connect to the MongoDB Atlas App Services Client API for your App.
  */
 export class ClientApi {
   static constructBaseUrl(deployment) {
@@ -17,6 +17,25 @@ export class ClientApi {
     return `https://${region}.${cloud}.realm.mongodb.com/api/client/v2.0/`;
   }
 
+  /**
+   * Create a new Client API client.
+   * @param {object} config The configuration for the Client API client.
+   * @param {string} config.appId The Client App ID of the App Services App to connect to, e.g. `myapp-abcde`.
+   * @param {string} [config.deployment_model] The deployment model of the App Services App to connect to. Defaults to `GLOBAL` if `cloud` and `region` are not specified.
+   * @param {string} [config.cloud] The cloud provider to connect to. Required if `region` is specified.
+   * @param {string} [config.region] The region to connect to. Required if `cloud` is specified.
+   * @param {function} [config.onAuthChange] A callback that's run with the latest auth state whenever the current user changes.
+   * @example
+   * const clientApi = new ClientApi({
+   *   appId: "myapp-abcde",
+   *   deployment_model: "LOCAL",
+   *   cloud: "aws",
+   *   region: "us-east-1",
+   *    onAuthChange: (currentUser) => {
+   *     console.log("The current user is now:", currentUser.id);
+   *   }
+   * });
+   */
   constructor({ appId, deployment_model, cloud, region, onAuthChange }) {
     this.appId = appId;
     this.credentialStorage = new CredentialStorage(appId);
@@ -31,47 +50,90 @@ export class ClientApi {
     this.onAuthChange = onAuthChange;
   }
 
-  // endpointUrl(path: string): string;
-  endpointUrl = (path) => {
+  /**
+   * Construct a Client API URL at the given path
+   * @param {string} path The path to the Client API endpoint, e.g. `/auth/providers/local-userpass/login`.
+   * @returns {string} The full URL of the Client API endpoint.
+   */
+  #endpointUrl = (path) => {
     if (!path.startsWith("/")) {
       throw new Error(`Client API path must start with a slash ("/")`);
     }
-    const url = new URL(
-      `app/${this.appId}` + path,
-      this.baseUrl
-    );
+    const url = new URL(`app/${this.appId}` + path, this.baseUrl);
     return url.href;
   };
 
-  // setCurrentUser(user: User | null): void;
-  setCurrentUser = (user) => {
+  /**
+   * @typedef {object} User User account information, session tokens, and other metadata.
+   * @property {string} user_id The user's account ID.
+   * @property {string} access_token The access token for the user.
+   * @property {string} refresh_token The refresh token for the user.
+   * @property {string} [device_id] The ID of the device that the user is logged in on.
+   */
+
+  /**
+   * Set the current user.
+   * @param {User | null} user The user to set as the current user, or null to unauthenticate the client.
+   * @example
+   * this.#setCurrentUser({
+   *   "user_id": "63f504a25dde21e6f10ba025"
+   *   "access_token": "eyJhbGciOiJIUzI1NiIsI...TYNZYyCM3RKl77FuW_kBf29POr24"
+   *   "device_id": "63f504a75dd881f2f58ba09a",
+   *   "refresh_token": "eyJhbGciOiJIUzI1BiIsI...ynIqiC0bxVAdvYJmw3L1358T3UJk",
+   * })
+   */
+  #setCurrentUser = (user) => {
     this.currentUser = user;
     this.credentialStorage.set("currentUser", this.currentUser);
     this.onAuthChange?.(this.currentUser);
   };
 
-  // registerUser(provider: string, credentials: any): Promise<void>
+  /**
+   * Register a new user with the specified authentication provider.
+   * @param {string} provider The name of the authentication provider to use.
+   * @param {object} credentials Information used to authenticate with the specified provider.
+   * @returns {Promise<void>}
+   * @example
+   * await clientApi.registerUser("local-userpass", {
+   *   email: "someone@example.com",
+   *   password: "mypassw0rd!",
+   * });
+   */
   registerUser = async (provider, credentials) => {
-    const url = this.endpointUrl(`/auth/providers/${provider}/register`);
-    const resp = await fetch(url, {
+    const url = this.#endpointUrl(`/auth/providers/${provider}/register`);
+    const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(credentials),
     });
-    if (resp.status === 201) {
+    if (response.status === 201) {
       // Status 201 means the user was created. There is no response body.
       return;
     } else {
-      throw new ClientApiError(await resp.json());
+      throw new ClientApiError(await response.json());
     }
   };
 
-  // logIn(provider: string, credentials: any): Promise<void>
+  /**
+   * Log a user in with the specified authentication provider.
+   * @param {string} provider The name of the authentication provider to use.
+   * @param {object} credentials Information used to authenticate with the specified provider.
+   * @returns {Promise<void>}
+   * @example
+   * await clientApi.logIn("local-userpass", {
+   *   email: "someone@example.com",
+   *   password: "mypassw0rd!",
+   * });
+   * @example
+   * await clientApi.logIn("api-key", {
+   *   key: "BB4Y996banzQDlEuldiBfdVi1cDsxT1uoGUFJObDEsUiFdSlIVISXzIMzpZZpJsw"
+   * });
+   */
   logIn = async (provider, credentials) => {
-    const url = this.endpointUrl(`/auth/providers/${provider}/login`);
-    const resp = await fetch(url, {
+    const url = this.#endpointUrl(`/auth/providers/${provider}/login`);
+    const response = await fetch(url, {
       method: "POST",
       cache: "no-cache",
       headers: {
@@ -79,32 +141,34 @@ export class ClientApi {
       },
       body: JSON.stringify(credentials),
     });
-    if (resp.status === 200) {
-      // Example 200 Response:
-      // {
-      //   access_token: "eyJhbGciOiJIUzI1NiIsInA5cCI6IkpXVCJ9.eyJiYWFzX2RldmljZV9pZCI6IjYzZjUwNGE3NWRkZTkxZTZmNjBiYTA5YSIsImJhYXNfZG9tYWluX2lkIjoiNWNkYjEyNDA4ZTIzMmFjNGY5NTg3ZmU4IiwiZXhwIjoxNjc3MDAzNjk1LCJpYXQiOjE2NzcwMDE4OTUsImlzcyI6IjYzZjUwNGE3NWRkZTkxZTZmNjBiYTA5ZCIsInN0aXRjaF9kZXZJZCI6IjYzZjUwNGE3NWRkZTkxZTZmNjBiYTA5YSIsInN0aXRjaF9kb21haW5JZCI6IjVjZGIxMjQwOGUyMzJhYzRmOTU4N2ZlOCIsInN1YiI6IjYzZjUwNGE3NWRkZTkxZTZmNjBiYTA5NSIsInR5cCI6ImFjY2VzcyJ9.R9ZazXGPtngBfaMe1nZkKPjvoPRe3GWNfA77UX28ewo",
-      //   device_id: "63f504a75dd881f2f58ba09a",
-      //   refresh_token: "eyJhbGciOiJIUzI1BiIsInE5cCI6IkpXVCJ9.eyJiYWFzX2RhdGEiOm51bGwsImJhYXNfZGV2aWNlX2lkIjoiNjNmNTA0YTc1ZGRlOTFlNmY2MGJhMDlhIiwiYmFhc19kb21haW5faWQiOiI1Y2RiMTI0MDhlMjMyYWM0Zjk1ODdmZTgiLCJiYWFzX2lkIjoiNjNmNTA0YTc1ZGRlOTFlNmY2MGJhMDlkIiwiYmFhc19pZGVudGl0eSI6eyJpZCI6IjYzZjUwNGE3NWRkZTkxZTZmNjBiYTA5Mi1qenBncGhsY3puZXpxaXJkb3ljemNwc20iLCJwcm92aWRlcl90eXBlIjoiYW5vbi11c2VyIiwicHJvdmlkZXJfaWQiOiI1ZDQ4OTJlMzU1OGViYjk4Y2VkNmU5MWYifSwiZXhwIjozMjUzODAxODk1LCJpYXQiOjE2NzcwMDE4OTUsInN0aXRjaF9kYXRhIjpudWxsLCJzdGl0Y2hfZGV2SWQiOiI2M2Y1MDRhNzVkZGU5MWU2ZjYwYmEwOWEiLCJzdGl0Y2hfZG9tYWluSWQiOiI1Y2RiMTI0MDhlMjMyYWM0Zjk1ODdmZTgiLCJzdGl0Y2hfaWQiOiI2M2Y1MDRhNzVkZGU5MWU2ZjYwYmEwOWQiLCJzdGl0Y2hfaWRlbnQiOnsiaWQiOiI2M2Y1MDRhNzVkZGU5MWU2ZjYwYmEwOTItanpwZ3BobGN6bmV6cWlyZG95Y3pjcHNtIiwicHJvdmlkZXJfdHlwZSI6ImFub24tdXNlciIsInByb3ZpZGVyX2lkIjoiNWQ0ODkyZTM1NThlYmI5OGNlZDZlOTFmIn0sInN1YiI6IjYzZjUwNGE3NWRkZTkxZTZmNjBiYTA5NSIsInR5cCI6InJlZnJlc2gifQ.k1o_4RQ1diSewmXynIqiC0bxVAdvYJmw3L1358T3UJk",
-      //   user_id: "63f504a25dde21e6f10ba025"
-      // }
-      const response = await resp.json();
-      this.setCurrentUser({
-        id: response.user_id,
-        access_token: response.access_token,
-        refresh_token: response.refresh_token,
+    if (response.status === 200) {
+      const data = await response.json();
+      this.#setCurrentUser({
+        id: data.user_id,
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
       });
       return this.currentUser;
     } else {
-      throw new ClientApiError(await resp.json());
+      throw new ClientApiError(await response.json());
     }
   };
 
-  // logOut(): Promise<void>
+  /**
+   * Log the current user out.
+   * @returns {Promise<void>}
+   * @example
+   * await clientApi.logOut();
+   */
   logOut = async () => {
-    this.setCurrentUser(null);
+    this.#setCurrentUser(null);
   };
 
-  // refreshExpiredAccessToken(): Promise<User>
+  /**
+   * Refresh the access token for the current user if it has expired.
+   * @returns {Promise<User>}
+   * @throws {Error} If the client is not authenticated.
+   */
   refreshExpiredAccessToken = async () => {
     if (!this.currentUser) {
       throw new Error(
@@ -118,7 +182,7 @@ export class ClientApi {
     if (hasExpiredAccessToken) {
       // If the access token has expired then we need to refresh it.
       const refreshed = await this.refreshSession({ refresh_token });
-      this.setCurrentUser({
+      this.#setCurrentUser({
         ...this.currentUser,
         access_token: refreshed.access_token,
       });
@@ -126,32 +190,62 @@ export class ClientApi {
     return this.currentUser;
   };
 
-  // refreshSession(input: { refresh_token: string }): Promise<User>
+
+  /**
+   * Get a new access token with a refresh token.
+   * @param {object} input
+   * @param {string} input.refresh_token The refresh token for the access token to refresh.
+   * @returns {Promise<{ access_token: User["access_token"] }>}
+   */
   refreshSession = async ({ refresh_token }) => {
-    const url = this.endpointUrl(`/auth/session`);
-    const resp = await fetch(url, {
+    const url = this.#endpointUrl(`/auth/session`);
+    const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${refresh_token}}`,
       },
     });
-    if (resp.status === 200) {
-      // Example 200 Response: {
-      //   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYWFzX2RldmljZV9pZCI6IjYzZjUxNWNhNmVmZDZkMjU1OTk5M2U2YiIsImJhYXNfZG9tYWluX2lkIjoiNWNkYjEyNDA4ZTIzMmFjNGY5NTg3ZmU4IiwiZXhwIjoxNjc3MDA5MzI0LCJpYXQiOjE2NzcwMDc1MjQsImlzcyI6IjYzZjUxYTM3ZDI0M2VmZTY1YWFhMGZmZCIsInN0aXRjaF9kZXZJZCI6IjYzZjUxNWNhNmVmZDZkMjU1OTk5M2U2YiIsInN0aXRjaF9kb21haW5JZCI6IjVjZGIxMjQwOGUyMzJhYzRmOTU4N2ZlOCIsInN1YiI6IjYzZjUxNWNhNmVmZDZkMjU1OTk5M2U1ZSIsInR5cCI6ImFjY2VzcyJ9.rbB5ZW8e88P-VKPTYNZYyCM3RKl77FuW_kBf29POr24"
-      // }
-      return await resp.json();
+    if (response.status === 200) {
+      return await response.json();
     } else {
-      throw new ClientApiError(await resp.json());
+      throw new ClientApiError(await response.json());
     }
   };
 
+  /**
+   * An email/password authentication wrapper around the generic auth
+   * methods.
+   */
   emailPasswordAuth = {
-    // registerUser(credentials: { email: string, password: string }): Promise<User>
+    /**
+     * Register a new user with the email/password authentication provider.
+     * @param {object} credentials The email and password to register with.
+     * @param {string} credentials.email The email address to register with.
+     * @param {string} credentials.password The password to register with.
+     * @returns {Promise<void>}
+     * @example
+     * await dataApi.emailPasswordAuth.registerUser({
+     *  email: "someone@example.com",
+     *  password: "mypassw0rd!",
+     * });
+     */
     registerUser: async ({ email, password }) => {
       return await this.registerUser("local-userpass", { email, password });
     },
-    // logIn(credentials: { email: string, password: string }): Promise<User>
+
+    /**
+     * Log a user in with the email/password authentication provider.
+     * @param {object} credentials The email and password to log in with.
+     * @param {string} credentials.email The email address to log in with.
+     * @param {string} credentials.password The password to log in with.
+     * @returns {Promise<void>}
+     * @example
+     * await dataApi.emailPasswordAuth.logIn({
+     *  email: "someone@example.com",
+     *  password: "mypassw0rd!",
+     * });
+     */
     logIn: async ({ email, password }) => {
       return await this.logIn("local-userpass", { email, password });
     },
@@ -165,6 +259,11 @@ export class ClientApi {
  * storage mechanism.
  */
 export class CredentialStorage {
+  /**
+   * @param {string} id A namespace for the stored keys. You probably want to use your App's Client App ID for this.
+   * @example
+   * const storage = new CredentialStorage("my-app-abcde");
+   */
   constructor(id) {
     this.namespace = `@${id}`;
   }
@@ -186,22 +285,23 @@ export class CredentialStorage {
   }
 }
 
-// A wrapper around JavaScript's built-in Error object that represents
-// errors returned by the Client API.
-// Example error: {
-//   error: 'name already in use',
-//   error_code: 'AccountNameInUse',
-//   link: 'https://realm.mongodb.com/groups/{groupId}/apps/{appId}/logs?co_id=63f506d9d243efe65aa33430'
-// }
 /**
- * @typedef {Object} ClientApiError
- * @property {string} name - The name of the error type: "ClientApiError"
- * @property {string} error - A human-readable error message.
- * @property {string} error_code - A machine-readable error code.
- * @property {string} link - A link to a related application log in the App Services UI.
+ * A wrapper around JavaScript's built-in Error object that represents
+ * errors returned by the Client API.
+ * @example
+ * {
+ *   error: 'name already in use',
+ *   error_code: 'AccountNameInUse',
+ *   link: 'https://realm.mongodb.com/groups/{groupId}/apps/{appId}/logs?co_id=63f506d9d243efe65aa33430'
+ * }
  */
 export class ClientApiError extends Error {
-  // constructor(input: { error: string, error_code: string, link: string }): ClientApiError
+  /**
+   * @param {object} input
+   * @param {string} input.error A human-readable error message.
+   * @param {string} input.error_code A machine-readable error code.
+   * @param {string} input.link A link to a related application log in the App Services UI.
+   */
   constructor({ error, error_code, link }) {
     super(error);
     this.name = "ClientApiError";

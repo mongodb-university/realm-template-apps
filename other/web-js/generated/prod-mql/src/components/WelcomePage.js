@@ -1,5 +1,6 @@
 import React from "react";
 import * as Realm from "realm-web";
+import { useApp } from "./RealmApp";
 import {
   Container,
   TextField,
@@ -11,8 +12,7 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useApp } from "./RealmApp";
-import { MoreInfoTemplateAndDocs } from "./MoreInfo";
+import { MoreInfoDocsLink } from "./MoreInfo";
 import { toggleBoolean } from "../utils";
 import { useErrorAlert } from "../hooks/useErrorAlert";
 
@@ -78,7 +78,6 @@ export function WelcomePage() {
           <NonAuthErrorAlert />
           <TextField
             id="input-email"
-            data-testid="input-email"
             name="email"
             label="Email Address"
             variant="outlined"
@@ -132,7 +131,7 @@ export function WelcomePage() {
           </button>
         </form>
       </Card>
-      <MoreInfoTemplateAndDocs />
+      <MoreInfoDocsLink />
     </Container>
   );
 }

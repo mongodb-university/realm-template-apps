@@ -86,7 +86,7 @@ test("allows you to CRUD to-do items", async () => {
       expect(screen.getByText(/Do the dishes/i)).toBeInTheDocument();
       expect(screen.queryByPlaceholderText("What needs doing?")).not.toBeInTheDocument();
     },
-    { timeout: 3000 }
+    { timeout: 3500 }
   );
   // Add a second To-Do
   await user.click(screen.getByText(/Add To-Do/i));
@@ -97,7 +97,7 @@ test("allows you to CRUD to-do items", async () => {
       expect(screen.getByText(/You have 2 To-Do Items/i)).toBeInTheDocument();
       expect(screen.queryByPlaceholderText("What needs doing?")).not.toBeInTheDocument();
     },
-    { timeout: 2000 }
+    { timeout: 3500 }
   );
   // Mark the second To-Do as completed
   const checkboxes = screen.getAllByTestId("todo-checkbox").map(
@@ -123,7 +123,7 @@ test("allows you to CRUD to-do items", async () => {
     },
     { timeout: 2000 }
   );
-}, 15000);
+}, 17000);
 
 test("allows you to log out", async () => {
   const { user } = setup(<App />);

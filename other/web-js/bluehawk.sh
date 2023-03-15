@@ -101,6 +101,9 @@ for state in ${states[@]}; do
         "test:graphql"
         "test:mql"
         "test:data-api"
+        "start:graphql"
+        "start:mql"
+        "start:data-api"
       )
       ;;
     "prod-mql")
@@ -126,6 +129,9 @@ for state in ${states[@]}; do
         "test:graphql"
         "test:mql"
         "test:data-api"
+        "start:graphql"
+        "start:mql"
+        "start:data-api"
       )
       ;;
     "prod-data-api")
@@ -147,6 +153,9 @@ for state in ${states[@]}; do
         "test:graphql"
         "test:mql"
         "test:data-api"
+        "start:graphql"
+        "start:mql"
+        "start:data-api"
       )
       ;;
     *)

@@ -41,7 +41,7 @@ export const DataApiProvider = ({ appId, location, children }) => {
       replaceOne: api.replaceOne,
       deleteOne: api.deleteOne,
       deleteMany: api.deleteMany,
-      // aggregate: api.aggregate,
+      aggregate: api.aggregate,
     }
   }, [api, currentUser]);
   return (

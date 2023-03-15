@@ -1,6 +1,11 @@
 import React from "react";
 // :state-start: prod-mql prod-graphql
 import * as Realm from "realm-web";
+import { useApp } from "./RealmApp";
+// :state-end:
+// :state-start: prod-data-api
+import { useDataApi } from "../hooks/useDataApi";
+import { ClientApiError } from "../client-api";
 // :state-end:
 import {
   Container,
@@ -13,20 +18,7 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-// :state-start: development
-import { useApp } from "./RealmApp";
-// :state-end:
-// :state-uncomment-start: prod-mql
-// import { useApp } from "./RealmApp";
-// :state-uncomment-end:
-// :state-uncomment-start: prod-graphql
-// import { useApp } from "./RealmApp";
-// :state-uncomment-end:
-// :state-start: prod-data-api
-import { useDataApi } from "../hooks/useDataApi";
-import { ClientApiError } from "../client-api";
-// :state-end:
-import { MoreInfoTemplateAndDocs } from "./MoreInfo";
+import { MoreInfoDocsLink } from "./MoreInfo";
 import { toggleBoolean } from "../utils";
 import { useErrorAlert } from "../hooks/useErrorAlert";
 // :state-start: development
@@ -175,7 +167,7 @@ export function WelcomePage() {
           </button>
         </form>
       </Card>
-      <MoreInfoTemplateAndDocs />
+      <MoreInfoDocsLink />
     </Container>
   );
 }

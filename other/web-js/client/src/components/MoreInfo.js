@@ -1,17 +1,35 @@
 import { Container, Link } from "@mui/material";
-import { API_TYPE_NAME } from "./AppName";
+// :state-start: prod-graphql
 import appConfig from "../realm.json";
-
-const { appUrl } = appConfig;
+// :state-end:
+// :state-start: development
+import { API_TYPE_NAME } from "./AppName";
 
 export function MoreInfo() {
   return (
     <>
       {API_TYPE_NAME === "GraphQL" ? <MoreInfoGraphiQL /> : null}
-      <MoreInfoTemplateAndDocs />
+      <MoreInfoDocsLink />
     </>
   );
 }
+// :state-end:
+// :state-uncomment-start: prod-mql
+// export const MoreInfo = MoreInfoDocsLink
+// :state-uncomment-end:
+// :state-uncomment-start: prod-graphql
+// export function MoreInfo() {
+//   return (
+//     <>
+//       <MoreInfoGraphiQL />
+//       <MoreInfoDocsLink />
+//     </>
+//   );
+// }
+// :state-uncomment-end:
+// :state-uncomment-start: prod-data-api
+// export const MoreInfo = MoreInfoDocsLink;
+// :state-uncomment-end:
 
 function MoreInfoItem({ children }) {
   return (
@@ -23,17 +41,41 @@ function MoreInfoItem({ children }) {
   );
 }
 
-export function MoreInfoTemplateAndDocs() {
+export function MoreInfoDocsLink() {
+  // :state-start: development
   const docsPath =
     {
-      "Data API": "/docs/atlas/app-services/data-api/",
-      GraphQL: "/docs/atlas/app-services/graphql/",
       MQL: "/docs/atlas/app-services/",
+      GraphQL: "/docs/atlas/app-services/graphql/",
+      "Data API": "/docs/atlas/app-services/data-api/",
     }[API_TYPE_NAME] ?? "/docs/atlas/app-services/";
+  // :state-end:
+  // :state-uncomment-start: prod-mql
+  // const docsPath = "/docs/atlas/app-services/";
+  // :state-uncomment-end:
+  // :state-uncomment-start: prod-graphql
+  // const docsPath = "/docs/atlas/app-services/graphql/";
+  // :state-uncomment-end:
+  // :state-uncomment-start: prod-data-api
+  // const docsPath = "/docs/atlas/app-services/data-api/";
+  // :state-uncomment-end:
   const docsLink = new URL(docsPath, "https://mongodb.com");
   return (
     <MoreInfoItem>
-      <span>Built with the Atlas App Services {API_TYPE_NAME} Template</span> |{" "}
+      <span>{
+        // :state-start: development
+        `Built with the Atlas App Services ${API_TYPE_NAME} Template`
+        // :state-end:
+        // :state-uncomment-start: prod-mql
+        // "Built with the Atlas App Services MQL Template"
+        // :state-uncomment-end:
+        // :state-uncomment-start: prod-graphql
+        // "Built with the Atlas App Services GraphQL Template"
+        // :state-uncomment-end:
+        // :state-uncomment-start: prod-data-api
+        // "Built with the Atlas App Services Data API Template"
+        // :state-uncomment-end:
+      }</span> |{" "}
       <Link target="_blank" href={docsLink}>
         Docs
       </Link>
@@ -41,17 +83,20 @@ export function MoreInfoTemplateAndDocs() {
   );
 }
 
-const graphiqlUrl = new URL("graphql/explore", appUrl).href;
-
+// :state-start: prod-graphql
 function MoreInfoGraphiQL() {
   return (
     <MoreInfoItem>
       <span>
         Try some queries in the{" "}
-        <Link target="_blank" href={graphiqlUrl}>
+        <Link
+          target="_blank"
+          href={new URL("graphql/explore", appConfig.appUrl).href}
+        >
           GraphiQL Explorer
         </Link>
       </span>
     </MoreInfoItem>
   );
 }
+// :state-end:
