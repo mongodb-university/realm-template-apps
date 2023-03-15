@@ -69,27 +69,27 @@ export function useTodos() {
   React.useEffect(() => {
     const query = gql`
       query FetchAllTodos {
-        tasks {
+        items {
           _id
-          _partition
+          owner_id
           isComplete
           summary
         }
       }
     `;
     graphql.query({ query }).then(({ data }) => {
-      setTodos(data.tasks);
+      setTodos(data.items);
       setLoading(false);
     });
   }, [graphql]);
 
   // Use a MongoDB change stream to reactively update state when operations succeed
-  const taskCollection = useCollection({
+  const todoItemCollection = useCollection({
     cluster: dataSourceName,
     db: "todo",
-    collection: "Task",
+    collection: "Item",
   });
-  useWatch(taskCollection, {
+  useWatch(todoItemCollection, {
     onInsert: (change) => {
       setTodos((oldTodos) => {
         if (loading) {
@@ -142,14 +142,14 @@ export function useTodos() {
   // Given a draft todo, format it and then insert it with a mutation
   const saveTodo = async (draftTodo) => {
     if (draftTodo.summary) {
-      draftTodo._partition = app.currentUser.id;
+      draftTodo.owner_id = app.currentUser.id;
       try {
         await graphql.mutate({
           mutation: gql`
-            mutation SaveTask($todo: TaskInsertInput!) {
-              insertOneTask(data: $todo) {
+            mutation SaveItem($todo: ItemInsertInput!) {
+              insertOneItem(data: $todo) {
                 _id
-                _partition
+                owner_id
                 isComplete
                 summary
               }
@@ -172,16 +172,16 @@ export function useTodos() {
   const toggleTodo = async (todo) => {
     await graphql.mutate({
       mutation: gql`
-        mutation ToggleTaskComplete($taskId: ObjectId!) {
-          updateOneTask(query: { _id: $taskId }, set: { isComplete: ${!todo.isComplete} }) {
+        mutation ToggleItemComplete($itemId: ObjectId!) {
+          updateOneItem(query: { _id: $itemId }, set: { isComplete: ${!todo.isComplete} }) {
             _id
-            _partition
+            owner_id
             isComplete
             summary
           }
         }
       `,
-      variables: { taskId: todo._id },
+      variables: { itemId: todo._id },
     });
   };
 
@@ -189,13 +189,13 @@ export function useTodos() {
   const deleteTodo = async (todo) => {
     await graphql.mutate({
       mutation: gql`
-        mutation DeleteTask($taskId: ObjectId!) {
-          deleteOneTask(query: { _id: $taskId }) {
+        mutation DeleteItem($itemId: ObjectId!) {
+          deleteOneItem(query: { _id: $itemId }) {
             _id
           }
         }
       `,
-      variables: { taskId: todo._id },
+      variables: { itemId: todo._id },
     });
   };
 

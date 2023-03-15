@@ -19,17 +19,17 @@ export function useTodos() {
   const [todos, setTodos] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
-  // Get a client object for the todo task collection
-  const taskCollection = useCollection({
+  // Get a client object for the todo item collection
+  const todoItemCollection = useCollection({
     cluster: dataSourceName,
     db: "todo",
-    collection: "Task",
+    collection: "Item",
   });
 
   // Fetch all todos on load and whenever our collection changes (e.g. if the current user changes)
   React.useEffect(() => {
     let shouldUpdate = true;
-    const fetchTodos = taskCollection.find({})
+    const fetchTodos = todoItemCollection.find({})
     if (shouldUpdate) {
       fetchTodos.then((fetchedTodos) => {
         setTodos(fetchedTodos);
@@ -39,10 +39,10 @@ export function useTodos() {
     return () => {
       shouldUpdate = false;
     }
-  }, [taskCollection]);
+  }, [todoItemCollection]);
 
   // Use a MongoDB change stream to reactively update state when operations succeed
-  useWatch(taskCollection, {
+  useWatch(todoItemCollection, {
     onInsert: (change) => {
       setTodos((oldTodos) => {
         if (loading) {
@@ -95,9 +95,9 @@ export function useTodos() {
   // Given a draft todo, format it and then insert it
   const saveTodo = async (draftTodo) => {
     if (draftTodo.summary) {
-      draftTodo._partition = app.currentUser.id;
+      draftTodo.owner_id = app.currentUser.id;
       try {
-        await taskCollection.insertOne(draftTodo);
+        await todoItemCollection.insertOne(draftTodo);
       } catch (err) {
         if (err.error.match(/^Duplicate key error/)) {
           console.warn(
@@ -111,7 +111,7 @@ export function useTodos() {
 
   // Toggle whether or not a given todo is complete
   const toggleTodo = async (todo) => {
-    await taskCollection.updateOne(
+    await todoItemCollection.updateOne(
       { _id: todo._id },
       { $set: { isComplete: !todo.isComplete } }
     );
@@ -119,7 +119,7 @@ export function useTodos() {
 
   // Delete a given todo
   const deleteTodo = async (todo) => {
-    await taskCollection.deleteOne({ _id: todo._id });
+    await todoItemCollection.deleteOne({ _id: todo._id });
   };
 
   return {
