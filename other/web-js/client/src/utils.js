@@ -54,10 +54,10 @@ export const createObjectId = () => {
     : new Realm.BSON.ObjectId();
   // :state-end:
   // :state-uncomment-start: prod-mql
-  // return new Realm.BSON.ObjectID()
+  // return new Realm.BSON.ObjectId()
   // :state-uncomment-end:
   // :state-uncomment-start: prod-graphql
-  // return new Realm.BSON.ObjectID()
+  // return new Realm.BSON.ObjectId()
   // :state-uncomment-end:
   // :state-uncomment-start: prod-data-api
   // return EJSON.serialize(new ObjectId())

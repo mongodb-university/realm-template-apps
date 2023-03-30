@@ -15,17 +15,17 @@ export class DataApi {
 
   /**
    * Create a new Data API client.
-   * @param {object} config The configuration for the Data API client.
-   * @param {string} config.appId The Client App ID of the App Services App to connect to, e.g. `myapp-abcde`.
-   * @param {string} [config.cloud] The cloud provider to connect to. Required if `region` is specified.
-   * @param {string} [config.region] The region to connect to. Required if `cloud` is specified.
-   * @param {function} [config.onAuthChange] A callback that's run with the latest auth state whenever the current user changes.
+   * @param {object} config - The configuration for the Data API client.
+   * @param {string} config.appId - The Client App ID of the App Services App to connect to, e.g. `myapp-abcde`.
+   * @param {string} [config.cloud] - The cloud provider to connect to. Required if `region` is specified.
+   * @param {string} [config.region] - The region to connect to. Required if `cloud` is specified.
+   * @param {function} [config.onAuthChange] - A callback that's run with the latest auth state whenever the current user changes.
    * @example
    * const dataApi = new DataApi({
    *   appId: "myapp-abcde",
    *   cloud: "aws",
    *   region: "us-east-1",
-   *    onAuthChange: (currentUser) => {
+   *   onAuthChange: (currentUser) => {
    *     console.log("The current user is now:", currentUser.id);
    *   }
    * });
@@ -47,8 +47,8 @@ export class DataApi {
 
   /**
    * Register a new user with the specified authentication provider.
-   * @param {string} provider The name of the authentication provider to use.
-   * @param {object} credentials Information used to authenticate with the specified provider.
+   * @param {string} provider - The name of the authentication provider to use.
+   * @param {object} credentials - Information used to authenticate with the specified provider.
    * @returns {Promise<void>}
    */
   registerUser = async (provider, credentials) => {
@@ -57,8 +57,8 @@ export class DataApi {
 
   /**
    * Log a user in with the specified authentication provider.
-   * @param {string} provider The name of the authentication provider to use.
-   * @param {object} credentials Information used to authenticate with the specified provider.
+   * @param {string} provider - The name of the authentication provider to use.
+   * @param {object} credentials - Information used to authenticate with the specified provider.
    * @returns {Promise<void>}
    * @example
    * await dataApi.logIn("local-userpass", {
@@ -91,9 +91,9 @@ export class DataApi {
   emailPasswordAuth = {
     /**
      * Register a new user with the email/password authentication provider.
-     * @param {object} credentials The email and password to register with.
-     * @param {string} credentials.email The email address to register with.
-     * @param {string} credentials.password The password to register with.
+     * @param {object} - credentials The email and password to register with.
+     * @param {string} - credentials.email The email address to register with.
+     * @param {string} - credentials.password The password to register with.
      * @returns {Promise<void>}
      * @example
      * await dataApi.emailPasswordAuth.registerUser({
@@ -107,9 +107,9 @@ export class DataApi {
 
     /**
      * Log a user in with the email/password authentication provider.
-     * @param {object} credentials The email and password to log in with.
-     * @param {string} credentials.email The email address to log in with.
-     * @param {string} credentials.password The password to log in with.
+     * @param {object} - credentials The email and password to log in with.
+     * @param {string} - credentials.email The email address to log in with.
+     * @param {string} - credentials.password The password to log in with.
      * @returns {Promise<void>}
      * @example
      * await dataApi.emailPasswordAuth.logIn({
@@ -124,9 +124,9 @@ export class DataApi {
 
   /**
    * Call a specified Data API action endpoint.
-   * @param {string} action The name of a Data API action to perform, e.g. "insertOne"
-   * @param {object} input The request body for the action.
-   * @returns {object} The response body for the action.
+   * @param {string} action - The name of a Data API action to perform, e.g. "insertOne"
+   * @param {object} input - The request body for the action.
+   * @returns {object} - The response body for the action.
    */
   async action(action, input) {
     if (!this.currentUser) {
@@ -170,7 +170,7 @@ export class DataApi {
   /**
    * Find a single document in a collection.
    * @param {FindOneInput} input - The request body for the action.
-   * @returns {Promise<FindOneResult>} The response body for the action.
+   * @returns {Promise<FindOneResult>} - The response body for the action.
    *
    * @see https://mongodb.com/docs/atlas/app-services/data-api/generated-endpoints/#std-label-data-api-findOne
    */
@@ -196,7 +196,7 @@ export class DataApi {
   /**
    * Find documents in a collection.
    * @param {FindInput} input - The request body for the action.
-   * @returns {Promise<FindResult>} The response body for the action.
+   * @returns {Promise<FindResult>} - The response body for the action.
    *
    * @see https://mongodb.com/docs/atlas/app-services/data-api/generated-endpoints/#std-label-data-api-find
    */
@@ -218,7 +218,7 @@ export class DataApi {
   /**
    * Insert a single document into a collection.
    * @param {InsertOneInput} input - The request body for the action.
-   * @returns {Promise<InsertOneResult>} The response body for the action.
+   * @returns {Promise<InsertOneResult>} - The response body for the action.
    *
    * @see https://mongodb.com/docs/atlas/app-services/data-api/generated-endpoints/#std-label-data-api-insertOne
    */
@@ -240,7 +240,7 @@ export class DataApi {
   /**
    * Insert multiple documents into a collection.
    * @param {InsertManyInput} input - The request body for the action.
-   * @returns {Promise<InsertManyResult>} The response body for the action.
+   * @returns {Promise<InsertManyResult>} - The response body for the action.
    *
    * @see https://mongodb.com/docs/atlas/app-services/data-api/generated-endpoints/#std-label-data-api-insertMany
    */
@@ -266,7 +266,7 @@ export class DataApi {
   /**
    * Update a single document in a collection.
    * @param {UpdateInput} input - The request body for the action.
-   * @returns {Promise<UpdateResult>} The response body for the action.
+   * @returns {Promise<UpdateResult>} - The response body for the action.
    * @see https://mongodb.com/docs/atlas/app-services/data-api/generated-endpoints/#std-label-data-api-updateOne
    */
   updateOne = async (input) => {
@@ -276,7 +276,7 @@ export class DataApi {
   /**
    * Update multiple documents in a collection.
    * @param {UpdateInput} input - The request body for the action.
-   * @returns {Promise<UpdateResult>} The response body for the action.
+   * @returns {Promise<UpdateResult>} - The response body for the action.
    * @see https://mongodb.com/docs/atlas/app-services/data-api/generated-endpoints/#std-label-data-api-updateMany
    */
   updateMany = async (input) => {
@@ -296,7 +296,7 @@ export class DataApi {
   /**
    * Replace a single document in a collection.
    * @param {ReplaceOneInput} input - The request body for the action.
-   * @returns {Promise<UpdateResult>} The response body for the action.
+   * @returns {Promise<UpdateResult>} - The response body for the action.
    * @see https://mongodb.com/docs/atlas/app-services/data-api/generated-endpoints/#std-label-data-api-replaceOne
    */
   replaceOne = async (input) => {
@@ -317,7 +317,7 @@ export class DataApi {
   /**
    * Delete a single document from a collection.
    * @param {DeleteInput} input - The request body for the action.
-   * @returns {Promise<DeleteResult>} The response body for the action.
+   * @returns {Promise<DeleteResult>} - The response body for the action.
    * @see https://mongodb.com/docs/atlas/app-services/data-api/generated-endpoints/#std-label-data-api-deleteOne
    */
   deleteOne = async (input) => {
@@ -327,7 +327,7 @@ export class DataApi {
   /**
    * Delete multiple documents from a collection.
    * @param {DeleteInput} input - The request body for the action.
-   * @returns {Promise<DeleteResult>} The response body for the action.
+   * @returns {Promise<DeleteResult>} - The response body for the action.
    * @see https://mongodb.com/docs/atlas/app-services/data-api/generated-endpoints/#std-label-data-api-deleteMany
    */
   deleteMany = async (input) => {
@@ -349,7 +349,7 @@ export class DataApi {
   /**
    * Run an aggregation pipeline against a collection.
    * @param {AggregateInput} input - The request body for the action.
-   * @returns {Promise<AggregateResult>} The response body for the action.
+   * @returns {Promise<AggregateResult>} - The response body for the action.
    * @see https://mongodb.com/docs/atlas/app-services/data-api/generated-endpoints/#std-label-data-api-aggregate
    */
   aggregate = async (input) => {

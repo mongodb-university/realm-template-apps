@@ -58,7 +58,7 @@ export function useApp() {
   const app = React.useContext(AppContext);
   if (!app) {
     throw new Error(
-      `No Realm App found. Make sure to call useApp() inside of a <AppProvider />.`
+      `No App Services App found. Make sure to call useApp() inside of a <AppProvider />.`
     );
   }
   return app;

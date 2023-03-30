@@ -156,11 +156,11 @@ export class ClientApi {
 
   /**
    * Log the current user out.
-   * @returns {Promise<void>}
+   * @returns {void}
    * @example
-   * await clientApi.logOut();
+   * clientApi.logOut();
    */
-  logOut = async () => {
+  logOut = () => {
     this.#setCurrentUser(null);
   };
 
@@ -194,7 +194,7 @@ export class ClientApi {
   /**
    * Get a new access token with a refresh token.
    * @param {object} input
-   * @param {string} input.refresh_token The refresh token for the access token to refresh.
+   * @param {string} input.refresh_token - The refresh token for the access token to refresh.
    * @returns {Promise<{ access_token: User["access_token"] }>}
    */
   refreshSession = async ({ refresh_token }) => {
@@ -220,9 +220,9 @@ export class ClientApi {
   emailPasswordAuth = {
     /**
      * Register a new user with the email/password authentication provider.
-     * @param {object} credentials The email and password to register with.
-     * @param {string} credentials.email The email address to register with.
-     * @param {string} credentials.password The password to register with.
+     * @param {object} credentials - The email and password to register with.
+     * @param {string} credentials.email - The email address to register with.
+     * @param {string} credentials.password - The password to register with.
      * @returns {Promise<void>}
      * @example
      * await dataApi.emailPasswordAuth.registerUser({
@@ -236,9 +236,9 @@ export class ClientApi {
 
     /**
      * Log a user in with the email/password authentication provider.
-     * @param {object} credentials The email and password to log in with.
-     * @param {string} credentials.email The email address to log in with.
-     * @param {string} credentials.password The password to log in with.
+     * @param {object} credentials - The email and password to log in with.
+     * @param {string} credentials.email - The email address to log in with.
+     * @param {string} credentials.password - The password to log in with.
      * @returns {Promise<void>}
      * @example
      * await dataApi.emailPasswordAuth.logIn({
@@ -260,7 +260,7 @@ export class ClientApi {
  */
 export class CredentialStorage {
   /**
-   * @param {string} id A namespace for the stored keys. You probably want to use your App's Client App ID for this.
+   * @param {string} id - A namespace for the stored keys. You probably want to use your App's Client App ID for this.
    * @example
    * const storage = new CredentialStorage("my-app-abcde");
    */
@@ -298,9 +298,9 @@ export class CredentialStorage {
 export class ClientApiError extends Error {
   /**
    * @param {object} input
-   * @param {string} input.error A human-readable error message.
-   * @param {string} input.error_code A machine-readable error code.
-   * @param {string} input.link A link to a related application log in the App Services UI.
+   * @param {string} input.error - A human-readable error message.
+   * @param {string} input.error_code - A machine-readable error code.
+   * @param {string} input.link - A link to a related application log in the App Services UI.
    */
   constructor({ error, error_code, link }) {
     super(error);
