@@ -1,5 +1,5 @@
 {
-  "name": "web-js",
+  "name": "template-web-graphql",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -11,10 +11,8 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
-    "dedent": "^0.7.0",
     "graphql": "^16.6.0",
     "jwt-decode": "^3.1.2",
-    "path-browserify": "^1.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -23,10 +21,9 @@
     "web-vitals": "^3.1.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test --clearCache && craco test --watchAll=false --forceExit",
     "prettier": "npx prettier ./src --write"
   },
   "eslintConfig": {
@@ -46,5 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@craco/craco": "^7.0.0"
   }
 }

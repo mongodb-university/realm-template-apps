@@ -6,6 +6,7 @@ const API_TYPE = process.env.REACT_APP_API_TYPE;
 const API_TYPE_NAMES = {
   graphql: "GraphQL",
   mql: "MQL",
+  "data-api": "Data API",
   local: "Local",
 };
 
@@ -22,6 +23,9 @@ if (!API_TYPE_NAME) {
 // :state-uncomment-end:
 // :state-uncomment-start: prod-graphql
 // export const API_TYPE_NAME = "GraphQL"
+// :state-uncomment-end:
+// :state-uncomment-start: prod-data-api
+// export const API_TYPE_NAME = "Data API"
 // :state-uncomment-end:
 
 export function AppName() {

@@ -1,6 +1,6 @@
 import React from "react";
 import { BSON } from "realm-web";
-import { useRealmApp } from "../components/RealmApp";
+import { useApp } from "../components/RealmApp";
 import {
   addValueAtIndex,
   updateValueAtIndex,
@@ -27,20 +27,20 @@ function latency(ms) {
 }
 
 export function useTodos() {
-  const realmApp = useRealmApp();
+  const app = useApp();
   const [todos, setTodos] = React.useState([]);
 
   const [loading, setLoading] = React.useState(true);
   React.useEffect(() => {
     const fetchTodos = async () => {
       await latency(1640);
-      return createExampleTodos(realmApp.currentUser.id);
+      return createExampleTodos(app.currentUser.id);
     };
     fetchTodos().then((t) => {
       setTodos(t);
       setLoading(false);
     });
-  }, [realmApp.currentUser.id]);
+  }, [app.currentUser.id]);
 
   const getTodoIndex = (todos, todo) =>
     todos.findIndex((t) => String(t._id) === String(todo._id));

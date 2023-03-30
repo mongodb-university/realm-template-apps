@@ -1,26 +1,82 @@
 import { AppBar, Toolbar, Button, Typography } from "@mui/material";
 import { WelcomePage } from "./WelcomePage";
 import { TodoItemsPage } from "./TodoItemsPage";
-import { RealmAppProvider, useRealmApp } from "./RealmApp";
+// :state-start: development
+import { API_TYPE_NAME } from "../components/AppName";
+// :state-end:
+// :state-start: prod-mql prod-graphql
+import { AppProvider, useApp } from "./RealmApp";
+// :state-end:
+// :state-start: prod-data-api
+import { DataApiProvider, useDataApi } from "../hooks/useDataApi";
+// :state-end:
 import { ThemeProvider } from "./Theme";
 import { AppName } from "./AppName";
 import appConfig from "../realm.json";
 import "./App.css";
-
 const { appId } = appConfig;
 
-export default function AppWithRealm() {
+// :state-start: development
+export default function ProvidedApp() {
+  const Provider = API_TYPE_NAME === "Data API" ? DataApiProvider : AppProvider;
+  const location = API_TYPE_NAME === "Data API" ? { deployment_model: "GLOBAL" } : {};
   return (
     <ThemeProvider>
-      <RealmAppProvider appId={appId}>
+      <Provider appId={appId} location={location}>
         <App />
-      </RealmAppProvider>
+      </Provider>
     </ThemeProvider>
   );
 }
+// :state-end:
+// :state-uncomment-start: prod-mql
+// export default function ProvidedApp() {
+//   return (
+//     <ThemeProvider>
+//       <AppProvider appId={appId}>
+//         <App />
+//       </AppProvider>
+//     </ThemeProvider>
+//   );
+// }
+// :state-uncomment-end:
+// :state-uncomment-start: prod-graphql
+// export default function ProvidedApp() {
+//   return (
+//     <ThemeProvider>
+//       <AppProvider appId={appId}>
+//         <App />
+//       </AppProvider>
+//     </ThemeProvider>
+//   );
+// }
+// :state-uncomment-end:
+// :state-uncomment-start: prod-data-api
+// const location = { deployment_model: "GLOBAL" };
+// export default function ProvidedApp() {
+//   return (
+//     <ThemeProvider>
+//       <DataApiProvider appId={appId} location={location}>
+//         <App />
+//       </DataApiProvider>
+//     </ThemeProvider>
+//   );
+// }
+// :state-uncomment-end:
 
 function App() {
-  const { currentUser, logOut } = useRealmApp();
+  // :state-start: development
+  const { currentUser, logOut } = (API_TYPE_NAME === "Data API" ? useDataApi : useApp)();
+  // :state-end:
+  // :state-uncomment-start: prod-mql
+  // const { currentUser, logOut } = useApp();
+  // :state-uncomment-end:
+  // :state-uncomment-start: prod-graphql
+  // const { currentUser, logOut } = useApp();
+  // :state-uncomment-end:
+  // :state-uncomment-start: prod-data-api
+  // const { currentUser, logOut } = useDataApi();
+  // :state-uncomment-end:
   return (
     <div className="App">
       <AppBar position="sticky">

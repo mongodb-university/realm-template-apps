@@ -3,7 +3,7 @@ import { ApolloClient, gql, HttpLink, InMemoryCache } from "@apollo/client";
 import jwt_decode from "jwt-decode";
 import { useWatch } from "./useWatch";
 import { useCollection } from "./useCollection";
-import { useRealmApp } from "../components/RealmApp";
+import { useApp } from "../components/RealmApp";
 import appConfig from "../realm.json";
 import {
   addValueAtIndex,
@@ -16,27 +16,27 @@ import {
 const { baseUrl, dataSourceName } = appConfig;
 
 function useApolloClient() {
-  const realmApp = useRealmApp();
-  if (!realmApp.currentUser) {
-    throw new Error(`You must be logged in to Realm to call useApolloClient()`);
+  const app = useApp();
+  if (!app.currentUser) {
+    throw new Error(`You must be logged in to call useApolloClient()`);
   }
 
   const client = React.useMemo(() => {
-    const graphqlUri = `${baseUrl}/api/client/v2.0/app/${realmApp.id}/graphql`;
+    const graphqlUri = `${baseUrl}/api/client/v2.0/app/${app.id}/graphql`;
     // Local apps should use a local URI!
-    // const graphqlUri = `https://us-east-1.aws.stitch.mongodb.com/api/client/v2.0/app/${realmApp.id}/graphql`
+    // const graphqlUri = `https://us-east-1.aws.stitch.mongodb.com/api/client/v2.0/app/${app.id}/graphql`
 
     async function getValidAccessToken() {
       // An already logged in user's access token might be expired. We decode the token and check its
       // expiration to find out whether or not their current access token is stale.
-      const { exp } = jwt_decode(realmApp.currentUser.accessToken);
+      const { exp } = jwt_decode(app.currentUser.accessToken);
       const isExpired = Date.now() >= exp * 1000;
       if (isExpired) {
         // To manually refresh the user's expired access token, we refresh their custom data
-        await realmApp.currentUser.refreshCustomData();
+        await app.currentUser.refreshCustomData();
       }
       // The user's access token is now guaranteed to be valid (unless their account is disabled or deleted)
-      return realmApp.currentUser.accessToken;
+      return app.currentUser.accessToken;
     }
 
     return new ApolloClient({
@@ -53,14 +53,14 @@ function useApolloClient() {
       }),
       cache: new InMemoryCache(),
     });
-  }, [realmApp.currentUser, realmApp.id]);
+  }, [app.currentUser, app.id]);
 
   return client;
 }
 
 export function useTodos() {
   // Get a graphql client and set up a list of todos in state
-  const realmApp = useRealmApp();
+  const app = useApp();
   const graphql = useApolloClient();
   const [todos, setTodos] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -69,27 +69,27 @@ export function useTodos() {
   React.useEffect(() => {
     const query = gql`
       query FetchAllTodos {
-        tasks {
+        items {
           _id
-          _partition
+          owner_id
           isComplete
           summary
         }
       }
     `;
     graphql.query({ query }).then(({ data }) => {
-      setTodos(data.tasks);
+      setTodos(data.items);
       setLoading(false);
     });
   }, [graphql]);
 
   // Use a MongoDB change stream to reactively update state when operations succeed
-  const taskCollection = useCollection({
+  const todoItemCollection = useCollection({
     cluster: dataSourceName,
     db: "todo",
-    collection: "Task",
+    collection: "Item",
   });
-  useWatch(taskCollection, {
+  useWatch(todoItemCollection, {
     onInsert: (change) => {
       setTodos((oldTodos) => {
         if (loading) {
@@ -142,14 +142,14 @@ export function useTodos() {
   // Given a draft todo, format it and then insert it with a mutation
   const saveTodo = async (draftTodo) => {
     if (draftTodo.summary) {
-      draftTodo._partition = realmApp.currentUser.id;
+      draftTodo.owner_id = app.currentUser.id;
       try {
         await graphql.mutate({
           mutation: gql`
-            mutation SaveTask($todo: TaskInsertInput!) {
-              insertOneTask(data: $todo) {
+            mutation SaveItem($todo: ItemInsertInput!) {
+              insertOneItem(data: $todo) {
                 _id
-                _partition
+                owner_id
                 isComplete
                 summary
               }
@@ -160,7 +160,7 @@ export function useTodos() {
       } catch (err) {
         if (err.message.match(/^Duplicate key error/)) {
           console.warn(
-            `The following error means that we tried to insert a todo multiple times (i.e. an existing todo has the same _id). In this app we just catch the error and move on. In your app, you might want to debounce the save input or implement an additional loading state to avoid sending the request in the first place.`
+            `The following error means that this app tried to insert a todo multiple times (i.e. an existing todo has the same _id). In this app we just catch the error and move on. In your app, you might want to debounce the save input or implement an additional loading state to avoid sending the request in the first place.`
           );
         }
         console.error(err);
@@ -172,16 +172,16 @@ export function useTodos() {
   const toggleTodo = async (todo) => {
     await graphql.mutate({
       mutation: gql`
-        mutation ToggleTaskComplete($taskId: ObjectId!) {
-          updateOneTask(query: { _id: $taskId }, set: { isComplete: ${!todo.isComplete} }) {
+        mutation ToggleItemComplete($itemId: ObjectId!) {
+          updateOneItem(query: { _id: $itemId }, set: { isComplete: ${!todo.isComplete} }) {
             _id
-            _partition
+            owner_id
             isComplete
             summary
           }
         }
       `,
-      variables: { taskId: todo._id },
+      variables: { itemId: todo._id },
     });
   };
 
@@ -189,13 +189,13 @@ export function useTodos() {
   const deleteTodo = async (todo) => {
     await graphql.mutate({
       mutation: gql`
-        mutation DeleteTask($taskId: ObjectId!) {
-          deleteOneTask(query: { _id: $taskId }) {
+        mutation DeleteItem($itemId: ObjectId!) {
+          deleteOneItem(query: { _id: $itemId }) {
             _id
           }
         }
       `,
-      variables: { taskId: todo._id },
+      variables: { itemId: todo._id },
     });
   };
 

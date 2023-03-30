@@ -1,5 +1,6 @@
 import React from "react";
 import * as Realm from "realm-web";
+import { useApp } from "./RealmApp";
 import {
   Container,
   TextField,
@@ -11,13 +12,13 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useRealmApp } from "./RealmApp";
-import { MoreInfoTemplateAndDocs } from "./MoreInfo";
+import { MoreInfoDocsLink } from "./MoreInfo";
 import { toggleBoolean } from "../utils";
 import { useErrorAlert } from "../hooks/useErrorAlert";
 
 export function WelcomePage() {
-  const realmApp = useRealmApp();
+  const app = useApp();
+
   // Track whether the user is logging in or signing up for a new account
   const [isSignup, setIsSignup] = React.useState(false);
   const toggleIsSignup = () => {
@@ -46,9 +47,9 @@ export function WelcomePage() {
     clearErrors();
     try {
       if (isSignup) {
-        await realmApp.emailPasswordAuth.registerUser({ email, password });
+        await app.emailPasswordAuth.registerUser({ email, password });
       }
-      await realmApp.logIn(Realm.Credentials.emailPassword(email, password));
+      await app.logIn(Realm.Credentials.emailPassword(email, password));
     } catch (err) {
       handleAuthenticationError(err, setError);
     }
@@ -85,6 +86,7 @@ export function WelcomePage() {
           />
           <TextField
             id="input-password"
+            data-testid="input-password"
             type={showPassword ? "text" : "password"}
             name="password"
             label="Password"
@@ -108,10 +110,17 @@ export function WelcomePage() {
               ),
             }}
           />
-          <Button type="submit" variant="contained" color="primary">
+          <Button
+            id="submit-button"
+            data-testid="submit-button"
+            type="submit"
+            variant="contained"
+            color="primary"
+          >
             {isSignup ? "Create Account" : "Log In"}
           </Button>
           <button
+            id="toggle-auth-type-button"
             type="button"
             className="link-button"
             onClick={() => toggleIsSignup()}
@@ -122,7 +131,7 @@ export function WelcomePage() {
           </button>
         </form>
       </Card>
-      <MoreInfoTemplateAndDocs />
+      <MoreInfoDocsLink />
     </Container>
   );
 }
@@ -134,7 +143,7 @@ function handleAuthenticationError(err, setError) {
       other: "Something went wrong. Try again in a little bit.",
     }));
     console.warn(
-      "Something went wrong with a Realm login or signup request. See the following error for details."
+      "Something went wrong with a login or signup request. See the following error for details."
     );
     console.error(err);
   };
@@ -143,6 +152,7 @@ function handleAuthenticationError(err, setError) {
     const errorType = error || statusCode;
     switch (errorType) {
       case "invalid username":
+      case "email invalid":
         setError((prevError) => ({
           ...prevError,
           email: "Invalid email address.",
