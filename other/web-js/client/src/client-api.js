@@ -1,52 +1,28 @@
 import jwtDecode from "jwt-decode";
+import { clientApiBaseUrl } from "./atlasConfig.json";
 
 /**
  * Connect to the MongoDB Atlas App Services Client API for your App.
  */
 export class ClientApi {
-  static constructBaseUrl(deployment) {
-    const { deployment_model, cloud, region } = deployment;
-    if (deployment_model === "GLOBAL") {
-      return `https://realm.mongodb.com/api/client/v2.0/`;
-    }
-    if (!cloud || !region) {
-      throw new Error(
-        `Must specify a cloud provider and region for LOCAL Apps. e.g. { "cloud": "aws", "region": "us-east-1" }`
-      );
-    }
-    return `https://${region}.${cloud}.realm.mongodb.com/api/client/v2.0/`;
-  }
-
   /**
    * Create a new Client API client.
    * @param {object} config The configuration for the Client API client.
    * @param {string} config.appId The Client App ID of the App Services App to connect to, e.g. `myapp-abcde`.
-   * @param {string} [config.deployment_model] The deployment model of the App Services App to connect to. Defaults to `GLOBAL` if `cloud` and `region` are not specified.
-   * @param {string} [config.cloud] The cloud provider to connect to. Required if `region` is specified.
-   * @param {string} [config.region] The region to connect to. Required if `cloud` is specified.
    * @param {function} [config.onAuthChange] A callback that's run with the latest auth state whenever the current user changes.
    * @example
    * const clientApi = new ClientApi({
    *   appId: "myapp-abcde",
-   *   deployment_model: "LOCAL",
-   *   cloud: "aws",
-   *   region: "us-east-1",
-   *    onAuthChange: (currentUser) => {
+   *   onAuthChange: (currentUser) => {
    *     console.log("The current user is now:", currentUser.id);
    *   }
    * });
    */
-  constructor({ appId, deployment_model, cloud, region, onAuthChange }) {
+  constructor({ appId, onAuthChange }) {
     this.appId = appId;
     this.credentialStorage = new CredentialStorage(appId);
     this.currentUser = this.credentialStorage.get("currentUser");
-    this.deployment = {
-      deployment_model:
-        deployment_model ?? (cloud || region) ? "LOCAL" : "GLOBAL",
-      cloud,
-      region,
-    };
-    this.baseUrl = ClientApi.constructBaseUrl(this.deployment);
+    this.baseUrl = clientApiBaseUrl;
     this.onAuthChange = onAuthChange;
   }
 

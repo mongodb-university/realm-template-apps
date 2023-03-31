@@ -1,6 +1,6 @@
 import React from "react";
 import * as Realm from "realm-web";
-import appConfig from "../realm.json";
+import appConfig from "../atlasConfig.json";
 
 const { baseUrl } = appConfig;
 

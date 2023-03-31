@@ -1,6 +1,6 @@
 import { Container, Link } from "@mui/material";
 // :state-start: prod-graphql
-import appConfig from "../realm.json";
+import appConfig from "../atlasConfig.json";
 // :state-end:
 // :state-start: development
 import { API_TYPE_NAME } from "./AppName";

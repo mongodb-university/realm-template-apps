@@ -68,7 +68,7 @@
     "backend_path": "other/web-js/backend",
     "client_path": "other/web-js/generated/prod-graphql",
     "metadata_path": "other/web-js/generated/prod-graphql/src",
-    "metadata_filename": "realm",
+    "metadata_filename": "atlasConfig",
     "file_format": "json"
   },
   "web.mql.todo": {
@@ -78,7 +78,7 @@
     "backend_path": "other/web-js/backend",
     "client_path": "other/web-js/generated/prod-mql",
     "metadata_path": "other/web-js/generated/prod-mql/src",
-    "metadata_filename": "realm",
+    "metadata_filename": "atlasConfig",
     "file_format": "json"
   },
   "flex-sync-guides.add-collaborators": {

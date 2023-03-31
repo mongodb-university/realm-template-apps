@@ -12,7 +12,7 @@ import { DataApiProvider, useDataApi } from "../hooks/useDataApi";
 // :state-end:
 import { ThemeProvider } from "./Theme";
 import { AppName } from "./AppName";
-import appConfig from "../realm.json";
+import appConfig from "../atlasConfig.json";
 import "./App.css";
 const { appId } = appConfig;
 

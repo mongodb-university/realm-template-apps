@@ -1,5 +1,5 @@
 import React from "react";
-import appConfig from "../realm.json";
+import appConfig from "../atlasConfig.json";
 import { useDataApi } from "./useDataApi";
 import {
   addValueAtIndex,

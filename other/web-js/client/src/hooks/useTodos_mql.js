@@ -2,7 +2,7 @@ import React from "react";
 import { useWatch } from "./useWatch";
 import { useCollection } from "./useCollection";
 import { useApp } from "../components/RealmApp";
-import appConfig from "../realm.json";
+import appConfig from "../atlasConfig.json";
 import {
   addValueAtIndex,
   replaceValueAtIndex,
