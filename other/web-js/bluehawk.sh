@@ -45,7 +45,7 @@ function remove_unused_dependencies() {
 function remove_unused_package_json_scripts() {
   local unused_package_json_scripts=("$@")
   # Construct a jq expression to remove the unused dependencies. The
-  # final expression resemables the following:
+  # final expression resembles the following:
   # jq_expr="del(.dependencies[\"test:graphql\"], .dependencies[\"test:mql\"], .dependencies[\"test:data-api\"])"
   local jq_expr=""
   for script in "${unused_package_json_scripts[@]}"; do
