@@ -81,6 +81,16 @@
     "metadata_filename": "atlasConfig",
     "file_format": "json"
   },
+  "web.data-api.todo": {
+    "name": "Data API Todo Web App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "other/web-js/backend-data-api",
+    "client_path": "other/web-js/generated/prod-data-api",
+    "metadata_path": "other/web-js/generated/prod-data-api/src",
+    "metadata_filename": "atlasConfig",
+    "file_format": "json"
+  },
   "flex-sync-guides.add-collaborators": {
     "name": "Flex Sync Permissions Guide: 'Add Collaborators' Demo",
     "repo_owner": "mongodb-university",
