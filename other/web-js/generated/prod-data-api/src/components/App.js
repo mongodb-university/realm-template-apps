@@ -4,9 +4,9 @@ import { TodoItemsPage } from "./TodoItemsPage";
 import { DataApiProvider, useDataApi } from "../hooks/useDataApi";
 import { ThemeProvider } from "./Theme";
 import { AppName } from "./AppName";
-import appConfig from "../realm.json";
+import atlasConfig from "../atlasConfig.json";
 import "./App.css";
-const { appId } = appConfig;
+const { appId } = atlasConfig;
 
 const location = { deployment_model: "GLOBAL" };
 export default function ProvidedApp() {

@@ -1,5 +1,5 @@
 import { ClientApi } from "./client-api";
-import { dataApiBaseUrl } from "./atlasConfig.json";
+import atlasConfig from "./atlasConfig.json";
 
 /**
  * Connect to the MongoDB Atlas App Services Data API for your App.
@@ -20,7 +20,7 @@ export class DataApi {
    */
   constructor({ appId, onAuthChange }) {
     this.appId = appId;
-    this.baseUrl = dataApiBaseUrl;
+    this.baseUrl = atlasConfig.dataApiBaseUrl;
     this.client = new ClientApi({
       appId,
       onAuthChange: (newCurrentUser) => {
@@ -121,8 +121,10 @@ export class DataApi {
     // If the current user access token is expired, try to refresh the
     // session and get a new access token.
     await this.client.refreshExpiredAccessToken();
-
-    const url = new URL(`action/${action}`, this.baseUrl).href;
+    const url = new URL(
+      `/app/${this.appId}/endpoint/data/v1/action/${action}`,
+      this.baseUrl
+    ).href;
     const resp = await fetch(url, {
       method: "POST",
       headers: {

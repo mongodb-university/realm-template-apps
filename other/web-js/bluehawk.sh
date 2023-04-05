@@ -166,7 +166,7 @@ for state in ${states[@]}; do
   # Run Bluehawk to generate the artifact project for this state
   cd $root_dir
   npx bluehawk copy --state $state -o generated/$state client/;
-  cp template-realm.json generated/$state/src/realm.json
+  cp template-realm.json generated/$state/src/atlasConfig.json
   # Modify the generated artifact project for things Bluehawk can't do
   cd $output_dir
   rename_project $project_name

@@ -1,5 +1,5 @@
 import jwtDecode from "jwt-decode";
-import { clientApiBaseUrl } from "./atlasConfig.json";
+import atlasConfig from "./atlasConfig.json";
 
 /**
  * Connect to the MongoDB Atlas App Services Client API for your App.
@@ -22,7 +22,7 @@ export class ClientApi {
     this.appId = appId;
     this.credentialStorage = new CredentialStorage(appId);
     this.currentUser = this.credentialStorage.get("currentUser");
-    this.baseUrl = clientApiBaseUrl;
+    this.baseUrl = atlasConfig.clientApiBaseUrl;
     this.onAuthChange = onAuthChange;
   }
 
@@ -35,7 +35,10 @@ export class ClientApi {
     if (!path.startsWith("/")) {
       throw new Error(`Client API path must start with a slash ("/")`);
     }
-    const url = new URL(`app/${this.appId}` + path, this.baseUrl);
+    const url = new URL(
+      `/api/client/v2.0/app/${this.appId}` + path,
+      this.baseUrl
+    );
     return url.href;
   };
 

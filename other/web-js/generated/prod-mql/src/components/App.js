@@ -4,9 +4,9 @@ import { TodoItemsPage } from "./TodoItemsPage";
 import { AppProvider, useApp } from "./RealmApp";
 import { ThemeProvider } from "./Theme";
 import { AppName } from "./AppName";
-import appConfig from "../realm.json";
+import atlasConfig from "../atlasConfig.json";
 import "./App.css";
-const { appId } = appConfig;
+const { appId } = atlasConfig;
 
 export default function ProvidedApp() {
   return (

@@ -1,52 +1,28 @@
 import jwtDecode from "jwt-decode";
+import atlasConfig from "./atlasConfig.json";
 
 /**
  * Connect to the MongoDB Atlas App Services Client API for your App.
  */
 export class ClientApi {
-  static constructBaseUrl(deployment) {
-    const { deployment_model, cloud, region } = deployment;
-    if (deployment_model === "GLOBAL") {
-      return `https://realm.mongodb.com/api/client/v2.0/`;
-    }
-    if (!cloud || !region) {
-      throw new Error(
-        `Must specify a cloud provider and region for LOCAL Apps. e.g. { "cloud": "aws", "region": "us-east-1" }`
-      );
-    }
-    return `https://${region}.${cloud}.realm.mongodb.com/api/client/v2.0/`;
-  }
-
   /**
    * Create a new Client API client.
    * @param {object} config The configuration for the Client API client.
    * @param {string} config.appId The Client App ID of the App Services App to connect to, e.g. `myapp-abcde`.
-   * @param {string} [config.deployment_model] The deployment model of the App Services App to connect to. Defaults to `GLOBAL` if `cloud` and `region` are not specified.
-   * @param {string} [config.cloud] The cloud provider to connect to. Required if `region` is specified.
-   * @param {string} [config.region] The region to connect to. Required if `cloud` is specified.
    * @param {function} [config.onAuthChange] A callback that's run with the latest auth state whenever the current user changes.
    * @example
    * const clientApi = new ClientApi({
    *   appId: "myapp-abcde",
-   *   deployment_model: "LOCAL",
-   *   cloud: "aws",
-   *   region: "us-east-1",
-   *    onAuthChange: (currentUser) => {
+   *   onAuthChange: (currentUser) => {
    *     console.log("The current user is now:", currentUser.id);
    *   }
    * });
    */
-  constructor({ appId, deployment_model, cloud, region, onAuthChange }) {
+  constructor({ appId, onAuthChange }) {
     this.appId = appId;
     this.credentialStorage = new CredentialStorage(appId);
     this.currentUser = this.credentialStorage.get("currentUser");
-    this.deployment = {
-      deployment_model:
-        deployment_model ?? (cloud || region) ? "LOCAL" : "GLOBAL",
-      cloud,
-      region,
-    };
-    this.baseUrl = ClientApi.constructBaseUrl(this.deployment);
+    this.baseUrl = atlasConfig.clientApiBaseUrl;
     this.onAuthChange = onAuthChange;
   }
 
@@ -59,7 +35,10 @@ export class ClientApi {
     if (!path.startsWith("/")) {
       throw new Error(`Client API path must start with a slash ("/")`);
     }
-    const url = new URL(`app/${this.appId}` + path, this.baseUrl);
+    const url = new URL(
+      `/api/client/v2.0/app/${this.appId}` + path,
+      this.baseUrl
+    );
     return url.href;
   };
 
@@ -156,11 +135,11 @@ export class ClientApi {
 
   /**
    * Log the current user out.
-   * @returns {Promise<void>}
+   * @returns {void}
    * @example
-   * await clientApi.logOut();
+   * clientApi.logOut();
    */
-  logOut = async () => {
+  logOut = () => {
     this.#setCurrentUser(null);
   };
 
@@ -194,7 +173,7 @@ export class ClientApi {
   /**
    * Get a new access token with a refresh token.
    * @param {object} input
-   * @param {string} input.refresh_token The refresh token for the access token to refresh.
+   * @param {string} input.refresh_token - The refresh token for the access token to refresh.
    * @returns {Promise<{ access_token: User["access_token"] }>}
    */
   refreshSession = async ({ refresh_token }) => {
@@ -220,9 +199,9 @@ export class ClientApi {
   emailPasswordAuth = {
     /**
      * Register a new user with the email/password authentication provider.
-     * @param {object} credentials The email and password to register with.
-     * @param {string} credentials.email The email address to register with.
-     * @param {string} credentials.password The password to register with.
+     * @param {object} credentials - The email and password to register with.
+     * @param {string} credentials.email - The email address to register with.
+     * @param {string} credentials.password - The password to register with.
      * @returns {Promise<void>}
      * @example
      * await dataApi.emailPasswordAuth.registerUser({
@@ -236,9 +215,9 @@ export class ClientApi {
 
     /**
      * Log a user in with the email/password authentication provider.
-     * @param {object} credentials The email and password to log in with.
-     * @param {string} credentials.email The email address to log in with.
-     * @param {string} credentials.password The password to log in with.
+     * @param {object} credentials - The email and password to log in with.
+     * @param {string} credentials.email - The email address to log in with.
+     * @param {string} credentials.password - The password to log in with.
      * @returns {Promise<void>}
      * @example
      * await dataApi.emailPasswordAuth.logIn({
@@ -260,7 +239,7 @@ export class ClientApi {
  */
 export class CredentialStorage {
   /**
-   * @param {string} id A namespace for the stored keys. You probably want to use your App's Client App ID for this.
+   * @param {string} id - A namespace for the stored keys. You probably want to use your App's Client App ID for this.
    * @example
    * const storage = new CredentialStorage("my-app-abcde");
    */
@@ -298,9 +277,9 @@ export class CredentialStorage {
 export class ClientApiError extends Error {
   /**
    * @param {object} input
-   * @param {string} input.error A human-readable error message.
-   * @param {string} input.error_code A machine-readable error code.
-   * @param {string} input.link A link to a related application log in the App Services UI.
+   * @param {string} input.error - A human-readable error message.
+   * @param {string} input.error_code - A machine-readable error code.
+   * @param {string} input.link - A link to a related application log in the App Services UI.
    */
   constructor({ error, error_code, link }) {
     super(error);

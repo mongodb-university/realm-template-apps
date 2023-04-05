@@ -1,5 +1,5 @@
 import React from "react";
-import appConfig from "../atlasConfig.json";
+import atlasConfig from "../atlasConfig.json";
 import { useDataApi } from "./useDataApi";
 import {
   addValueAtIndex,
@@ -8,7 +8,7 @@ import {
   getTodoIndex,
 } from "../utils";
 
-const { dataSourceName } = appConfig;
+const { dataSourceName } = atlasConfig;
 
 const todoItemCollection = {
   dataSource: dataSourceName,

@@ -4,7 +4,7 @@ import jwt_decode from "jwt-decode";
 import { useWatch } from "./useWatch";
 import { useCollection } from "./useCollection";
 import { useApp } from "../components/RealmApp";
-import appConfig from "../atlasConfig.json";
+import atlasConfig from "../atlasConfig.json";
 import {
   addValueAtIndex,
   replaceValueAtIndex,
@@ -13,7 +13,7 @@ import {
   getTodoIndex,
 } from "../utils";
 
-const { baseUrl, dataSourceName } = appConfig;
+const { baseUrl, dataSourceName } = atlasConfig;
 
 function useApolloClient() {
   const app = useApp();

@@ -1,6 +1,6 @@
 import { Container, Link } from "@mui/material";
 // :state-start: prod-graphql
-import appConfig from "../atlasConfig.json";
+import atlasConfig from "../atlasConfig.json";
 // :state-end:
 // :state-start: development
 import { API_TYPE_NAME } from "./AppName";
@@ -91,7 +91,7 @@ function MoreInfoGraphiQL() {
         Try some queries in the{" "}
         <Link
           target="_blank"
-          href={new URL("graphql/explore", appConfig.appUrl).href}
+          href={new URL("graphql/explore", atlasConfig.appUrl).href}
         >
           GraphiQL Explorer
         </Link>

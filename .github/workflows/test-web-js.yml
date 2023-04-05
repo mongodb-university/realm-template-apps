@@ -1,0 +1,75 @@
+name: Run web-js tests
+
+on:
+  pull_request:
+    paths:
+      - other/web-js/**
+  push:
+    paths:
+      - other/web-js/**
+
+jobs:
+  web-js-integration-test:
+    runs-on: ubuntu-latest
+    env:
+      # CLUSTER_NAME: Cluster0
+      CLUSTER_NAME: Delilah
+    strategy:
+      fail-fast: false
+      matrix:
+        state: [prod-mql, prod-graphql, prod-data-api]
+        # state: [prod-data-api]
+        include:
+          - state: prod-mql
+            backend_dir: backend
+            test_backend_dir: backend-test
+          - state: prod-graphql
+            backend_dir: backend
+            test_backend_dir: backend-test
+          - state: prod-data-api
+            backend_dir: backend-data-api
+            test_backend_dir: backend-data-api-test
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: CLI Authentication
+        run: |
+          npx mongodb-realm-cli login --api-key=${{ secrets.ATLAS_ADMIN_API_PUBLIC_KEY }} --private-api-key=${{ secrets.ATLAS_ADMIN_API_PRIVATE_KEY }}
+          npx mongodb-realm-cli whoami
+      - name: Create Test App
+        working-directory: other/web-js
+        run: |
+          # Create a new copy of the config files
+          cp -r ${{ matrix.backend_dir }} ${{ matrix.test_backend_dir }}
+          cd ${{ matrix.test_backend_dir }}
+          # Overwrite config values (as needed for the tests)
+          jq '.name = .name + "-test"' realm_config.json > realm_config.tmp.json
+          mv realm_config.tmp.json realm_config.json
+          jq '.config.clusterName = "${{ env.CLUSTER_NAME }}"' data_sources/mongodb-atlas/config.json > data_sources/mongodb-atlas/config.tmp.json
+          mv data_sources/mongodb-atlas/config.tmp.json data_sources/mongodb-atlas/config.json
+          # Create the test App
+          app_id=$(jq ".app_id" realm_config.json)
+          npx mongodb-realm-cli push -y --remote "$app_id"
+      - name: Create Metadata File
+        run: |
+          bash ./create-metadata-file.sh ./other/web-js/${{ matrix.test_backend_dir }} ./other/web-js/generated/${{ matrix.state }}/src/atlasConfig.json
+          echo "./other/web-js/generated/${{ matrix.state }}/src/atlasConfig.json"
+          jq "." ./other/web-js/generated/${{ matrix.state }}/src/atlasConfig.json
+      - name: Install Dependencies
+        working-directory: other/web-js/generated/${{ matrix.state }}
+        run: |
+          npm install -g @craco/craco
+          npm install
+      - name: Run Tests
+        working-directory: other/web-js/generated/${{ matrix.state }}
+        run: npm run test
+      - name: Clean Up
+        working-directory: other/web-js
+        run: |
+          cd ${{ matrix.test_backend_dir }}
+          app_id=$(jq ".app_id" realm_config.json)
+          npx mongodb-realm-cli app delete -y --app "$app_id"
+          cd ..
+          rm -rf ${{ matrix.test_backend_dir }}

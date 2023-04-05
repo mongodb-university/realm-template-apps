@@ -1,8 +1,8 @@
 import React from "react";
 import * as Realm from "realm-web";
-import appConfig from "../realm.json";
+import atlasConfig from "../atlasConfig.json";
 
-const { baseUrl } = appConfig;
+const { baseUrl } = atlasConfig;
 
 function createApp(id) {
   return new Realm.App({ id, baseUrl });
@@ -58,7 +58,7 @@ export function useApp() {
   const app = React.useContext(AppContext);
   if (!app) {
     throw new Error(
-      `No Realm App found. Make sure to call useApp() inside of a <AppProvider />.`
+      `No App Services App found. Make sure to call useApp() inside of a <AppProvider />.`
     );
   }
   return app;

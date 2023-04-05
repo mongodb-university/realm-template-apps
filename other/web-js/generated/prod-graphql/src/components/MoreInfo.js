@@ -1,5 +1,5 @@
 import { Container, Link } from "@mui/material";
-import appConfig from "../realm.json";
+import atlasConfig from "../atlasConfig.json";
 export function MoreInfo() {
   return (
     <>
@@ -41,7 +41,7 @@ function MoreInfoGraphiQL() {
         Try some queries in the{" "}
         <Link
           target="_blank"
-          href={new URL("graphql/explore", appConfig.appUrl).href}
+          href={new URL("graphql/explore", atlasConfig.appUrl).href}
         >
           GraphiQL Explorer
         </Link>

@@ -2,7 +2,7 @@ import React from "react";
 import { useWatch } from "./useWatch";
 import { useCollection } from "./useCollection";
 import { useApp } from "../components/RealmApp";
-import appConfig from "../realm.json";
+import atlasConfig from "../atlasConfig.json";
 import {
   addValueAtIndex,
   replaceValueAtIndex,
@@ -11,7 +11,7 @@ import {
   getTodoIndex,
 } from "../utils";
 
-const { dataSourceName } = appConfig;
+const { dataSourceName } = atlasConfig;
 
 export function useTodos() {
   // Set up a list of todos in state
