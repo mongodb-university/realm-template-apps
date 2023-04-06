@@ -34,7 +34,7 @@ jobs:
           node-version: 18
       - name: CLI Authentication
         run: |
-          npx mongodb-realm-cli login --api-key=${{ secrets.ATLAS_ADMIN_API_PUBLIC_KEY }} --private-api-key=${{ secrets.ATLAS_ADMIN_API_PRIVATE_KEY }}
+          npx mongodb-realm-cli login --api-key=${{ secrets.ATLAS_PUBLIC_API_KEY }} --private-api-key=${{ secrets.ATLAS_PRIVATE_API_KEY }}
           npx mongodb-realm-cli whoami
       - name: Create Test App
         working-directory: other/web-js
