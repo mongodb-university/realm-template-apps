@@ -10,7 +10,7 @@ The client allows you to:
 - Create, check off, and delete to-do items
 
 
-.. The client allows you to connect using the Atlas App Services `Data API <https://mongodb.com/docs/atlas/app-services/data-api/>`_.
+The client allows you to connect using the Atlas App Services `Data API <https://mongodb.com/docs/atlas/app-services/data-api/>`_.
 
 Set Up and Run the App
 ----------------------

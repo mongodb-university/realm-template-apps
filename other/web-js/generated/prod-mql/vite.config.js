@@ -21,8 +21,4 @@ export default defineConfig({
       exclude: ["node_modules/", "src/setupTests.js"],
     },
   },
-  // esbuild: {
-  //   loader: "jsx",
-  //   include: "src/**/*.js"
-  // }
 });

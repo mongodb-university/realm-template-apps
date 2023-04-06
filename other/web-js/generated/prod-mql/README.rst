@@ -10,7 +10,7 @@ The client allows you to:
 - Create, check off, and delete to-do items
 
 
-.. The client allows you to connect using Realm's `remote MongoDB queries <https://mongodb.com/docs/realm/web/mongodb/>`_.
+The client allows you to connect using Realm's `remote MongoDB queries <https://mongodb.com/docs/realm/web/mongodb/>`_.
 
 Set Up and Run the App
 ----------------------

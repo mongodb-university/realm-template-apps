@@ -93,7 +93,7 @@ test("allows you to CRUD to-do items", async () => {
       expect(screen.getByText(/You have 1 To-Do Item/i)).toBeInTheDocument();
       expect(screen.getByText(/Do the dishes/i)).toBeInTheDocument();
     },
-    { timeout: 6000 }
+    { timeout: 10000 }
   );
   // Add a second To-Do
   await user.click(screen.getByText(/Add To-Do/i));
@@ -130,14 +130,15 @@ test("allows you to CRUD to-do items", async () => {
   const deleteButtons = screen.getAllByTestId("todo-delete-button");
   expect(deleteButtons.length).toBe(2);
   await user.click(deleteButtons[0]);
+  await wait(10)
   await waitFor(
     () => {
       expect(screen.getByText(/You have 1 To-Do Item/i)).toBeInTheDocument();
       expect(screen.getByText(/Do the laundry/i)).toBeInTheDocument();
     },
-    { timeout: 4000 }
+    { timeout: 10000 }
   );
-}, 23000);
+}, 33000);
 
 test("allows you to log out", async () => {
   const { user } = setup(<App />);

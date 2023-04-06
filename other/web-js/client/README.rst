@@ -130,13 +130,13 @@ The result should look like the following but with values specific to your App:
 .. :state-end:
 
 .. :state-uncomment-start: prod-graphql
-.. The client allows you to connect using the Atlas App Services `GraphQL API <https://mongodb.com/docs/atlas/app-services/graphql/>`_.
+The client allows you to connect using the Atlas App Services `GraphQL API <https://mongodb.com/docs/atlas/app-services/graphql/>`_.
 .. :state-uncomment-end:
 .. :state-uncomment-start: prod-mql
-.. The client allows you to connect using Realm's `remote MongoDB queries <https://mongodb.com/docs/realm/web/mongodb/>`_.
+The client allows you to connect using Realm's `remote MongoDB queries <https://mongodb.com/docs/realm/web/mongodb/>`_.
 .. :state-uncomment-end:
 .. :state-uncomment-start: prod-data-api
-.. The client allows you to connect using the Atlas App Services `Data API <https://mongodb.com/docs/atlas/app-services/data-api/>`_.
+The client allows you to connect using the Atlas App Services `Data API <https://mongodb.com/docs/atlas/app-services/data-api/>`_.
 .. :state-uncomment-end:
 
 Set Up and Run the App
