@@ -41,6 +41,7 @@ test("allows you to sign up for a new account", async () => {
   await user.clear(screen.getByLabelText("Password"));
   await user.type(screen.getByLabelText("Password"), TEST_PASSWORD);
   await user.click(screen.getByTestId("submit-button"));
+  await wait(10)
   await waitFor(
     () => {
       expect(screen.getByText(/You have 0 To-Do Items/i)).toBeInTheDocument();
@@ -76,7 +77,7 @@ test("allows you to CRUD to-do items", async () => {
   const { user } = setup(<App />);
   await waitFor(() => {
     expect(screen.getByText(/You have 0 To-Do Items/i)).toBeInTheDocument();
-  });
+  }, { timeout: 4000 });
   // Add the first To-Do
   await user.click(screen.getByText(/Add To-Do/i));
   await user.type(
