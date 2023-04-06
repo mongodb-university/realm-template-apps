@@ -4,9 +4,6 @@ on:
   pull_request:
     paths:
       - other/web-js/**
-  push:
-    paths:
-      - other/web-js/**
 
 jobs:
   web-js-integration-test:
