@@ -62,17 +62,6 @@ function remove_unused_package_json_scripts() {
   mv package.json.tmp package.json
 }
 
-function modify_craco_config() {
-  local state=$1
-  if [ $state != "prod-data-api" ]; then
-    # The bson package requires top-level await and a couple Node
-    # built-in packages. We use craco to add support for these through
-    # webpack. We only need to do this for the data-api state, so we use
-    # an empty craco config for the other states.
-    echo "module.exports = {}" > craco.config.js
-  fi
-}
-
 if [ -d "generated" ]; then
   rm -r generated
 fi
@@ -86,10 +75,10 @@ for state in ${states[@]}; do
       unused_files=(
         "src/client-api.js"
         "src/data-api.js"
-        "src/hooks/useDataApi.js"
-        "src/hooks/useTodos_data-api.js"
-        "src/hooks/useTodos_mql.js"
-        "src/hooks/useTodos_local.js"
+        "src/hooks/useDataApi.jsx"
+        "src/hooks/useTodos_data-api.jsx"
+        "src/hooks/useTodos_mql.jsx"
+        "src/hooks/useTodos_local.jsx"
       )
       unused_dependencies=(
         "bson"
@@ -98,12 +87,21 @@ for state in ${states[@]}; do
         "stream-browserify"
       )
       unused_package_json_scripts=(
-        "test:graphql"
-        "test:mql"
-        "test:data-api"
         "start:graphql"
         "start:mql"
         "start:data-api"
+        "build:graphql"
+        "build:mql"
+        "build:data-api"
+        "preview:graphql"
+        "preview:mql"
+        "preview:data-api"
+        "test:graphql"
+        "test:mql"
+        "test:data-api"
+        "coverage:graphql"
+        "coverage:mql"
+        "coverage:data-api"
       )
       ;;
     "prod-mql")
@@ -111,10 +109,10 @@ for state in ${states[@]}; do
       unused_files=(
         "src/client-api.js"
         "src/data-api.js"
-        "src/hooks/useDataApi.js"
-        "src/hooks/useTodos_data-api.js"
-        "src/hooks/useTodos_graphql.js"
-        "src/hooks/useTodos_local.js"
+        "src/hooks/useDataApi.jsx"
+        "src/hooks/useTodos_data-api.jsx"
+        "src/hooks/useTodos_graphql.jsx"
+        "src/hooks/useTodos_local.jsx"
       )
       unused_dependencies=(
         "@apollo/client"
@@ -126,23 +124,32 @@ for state in ${states[@]}; do
         "stream-browserify"
       )
       unused_package_json_scripts=(
-        "test:graphql"
-        "test:mql"
-        "test:data-api"
         "start:graphql"
         "start:mql"
         "start:data-api"
+        "build:graphql"
+        "build:mql"
+        "build:data-api"
+        "preview:graphql"
+        "preview:mql"
+        "preview:data-api"
+        "test:graphql"
+        "test:mql"
+        "test:data-api"
+        "coverage:graphql"
+        "coverage:mql"
+        "coverage:data-api"
       )
       ;;
     "prod-data-api")
       project_name="template-web-data-api"
       unused_files=(
-        "src/components/RealmApp.js"
-        "src/hooks/useCollection.js"
-        "src/hooks/useTodos_graphql.js"
-        "src/hooks/useTodos_local.js"
-        "src/hooks/useTodos_mql.js"
-        "src/hooks/useWatch.js"
+        "src/components/RealmApp.jsx"
+        "src/hooks/useCollection.jsx"
+        "src/hooks/useTodos_graphql.jsx"
+        "src/hooks/useTodos_local.jsx"
+        "src/hooks/useTodos_mql.jsx"
+        "src/hooks/useWatch.jsx"
       )
       unused_dependencies=(
         "@apollo/client"
@@ -150,12 +157,21 @@ for state in ${states[@]}; do
         "realm-web"
       )
       unused_package_json_scripts=(
-        "test:graphql"
-        "test:mql"
-        "test:data-api"
         "start:graphql"
         "start:mql"
         "start:data-api"
+        "build:graphql"
+        "build:mql"
+        "build:data-api"
+        "preview:graphql"
+        "preview:mql"
+        "preview:data-api"
+        "test:graphql"
+        "test:mql"
+        "test:data-api"
+        "coverage:graphql"
+        "coverage:mql"
+        "coverage:data-api"
       )
       ;;
     *)
@@ -174,7 +190,6 @@ for state in ${states[@]}; do
   remove_unused_dependencies "${unused_dependencies[@]}"
   remove_unused_package_json_scripts "${unused_package_json_scripts[@]}"
   npm install --package-lock-only
-  modify_craco_config $state
 
 done
 

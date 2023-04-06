@@ -9,10 +9,8 @@ The client allows you to:
 
 - Create, check off, and delete to-do items
 
-⚛️ **Create React App**: This project was bootstrapped with `Create React App <https://github.com/facebook/create-react-app>`_.
 
-
-The client allows you to connect using Realm's `GraphQL API <https://docs.mongodb.com/realm/graphql/>`_.
+.. The client allows you to connect using the Atlas App Services `GraphQL API <https://mongodb.com/docs/atlas/app-services/graphql/>`_.
 
 Set Up and Run the App
 ----------------------

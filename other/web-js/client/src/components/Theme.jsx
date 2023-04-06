@@ -6,7 +6,7 @@ import {
 import { colors } from "../colors";
 
 // :state-start: development
-const API_TYPE = process.env.REACT_APP_API_TYPE;
+const API_TYPE = import.meta.env.VITE_API_TYPE;
 let themeConfig;
 switch (API_TYPE) {
   case "mql": {

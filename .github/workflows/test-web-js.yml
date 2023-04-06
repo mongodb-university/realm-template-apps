@@ -12,13 +12,11 @@ jobs:
   web-js-integration-test:
     runs-on: ubuntu-latest
     env:
-      # CLUSTER_NAME: Cluster0
-      CLUSTER_NAME: Delilah
+      CLUSTER_NAME: Cluster0
     strategy:
       fail-fast: false
       matrix:
         state: [prod-mql, prod-graphql, prod-data-api]
-        # state: [prod-data-api]
         include:
           - state: prod-mql
             backend_dir: backend
@@ -60,7 +58,6 @@ jobs:
       - name: Install Dependencies
         working-directory: other/web-js/generated/${{ matrix.state }}
         run: |
-          npm install -g @craco/craco
           npm install
       - name: Run Tests
         working-directory: other/web-js/generated/${{ matrix.state }}

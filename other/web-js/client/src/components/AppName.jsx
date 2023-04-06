@@ -2,7 +2,7 @@ import React from "react";
 import { Typography } from "@mui/material";
 
 // :state-start: development
-const API_TYPE = process.env.REACT_APP_API_TYPE;
+const API_TYPE = import.meta.env.VITE_API_TYPE;
 const API_TYPE_NAMES = {
   graphql: "GraphQL",
   mql: "MQL",

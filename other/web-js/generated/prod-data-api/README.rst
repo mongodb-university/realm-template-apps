@@ -9,9 +9,8 @@ The client allows you to:
 
 - Create, check off, and delete to-do items
 
-⚛️ **Create React App**: This project was bootstrapped with `Create React App <https://github.com/facebook/create-react-app>`_.
 
-
+.. The client allows you to connect using the Atlas App Services `Data API <https://mongodb.com/docs/atlas/app-services/data-api/>`_.
 
 Set Up and Run the App
 ----------------------

@@ -45,10 +45,18 @@ function useApolloClient() {
         // We define a custom fetch handler for the Apollo client that lets us authenticate GraphQL requests.
         // The function intercepts every Apollo HTTP request and adds an Authorization header with a valid
         // access token before sending the request.
-        fetch: async (uri, options) => {
+        fetch: async (uri, options = {}) => {
           const accessToken = await getValidAccessToken();
           options.headers.Authorization = `Bearer ${accessToken}`;
-          return fetch(uri, options);
+          try {
+            return await fetch(uri, {
+              method: options.method,
+              headers: options.headers,
+              body: options.body,
+            });
+          } catch (err) {
+            console.error(err);
+          }
         },
       }),
       cache: new InMemoryCache(),
