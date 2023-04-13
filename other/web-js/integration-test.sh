@@ -16,6 +16,16 @@ while getopts "d:t:s:c:" arg; do
   esac
 done
 
+if [ -z "$ATLAS_PUBLIC_API_KEY" ]; then
+  echo "You must specify your Atlas Public API Key as the env variable ATLAS_PUBLIC_API_KEY"
+  exit 1
+fi
+
+if [ -z "$ATLAS_PRIVATE_API_KEY" ]; then
+  echo "You must specify your Atlas Private API Key as the env variable ATLAS_PRIVATE_API_KEY"
+  exit 1
+fi
+
 if [ -z "$backend_dir" ]; then
   echo "You must specify the App's config directory with -d"
   exit 1
