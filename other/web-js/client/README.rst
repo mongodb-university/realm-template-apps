@@ -72,11 +72,11 @@ To write code that is only included in a specific app, use the
 
 You might also want to write code that is specific to each client and
 then simulate that code in the development app. To do that, you can use
-the `:state-uncomment-start:` and `:state-uncomment-end:` tags:
+the ``state-uncomment-start`` and ``state-uncomment-end`` tags:
 
 .. note::
 
-   The ``:state-uncomment-start:`` and ``:state-uncomment-end:`` tags
+   The ``state-uncomment-start`` and ``state-uncomment-end`` tags
    currently don't support a list of states. This means that, even if
    the code for two states is the same, you have to repeat yourself for
    both states. We can fix this in Bluehawk to make this much simpler!
@@ -86,16 +86,16 @@ the `:state-uncomment-start:` and `:state-uncomment-end:` tags:
 .. code-block:: js
 
    // :state-uncomment-start: prod-graphql
-   // This code is only included in the generated GraphQL app.
-   const getTodos = getTodosWithGraphQL;
+   // // This code is only included in the generated GraphQL app.
+   // const getTodos = getTodosWithGraphQL;
    // :state-uncomment-end:
    // :state-uncomment-start: prod-mql
-   // This code is only included in the generated MQL app.
-   const getTodos = getTodosWithMQL;
+   // // This code is only included in the generated MQL app.
+   // const getTodos = getTodosWithMQL;
    // :state-uncomment-end:
    // :state-uncomment-start: prod-data-api
-   // This code is only included in the generated Data API app.
-   const getTodos = getTodosWithDataAPI;
+   // // This code is only included in the generated Data API app.
+   // const getTodos = getTodosWithDataAPI;
    // :state-uncomment-end:
    // :state-start: dev
    // This code is only included in the development app.

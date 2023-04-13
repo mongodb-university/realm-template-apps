@@ -2,7 +2,9 @@
 Atlas App Services Web Starter
 ==============================
 
-This project contains the web client for the Atlas App Services template application.
+This project contains the web client for the Atlas App Services template
+application.
+
 The client allows you to:
 
 - Sign up and log in as an Email/Password user
