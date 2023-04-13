@@ -50,7 +50,6 @@ PROJECT_ROOT=${PWD}
 REPO_ROOT=${PWD%/*/*}
 
 npx mongodb-realm-cli login --api-key="$ATLAS_PUBLIC_API_KEY" --private-api-key="$ATLAS_PRIVATE_API_KEY"
-npx mongodb-realm-cli whoami
 
 # Create a new copy of the config files
 cp -r $backend_dir $test_backend_dir
