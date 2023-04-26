@@ -23,8 +23,8 @@ For bucket access, consult the Realm docs team.
 ## Sync-todo Versions
 
 - **v0**: (Deprecated) A partition-based sync "task tracker" app.
-- **v1**: (Current) The task tracker app, now with flexible sync!
-- **v2**: (Upcoming) A todo app with a flexible sync backend that has a few new nifty features.
+- **v1**: (Deprecated) The task tracker app, now with flexible sync!
+- **v2**: (Current) A todo app with a flexible sync backend that has a few new nifty features.
 
 ## About "generated"
 
