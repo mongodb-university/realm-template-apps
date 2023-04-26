@@ -1,42 +1,28 @@
 import { ClientApi } from "./client-api";
+import atlasConfig from "./atlasConfig.json";
 
 /**
  * Connect to the MongoDB Atlas App Services Data API for your App.
  */
 export class DataApi {
-  static constructBaseUrl(appId, location) {
-    const { deployment_model, cloud, region } = location;
-    if (deployment_model === "LOCAL") {
-      return `https://${region}.${cloud}.data.mongodb-api.com/app/${appId}/endpoint/data/v1/`;
-    } else {
-      return `https://data.mongodb-api.com/app/${appId}/endpoint/data/v1/`;
-    }
-  }
-
   /**
    * Create a new Data API client.
    * @param {object} config - The configuration for the Data API client.
    * @param {string} config.appId - The Client App ID of the App Services App to connect to, e.g. `myapp-abcde`.
-   * @param {string} [config.cloud] - The cloud provider to connect to. Required if `region` is specified.
-   * @param {string} [config.region] - The region to connect to. Required if `cloud` is specified.
    * @param {function} [config.onAuthChange] - A callback that's run with the latest auth state whenever the current user changes.
    * @example
    * const dataApi = new DataApi({
    *   appId: "myapp-abcde",
-   *   cloud: "aws",
-   *   region: "us-east-1",
    *   onAuthChange: (currentUser) => {
    *     console.log("The current user is now:", currentUser.id);
    *   }
    * });
    */
-  constructor({ appId, cloud, region, onAuthChange }) {
+  constructor({ appId, onAuthChange }) {
     this.appId = appId;
-    this.baseUrl = DataApi.constructBaseUrl(appId, { cloud, region });
+    this.baseUrl = atlasConfig.dataApiBaseUrl;
     this.client = new ClientApi({
       appId,
-      cloud,
-      region,
       onAuthChange: (newCurrentUser) => {
         this.currentUser = newCurrentUser;
         onAuthChange?.(this.currentUser);
@@ -135,8 +121,10 @@ export class DataApi {
     // If the current user access token is expired, try to refresh the
     // session and get a new access token.
     await this.client.refreshExpiredAccessToken();
-
-    const url = new URL(`action/${action}`, this.baseUrl).href;
+    const url = new URL(
+      `/app/${this.appId}/endpoint/data/v1/action/${action}`,
+      this.baseUrl
+    ).href;
     const resp = await fetch(url, {
       method: "POST",
       headers: {

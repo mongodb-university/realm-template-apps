@@ -34,7 +34,7 @@ export function removeValueAtIndex(arr, idx) {
 }
 
 export const createObjectId = () => {
-  return new Realm.BSON.ObjectID()
+  return new Realm.BSON.ObjectId()
 };
 
 export const getTodoId = (todo) => {
