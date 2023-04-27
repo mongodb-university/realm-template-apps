@@ -1,8 +1,8 @@
 import Realm from "realm";
 import { strict as assert } from "assert";
-import * as BSON from "BSON";
 import { app } from "./index.js";
 import { logInOrRegister } from "./logInOrRegister.js";
+import { getRealm } from "./getRealm.js";
 
 const ItemSchema = {
   name: "Item",
@@ -54,19 +54,9 @@ export const addCollaboratorsExample = async () => {
   );
 
   console.log("Opening synced realm for theAuthor");
-  const realm = await Realm.open({
+  const realm = await getRealm({
+    user: theAuthor,
     schema: [ItemSchema],
-    sync: {
-      user: theAuthor,
-      flexible: true,
-      error: (session, error) => {
-        console.error("Is connected:", session.isConnected());
-        console.error("Error:", error);
-      },
-      clientReset: {
-        mode: "manual",
-      },
-    },
   });
 
   console.log("Subscribing to theAuthor's items");
@@ -79,7 +69,7 @@ export const addCollaboratorsExample = async () => {
   realm.write(() => {
     realm.deleteAll();
     realm.create("Item", {
-      _id: new BSON.ObjectID(),
+      _id: new Realm.BSON.ObjectId(),
       owner_id: theAuthor.id,
       name: "first item",
       collaborators: [theCollaborator.id],
@@ -96,19 +86,10 @@ export const addCollaboratorsExample = async () => {
   console.log("Switching to theCollaborator");
   app.switchUser(theCollaborator);
 
-  const realm2 = await Realm.open({
+
+  const realm2 = await getRealm({
+    user: theCollaborator,
     schema: [ItemSchema],
-    sync: {
-      user: theCollaborator,
-      flexible: true,
-      error: (session, error) => {
-        console.error("Is connected:", session.isConnected());
-        console.error("Error:", error);
-      },
-      clientReset: {
-        mode: "manual",
-      },
-    },
   });
 
   console.log("Subscribing to theCollaborator's items");

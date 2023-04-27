@@ -1,5 +1,5 @@
 // :state-start: tiered
-import * as BSON from "BSON";
+import Realm from "realm";
 import { logInOrRegister } from "./logInOrRegister.js";
 import { app } from "./index.js";
 import { getRealm } from "./getRealm.js";
@@ -72,10 +72,10 @@ const setUpAdmin = async () => {
 
   console.log("Adding admin as Admin on team 'greenTeam'");
   const adminFuncArgs = [admin.id, "greenTeam", true /* make admin */];
-  const adminFuncResult = await admin.callFunction("joinTeam", adminFuncArgs);
+  const adminFuncResult = await admin.functions.joinTeam(...adminFuncArgs);
   console.log(adminFuncResult);
 
-  // Refresh user data to validate that adminhood successfully granted
+  // Refresh user data to validate that admin status was successfully granted
   const customData = await admin.refreshCustomData();
   console.log("Custom data:", JSON.stringify(customData));
 
@@ -88,14 +88,14 @@ const setUpAdmin = async () => {
 
   console.log("Create items owned by admin");
   realm.write(() => {
-    adminDoc1Id = new BSON.ObjectID();
+    adminDoc1Id = new Realm.BSON.ObjectId();
     realm.create("Item", {
       _id: adminDoc1Id,
       owner_id: admin.id,
       name: "GreenTeam Admin created this",
       team: "greenTeam",
     });
-    adminDoc2Id = new BSON.ObjectID();
+    adminDoc2Id = new Realm.BSON.ObjectId();
     realm.create("Item", {
       _id: adminDoc2Id,
       owner_id: admin.id,
@@ -117,7 +117,7 @@ const setUpMember = async () => {
 
   console.log("Adding member as member of team 'greenTeam'");
   const funcArgs = [member.id, "greenTeam", false /* not admin */];
-  const funcResult = await member.callFunction("joinTeam", funcArgs);
+  const funcResult = await member.functions.joinTeam(...funcArgs);
   console.log(funcResult);
 
   console.log("Opening synced realm for member");
@@ -129,14 +129,14 @@ const setUpMember = async () => {
 
   console.log("Creating item owned by member");
   realm.write(() => {
-    memberDoc1Id = new BSON.ObjectID();
+    memberDoc1Id = new Realm.BSON.ObjectId();
     realm.create("Item", {
       _id: memberDoc1Id,
       owner_id: member.id,
       name: "GreenTeam Member created this",
       team: "greenTeam",
     });
-    memberDoc2Id = new BSON.ObjectID();
+    memberDoc2Id = new Realm.BSON.ObjectId();
     realm.create("Item", {
       _id: memberDoc2Id,
       owner_id: member.id,
@@ -171,7 +171,7 @@ const canAdminEdit = async () => {
   });
   const adminDoc1 = realm.objectForPrimaryKey("Item", adminDoc1Id);
 
-  console.log("GreenTeam Admin is editing GreenTeam Admin doc", adminDoc1._id);
+  console.log("GreenTeam Admin is editing GreenTeam Admin doc", adminDoc1._id.toHexString());
   try {
     realm.write(() => {
       adminDoc1.name += ", and GreenTeam Admin edited it!";
@@ -233,7 +233,7 @@ const canMemberEdit = async () => {
   }
 
   const adminDoc2 = realm.objectForPrimaryKey("Item", adminDoc2Id);
-  console.log("Member is editing GreenTeam Admin doc", adminDoc2);
+  console.log("Member is editing GreenTeam Admin doc", adminDoc2._id.toHexString());
   try {
     realm.write(() => {
       adminDoc2.name += ", and GreenTeam Member edited it!";
@@ -247,10 +247,13 @@ const canMemberEdit = async () => {
   } catch (e) {
     console.error("Failed to upload all changes: ", e.message);
   }
-  console.log(
-    "The console should show a message when failing to edit the Admin document. " +
-      "There should be 1 edited doc."
-  );
+
+  console.log([
+    "You should see an error message in the console directly above this text.",
+    "This was caused by a write that succeeded locally but was rejected by the server rules:",
+    "    Member does not have permissions to edit a document created by Admin.",
+    "There should be 1 edited document.",
+  ].join("\n"))
 
   realm.close();
   await member.logOut();
