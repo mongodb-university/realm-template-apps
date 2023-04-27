@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "flex-permissions-template-restricted-feed",
   "version": "0.0.0",
   "description": "",
   "main": "build/index.js",
@@ -18,7 +18,7 @@
     "commander": "^9.2.0",
     "fs": "^0.0.1-security",
     "inquirer": "^8.2.4",
-    "realm": "^10.0.0"
+    "realm": "^11.8.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.6",

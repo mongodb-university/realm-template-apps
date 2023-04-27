@@ -1,4 +1,4 @@
-import * as BSON from "BSON";
+import Realm from "realm";
 import { logInOrRegister } from "./logInOrRegister.js";
 import { getRealm } from "./getRealm.js";
 
@@ -10,7 +10,7 @@ const makeEmail = (name) => {
   if (reuseAccounts) {
     return `${name}@example.com`;
   }
-  return `${name}-${new BSON.ObjectID().toHexString()}@example.com`;
+  return `${name}-${new Realm.BSON.ObjectId().toHexString()}@example.com`;
 };
 
 const password = "password";
@@ -46,7 +46,7 @@ const setUpAuthor = async () => {
   restrictedFeedExample
   ---------------------
 
-  This function demonstrates the "restricted feed" permissions model. 
+  This function demonstrates the "restricted feed" permissions model.
 
   The demo logs in as two different users: "author" and "subscriber". The author
   creates two documents. The subscriber also creates two documents of their own,
@@ -84,12 +84,12 @@ const setUpAuthor = async () => {
     realm.deleteAll();
 
     realm.create("Item", {
-      _id: new BSON.ObjectID(),
+      _id: new Realm.BSON.ObjectId(),
       owner_id: author.id,
       name: "Author's first item",
     });
     realm.create("Item", {
-      _id: new BSON.ObjectID(),
+      _id: new Realm.BSON.ObjectId(),
       owner_id: author.id,
       name: "Author's second item",
     });
@@ -126,12 +126,12 @@ const setUpSubscriber = async () => {
   );
   realm.write(() => {
     realm.create("Item", {
-      _id: new BSON.ObjectID(),
+      _id: new Realm.BSON.ObjectId(),
       owner_id: subscriber.id,
       name: "Subscriber's first item",
     });
     realm.create("Item", {
-      _id: new BSON.ObjectID(),
+      _id: new Realm.BSON.ObjectId(),
       owner_id: subscriber.id,
       name: "Subscriber's second item",
     });
@@ -141,9 +141,7 @@ const setUpSubscriber = async () => {
   realm.close();
 
   console.log("Subscribing to Author's feed.");
-  const result = await subscriber.callFunction("subscribeToUser", [
-    authorAccount.email,
-  ]);
+  const result = await subscriber.functions.subscribeToUser(authorAccount.email);
   console.log(`Remote function call result: ${JSON.stringify(result)}`);
 
   await subscriber.logOut();

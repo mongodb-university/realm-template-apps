@@ -1,6 +1,0 @@
-{
-  "appId": "<your-app-id>",
-  "baseUrl": "https://realm.mongodb.com",
-  "appUrl": "https://realm.mongodb.com/groups/<your-group-id>/apps/<app-hash>/",
-  "dataSourceName": "mongodb-atlas"
-}
