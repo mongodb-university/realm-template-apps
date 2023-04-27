@@ -1,0 +1,42 @@
+name: Run web-js tests
+
+on:
+  pull_request:
+    paths:
+      - other/web-js/**
+
+jobs:
+  web-js-integration-test:
+    runs-on: ubuntu-latest
+    env:
+      CLUSTER_NAME: Cluster0
+    strategy:
+      fail-fast: false
+      matrix:
+        state: [prod-mql, prod-graphql, prod-data-api]
+        include:
+          - state: prod-mql
+            backend_dir: backend
+            test_backend_dir: backend-test
+          - state: prod-graphql
+            backend_dir: backend
+            test_backend_dir: backend-test
+          - state: prod-data-api
+            backend_dir: backend-data-api
+            test_backend_dir: backend-data-api-test
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Setup & Run Tests
+        working-directory: other/web-js
+        env:
+          ATLAS_PUBLIC_API_KEY: ${{ secrets.ATLAS_PUBLIC_API_KEY }}
+          ATLAS_PRIVATE_API_KEY: ${{ secrets.ATLAS_PRIVATE_API_KEY }}
+        run: |
+          bash ./integration-test.sh \
+            -d ${{ matrix.backend_dir }} \
+            -t ${{ matrix.test_backend_dir }} \
+            -s ${{ matrix.state }} \
+            -c ${{ env.CLUSTER_NAME }}
