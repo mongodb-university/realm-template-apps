@@ -1,0 +1,58 @@
+.App {
+  box-sizing: border-box;
+  margin: 0;
+  background: white;
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+.App-logo {
+  height: 6vmin;
+  pointer-events: none;
+}
+
+.link-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+.link-button:hover,
+.link-button:focus {
+  text-decoration: none;
+}
+
+.app-bar-title {
+  flex-grow: 1;
+}
+
+.main-container {
+  padding-top: 48px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 64px);
+}
+
+.todo-items-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}

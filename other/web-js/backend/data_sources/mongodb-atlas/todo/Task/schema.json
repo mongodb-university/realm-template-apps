@@ -4,7 +4,7 @@
         "_id": {
             "bsonType": "objectId"
         },
-        "_partition": {
+        "owner_id": {
             "bsonType": "string"
         },
         "isComplete": {
@@ -16,9 +16,9 @@
     },
     "required": [
         "_id",
-        "summary",
+        "owner_id",
         "isComplete",
-        "_partition"
+        "summary"
     ],
-    "title": "Task"
+    "title": "Item"
 }
