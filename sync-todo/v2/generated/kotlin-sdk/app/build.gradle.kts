@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    id("io.realm.kotlin") version "1.4.0"
+    id("io.realm.kotlin") version "1.8.0"
 }
 
 android {
@@ -43,5 +43,5 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.5.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation("io.realm.kotlin:library-sync:1.4.0") // DON'T FORGET TO UPDATE VERSION IN PROJECT GRADLE
+    implementation("io.realm.kotlin:library-sync:1.8.0") // DON'T FORGET TO UPDATE VERSION IN PROJECT GRADLE
 }
