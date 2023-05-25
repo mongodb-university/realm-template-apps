@@ -1,6 +1,7 @@
 name: Push Artifact - Web JS (MQL)
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
