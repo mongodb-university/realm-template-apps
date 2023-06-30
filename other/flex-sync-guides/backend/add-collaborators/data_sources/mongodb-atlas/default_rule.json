@@ -1,0 +1,39 @@
+{
+  "roles": [
+    {
+      "name": "collaborator",
+      "apply_when": {},
+      "document_filters": {
+        "read": {
+          "$or": [
+            {
+              "owner_id": "%%user.id"
+            },
+            {
+              "collaborators": {
+                "$all": ["%%user.id"]
+              }
+            }
+          ]
+        },
+        "write": {
+          "$or": [
+            {
+              "owner_id": "%%user.id"
+            },
+            {
+              "collaborators": {
+                "$all": ["%%user.id"]
+              }
+            }
+          ]
+        }
+      },
+      "read": true,
+      "write": true,
+      "insert": true,
+      "delete": true,
+      "search": true
+    }
+  ]
+}

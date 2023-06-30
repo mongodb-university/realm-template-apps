@@ -23,8 +23,8 @@ For bucket access, consult the Realm docs team.
 ## Sync-todo Versions
 
 - **v0**: (Deprecated) A partition-based sync "task tracker" app.
-- **v1**: (Current) The task tracker app, now with flexible sync!
-- **v2**: (Upcoming) A todo app with a flexible sync backend that has a few new nifty features.
+- **v1**: (Deprecated) The task tracker app, now with flexible sync!
+- **v2**: (Current) A todo app with a flexible sync backend that has a few new nifty features.
 
 ## About "generated"
 
@@ -38,9 +38,9 @@ A GitHub Action creates "artifact repos" of a few subdirectories so that the cli
 
 - https://github.com/mongodb/template-app-dart-flutter-todo
 - https://github.com/mongodb/template-app-kotlin-todo
+- https://github.com/mongodb/template-app-maui-todo
 - https://github.com/mongodb/template-app-react-native-todo
 - https://github.com/mongodb/template-app-swiftui-todo
-- https://github.com/mongodb/template-app-xamarin-todo
 
 ## Adding a New Template App
 

@@ -3,117 +3,57 @@
     "name": "Flexible Sync Todo App",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
-    "backend_path": "sync-todo/v1/backend"
-  },
-  "ios.swift.todo": {
-    "name": "iOS Swift Interface Builder Todo App",
-    "repo_owner": "mongodb-university",
-    "repo_name": "realm-template-apps",
-    "backend_path": "sync-todo/v0/backend",
-    "client_path": "sync-todo/v0/client/ios-swift",
-    "metadata_path": "sync-todo/v0/client/ios-swift/App",
-    "metadata_filename": "Realm",
-    "file_format": "plist"
-  },
-  "swiftui.todo": {
-    "name": "SwiftUI Todo App (Partition-based Sync)",
-    "repo_owner": "mongodb-university",
-    "repo_name": "realm-template-apps",
-    "backend_path": "sync-todo/v0/backend",
-    "client_path": "sync-todo/v0/client/swiftui-partition-based-sync",
-    "metadata_path": "sync-todo/v0/client/swiftui-partition-based-sync/App",
-    "metadata_filename": "Realm",
-    "file_format": "plist"
-  },
-  "swiftui.todo.flex": {
-    "name": "SwiftUI Todo App",
-    "repo_owner": "mongodb-university",
-    "repo_name": "realm-template-apps",
-    "backend_path": "sync-todo/v1/backend",
-    "client_path": "sync-todo/v1/generated/swiftui",
-    "metadata_path": "sync-todo/v1/generated/swiftui/App",
-    "metadata_filename": "Realm",
-    "file_format": "plist"
-  },
-  "android.kotlin.todo": {
-    "name": "Android Kotlin Todo App",
-    "repo_owner": "mongodb-university",
-    "repo_name": "realm-template-apps",
-    "backend_path": "sync-todo/v0/backend",
-    "client_path": "sync-todo/v0/client/android-kotlin",
-    "metadata_path": "sync-todo/v0/client/android-kotlin/app/src/main/res/values",
-    "metadata_filename": "realm",
-    "file_format": "xml"
-  },
-  "react-native.todo": {
-    "name": "React Native Todo App (Partition-based Sync)",
-    "repo_owner": "mongodb-university",
-    "repo_name": "realm-template-apps",
-    "backend_path": "sync-todo/v0/backend",
-    "client_path": "sync-todo/v0/client/react-native-partition-based-sync",
-    "metadata_path": "sync-todo/v0/client/react-native-partition-based-sync",
-    "metadata_filename": "realm",
-    "file_format": "json"
+    "backend_path": "sync-todo/v2/backend"
   },
   "react-native.todo.flex": {
-    "name": "React Native Todo App",
-    "repo_owner": "mongodb-university",
-    "repo_name": "realm-template-apps",
-    "backend_path": "sync-todo/v1/backend",
-    "client_path": "sync-todo/v1/generated/react-native",
-    "metadata_path": "sync-todo/v1/generated/react-native",
-    "metadata_filename": "realm",
-    "file_format": "json"
-  },
-  "react-native-ts.todo.flex": {
     "name": "React Native Todo App (TypeScript)",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
     "backend_path": "sync-todo/v2/backend",
-    "client_path": "sync-todo/v2/client/react-native",
-    "metadata_path": "sync-todo/v2/client/react-native",
-    "metadata_filename": "realm",
+    "client_path": "sync-todo/v2/generated/react-native",
+    "metadata_path": "sync-todo/v2/generated/react-native",
+    "metadata_filename": "atlasConfig",
     "file_format": "json"
   },
-  "xamarin.todo": {
-    "name": "Xamarin Todo App (Partition-based Sync)",
+  "maui.todo.flex": {
+    "name": ".NET MAUI Todo App",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
-    "backend_path": "sync-todo/v0/backend",
-    "client_path": "sync-todo/v0/client/xamarin-partition-based-sync",
-    "metadata_path": "sync-todo/v0/client/xamarin-partition-based-sync/realm-todo-dotnet",
-    "metadata_filename": "realm",
-    "file_format": "json"
-  },
-  "xamarin.todo.flex": {
-    "name": "Xamarin Todo App",
-    "repo_owner": "mongodb-university",
-    "repo_name": "realm-template-apps",
-    "backend_path": "sync-todo/v1/backend",
-    "client_path": "sync-todo/v1/generated/xamarin",
-    "metadata_path": "sync-todo/v1/generated/xamarin/realm-todo-dotnet",
-    "metadata_filename": "realm",
+    "backend_path": "sync-todo/v2/backend",
+    "client_path": "sync-todo/v2/generated/maui",
+    "metadata_path": "sync-todo/v2/generated/maui/RealmTodo",
+    "metadata_filename": "atlasConfig",
     "file_format": "json"
   },
   "flutter.todo.flex": {
     "name": "Flutter Todo App",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
-    "backend_path": "sync-todo/v1/backend",
-    "client_path": "sync-todo/v1/generated/flutter_todo",
-    "metadata_path": "sync-todo/v1/generated/flutter_todo/assets/config",
-    "metadata_filename": "realm",
+    "backend_path": "sync-todo/v2/backend",
+    "client_path": "sync-todo/v2/generated/flutter",
+    "metadata_path": "sync-todo/v2/generated/flutter/assets/config",
+    "metadata_filename": "atlasConfig",
     "file_format": "json"
   },
   "kotlin.todo.flex": {
     "name": "Kotlin Todo App",
     "repo_owner": "mongodb-university",
     "repo_name": "realm-template-apps",
-    "backend_path": "sync-todo/v1/backend",
-    "client_path": "sync-todo/v1/generated/kotlin-sdk",
-    "metadata_path": "sync-todo/v1/generated/kotlin-sdk/app/src/main/res/values",
-    "metadata_filename": "realm",
+    "backend_path": "sync-todo/v2/backend",
+    "client_path": "sync-todo/v2/generated/kotlin-sdk",
+    "metadata_path": "sync-todo/v2/generated/kotlin-sdk/app/src/main/res/values",
+    "metadata_filename": "atlasConfig",
     "file_format": "xml"
+  },
+  "swiftui.todo.flex": {
+    "name": "SwiftUI Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "sync-todo/v2/backend",
+    "client_path": "sync-todo/v2/generated/swiftui",
+    "metadata_path": "sync-todo/v2/generated/swiftui/App",
+    "metadata_filename": "atlasConfig",
+    "file_format": "plist"
   },
   "triggers": {
     "name": "Triggers Template",
@@ -128,7 +68,7 @@
     "backend_path": "other/web-js/backend",
     "client_path": "other/web-js/generated/prod-graphql",
     "metadata_path": "other/web-js/generated/prod-graphql/src",
-    "metadata_filename": "realm",
+    "metadata_filename": "atlasConfig",
     "file_format": "json"
   },
   "web.mql.todo": {
@@ -138,7 +78,17 @@
     "backend_path": "other/web-js/backend",
     "client_path": "other/web-js/generated/prod-mql",
     "metadata_path": "other/web-js/generated/prod-mql/src",
-    "metadata_filename": "realm",
+    "metadata_filename": "atlasConfig",
+    "file_format": "json"
+  },
+  "web.data-api.todo": {
+    "name": "Data API Todo Web App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "other/web-js/backend-data-api",
+    "client_path": "other/web-js/generated/prod-data-api",
+    "metadata_path": "other/web-js/generated/prod-data-api/src",
+    "metadata_filename": "atlasConfig",
     "file_format": "json"
   },
   "flex-sync-guides.add-collaborators": {
@@ -168,6 +118,66 @@
     "backend_path": "other/flex-sync-guides/backend/tiered",
     "client_path": "other/flex-sync-guides/generated/tiered",
     "metadata_path": "other/flex-sync-guides/generated/tiered/src",
+    "metadata_filename": "realm",
+    "file_format": "json"
+  },
+  "ios.swift.todo": {
+    "name": "iOS Swift Interface Builder Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "sync-todo/v0/backend",
+    "client_path": "sync-todo/v0/client/ios-swift",
+    "metadata_path": "sync-todo/v0/client/ios-swift/App",
+    "metadata_filename": "Realm",
+    "file_format": "plist"
+  },
+  "swiftui.todo": {
+    "name": "SwiftUI Todo App (Partition-based Sync)",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "sync-todo/v0/backend",
+    "client_path": "sync-todo/v0/client/swiftui-partition-based-sync",
+    "metadata_path": "sync-todo/v0/client/swiftui-partition-based-sync/App",
+    "metadata_filename": "Realm",
+    "file_format": "plist"
+  },
+  "android.kotlin.todo": {
+    "name": "Android Kotlin Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "sync-todo/v0/backend",
+    "client_path": "sync-todo/v0/client/android-kotlin",
+    "metadata_path": "sync-todo/v0/client/android-kotlin/app/src/main/res/values",
+    "metadata_filename": "realm",
+    "file_format": "xml"
+  },
+  "react-native.todo": {
+    "name": "React Native Todo App (Partition-based Sync)",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "sync-todo/v0/backend",
+    "client_path": "sync-todo/v0/client/react-native-partition-based-sync",
+    "metadata_path": "sync-todo/v0/client/react-native-partition-based-sync",
+    "metadata_filename": "realm",
+    "file_format": "json"
+  },
+  "xamarin.todo": {
+    "name": "Xamarin Todo App (Partition-based Sync)",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "sync-todo/v0/backend",
+    "client_path": "sync-todo/v0/client/xamarin-partition-based-sync",
+    "metadata_path": "sync-todo/v0/client/xamarin-partition-based-sync/realm-todo-dotnet",
+    "metadata_filename": "realm",
+    "file_format": "json"
+  },
+  "xamarin.todo.flex": {
+    "name": "Xamarin Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "sync-todo/v1/backend",
+    "client_path": "sync-todo/v1/generated/xamarin",
+    "metadata_path": "sync-todo/v1/generated/xamarin/realm-todo-dotnet",
     "metadata_filename": "realm",
     "file_format": "json"
   }

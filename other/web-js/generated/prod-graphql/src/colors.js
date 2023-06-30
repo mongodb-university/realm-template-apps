@@ -1,4 +1,4 @@
-import { green, purple, orange, red } from "@material-ui/core/colors";
+import { green, purple, orange, red, blue } from "@mui/material/colors";
 
 export const colors = {
   green: {
@@ -13,4 +13,5 @@ export const colors = {
   },
   orange,
   red,
+  blue,
 };
