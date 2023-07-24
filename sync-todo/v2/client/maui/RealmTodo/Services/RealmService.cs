@@ -23,13 +23,13 @@ namespace RealmTodo.Services
             }
 
             using Stream fileStream = await FileSystem.Current.OpenAppPackageFileAsync("atlasConfig.json");
-            using StreamReader reader = new StreamReader(fileStream);
+            using StreamReader reader = new(fileStream);
             var fileContent = await reader.ReadToEndAsync();
 
             var config = JsonSerializer.Deserialize<RealmAppConfig>(fileContent,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true});
 
-            var appConfiguration = new Realms.Sync.AppConfiguration(config.AppId)
+            var appConfiguration = new AppConfiguration(config.AppId)
             {
                 BaseUri = new Uri(config.BaseUrl)
             };
