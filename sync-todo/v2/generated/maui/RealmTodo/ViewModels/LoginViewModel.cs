@@ -1,10 +1,5 @@
-﻿using System;
-using System.Diagnostics;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Realms.Sync;
+﻿using CommunityToolkit.Mvvm.Input;
 using RealmTodo.Services;
-using RealmTodo.Views;
 
 namespace RealmTodo.ViewModels
 {
