@@ -24,6 +24,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="70" />
             <RowDefinition Height="60" />
+            <RowDefinition Height="60" />
         </Grid.RowDefinitions>
         <StackLayout Orientation="Horizontal"
                      BackgroundColor="#E3FCF7"
@@ -79,11 +80,27 @@
                 Command="{Binding AddItemCommand}"
             />
         </Border>
-        <Label Grid.Row="3"
-               Padding="10"
-               BackgroundColor="#E3FCF7"
-            Text="Log in with the same account on another device or simulator to see your list sync in real-time"
-            FontSize="Micro"
-            HorizontalTextAlignment="Center"/>
+        <Frame Grid.Row="3" Padding="10" BorderColor="Black" BackgroundColor="#E3FCF7" Margin="5">
+            <Label HorizontalTextAlignment="Center" >
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="To see your changes in Atlas, tap " />
+                        <Span Text="here"
+                              TextColor="Blue"
+                              TextDecorations="Underline">
+                        </Span>
+                        <Span Text="." />
+                    </FormattedString>
+                </Label.FormattedText>
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Path=BindingContext.UrlTapCommand, Source={x:Reference itemsPage}}" />
+                    </Label.GestureRecognizers>
+            </Label>
+        </Frame>
+        <Frame  Grid.Row="4" Padding="10" BorderColor="Black" BackgroundColor="#E3FCF7"  Margin="5">
+            <Label            Text="HINT: Log in with the same account on another device or simulator to see your list sync in real-time"
+                FontSize="Micro"
+                HorizontalTextAlignment="Center"/>
+        </Frame>
     </Grid>
 </ContentPage>

@@ -15,6 +15,8 @@ namespace RealmTodo.Services
 
         public static User CurrentUser => app.CurrentUser;
 
+        public static string DataExplorerLink;
+
         public static async Task Init()
         {
             if (serviceInitialised)
@@ -27,7 +29,7 @@ namespace RealmTodo.Services
             var fileContent = await reader.ReadToEndAsync();
 
             var config = JsonSerializer.Deserialize<RealmAppConfig>(fileContent,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true});
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             var appConfiguration = new AppConfiguration(config.AppId)
             {
@@ -37,6 +39,8 @@ namespace RealmTodo.Services
             app = Realms.Sync.App.Create(appConfiguration);
 
             serviceInitialised = true;
+
+            DataExplorerLink = config.DataExplorerLink;
         }
 
         public static Realm GetMainThreadRealm()
@@ -149,6 +153,8 @@ namespace RealmTodo.Services
         public string AppId { get; set; }
 
         public string BaseUrl { get; set; }
+
+        public string DataExplorerLink { get; set; }
     }
 }
 
