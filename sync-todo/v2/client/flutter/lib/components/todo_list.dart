@@ -1,10 +1,13 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/components/todo_item.dart';
 import 'package:flutter_todo/components/widgets.dart';
+import 'package:flutter_todo/main.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/realm_services.dart';
 import 'package:realm/realm.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TodoList extends StatefulWidget {
   const TodoList({Key? key}) : super(key: key);
@@ -14,6 +17,9 @@ class TodoList extends StatefulWidget {
 }
 
 class _TodoListState extends State<TodoList> {
+
+  final atlasUrl = Main.atlasUrl;
+
   @override
   void initState() {
     super.initState();
@@ -81,6 +87,26 @@ class _TodoListState extends State<TodoList> {
               context,
               child: Container(
                   margin: const EdgeInsets.fromLTRB(15, 0, 40, 15),
+                  child: RichText(text:
+                    TextSpan(
+                      children: [
+                const TextSpan(
+                  text: 'To see your changes in Atlas, ',
+                  style: TextStyle(color: Colors.black),
+                ),
+                       TextSpan( text: 'tap here.',
+                      style: const TextStyle(color: Color.fromARGB(255, 0, 98, 255)
+                      ),
+                      recognizer: TapGestureRecognizer()..onTap = () => _launchURL(),
+                    )]
+                  )
+              )
+            )
+            ),
+            styledBox(
+              context,
+              child: Container(
+                  margin: const EdgeInsets.fromLTRB(15, 0, 40, 15),
                   child: const Text(
                     "Log in with the same account on another device to see your list sync in realm-time.",
                     textAlign: TextAlign.left,
@@ -91,5 +117,14 @@ class _TodoListState extends State<TodoList> {
         realmServices.isWaiting ? waitingIndicator() : Container(),
       ],
     );
+  }
+
+_launchURL() async {
+    Uri _url = Uri.parse(atlasUrl);
+    if (await launchUrl(_url)) {
+      await launchUrl(_url);
+    } else {
+      throw 'Could not launch $_url';
+    }
   }
 }

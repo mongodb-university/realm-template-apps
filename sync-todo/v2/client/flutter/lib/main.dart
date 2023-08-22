@@ -8,12 +8,13 @@ import 'package:flutter_todo/realm/app_services.dart';
 import 'package:flutter_todo/screens/homepage.dart';
 import 'package:flutter_todo/screens/log_in.dart';
 
+dynamic realmConfig;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final realmConfig = json.decode(await rootBundle.loadString('assets/config/atlasConfig.json'));
+  realmConfig = json.decode(await rootBundle.loadString('assets/config/atlasConfig.json'));
   String appId = realmConfig['appId'];
   Uri baseUrl = Uri.parse(realmConfig['baseUrl']);
-
 
   return runApp(MultiProvider(providers: [
     ChangeNotifierProvider<AppServices>(create: (_) => AppServices(appId, baseUrl)),
@@ -23,12 +24,15 @@ void main() async {
         update: (BuildContext context, AppServices appServices, RealmServices? realmServices) {
           return appServices.app.currentUser != null ? RealmServices(appServices.app) : null;
         }),
-  ], child: const App()));
+  ], child: const Main()));
 }
 
-class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+class Main extends StatelessWidget {
+  
+  static String atlasUrl = realmConfig['dataExplorerLink'];
 
+  const Main({Key? key}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     final currentUser = Provider.of<RealmServices?>(context, listen: false)?.currentUser;
