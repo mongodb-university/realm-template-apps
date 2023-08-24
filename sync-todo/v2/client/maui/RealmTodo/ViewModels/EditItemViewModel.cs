@@ -50,7 +50,7 @@ namespace RealmTodo.ViewModels
                     });
                 }
             });
-
+            Console.WriteLine($"To view your data in Atlas, use this link: {RealmService.DataExplorerLink}");
             await Shell.Current.GoToAsync("..");
         }
 

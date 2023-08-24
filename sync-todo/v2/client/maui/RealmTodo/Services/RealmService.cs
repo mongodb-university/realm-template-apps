@@ -41,6 +41,7 @@ namespace RealmTodo.Services
             serviceInitialised = true;
 
             DataExplorerLink = config.DataExplorerLink;
+            Console.WriteLine($"To view your data in Atlas, use this link: {DataExplorerLink}");
         }
 
         public static Realm GetMainThreadRealm()
