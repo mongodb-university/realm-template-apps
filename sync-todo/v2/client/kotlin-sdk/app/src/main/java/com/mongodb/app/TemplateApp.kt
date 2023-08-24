@@ -23,7 +23,7 @@ class TemplateApp: Application() {
                 .baseUrl(getString(R.string.realm_base_url))
                 .build()
         )
-
         Log.v(TAG(), "Initialized the App configuration for: ${app.configuration.appId}")
+        Log.v(TAG(),"To see your data in Atlas, follow this link:" + getString(R.string.dataExplorerLink))
     }
 }

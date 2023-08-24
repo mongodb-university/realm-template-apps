@@ -1,5 +1,6 @@
 package com.mongodb.app.ui.tasks
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -42,10 +43,12 @@ fun AddItemPrompt(viewModel: AddItemViewModel) {
             }
         },
         confirmButton = {
+            var link = stringResource(R.string.dataExplorerLink)
             Button(
                 colors = buttonColors(containerColor = Purple200),
                 onClick = {
                     viewModel.addTask()
+                    Log.v("TemplateApp","To see your data in Atlas, follow this link:"  + link)
                 }
             ) {
                 Text(stringResource(R.string.create))
