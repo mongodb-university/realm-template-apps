@@ -6,6 +6,7 @@ import RealmSwift
 struct AppConfig {
     var appId: String
     var baseUrl: String
+    var atlasUrl: String
 }
 
 /// Read the atlasConfig.plist file and store the app ID and baseUrl to use elsewhere.
@@ -20,5 +21,6 @@ func loadAppConfig() -> AppConfig {
     let atlasConfigPropertyList = try! PropertyListSerialization.propertyList(from: data, format: nil) as! [String: Any]
     let appId = atlasConfigPropertyList["appId"]! as! String
     let baseUrl = atlasConfigPropertyList["baseUrl"]! as! String
-    return AppConfig(appId: appId, baseUrl: baseUrl)
+    let atlasUrl = atlasConfigPropertyList["dataExplorerLink"]! as! String
+    return AppConfig(appId: appId, baseUrl: baseUrl, atlasUrl: atlasUrl)
 }

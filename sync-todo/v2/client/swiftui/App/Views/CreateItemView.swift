@@ -40,6 +40,9 @@ struct CreateItemView: View {
                     // ``isInCreateItemView`` variable to false to
                     // return to the ItemsView.
                     isInCreateItemView = false
+                    
+                    print("To see the changes in Atlas, open this link: " + theAppConfig.atlasUrl)
+                    
                 }) {
                     HStack {
                         Spacer()

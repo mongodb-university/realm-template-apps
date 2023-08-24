@@ -7,12 +7,17 @@ import RealmSwift
 /// to store and access app configuration details.
 let theAppConfig = loadAppConfig()
 
+let atlasUrl = theAppConfig.atlasUrl
+
 let app = App(id: theAppConfig.appId, configuration: AppConfiguration(baseURL: theAppConfig.baseUrl, transport: nil, localAppName: nil, localAppVersion: nil))
 
 @main
 struct realmSwiftUIApp: SwiftUI.App {
     @StateObject var errorHandler = ErrorHandler(app: app)
 
+    init(){
+        print("To see the changes in Atlas, open this link: " + theAppConfig.atlasUrl)
+    }
     var body: some Scene {
         WindowGroup {
             ContentView(app: app)
