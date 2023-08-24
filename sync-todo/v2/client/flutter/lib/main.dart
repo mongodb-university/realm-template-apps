@@ -35,6 +35,8 @@ class Main extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    print("To see your data in Atlas, follow this link:$atlasUrl");
+
     final currentUser = Provider.of<RealmServices?>(context, listen: false)?.currentUser;
 
     return WillPopScope(

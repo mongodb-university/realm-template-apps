@@ -23,6 +23,7 @@ class _TodoListState extends State<TodoList> {
   @override
   void initState() {
     super.initState();
+    print("To see your data in Atlas, follow this link:$atlasUrl");
   }
 
   @override
