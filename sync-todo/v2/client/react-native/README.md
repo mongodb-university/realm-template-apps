@@ -28,7 +28,7 @@ Ensure `atlasConfig.json` exists and contains the following properties:
 
 The easiest way to use this template app is to log on to [Atlas App Services](https://realm.mongodb.com/) and click the **Create App From Template** button. Choose 
 **Real Time Sync**, and then follow the prompts. While the backend app is being 
-created, you can download this Flutter template app pre-configured for your new 
+created, you can download this React Native template app pre-configured for your new 
 app.
 
 ### Cloning from GitHub

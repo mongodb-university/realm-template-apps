@@ -1,8 +1,8 @@
 ﻿# Maui C# Template App
 
-A todo list application built with the [.NET Flutter SDK](https://www.mongodb.com/docs/realm/sdk/dotnet/) and [Atlas Device Sync](https://www.mongodb.com/docs/atlas/app-services/sync/).
+A todo list application built with the [.NET SDK](https://www.mongodb.com/docs/realm/sdk/dotnet/) and [Atlas Device Sync](https://www.mongodb.com/docs/atlas/app-services/sync/).
 
-You can follow along with the [Flutter Tutorial](https://www.mongodb.com/docs/atlas/app-services/tutorial/dotnet/) to see how to build, modify, and 
+You can follow along with the [MAUI Tutorial](https://www.mongodb.com/docs/atlas/app-services/tutorial/dotnet/) to see how to build, modify, and 
 run this template app.
 
 ## Configuration
@@ -22,7 +22,7 @@ You will need to change the value of `appId` value with your App Services App ID
 
 The easiest way to use this template app is to log on to [Atlas App Services](https://realm.mongodb.com/) and click the **Create App From Template** button. Choose 
 **Real Time Sync**, and then follow the prompts. While the backend app is being 
-created, you can download this Flutter template app pre-configured for your new 
+created, you can download this MAUI template app pre-configured for your new 
 app.
 
 ### Cloning from GitHub

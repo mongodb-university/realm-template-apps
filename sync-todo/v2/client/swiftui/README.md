@@ -1,6 +1,6 @@
 # SwiftUI Template App
 
-A todo list application built with the [SwiftUI SDK](https://www.mongodb.com/docs/realm/sdk/swift/) and [Atlas Device Sync](https://www.mongodb.com/docs/atlas/app-services/sync/).
+A todo list application built with the [Realm Swift SDK](https://www.mongodb.com/docs/realm/sdk/swift/) and [Atlas Device Sync](https://www.mongodb.com/docs/atlas/app-services/sync/).
 
 You can follow along with the [SwiftUI Tutorial](https://www.mongodb.com/docs/atlas/app-services/tutorial/swiftui/) to see how to build, modify, and 
 run this template app.
@@ -18,7 +18,7 @@ For this template app to work, you must ensure that `App/atlasConfig.plist` exis
 
 The easiest way to use this template app is to log on to [Atlas App Services](https://realm.mongodb.com/) and click the **Create App From Template** button. Choose 
 **Real Time Sync**, and then follow the prompts. While the backend app is being 
-created, you can download this Flutter template app pre-configured for your new 
+created, you can download this SwiftUI template app pre-configured for your new 
 app.
 
 ### Cloning from GitHub

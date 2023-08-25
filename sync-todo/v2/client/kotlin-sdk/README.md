@@ -7,7 +7,7 @@ run this template app.
 
 ## Configuration
 
-For this template app to work, you must ensure that `kotlin-sdk/app/src/main/res/values/atlasConfig.xml` exists and contains the following properties:
+For this template app to work, you must ensure that `/app/src/main/res/values/atlasConfig.xml` exists and contains the following properties:
 
 - **appId:** your Atlas App Services App ID.
 - **baseUrl:** the App Services backend URL. This should be https://realm.mongodb.com in most cases.
@@ -16,7 +16,7 @@ For this template app to work, you must ensure that `kotlin-sdk/app/src/main/res
 
 The easiest way to use this template app is to log on to [Atlas App Services](https://realm.mongodb.com/) and click the **Create App From Template** button. Choose 
 **Real Time Sync**, and then follow the prompts. While the backend app is being 
-created, you can download this Flutter template app pre-configured for your new 
+created, you can download this Kotlin  template app pre-configured for your new 
 app.
 
 ### Cloning from GitHub
