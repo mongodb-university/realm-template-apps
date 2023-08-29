@@ -15,9 +15,6 @@ let app = App(id: theAppConfig.appId, configuration: AppConfiguration(baseURL: t
 struct realmSwiftUIApp: SwiftUI.App {
     @StateObject var errorHandler = ErrorHandler(app: app)
 
-    init(){
-        print("To see the changes in Atlas, open this link: " + theAppConfig.atlasUrl)
-    }
     var body: some Scene {
         WindowGroup {
             ContentView(app: app)
@@ -26,6 +23,11 @@ struct realmSwiftUIApp: SwiftUI.App {
                     Button("OK", role: .cancel) { errorHandler.error = nil }
                 } message: {
                     Text(errorHandler.error?.localizedDescription ?? "")
+                }
+                .onAppear {
+                    if let atlasUrl = atlasUrl {
+                        print("To view your data in Atlas, go to this link: " + atlasUrl)
+                    }
                 }
         }
     }

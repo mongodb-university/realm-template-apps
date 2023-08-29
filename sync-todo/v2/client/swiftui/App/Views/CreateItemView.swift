@@ -41,7 +41,9 @@ struct CreateItemView: View {
                     // return to the ItemsView.
                     isInCreateItemView = false
                     
-                    print("To see the changes in Atlas, open this link: " + theAppConfig.atlasUrl)
+                    if let atlasUrl = atlasUrl {
+                        print("To see your new item in Atlas, go to this link: " + atlasUrl)
+                    }
                     
                 }) {
                     HStack {
