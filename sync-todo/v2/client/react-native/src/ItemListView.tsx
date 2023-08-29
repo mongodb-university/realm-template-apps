@@ -2,22 +2,17 @@ import React, {useCallback, useState, useEffect} from 'react';
 import {BSON} from 'realm';
 import {useUser} from '@realm/react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {
-  Alert,
-  FlatList,
-  RecyclerViewBackedScrollViewComponent,
-  StyleSheet,
-  Switch,
-  Text,
-  View,
-} from 'react-native';
+import {Alert, FlatList, StyleSheet, Switch, Text, View} from 'react-native';
 import {Button, Overlay, ListItem, Icon} from 'react-native-elements';
+import {dataExplorerLink} from '../atlasConfig.json';
 
 import {CreateToDoPrompt} from './CreateToDoPrompt';
 import {realmContext} from './RealmContext';
 
 import {Item} from './ItemSchema';
 import {COLORS} from './Colors';
+
+const dataExplorerMessage = `View your data in MongoDB Atlas: ${dataExplorerLink}.`;
 
 const {useRealm, useQuery} = realmContext;
 
@@ -64,6 +59,8 @@ export function ItemListView() {
     ({summary}: {summary: string}) => {
       // if the realm exists, create an Item
       realm.write(() => {
+        console.log(dataExplorerMessage);
+
         return new Item(realm, {
           summary,
           owner_id: user?.id,
@@ -85,6 +82,7 @@ export function ItemListView() {
           realm.write(() => {
             realm.delete(item);
           });
+          console.log(dataExplorerMessage);
         }
       }
     },
@@ -102,6 +100,7 @@ export function ItemListView() {
           realm.write(() => {
             item.isComplete = !item.isComplete;
           });
+          console.log(dataExplorerMessage);
         }
       }
     },
