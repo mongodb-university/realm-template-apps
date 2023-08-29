@@ -1,11 +1,23 @@
 # Realm Kotlin SDK Template App
 
+A todo list application built with the [Realm Kotlin SDK](https://www.mongodb.com/docs/realm/sdk/kotlin/) and [Atlas Device Sync](https://www.mongodb.com/docs/atlas/app-services/sync/).
+
+You can follow along with the [Kotlin Tutorial](https://www.mongodb.com/docs/atlas/app-services/tutorial/kotlin/) to see how to build, modify, and 
+run this template app.
+
 ## Configuration
 
-Ensure `app/src/main/res/values/atlasConfig.xml` exists and contains the following properties:
+For this template app to work, you must ensure that `/app/src/main/res/values/atlasConfig.xml` exists and contains the following properties:
 
-- **realm_app_id:** your Atlas App Services App ID.
-- **realm_base_url** the App Services backend URL. This should be https://realm.mongodb.com in most cases.
+- **appId:** your Atlas App Services App ID.
+- **baseUrl:** the App Services backend URL. This should be https://realm.mongodb.com in most cases.
+
+### Using the Atlas App Services UI
+
+The easiest way to use this template app is to log on to [Atlas App Services](https://realm.mongodb.com/) and click the **Create App From Template** button. Choose 
+**Real Time Sync**, and then follow the prompts. While the backend app is being 
+created, you can download this Kotlin template app pre-configured for your new 
+app.
 
 ### Cloning from GitHub
 
