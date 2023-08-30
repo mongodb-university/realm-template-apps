@@ -1,4 +1,5 @@
 <resources>
-  <string name="realm_app_id">sync-todo-v2-oxdgx</string>
+  <string name="realm_app_id">****</string>
   <string name="realm_base_url">https://realm.mongodb.com</string>
+  <string name="dataExplorerLink">https://cloud.mongodb.com/links/app_id/explorer/cluster_name/database/collection/find</string>
 </resources>

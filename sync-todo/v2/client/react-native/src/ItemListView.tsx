@@ -12,6 +12,10 @@ import {realmContext} from './RealmContext';
 import {Item} from './ItemSchema';
 import {COLORS} from './Colors';
 
+// If you're getting this app code by cloning the repository at
+// https://github.com/mongodb/ template-app-react-native-todo, 
+// it does not contain the data explorer link. Download the
+// app template from the Atlas UI to view a link to your data
 const dataExplorerMessage = `View your data in MongoDB Atlas: ${dataExplorerLink}.`;
 
 const {useRealm, useQuery} = realmContext;
