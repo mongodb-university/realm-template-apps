@@ -1,4 +1,5 @@
 {
   "appId": "realm-sync-tutorial-znmjk",
-  "baseUrl": "https://realm.mongodb.com"
+  "baseUrl": "https://realm.mongodb.com",
+  "dataExplorerLink": "https://cloud.mongodb.com/links/app_id/explorer/cluster_name/database/collection/find"
 }

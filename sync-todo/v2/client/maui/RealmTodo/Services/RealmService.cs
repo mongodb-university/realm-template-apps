@@ -40,6 +40,10 @@ namespace RealmTodo.Services
 
             serviceInitialised = true;
 
+            // If you're getting this app code by cloning the repository at
+            // https://github.com/mongodb/template-app-maui-todo, 
+            // it does not contain the data explorer link. Download the
+            // app template from the Atlas UI to view a link to your data.
             DataExplorerLink = config.DataExplorerLink;
             Console.WriteLine($"To view your data in Atlas, use this link: {DataExplorerLink}");
         }
@@ -155,6 +159,11 @@ namespace RealmTodo.Services
 
         public string BaseUrl { get; set; }
 
+
+        // If you're getting this app code by cloning the repository at
+        // https://github.com/mongodb/template-app-maui-todo, 
+        // it does not contain the data explorer link. Download the
+        // app template from the Atlas UI to view a link to your data.
         public string DataExplorerLink { get; set; }
     }
 }

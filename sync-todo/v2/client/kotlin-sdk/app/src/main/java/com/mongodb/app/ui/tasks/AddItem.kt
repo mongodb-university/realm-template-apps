@@ -43,6 +43,10 @@ fun AddItemPrompt(viewModel: AddItemViewModel) {
             }
         },
         confirmButton = {
+            // If you're getting this app code by cloning the repository at
+            // https://github.com/mongodb/template-app-kotlin-todo, 
+            // it does not contain the data explorer link. Download the
+            // app template from the Atlas UI to view a link to your data.
             var link = stringResource(R.string.dataExplorerLink)
             Button(
                 colors = buttonColors(containerColor = Purple200),
