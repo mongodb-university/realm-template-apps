@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo/components/todo_item.dart';
 import 'package:flutter_todo/components/widgets.dart';
-import 'package:flutter_todo/main.dart';
 import 'package:flutter_todo/realm/schemas.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/realm_services.dart';
@@ -10,20 +9,17 @@ import 'package:realm/realm.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TodoList extends StatefulWidget {
-  const TodoList({Key? key}) : super(key: key);
+  const TodoList({Key? key, required this.atlasUrl}) : super(key: key);
+  final String atlasUrl;
 
   @override
   State<TodoList> createState() => _TodoListState();
 }
 
 class _TodoListState extends State<TodoList> {
-
-  final atlasUrl = Main.atlasUrl;
-
   @override
   void initState() {
     super.initState();
-    print("To see your data in Atlas, follow this link:$atlasUrl");
   }
 
   @override
@@ -34,6 +30,10 @@ class _TodoListState extends State<TodoList> {
   @override
   Widget build(BuildContext context) {
     final realmServices = Provider.of<RealmServices>(context);
+    final atlasUrl = widget.atlasUrl;
+
+    print("To see your data in Atlas, follow this link:$atlasUrl");
+
     return Stack(
       children: [
         Column(
@@ -84,26 +84,23 @@ class _TodoListState extends State<TodoList> {
                 ),
               ),
             ),
-            styledBox(
-              context,
-              child: Container(
-                  margin: const EdgeInsets.fromLTRB(15, 0, 40, 15),
-                  child: RichText(text:
-                    TextSpan(
-                      children: [
-                const TextSpan(
-                  text: 'To see your changes in Atlas, ',
-                  style: TextStyle(color: Colors.black),
-                ),
-                       TextSpan( text: 'tap here.',
-                      style: const TextStyle(color: Color.fromARGB(255, 0, 98, 255)
+            styledBox(context,
+                child: Container(
+                    margin: const EdgeInsets.fromLTRB(15, 0, 40, 15),
+                    child: RichText(
+                        text: TextSpan(children: [
+                      const TextSpan(
+                        text: 'To see your changes in Atlas, ',
+                        style: TextStyle(color: Colors.black),
                       ),
-                      recognizer: TapGestureRecognizer()..onTap = () => _launchURL(),
-                    )]
-                  )
-              )
-            )
-            ),
+                      TextSpan(
+                        text: 'tap here.',
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 0, 98, 255)),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => launchURL(url: atlasUrl),
+                      )
+                    ])))),
             styledBox(
               context,
               child: Container(
@@ -120,12 +117,13 @@ class _TodoListState extends State<TodoList> {
     );
   }
 
-_launchURL() async {
-    Uri _url = Uri.parse(atlasUrl);
-    if (await launchUrl(_url)) {
-      await launchUrl(_url);
+  launchURL({required String url}) async {
+    Uri parsedUrl = Uri.parse(url);
+
+    if (url.isNotEmpty) {
+      await launchUrl(parsedUrl);
     } else {
-      throw 'Could not launch $_url';
+      throw 'Could not open $parsedUrl';
     }
   }
 }

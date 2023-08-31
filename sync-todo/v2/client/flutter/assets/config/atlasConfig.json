@@ -1,9 +1,6 @@
 {
-  "appId": "*******",
-  "appUrl": "******",
+  "appId": "sync-todo-v2-oxdgx",
   "baseUrl": "https://realm.mongodb.com",
-  "clientApiBaseUrl": "https://us-east-1.aws.realm.mongodb.com",
-  "dataApiBaseUrl": "https://us-east-1.aws.data.mongodb-api.com",
-  "dataExplorerLink": "https://cloud.mongodb.com/links/64b6f1b060268c145e14e376/explorer/Cluster0/database/collection/find",
+  "dataExplorerLink": "",
   "dataSourceName": "mongodb-atlas"
 }

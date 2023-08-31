@@ -12,32 +12,36 @@ dynamic realmConfig;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  realmConfig = json.decode(await rootBundle.loadString('assets/config/atlasConfig.json'));
+  realmConfig = json
+      .decode(await rootBundle.loadString('assets/config/atlasConfig.json'));
   String appId = realmConfig['appId'];
   Uri baseUrl = Uri.parse(realmConfig['baseUrl']);
 
   return runApp(MultiProvider(providers: [
-    ChangeNotifierProvider<AppServices>(create: (_) => AppServices(appId, baseUrl)),
+    ChangeNotifierProvider<AppServices>(
+        create: (_) => AppServices(appId, baseUrl)),
     ChangeNotifierProxyProvider<AppServices, RealmServices?>(
         // RealmServices can only be initialized only if the user is logged in.
         create: (context) => null,
-        update: (BuildContext context, AppServices appServices, RealmServices? realmServices) {
-          return appServices.app.currentUser != null ? RealmServices(appServices.app) : null;
+        update: (BuildContext context, AppServices appServices,
+            RealmServices? realmServices) {
+          return appServices.app.currentUser != null
+              ? RealmServices(appServices.app)
+              : null;
         }),
-  ], child: const Main()));
+  ], child: const App()));
 }
 
-class Main extends StatelessWidget {
-  
-  static String atlasUrl = realmConfig['dataExplorerLink'];
+class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
 
-  const Main({Key? key}) : super(key: key);
-  
   @override
   Widget build(BuildContext context) {
+    final String atlasUrl = realmConfig['dataExplorerLink'];
     print("To see your data in Atlas, follow this link:$atlasUrl");
 
-    final currentUser = Provider.of<RealmServices?>(context, listen: false)?.currentUser;
+    final currentUser =
+        Provider.of<RealmServices?>(context, listen: false)?.currentUser;
 
     return WillPopScope(
       onWillPop: () async => false,
@@ -45,10 +49,11 @@ class Main extends StatelessWidget {
         title: 'Realm Flutter Todo',
         theme: appThemeData(),
         initialRoute: currentUser != null ? '/' : '/login',
-        routes: {'/': (context) => const HomePage(), '/login': (context) => LogIn()},
+        routes: {
+          '/': (context) => HomePage(atlasUrl: atlasUrl),
+          '/login': (context) => LogIn()
+        },
       ),
     );
   }
 }
-
-
