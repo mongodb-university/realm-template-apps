@@ -98,7 +98,7 @@ class _TodoListState extends State<TodoList> {
                         style: const TextStyle(
                             color: Color.fromARGB(255, 0, 98, 255)),
                         recognizer: TapGestureRecognizer()
-                          ..onTap = () => launchURL(url: atlasUrl),
+                          ..onTap = () => _launchURL(url: atlasUrl),
                       )
                     ])))),
             styledBox(
