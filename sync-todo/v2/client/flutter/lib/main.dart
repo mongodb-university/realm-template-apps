@@ -8,13 +8,12 @@ import 'package:flutter_todo/realm/app_services.dart';
 import 'package:flutter_todo/screens/homepage.dart';
 import 'package:flutter_todo/screens/log_in.dart';
 
-dynamic realmConfig;
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  realmConfig = json
+  dynamic realmConfig = json
       .decode(await rootBundle.loadString('assets/config/atlasConfig.json'));
   String appId = realmConfig['appId'];
+  String atlasUrl = realmConfig['dataExplorerLink'];
   Uri baseUrl = Uri.parse(realmConfig['baseUrl']);
 
   return runApp(MultiProvider(providers: [
@@ -29,15 +28,15 @@ void main() async {
               ? RealmServices(appServices.app)
               : null;
         }),
-  ], child: const App()));
+  ], child: App(atlasUrl: atlasUrl)));
 }
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  const App({Key? key, required this.atlasUrl}) : super(key: key);
+  final String atlasUrl;
 
   @override
   Widget build(BuildContext context) {
-    final String atlasUrl = realmConfig['dataExplorerLink'];
     print("To see your data in Atlas, follow this link:$atlasUrl");
 
     final currentUser =
