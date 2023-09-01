@@ -32,7 +32,7 @@ class _TodoListState extends State<TodoList> {
     final realmServices = Provider.of<RealmServices>(context);
     final atlasUrl = widget.atlasUrl;
 
-    print("To see your data in Atlas, follow this link:$atlasUrl");
+    print("To see your data in Atlas, follow this link: $atlasUrl");
 
     return Stack(
       children: [
@@ -117,7 +117,7 @@ class _TodoListState extends State<TodoList> {
     );
   }
 
-  launchURL({required String url}) async {
+  _launchURL({required String url}) async {
     Uri parsedUrl = Uri.parse(url);
 
     if (url.isNotEmpty) {
