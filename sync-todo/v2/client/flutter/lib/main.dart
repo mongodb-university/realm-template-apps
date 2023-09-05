@@ -11,7 +11,7 @@ import 'package:flutter_todo/screens/log_in.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Config realmConfig = await Config.getConfig();
+  Config realmConfig = await Config.getConfig('assets/config/atlasConfig.json');
 
   return runApp(MultiProvider(providers: [
     ChangeNotifierProvider<Config>(create: (_) => realmConfig),
@@ -70,9 +70,9 @@ class Config extends ChangeNotifier {
     baseUrl = Uri.parse(realmConfig['baseUrl']);
   }
 
-  static Future<Config> getConfig() async {
-    dynamic realmConfig = json
-        .decode(await rootBundle.loadString('assets/config/atlasConfig.json'));
+  static Future<Config> getConfig(String jsonConfigPath) async {
+    dynamic realmConfig =
+        json.decode(await rootBundle.loadString(jsonConfigPath));
 
     var config = Config._create(realmConfig);
 
