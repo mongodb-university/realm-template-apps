@@ -6,8 +6,7 @@ import 'package:flutter_todo/components/app_bar.dart';
 import 'package:flutter_todo/realm/realm_services.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key, required this.atlasUrl}) : super(key: key);
-  final String atlasUrl;
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +14,7 @@ class HomePage extends StatelessWidget {
         ? Container()
         : Scaffold(
             appBar: TodoAppBar(),
-            body: TodoList(atlasUrl: atlasUrl),
+            body: const TodoList(),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.endDocked,
             floatingActionButton: const CreateItemAction(),

@@ -7,10 +7,10 @@ import 'package:provider/provider.dart';
 import 'package:flutter_todo/realm/realm_services.dart';
 import 'package:realm/realm.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../main.dart';
 
 class TodoList extends StatefulWidget {
-  const TodoList({Key? key, required this.atlasUrl}) : super(key: key);
-  final String atlasUrl;
+  const TodoList({Key? key}) : super(key: key);
 
   @override
   State<TodoList> createState() => _TodoListState();
@@ -30,7 +30,8 @@ class _TodoListState extends State<TodoList> {
   @override
   Widget build(BuildContext context) {
     final realmServices = Provider.of<RealmServices>(context);
-    final atlasUrl = widget.atlasUrl;
+    final String atlasUrl =
+        Provider.of<Config>(context, listen: false).atlasUrl;
 
     print("To see your data in Atlas, follow this link: $atlasUrl");
 
