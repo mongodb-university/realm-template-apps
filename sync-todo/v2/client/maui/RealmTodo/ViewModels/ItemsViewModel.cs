@@ -17,6 +17,9 @@ namespace RealmTodo.ViewModels
         [ObservableProperty]
         private IQueryable<Item> items;
 
+        [ObservableProperty]
+        public string dataExplorerLink = RealmService.DataExplorerLink;
+
         private Realm realm;
         private string currentUserId;
         private bool isOnline = true;
@@ -88,6 +91,12 @@ namespace RealmTodo.ViewModels
             }
 
             ConnectionStatusIcon = isOnline ? "wifi_on.png" : "wifi_off.png";
+        }
+
+        [RelayCommand]
+        public async Task UrlTap(string url)
+        {
+            await Launcher.OpenAsync(DataExplorerLink);
         }
 
         private async Task<bool> CheckItemOwnership(Item item)

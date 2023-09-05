@@ -2,7 +2,7 @@
 
 A todo list application built with the [Realm Flutter SDK](https://www.mongodb.com/docs/realm/sdk/flutter/) and [Atlas Device Sync](https://www.mongodb.com/docs/atlas/app-services/sync/).
 
-You can follow along with the [Flutter Tutorial](https://www.mongodb.com/docs/atlas/app-services/tutorial/flutter/) to see how to build, modify, and 
+You can follow along with the [Flutter Tutorial](https://www.mongodb.com/docs/atlas/app-services/tutorial/flutter/) to see how to build, modify, and
 run this template app.
 
 ## Configuration
@@ -14,9 +14,9 @@ For this template app to work, you must ensure that `/assets/config/atlasConfig.
 
 ### Using the Atlas App Services UI
 
-The easiest way to use this template app is to log on to [Atlas App Services](https://realm.mongodb.com/) and click the **Create App From Template** button. Choose 
-**Real Time Sync**, and then follow the prompts. While the backend app is being 
-created, you can download this Flutter template app pre-configured for your new 
+The easiest way to use this template app is to log on to [Atlas App Services](https://realm.mongodb.com/) and click the **Create App From Template** button. Choose
+**Real Time Sync**, and then follow the prompts. While the backend app is being
+created, you can download this Flutter template app pre-configured for your new
 app.
 
 ### Cloning from GitHub
