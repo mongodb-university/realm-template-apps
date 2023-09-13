@@ -10,12 +10,16 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomAppBar
@@ -29,13 +33,20 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.toMutableStateList
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.mongodb.app.data.MockRepository
 import com.mongodb.app.data.RealmSyncRepository
@@ -174,21 +185,64 @@ fun TaskListScaffold(
     subscriptionTypeViewModel: SubscriptionTypeViewModel,
     taskViewModel: TaskViewModel
 ) {
+    val annotatedLinkString = buildAnnotatedString {
+        val linkString = "To see your changes in Atlas, tap here."
+        val startIndex = linkString.indexOf("here")
+        val endIndex = startIndex + 4
+        append(linkString)
+        addStyle(
+            style = SpanStyle(
+                color = Color.Blue,
+                textDecoration = TextDecoration.Underline
+            ), start = startIndex, end = endIndex
+        )
+        addStringAnnotation(
+            tag = "URL",
+            annotation = stringResource(id = R.string.dataExplorerLink),
+            start = startIndex,
+            end = endIndex
+        )
+    }
+    val uriHandler = LocalUriHandler.current
+
     Scaffold(
         topBar = { TaskAppToolbar(toolbarViewModel) },
         bottomBar = {
             BottomAppBar(
                 containerColor = Color.LightGray
             ) {
-                Text(
-                    text = stringResource(R.string.sync_message),
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .align(CenterVertically),
-                    textAlign = TextAlign.Center,
-                    color = Color.Black
-                )
+                Box(
+                    modifier = Modifier.align(Alignment.Top)
+                        .padding(0.dp, 0.dp, 0.dp, 0.dp),
+                ) {
+                    ClickableText(
+                        modifier = Modifier
+                            .background(Color.LightGray)
+                            .padding(0.dp, 44.dp, 0.dp, 0.dp)
+                            .align(Alignment.BottomCenter)
+                            .fillMaxWidth(),
+                        text = annotatedLinkString,
+                        style = TextStyle(
+                            textAlign = TextAlign.Center,
+                            fontSize = 16.sp
+                        ),
+                        onClick = {
+                            annotatedLinkString
+                                .getStringAnnotations("URL", it, it)
+                                .firstOrNull()?.let { stringAnnotation ->
+                                    uriHandler.openUri(stringAnnotation.item)
+                                }
+                        }
+                    )
+                    Text(
+                        text = stringResource(R.string.sync_message),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.align(Alignment.TopCenter),
+                        color = Color.Black
+                    )
+                }
             }
+            Divider(color = Color.Black, modifier = Modifier.fillMaxWidth())
         },
         floatingActionButtonPosition = FabPosition.End,
         floatingActionButton = {
@@ -216,6 +270,7 @@ fun TaskListScaffold(
                 Divider(color = Color.Red, modifier = Modifier.fillMaxWidth())
                 ShowMyOwnTasks(subscriptionTypeViewModel, toolbarViewModel)
                 TaskList(repository, taskViewModel)
+
             }
         }
     )

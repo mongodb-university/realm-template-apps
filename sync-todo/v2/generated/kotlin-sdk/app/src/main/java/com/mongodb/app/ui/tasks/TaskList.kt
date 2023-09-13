@@ -1,5 +1,6 @@
 package com.mongodb.app.ui.tasks
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -19,18 +20,21 @@ fun TaskList(
     repository: SyncRepository,
     taskViewModel: TaskViewModel
 ) {
-    LazyColumn(
-        state = rememberLazyListState(),
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        val taskList = taskViewModel.taskListState
-        items(taskList.size) { index: Int ->
-            TaskItem(
-                taskViewModel,
-                ItemContextualMenuViewModel(repository, taskViewModel),
-                taskList[index]
-            )
-            Divider()
+    Column {
+        LazyColumn(
+            state = rememberLazyListState(),
+            modifier = Modifier.fillMaxWidth().weight(1F)
+        )
+        {
+            val taskList = taskViewModel.taskListState
+            items(taskList.size) { index: Int ->
+                TaskItem(
+                    taskViewModel,
+                    ItemContextualMenuViewModel(repository, taskViewModel),
+                    taskList[index]
+                )
+                Divider()
+            }
         }
     }
 }
