@@ -51,6 +51,11 @@ namespace RealmTodo.ViewModels
                 }
             });
 
+            // If you're getting this app code by cloning the repository at
+            // https://github.com/mongodb/template-app-maui-todo, 
+            // it does not contain the data explorer link. Download the
+            // app template from the Atlas UI to view a link to your data.
+            Console.WriteLine($"To view your data in Atlas, use this link: {RealmService.DataExplorerLink}");
             await Shell.Current.GoToAsync("..");
         }
 
