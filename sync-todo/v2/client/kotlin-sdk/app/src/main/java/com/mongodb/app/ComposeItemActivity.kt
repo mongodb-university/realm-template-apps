@@ -198,7 +198,7 @@ fun TaskListScaffold(
         )
         addStringAnnotation(
             tag = "URL",
-            annotation = stringResource(id = R.string.dataExplorerLink),
+            annotation = stringResource(id = R.string.realm_data_explorer_link),
             start = startIndex,
             end = endIndex
         )

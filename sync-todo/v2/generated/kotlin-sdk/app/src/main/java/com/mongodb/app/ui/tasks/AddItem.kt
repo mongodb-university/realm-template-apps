@@ -47,7 +47,7 @@ fun AddItemPrompt(viewModel: AddItemViewModel) {
             // https://github.com/mongodb/template-app-kotlin-todo, 
             // it does not contain the data explorer link. Download the
             // app template from the Atlas UI to view a link to your data.
-            var link = stringResource(R.string.dataExplorerLink)
+            var link = stringResource(R.string.realm_data_explorer_link)
             Button(
                 colors = buttonColors(containerColor = Purple200),
                 onClick = {
