@@ -1,4 +1,6 @@
 {
-  "appId": "PUT YOUR APP ID HERE",
-  "baseUrl": "https://realm.mongodb.com"
+  "appId": "sync-todo-v2-oxdgx",
+  "baseUrl": "https://realm.mongodb.com",
+  "dataExplorerLink": "",
+  "dataSourceName": "mongodb-atlas"
 }
