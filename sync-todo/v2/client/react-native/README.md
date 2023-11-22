@@ -1,79 +1,64 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# React Native Template App
 
-# Getting Started
+A todo list application built with the [React Native SDK](https://www.mongodb.com/docs/realm/sdk/react-native/) and [Atlas Device Sync](https://www.mongodb.com/docs/atlas/app-services/sync/).
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+You can follow along with the [React Native Tutorial](https://www.mongodb.com/docs/atlas/app-services/tutorial/react-native/) to see how to build, modify, and
+run this template app.
 
-## Step 1: Start the Metro Server
+## Prerequisites
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+- Make sure your system is setup to run a React Native application by following the [setup guide](https://reactnative.dev/docs/environment-setup)
+- Set up an Atlas account and [deploy a cluster](https://www.mongodb.com/docs/atlas/tutorial/deploy-free-tier-cluster/)
+- Set up an application in App Services.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+  - You can use the [`realm-cli`](https://www.mongodb.com/docs/atlas/app-services/cli/) to set up the backend and download a copy of this template:
 
-```bash
-# using npm
-npm start
+    ```
+    realm-cli apps create -n "<App Name>" --template "react-native.todo.flex"
+    ```
 
-# OR using Yarn
-yarn start
-```
+## Configuration
 
-## Step 2: Start your Application
+Ensure `atlasConfig.json` exists and contains the following properties:
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+- **appId:** your Atlas App Services App ID.
+- **baseUrl:** the App Services backend URL. This should be https://realm.mongodb.com in most cases.
 
-### For Android
+### Using the Atlas App Services UI
 
-```bash
-# using npm
-npm run android
+The easiest way to use this template app is to log on to [Atlas App Services](https://realm.mongodb.com/) and click the **Create App From Template** button. Choose
+**Real Time Sync**, and then follow the prompts. While the backend app is being
+created, you can download this React Native template app pre-configured for your new
+app.
 
-# OR using Yarn
-yarn android
-```
+### Cloning from GitHub
 
-### For iOS
+If you have cloned this repository from the GitHub
+[mongodb/template-app-react-native-todo](https://github.com/mongodb/template-app-react-native-todo.git)
+repository, you must create a separate App Services App with Device Sync
+enabled to use this client. You can find information about how to do this
+in the Atlas App Services documentation page:
+[Template Apps -> Create a Template App](https://www.mongodb.com/docs/atlas/app-services/reference/template-apps/)
 
-```bash
-# using npm
-npm run ios
+Once you have created the App Services App, replace any value in this client's
+`appId` field with your App Services App ID. For help finding this ID, refer
+to: [Find Your Project or App Id](https://www.mongodb.com/docs/atlas/app-services/reference/find-your-project-or-app-id/)
 
-# OR using Yarn
-yarn ios
-```
+### Download the Client as a Zip File
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+If you have downloaded this client as a .zip file from the Atlas App Services
+UI, it does not contain the App Services App ID. You must replace any value
+in this client's `appId` field in `atlasConfig.json` with your
+App Services App ID. For help finding this ID, refer to:
+[Find Your Project or App Id](https://www.mongodb.com/docs/atlas/app-services/reference/find-your-project-or-app-id/)
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+## How to Run the Application:
 
-## Step 3: Modifying your App
+- Make sure you are in this directory
+- `npm install`
+- `npx pod-install` if on Mac
+- `npm run ios` (or `npm run android`, if you have an emulator running. Note: If you have not set up your development environment for running react-native android apps, see: https://reactnative.dev/docs/environment-setup)
 
-Now that you have successfully run the app, let's modify it.
+## Issues
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+Please report issues with the template at https://github.com/mongodb-university/realm-template-apps/issues/new

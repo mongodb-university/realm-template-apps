@@ -1,0 +1,5 @@
+{
+  "appId": "js-flexible-oseso",
+  "baseUrl": "https://realm.mongodb.com",
+  "dataExplorerLink": "https://cloud.mongodb.com/links/app_id/explorer/cluster_name/database/collection/find"
+}
