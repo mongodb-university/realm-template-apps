@@ -96,9 +96,10 @@ your shell from the ``web-js`` project root:
 
    ./bluehawk.sh
 
-**NOTE:** The `bluehawk.sh` script relies on `jq`. If you don't have it,
-you can install by running `brew install jq` or by [downloading the
-binary](https://jqlang.github.io/jq/) and adding it to your path.
+**NOTE:** The `bluehawk.sh` script relies on `jq`. If you don't have it
+on your computer, you can install it by running `brew install jq` or by
+[downloading the binary](https://jqlang.github.io/jq/) and adding it to
+your path.
 
 Build & Run the Development App Locally
 ---------------------------------------
