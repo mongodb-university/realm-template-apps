@@ -96,10 +96,9 @@ your shell from the ``web-js`` project root:
 
    ./bluehawk.sh
 
-🧰 **Install Dependencies to Run Artifact Projects**: Bluehawk does not
-include ``node_modules`` when you generate an artifact project. If you
-want to run the generated code, you'll need to run `npm install` in the
-generated project directory first.
+**NOTE:** The `bluehawk.sh` script relies on `jq`. If you don't have it,
+you can install by running `brew install jq` or by [downloading the
+binary](https://jqlang.github.io/jq/) and adding it to your path.
 
 Build & Run the Development App Locally
 ---------------------------------------
@@ -118,6 +117,10 @@ needing to run Bluehawk to generate the artifact projects every time.
 
 1. Download & Install Dependencies
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Bluehawk does not include ``node_modules`` when you generate an artifact
+project. If you want to run the generated code, you'll need to run `npm
+install` in the generated project directory first.
 
 .. code-block:: sh
 
