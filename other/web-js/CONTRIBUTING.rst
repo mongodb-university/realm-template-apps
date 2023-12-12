@@ -89,30 +89,17 @@ the ``state-uncomment-start`` and ``state-uncomment-end`` tags:
 Generate the Artifact Projects
 ------------------------------
 
-To generate all of the artifact projects, run the following commands in your
-shell from the ``web-js`` project root:
+To generate all of the artifact projects, run the following command in
+your shell from the ``web-js`` project root:
 
 .. code-block:: sh
 
-   npm run generate:prod
+   ./bluehawk.sh
 
-You can also generate a specific artifact project:
-
-.. code-block:: sh
-
-   npm run generate:prod-graphql
-
-.. code-block:: sh
-
-   npm run generate:prod-mql
-
-.. code-block:: sh
-
-   npm run generate:prod-data-api
-
-🧰 **Install Dependencies to Run Artifact Projects**: Bluehawk does not include
-``node_modules`` when you generate an artifact project. If you want to run the
-generated code, you'll need to run `npm install` first.
+🧰 **Install Dependencies to Run Artifact Projects**: Bluehawk does not
+include ``node_modules`` when you generate an artifact project. If you
+want to run the generated code, you'll need to run `npm install` in the
+generated project directory first.
 
 Build & Run the Development App Locally
 ---------------------------------------
@@ -174,8 +161,8 @@ and deploy a copy for yourself:
 
 .. code-block:: sh
 
-   npx mongodb-realm-cli login
-   npx mongodb-realm-cli push --local backend
+   npx atlas-app-services-cli login
+   npx atlas-app-services-cli push --local backend
 
 4. Create a Metadata File
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -200,7 +187,7 @@ The result should look like the following but with values specific to your App:
      "dataApiBaseUrl": "https://data.mongodb-api.com"
    }
 
-4. Run the App
+5. Run the App
 ~~~~~~~~~~~~~~
 
 .. code-block:: sh
