@@ -56,7 +56,7 @@ to: [Find Your Project or App Id](https://www.mongodb.com/docs/atlas/app-service
 If you do not populate the `appId` field, the app will compile and run but you
 won't be able to create users or log in to Atlas.
 
-Replace any value in the `dataExplorerLink` field with your Atlas
+Add a field called `dataExplorerLink`, and populate it with your Atlas
 Data Explorer link. This link is similar to:
 
 ```
@@ -69,9 +69,16 @@ this ID, refer to: [Find your Atlas Project Id](https://www.mongodb.com/docs/atl
 Replace `YOUR-CLUSTER-NAME` with the name of your Atlas cluster. If you accept
 the default value when you create the cluster, the cluster name is `Cluster0`.
 
-If you do not populate the `dataExplorerLink` field, the app will compile and
-run but you will get an unhandled exception if you tap the link that says
-"To see your changes in Atlas, tap here."
+If you do not create a `dataExplorerLink` field, the app will throw the
+following error:
+
+```
+[ERROR:flutter/runtime/dart_vm_initializer.cc(41)] Unhandled Exception: type 'Null' is not a subtype of type 'String'
+```
+
+This only occurs when you clone the Flutter client from GitHub. It does not
+occur when you download the client from Atlas, because it comes pre-populated
+with the correct fields and values for your application.
 
 ## Getting Started
 
