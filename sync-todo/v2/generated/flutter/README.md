@@ -10,7 +10,7 @@ run this template app.
 For this template app to work, you must ensure that `/assets/config/atlasConfig.json` exists and contains the following properties:
 
 - **appId:** your Atlas App Services App ID.
-- **baseUrl:** the App Services backend URL. This should be https://realm.mongodb.com in most cases.
+- **baseUrl:** the App Services backend URL. This should be https://services.cloud.mongodb.com in most cases.
 - **dataExplorerLink:** the App Services Data Explorer URL. This should be similar to https://cloud.mongodb.com/links/<YOUR-ATLAS-PROJECT-ID>/explorer/<YOUR-CLUSTER-NAME>/database/collection/find
 
 ### Using the Atlas App Services UI

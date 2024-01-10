@@ -13,7 +13,7 @@ app_description=$(npx mongodb-realm-cli app describe | tail -n +2)
 APP_ID=$(jq -r '.client_app_id' <<< "$app_description")
 REALM_URL=$(jq -r '.realm_url' <<< "$app_description")
 
-DEPLOYMENT_REGEX='https:\/\/(((.+)\.(.+))\.)?realm.mongodb.com'
+DEPLOYMENT_REGEX='https:\/\/(((.+)\.(.+))\.)?services.cloud.mongodb.com'
 [[ $REALM_URL =~ $DEPLOYMENT_REGEX ]]
 REGION_DOT_CLOUD="${BASH_REMATCH[2]}"
 # REGION="${BASH_REMATCH[3]}"
@@ -33,7 +33,7 @@ metadata_file=$(
     --arg DATA_API_BASE_URL "$DATA_API_BASE_URL" \
     '{
       "appId": $APP_ID,
-      "baseUrl": "https://realm.mongodb.com",
+      "baseUrl": "https://services.cloud.mongodb.com",
       "appUrl": .realm_url | split("/") | del(.[] | select(. == "dashboard")) | join("/"),
       "dataSourceName": .data_sources[0].name,
       "clientApiBaseUrl": $CLIENT_API_BASE_URL,

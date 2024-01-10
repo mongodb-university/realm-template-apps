@@ -22,8 +22,6 @@ For bucket access, consult the Realm docs team.
 
 ## Sync-todo Versions
 
-- **v0**: (Deprecated) A partition-based sync "task tracker" app.
-- **v1**: (Deprecated) The task tracker app, now with flexible sync!
 - **v2**: (Current) A todo app with a flexible sync backend that has a few new nifty features.
 
 ## About "generated"
@@ -51,12 +49,13 @@ A GitHub Action creates "artifact repos" of a few subdirectories so that the cli
    `generated` directory.
 
 2. Be sure your project uses a `realm.json` file (or `.xml`, or `.plist`...) to
-   get the app id and base url info:
+   get the app id, base url info, and data explorer link:
 
    ```
    {
       "appId": "todo-sync-jxgjv",
-      "baseUrl": "https://realm.mongodb.com"
+      "baseUrl": "https://services.cloud.mongodb.com",
+      "dataExplorerLink": "https://cloud.mongodb.com/links/app_id/explorer/cluster_name/database/collection/find"
    }
    ```
 
