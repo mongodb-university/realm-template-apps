@@ -184,10 +184,10 @@ The result should look like the following but with values specific to your App:
 
    {
      "appId": "myapp-abcde",
-     "baseUrl": "https://realm.mongodb.com",
-     "appUrl": "https://realm.mongodb.com/groups/642da640aa2afcfdaada4834/apps/642da64426fda9654422da0e/",
+     "baseUrl": "https://services.cloud.mongodb.com",
+     "appUrl": "https://services.cloud.mongodb.com/groups/642da640aa2afcfdaada4834/apps/642da64426fda9654422da0e/",
      "dataSourceName": "mongodb-atlas",
-     "clientApiBaseUrl": "https://realm.mongodb.com",
+     "clientApiBaseUrl": "https://services.cloud.mongodb.com",
      "dataApiBaseUrl": "https://data.mongodb-api.com"
    }
 

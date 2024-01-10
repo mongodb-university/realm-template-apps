@@ -271,7 +271,7 @@ export class CredentialStorage {
  * {
  *   error: 'name already in use',
  *   error_code: 'AccountNameInUse',
- *   link: 'https://realm.mongodb.com/groups/{groupId}/apps/{appId}/logs?co_id=63f506d9d243efe65aa33430'
+ *   link: 'https://services.cloud.mongodb.com/groups/{groupId}/apps/{appId}/logs?co_id=63f506d9d243efe65aa33430'
  * }
  */
 export class ClientApiError extends Error {

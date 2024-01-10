@@ -8,5 +8,5 @@
   // :state-start: restricted-feed
   "appId": "flexsyncpermissions-jojzp",
   // :state-end:
-  "baseUrl": "https://realm.mongodb.com"
+  "baseUrl": "https://services.cloud.mongodb.com"
 }
