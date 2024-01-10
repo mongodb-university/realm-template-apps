@@ -1,4 +1,4 @@
 {
   "appId": "<your-app-id>",
-  "baseUrl": "https://realm.mongodb.com"
+  "baseUrl": "https://services.cloud.mongodb.com"
 }

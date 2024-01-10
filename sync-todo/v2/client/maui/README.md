@@ -12,7 +12,7 @@ The App ID is located in `atlasConfig.json`:
 ```json
 {
   "appId": "********",
-  "baseUrl": "https://realm.mongodb.com"
+  "baseUrl": "https://services.cloud.mongodb.com"
 }
 ```
 
@@ -20,7 +20,7 @@ You will need to change the value of `appId` value with your App Services App ID
 
 ### Using the Atlas App Services UI
 
-The easiest way to use this template app is to log on to [Atlas App Services](https://realm.mongodb.com/) and click the **Create App From Template** button. Choose 
+The easiest way to use this template app is to log on to [Atlas App Services](https://services.cloud.mongodb.com) and click the **Create App From Template** button. Choose 
 **Real Time Sync**, and then follow the prompts. While the backend app is being 
 created, you can download this MAUI template app pre-configured for your new 
 app.
