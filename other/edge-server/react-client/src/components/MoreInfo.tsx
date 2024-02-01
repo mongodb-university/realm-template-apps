@@ -13,7 +13,7 @@ function MoreInfoItem({ children }: { children: React.ReactNode }) {
 }
 
 export function MoreInfoDocsLink() {
-  const docsPath = "/docs/atlas/app-services/data-api/";
+  const docsPath = "docs/atlas/app-services/edge-server/";
   const docsLink = new URL(docsPath, "https://mongodb.com").toString();
   return (
     <MoreInfoItem>
