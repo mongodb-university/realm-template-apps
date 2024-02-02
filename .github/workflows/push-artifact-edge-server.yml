@@ -1,0 +1,19 @@
+name: Push Artifact - Edge Server
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "other/edge-server/**"
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/push-to-artifact-repo
+        with:
+          source: ./other/edge-server
+          destination_repo: mongodb/template-app-edge-server.git
+          access_token: ${{ secrets.ARTIFACT_REPO_ACCESS_TOKEN }}
