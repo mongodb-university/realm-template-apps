@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "other/edge-server/**"
+      - "other/edge-server/client/**"
 
 jobs:
   push:
