@@ -180,7 +180,8 @@ class CheckReporter {
       path,
       (contents) =>
         contents.includes("app_config.json") ||
-        contents.includes("realm_config.json"),
+        contents.includes("realm_config.json") ||
+        contents.includes("root_config.json"),
       `${path} does not appear to be a backend configuration`
     );
 }
