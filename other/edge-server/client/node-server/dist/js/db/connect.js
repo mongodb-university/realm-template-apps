@@ -12,8 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getTodoCollection = exports.connectToEdgeServer = void 0;
 const mongodb_1 = require("mongodb");
 const uri = process.env.EDGE_SERVER_URI;
-// const uri = "mongodb://localhost:27021";
-console.log(uri);
 const client = new mongodb_1.MongoClient(uri);
 const database = client.db("todo");
 const todos = database.collection("Item");
