@@ -1,21 +1,23 @@
 # Edge Server with MongoDB Node.js Driver
 
-This example todo application demonstrates using Edge Server with a MongoDB Driver. It uses the MongoDB Node.js Driver in an Express server application to connect to 
-Edge Server. It has a React frontend for performing CRUD operations. 
+This example todo application demonstrates using Edge Server with a MongoDB Driver. 
+It uses the [MongoDB Node.js Driver](https://www.mongodb.com/docs/drivers/node/current/) 
+in an Express server application to connect to Edge Server. It has a React 
+frontend for performing CRUD operations. 
 
 React client -> Express server (Node.js Driver) -> Edge Server -> Atlas
 
 To use this example application, you must:
 
-1. Create an App Services App that uses the configured backend provided in 
-  this project's ../backend directory.
+1. Create an App Services App based on the `edge-server.todo` template app, and 
+  get Edge Server enabled for your new app.
 2. Download, configure, and start the Edge Server.
 3. Install dependencies and start the Node.js Express server.
 4. Install dependencies and start the React server.
 
 This is a MERN stack that connects to the Edge Server instead of Atlas. 
-(Note that MongoDB wire protocol connections connect directly to Edge Server 
-without authorization.) 
+In this version of the example app, MongoDB wire protocol connections connect 
+directly to Edge Server without authorization. 
 
 For a MERN stack tutorial, refer to 
 [How to Use Mern Stack: A Complete Guide](https://www.mongodb.com/languages/mern-stack-tutorial).
@@ -26,13 +28,14 @@ Edge Server connects to Atlas through an App Services App backend.
 For this example application, you'll create an App Services App based on the 
 `edge-server.todo` template app. 
 
-This template app uses a backend with the following enabled: 
+This template app uses a backend with Atlas Device Sync enabled and configured with: 
 
-- Device Sync configured with:
-  - An already defined `Item` collection in a `todo` database
-  - A single default rule that allows *any* user to read or write Items to 
-    the collection
-- Anonymous authentication only
+- An already defined `Item` collection in a `todo` database
+- A single default rule that allows *any* user to read or write Items to 
+  the collection
+
+> **NOTE:** This example application is NOT interoperable with any of the Atlas 
+> Device SDK template apps. You must use the `edge-server.todo` template app. 
 
 ### Set up your MongoDB Atlas account
 
@@ -64,11 +67,13 @@ appservices login \
 --api-key <your-public-key> \
 --private-api-key <your-private-key>
 ```
+
 Create an app based on the `edge-server.todo` template using 
 [appservices apps create](https://www.mongodb.com/docs/atlas/app-services/cli/appservices-apps-create/). 
 
-The following creates a new app named "EdgeServerApp" that uses the 
-template's pre-configured backend: 
+The following creates an app named "EdgeServerApp" that uses the 
+template's pre-configured backend. The command creates a new `edgeserverapp` 
+directory in your current path containing the backend files: 
 
 ```shell 
 appservices app create \
@@ -101,8 +106,9 @@ App ID.
 ## Enable Edge Server for your App 
 
 After your App is created, coordinate with your Product or Account Representative 
-to enable Edge Server. You will need to provide the App Sevices App ID. 
+to enable Edge Server and generate an authorization secret for your app. 
 
+You will need to provide the App Sevices App ID. 
 If you don't know your App ID, you can get it from the CLI using: 
 
 ```shell 
