@@ -77,7 +77,7 @@ directory in your current path containing the backend files:
 
 ```shell 
 appservices app create \
---name  EdgeServerApp \
+--name EdgeServerApp \
 --template edge-server.todo
 ```
 
