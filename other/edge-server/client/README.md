@@ -1,38 +1,122 @@
 # Edge Server with MongoDB Node.js Driver
 
-This example application uses the MongoDB Node.js Driver to connect to 
-Edge Server. It has a React frontend for performing CRUD operations. It uses 
-the MongoDB Node.js Driver in an Express server application to connect to
-the Edge Server.
+This example todo application demonstrates using Edge Server with a MongoDB Driver. 
+It uses the [MongoDB Node.js Driver](https://www.mongodb.com/docs/drivers/node/current/) 
+in an Express server application to connect to Edge Server. It has a React 
+frontend for performing CRUD operations. 
 
 React client -> Express server (Node.js Driver) -> Edge Server -> Atlas
 
 To use this example application, you must:
 
-1. Create an App Services App using the backend configuration provided in
-  this project's [TODO: Cory insert directory name here] directory.
+1. Create an App Services App based on the `edge-server.todo` template app, and 
+  get Edge Server enabled for your new app.
 2. Download, configure, and start the Edge Server.
 3. Install dependencies and start the Node.js Express server.
 4. Install dependencies and start the React server.
 
-This is a MERN stack that connects to the Edge Server instead of Atlas. For
-a MERN stack tutorial, refer to 
+This is a MERN stack that connects to the Edge Server instead of Atlas. 
+In this version of the example app, MongoDB wire protocol connections connect 
+directly to Edge Server without authorization. 
+
+For a MERN stack tutorial, refer to 
 [How to Use Mern Stack: A Complete Guide](https://www.mongodb.com/languages/mern-stack-tutorial).
 
 ## Create an App Services App
 
-TODO: Cory to write instructions for creating the backend using the provided
-dir.
+Edge Server connects to Atlas through an App Services App backend. 
+For this example application, you'll create an App Services App based on the 
+`edge-server.todo` template app. 
 
-We should probably note:
+This template app uses a backend with Atlas Device Sync enabled and configured with: 
 
-- What things are enabled in this App backend (Sync, anonymous auth, only a 
-  default rule that is open to the internet)
-- Maybe how this differs from the sync-todo backend? I don't know if we want
-  to contrast it with using the Device SDK todo template app as it's slightly different
+- An already defined `Item` collection in a `todo` database
+- A single default rule that allows *any* user to read or write Items to 
+  the collection
 
-We may also want to note - maybe not here but maybe up above somewhere - that
-wireprotocol connections connect directly to Edge Server without authorization.
+> **NOTE:** This example application is NOT interoperable with any of the Atlas 
+> Device SDK template apps. You must use the `edge-server.todo` template app. 
+
+### Set up your MongoDB Atlas account
+
+You will need the following to create an App in the CLI:
+
+- A MongoDB Atlas account with Project Owner permissions. To learn how to 
+  sign up for a free account, refer to 
+  [Get Started with Atlas](https://www.mongodb.com/docs/atlas/getting-started).
+- A cluster deployed in your project. To learn how to deploy an M0 free 
+  cluster, refer to 
+  [Create a Cluster](https://www.mongodb.com/docs/atlas/tutorial/create-new-cluster/).
+- A project API key with Project Owner permissions. To learn how to create a 
+  key, refer to 
+  [Create an API Key for a Project](https://www.mongodb.com/docs/atlas/configure-api-access/#invite-an-organization-api-key-to-a-project).
+
+### Create an App with App Services CLI 
+
+Install [App Services CLI](https://www.mongodb.com/docs/atlas/app-services/cli/): 
+
+```shell
+npm install -g atlas-app-services-cli
+```
+
+Login with your API key using 
+[appservices login](https://www.mongodb.com/docs/atlas/app-services/cli/appservices-login/):
+
+```shell
+appservices login \
+--api-key <your-public-key> \
+--private-api-key <your-private-key>
+```
+
+Create an app based on the `edge-server.todo` template using 
+[appservices apps create](https://www.mongodb.com/docs/atlas/app-services/cli/appservices-apps-create/). 
+
+The following creates an app named "EdgeServerApp" that uses the 
+template's pre-configured backend. The command creates a new `edgeserverapp` 
+directory in your current path containing the backend files: 
+
+```shell 
+appservices app create \
+--name EdgeServerApp \
+--template edge-server.todo
+```
+
+If the app is created successfully, you should see a JSON
+blob that includes the generated `client_app_id` similar to:
+
+```shell
+{
+  "client_app_id": "edgeserverapp-abc123",
+  "filepath": "/current_path/edgeserverapp",
+  "url": "https://realm.mongodb.com/groups/1234567890abcdefghijk/apps/1234567890abcdefghijk/dashboard",
+  "backend": "/current_path/edgeserverapp/backend",
+  "clusters": [
+    {
+      "name": "mongodb-atlas"
+    }
+  ]
+}
+```
+
+You now have an App Services App with a configured backend and an App Services 
+App ID. 
+
+> **NOTE:** The `client_app_id` is your App Services App ID. You will need it later steps. 
+
+## Enable Edge Server for your App 
+
+After your App is created, coordinate with your Product or Account Representative 
+to enable Edge Server and generate an authorization secret for your app. 
+
+You will need to provide the App Sevices App ID. 
+If you don't know your App ID, you can get it from the CLI using: 
+
+```shell 
+appservices apps list 
+```
+
+For other ways to find your App Services App ID, refer to 
+[Find Your App ID](https://www.mongodb.com/docs/atlas/app-services/apps/metadata/#find-your-app-id)
 
 ## Download, configure, and start the Edge Server
 
@@ -67,7 +151,7 @@ You now have an `edge_server` directory containing the server files.
 The `edge_server` directory contains a `config.json` file you must edit with 
 the appropriate values to configure the server.
 
-Replace the `clientAppId` value with the App Services App ID for the App
+Replace the `clientAppId` value with the App Services App ID for the Edge Server-enabled App
 you created above. For information about how to find the App Sevices App ID,
 refer to 
 [Find Your App ID](https://www.mongodb.com/docs/atlas/app-services/apps/metadata/#find-your-app-id).
