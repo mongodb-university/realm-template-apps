@@ -14,7 +14,6 @@ For bucket access, consult the Realm docs team.
   whenever you want to expose a new app or move anything around.
 - **sync-todo/**: _The_ template app. Even though App Services can tie any app
   from this repo into the template app infrastructure, when people refer to
-
   "the template app", they usually mean this one. Comes in many clients and has
   had many versions.
 - **other/**: All other apps.

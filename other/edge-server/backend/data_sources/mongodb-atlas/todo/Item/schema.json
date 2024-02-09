@@ -1,0 +1,19 @@
+{
+    "title": "Item",
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "isComplete": {
+            "bsonType": "bool"
+        },
+        "summary": {
+            "bsonType": "string"
+        }
+    },
+    "required": [
+        "_id",
+        "isComplete",
+        "summary"
+    ]
+}
