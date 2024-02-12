@@ -22,6 +22,13 @@ directly to Edge Server without authorization.
 For a MERN stack tutorial, refer to 
 [How to Use Mern Stack: A Complete Guide](https://www.mongodb.com/languages/mern-stack-tutorial).
 
+For more information about Edge Server, refer to the 
+[Edge Server documentation](https://www.mongodb.com/docs/atlas/app-services/edge-server/).
+
+Atlas Edge Server is currently in Private Preview. To learn more about
+previewing Edge Server, refer to the product page at
+[Edge Server](https://www.mongodb.com/products/platform/atlas-edge-server).
+
 ## Create an App Services App
 
 Edge Server connects to Atlas through an App Services App backend. 
@@ -87,9 +94,10 @@ blob that includes the generated `client_app_id` similar to:
 ```shell
 {
   "client_app_id": "edgeserverapp-abc123",
-  "filepath": "/current_path/edgeserverapp",
+  "filepath": "/current_path/EdgeServerApp",
   "url": "https://realm.mongodb.com/groups/1234567890abcdefghijk/apps/1234567890abcdefghijk/dashboard",
   "backend": "/current_path/edgeserverapp/backend",
+  "frontends": "/Users/dachary.carey/temp/EdgeServerApp/frontend",
   "clusters": [
     {
       "name": "mongodb-atlas"
@@ -102,6 +110,15 @@ You now have an App Services App with a configured backend and an App Services
 App ID. 
 
 > **NOTE:** The `client_app_id` is your App Services App ID. You will need it later steps. 
+
+While Edge Server is in Private Preview, the `frontends` directory listed in
+the blob does not apply to this template. You can only get the Edge Server
+client from this GitHub repository: https://github.com/mongodb/template-app-edge-server/
+
+Additionally, the "View directions on how to run the template app:" text does
+not contain information about running the Edge Server template. You can view
+the Edge Server client README - this document you're currently viewing - for 
+those details.
 
 ## Enable Edge Server for your App 
 
@@ -295,7 +312,8 @@ and/or port in your `.env` file.
 
 ## Install dependencies and start the React server
 
-With the Edge Server running, cd into the `react-client` directory.
+With the Edge Server and the Express server running, cd into the `react-client` 
+directory.
 
 Install the required dependencies:
 
@@ -346,3 +364,7 @@ This can indicate two possible issues:
 - Edge Server isn't running
 
 Confirm that both servers are running and try again.
+
+## Issues
+
+Please report issues with the template at: https://github.com/mongodb-university/realm-template-apps/issues/new
