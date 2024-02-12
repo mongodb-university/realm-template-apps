@@ -365,6 +365,50 @@ This can indicate two possible issues:
 
 Confirm that both servers are running and try again.
 
+#### My new Item added in Atlas doesn't show up in the React client
+
+When you add a new `Item` in Atlas, it doesn't show up automatically in
+the React client. The client does not have a listener observing changes
+to the collection. You can manually reload the React client to view the
+new `Item`.
+
+If you reload the React client and it still doesn't show the new `Item`, 
+check:
+
+- The Edge Server is running
+- The Node.js Express server is running
+- The schema of the `Item` you added in Atlas matches the App Services Schema
+  for the Edge Server App, with required fields of the appropriate types:
+
+```json
+{
+  "title": "Item",
+  "properties": {
+    "_id": {
+      "bsonType": "objectId"
+    },
+    "isComplete": {
+      "bsonType": "bool"
+    },
+    "summary": {
+      "bsonType": "string"
+    }
+  },
+  "required": [
+    "_id",
+    "isComplete",
+    "summary"
+  ]
+}
+```
+
+If you've confirmed these details and you still don't see the new `Item`
+that you added in Atlas reflected in the React client, check the App Services
+logs and Edge Server for error messages.
+
+For information about how to check the App Services logs, refer to 
+[View Application Logs](https://www.mongodb.com/docs/atlas/app-services/activity/view-logs/)
+
 ## Issues
 
 Please report issues with the template at: https://github.com/mongodb-university/realm-template-apps/issues/new
