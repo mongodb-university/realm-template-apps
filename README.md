@@ -38,6 +38,7 @@ A GitHub Action creates "artifact repos" of a few subdirectories so that the cli
 - https://github.com/mongodb/template-app-maui-todo
 - https://github.com/mongodb/template-app-react-native-todo
 - https://github.com/mongodb/template-app-swiftui-todo
+- https://github.com/mongodb/template-app-edge-server
 
 ## Adding a New Template App
 
