@@ -72,7 +72,7 @@ Create an app based on the `edge-server.todo` template using
 [appservices apps create](https://www.mongodb.com/docs/atlas/app-services/cli/appservices-apps-create/). 
 
 The following creates an app named "EdgeServerApp" that uses the 
-template's pre-configured backend. The command creates a new `edgeserverapp` 
+template's pre-configured backend. The command creates a new `EdgeServerApp` 
 directory in your current path containing the backend files: 
 
 ```shell 
@@ -89,7 +89,8 @@ blob that includes the generated `client_app_id` similar to:
   "client_app_id": "edgeserverapp-abc123",
   "filepath": "/current_path/edgeserverapp",
   "url": "https://realm.mongodb.com/groups/1234567890abcdefghijk/apps/1234567890abcdefghijk/dashboard",
-  "backend": "/current_path/edgeserverapp/backend",
+  "backend": "/current_path/EdgeServerApp/backend",
+  "frontends": "/current_path/EdgeServerApp/frontend",
   "clusters": [
     {
       "name": "mongodb-atlas"
