@@ -25,19 +25,23 @@ endif()
 
 FetchContent_MakeAvailable(cpprealm ftxui)
 
-add_executable(sync_todo 
-  main.cpp
-  screens/authentication.cpp
-  screens/dashboard.cpp
-  screens/static-dashboard.cpp
-  data/auth-manager.cpp
+add_executable(sync_todo
+        main.cpp
+        screens/authentication.cpp
+        screens/options.cpp
+        screens/static-dashboard.cpp
+        data/auth-manager.cpp
+        data/item.hpp
+        data/item-manager.hpp
+        data/item-manager.cpp
+        screens/item-list.hpp
+        screens/item-list.cpp
+        data/item-manager.cpp
+        screens/scroller.hpp
+        screens/scroller.cpp
 )
 
 target_include_directories(sync_todo PRIVATE screens)
 
 target_link_libraries(sync_todo PRIVATE cpprealm)
-target_link_libraries(sync_todo 
-  PRIVATE ftxui::screen
-  PRIVATE ftxui::dom
-  PRIVATE ftxui::component
-)
+target_link_libraries(sync_todo PRIVATE ftxui::component)

@@ -1,13 +1,13 @@
-// #include <cpprealm/sdk.hpp>
-// #pragma once
+#include <cpprealm/sdk.hpp>
+#pragma once
 
-// class AuthManager {
-//   realm::App& localApp;
+class AuthManager {
+private:
+    std::shared_ptr<realm::App> _app;
 
-//  public:
-//   void AuthManager(realm::App);
-//   std::function<void()> registerAndLoginUser(const std::string userEmail,
-//                                              const std::string userPassword);
-//   std::function<void()> loginUser(const std::string userEmail,
-//                                   const std::string userPassword);
-// };
+public:
+    explicit AuthManager(std::shared_ptr<realm::App> app);
+    void registerAndLoginUser(std::string const userEmail, std::string const userPassword);
+    void loginUser(std::string const userEmail, std::string const userPassword);
+    void logoutUser();
+};

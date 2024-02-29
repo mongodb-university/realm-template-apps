@@ -1,4 +1,5 @@
 #include <cpprealm/sdk.hpp>
+#pragma once
 
 namespace realm {
 
