@@ -13,7 +13,7 @@
 
 Options g_options;
 Authentication g_authentication;
-//ItemList g_itemList;
+ItemList g_itemList;
 
 auto APP_ID = "INSERT-YOUR-APP-ID-HERE";
 
@@ -25,20 +25,22 @@ int main() {
             std::make_shared<AuthManager>(app);
 
     auto screen = ftxui::ScreenInteractive::FitComponent();
-    auto screenPtr = std::unique_ptr<ftxui::ScreenInteractive>();
+    // TODO: Remove depth, switch to Modal, use currentUser values in Renderer
     int depth = 0;
 
     auto currentUser = app->get_current_user();
 
-    auto optionsWindow = g_options.init(g_auth_manager, std::move(screenPtr));
+    auto optionsWindow = g_options.init(g_auth_manager, screen);
     auto authModal = g_authentication.init(g_auth_manager);
 
     if (currentUser.has_value() && currentUser->is_logged_in()) {
+        // Don't show modal because the user is logged in
         depth = 0;
         auto& user = *currentUser;
         auto syncConfig = user.flexible_sync_configuration();
-        //auto itemWindow = g_itemList.init(user, 0, 0);
+        auto itemWindow = g_itemList.init(user, 0, 0);
     } else {
+        // Do show modal because there is no logged-in user
         depth = 1;
     }
 
@@ -52,6 +54,11 @@ int main() {
     auto main_renderer = Renderer(main_container, [&] {
         ftxui::Element document = optionsWindow->Render();
 
+        if (currentUser.has_value() && !currentUser->is_logged_in()) {
+            depth = 1;
+        } else {
+            depth = 0;
+        }
         if (depth == 1) {
             document = ftxui::dbox({
                                     document,

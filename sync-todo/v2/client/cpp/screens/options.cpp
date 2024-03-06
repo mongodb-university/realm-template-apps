@@ -21,7 +21,7 @@ ftxui::Component VWrap(std::string name, ftxui::Component component) {
   });
 }
 
-ftxui::Component Options::init(std::shared_ptr<AuthManager> g_auth_manager, std::unique_ptr<ftxui::ScreenInteractive> screenPtr) {
+ftxui::Component Options::init(std::shared_ptr<AuthManager> g_auth_manager, ftxui::ScreenInteractive& screen) {
     // First row of options
     offlineModeSelection = 0;
     offlineModeOptions = {
@@ -49,7 +49,7 @@ ftxui::Component Options::init(std::shared_ptr<AuthManager> g_auth_manager, std:
     logoutButton = VWrap("Auth", logoutButton);
 
     quitButtonLabel = "Quit";
-    quitButton = ftxui::Button(&quitButtonLabel, [&]{ screenPtr->ExitLoopClosure(); });
+    quitButton = ftxui::Button(&quitButtonLabel, screen.ExitLoopClosure());
     quitButton = VWrap("Exit", quitButton);
 
     optionsLayout = ftxui::Container::Horizontal(

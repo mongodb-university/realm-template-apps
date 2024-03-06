@@ -7,9 +7,10 @@ private:
     std::string allItemSubscriptionName;
     std::string myItemSubscriptionName;
     realm::user mUser;
+    realm::results<realm::Item> *itemList;
 
 public:
-    realm::results<realm::Item> items;
+    //std::shared_ptr<realm::results<realm::Item>> itemList;
     int itemCount;
     int completedItemCount;
     int incompleteItemCount;
@@ -19,4 +20,5 @@ public:
     void addNew(std::string summary, bool isComplete, std::string userId);
     void remove(realm::managed<realm::Item> itemToDelete);
     void markComplete(realm::managed<realm::Item> itemToMarkComplete);
+    realm::results<realm::Item> *getItemList();
 };

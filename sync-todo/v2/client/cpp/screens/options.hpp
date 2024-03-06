@@ -32,5 +32,5 @@ private:
     ftxui::Component quitButton;
     ftxui::Component optionsLayout;
  public:
-  ftxui::Component init(std::shared_ptr<AuthManager> g_auth_manager, std::unique_ptr<ftxui::ScreenInteractive> screenPtr);
+  ftxui::Component init(std::shared_ptr<AuthManager> g_auth_manager, ftxui::ScreenInteractive& screen);
 };
