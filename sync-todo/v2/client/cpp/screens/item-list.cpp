@@ -24,7 +24,7 @@ ftxui::Component ItemList::init(realm::user mUser, int subscriptionSelection, in
 
     renderTasks = ftxui::Renderer([&] {
         ftxui::Elements tasks;
-        for (auto const &item: *itemList) {
+        for (auto const &item: itemList) {
             std::string completionString = (item.isComplete) ? " Complete " : " Incomplete ";
             std::string mineOrNot = (item.owner_id == mUser.identifier()) ? " Mine " : " Them ";
             auto taskRow = ftxui::hbox({
@@ -57,7 +57,7 @@ ftxui::Component ItemList::init(realm::user mUser, int subscriptionSelection, in
             // Get index of selected item in the scroller
             auto scrollerIndex = scroller->getScrollerIndex();
             // Get the matching managed Item from the Results set
-            auto managedItemAtIndex = (*itemList)[scrollerIndex];
+            auto managedItemAtIndex = itemList[scrollerIndex];
             // Delete the item from the database
             itemManager.remove(managedItemAtIndex);
             return true;
@@ -66,7 +66,7 @@ ftxui::Component ItemList::init(realm::user mUser, int subscriptionSelection, in
         // Mark items complete
         if (event == ftxui::Event::Character('c')) {
             auto scrollerIndex = scroller->getScrollerIndex();
-            auto managedItemAtIndex = (*itemList)[scrollerIndex];
+            auto managedItemAtIndex = itemList[scrollerIndex];
             itemManager.markComplete(managedItemAtIndex);
             return true;
         }

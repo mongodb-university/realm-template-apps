@@ -32,10 +32,9 @@ void ItemManager::init(realm::user mUser, int subscriptionSelection, int offline
     database.refresh();
 
     // Item manager.
-
+    databasePtr = std::make_shared<realm::db>(database);
     auto items = database.objects<realm::Item>();
-    itemList = nullptr;
-
+    itemList = std::make_shared<realm::results<realm::Item>>(items);
 
     //itemCount = items.size();
     //incompleteItemCount = items.where([](auto &thisItem) { return thisItem.isComplete == false; }).size();
@@ -49,24 +48,27 @@ void ItemManager::addNew(std::string summary, bool isComplete, std::string userI
         .summary = std::move(summary),
         .owner_id = std::move(userId),
     };
-    auto config = mUser.flexible_sync_configuration();
-    auto database = realm::db(std::move(config));
+//    auto config = mUser.flexible_sync_configuration();
+//    auto database = realm::db(std::move(config));
+    auto database = *databasePtr;
     database.write([&]{
         database.add(std::move(item));
     });
 }
 
 void ItemManager::remove(realm::managed<realm::Item> itemToDelete) {
-    auto config = mUser.flexible_sync_configuration();
-    auto database = realm::db(std::move(config));
+//    auto config = mUser.flexible_sync_configuration();
+//    auto database = realm::db(std::move(config));
+    auto database = *databasePtr;
     database.write([&]{
         database.remove(itemToDelete);
     });
 }
 
 void ItemManager::markComplete(realm::managed<realm::Item> itemToMarkComplete) {
-    auto config = mUser.flexible_sync_configuration();
-    auto database = realm::db(std::move(config));
+//    auto config = mUser.flexible_sync_configuration();
+//    auto database = realm::db(std::move(config));
+    auto database = *databasePtr;
     database.write([&]{
         if (itemToMarkComplete.isComplete == true) {
             itemToMarkComplete.isComplete = false;
@@ -76,32 +78,6 @@ void ItemManager::markComplete(realm::managed<realm::Item> itemToMarkComplete) {
     });
 }
 
-realm::results<realm::Item>* ItemManager::getItemList() {
-    if (itemList == nullptr) {
-        auto config = mUser.flexible_sync_configuration();
-        auto database = realm::db(std::move(config));
-        auto subscriptionSelection = 1;
-        database.subscriptions().update([&](realm::mutable_sync_subscription_set& subs) {
-            // If the `subscriptionSelection` is 1, the toggle for `My Items` is selected.
-            // Remove the subscription to all items.
-            if (subscriptionSelection == 1) {
-                subs.remove(allItemSubscriptionName);
-            } else if (!subs.find(myItemSubscriptionName)) {
-                // If there isn't yet a subscription for my own items, add it
-                subs.add<realm::Item>(myItemSubscriptionName,
-                                      [&](auto &item){
-                                          return item.owner_id == mUser.identifier();
-                                      });
-                // If the `showMyItems` toggle is not selected, and
-                // there isn't yet a subscription for all items, add it.
-                if (!subs.find(allItemSubscriptionName) && !subs.find(allItemSubscriptionName)) {
-                    subs.add<realm::Item>(allItemSubscriptionName);
-                }
-            }
-        }).get();
-
-        auto items = database.objects<realm::Item>();
-        itemList = &items;
-    }
-    return itemList;
+realm::results<realm::Item> ItemManager::getItemList() {
+    return *itemList.get();
 };

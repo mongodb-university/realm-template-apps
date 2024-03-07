@@ -39,10 +39,32 @@ int main() {
     auto optionsWindow = g_options.init(g_auth_manager, screen);
     auto authModal = g_authentication.init(g_auth_manager);
 
+    auto dashboardContainer = ftxui::Container::Vertical({
+                                                                 optionsWindow,
+                                                         });
+
+    auto dashboardRenderer = Renderer(dashboardContainer, [&] {
+        auto content = ftxui::vbox({
+                                           optionsWindow->Render(),
+                                   });
+        return window(ftxui::text(L" Todo Tracker "), content);
+    });
+
     if (currentUser.has_value() && currentUser->is_logged_in()) {
         auto& user = *currentUser;
-        auto syncConfig = user.flexible_sync_configuration();
-        //auto itemWindow = g_itemList.init(user, 0, 0);
+        auto itemWindow = g_itemList.init(user, 0, 0);
+        dashboardContainer = ftxui::Container::Vertical({
+                                                                     optionsWindow,
+                                                                     itemWindow
+                                                             });
+
+        dashboardRenderer = Renderer(dashboardContainer, [&] {
+            auto content = ftxui::vbox({
+                                               optionsWindow->Render(),
+                                               itemWindow->Render()
+                                       });
+            return window(ftxui::text(L" Todo Tracker "), content);
+        });
     } else {
         // Do show modal because there is no logged-in user
         depth = 1;
@@ -50,13 +72,16 @@ int main() {
 
     auto main_container = ftxui::Container::Tab(
             {
-                    optionsWindow,
+                    dashboardContainer,
                     authModal,
             },
             &depth);
 
     auto main_renderer = Renderer(main_container, [&] {
         ftxui::Element document = optionsWindow->Render();
+        if (currentUser.has_value()) {
+            document = dashboardRenderer->Render();
+        };
 
         if (!currentUser.has_value() || !currentUser->is_logged_in()) {
             depth = 1;
