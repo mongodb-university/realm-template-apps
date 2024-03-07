@@ -24,21 +24,25 @@ int main() {
     std::shared_ptr<AuthManager> g_auth_manager =
             std::make_shared<AuthManager>(app);
 
-    auto screen = ftxui::ScreenInteractive::FitComponent();
-    // TODO: Remove depth, switch to Modal, use currentUser values in Renderer
+    // Depth controls whether a modal is displayed over the main dashboard.
+    // For most startups, we will already have a logged-in user on the device,
+    // so assume no modal and go right to the dasbhoard.
+    // 0 = dashboard
+    // 1 = authModal
+    // TODO: 2 = errorModal
     int depth = 0;
 
+    // What's the right pattern to re-check this after logging in for the first time?
     auto currentUser = app->get_current_user();
 
+    auto screen = ftxui::ScreenInteractive::FitComponent();
     auto optionsWindow = g_options.init(g_auth_manager, screen);
     auto authModal = g_authentication.init(g_auth_manager);
 
     if (currentUser.has_value() && currentUser->is_logged_in()) {
-        // Don't show modal because the user is logged in
-        depth = 0;
         auto& user = *currentUser;
         auto syncConfig = user.flexible_sync_configuration();
-        auto itemWindow = g_itemList.init(user, 0, 0);
+        //auto itemWindow = g_itemList.init(user, 0, 0);
     } else {
         // Do show modal because there is no logged-in user
         depth = 1;
@@ -54,7 +58,7 @@ int main() {
     auto main_renderer = Renderer(main_container, [&] {
         ftxui::Element document = optionsWindow->Render();
 
-        if (currentUser.has_value() && !currentUser->is_logged_in()) {
+        if (!currentUser.has_value() || !currentUser->is_logged_in()) {
             depth = 1;
         } else {
             depth = 0;
