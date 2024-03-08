@@ -18,10 +18,11 @@ ItemList g_itemList;
 auto APP_ID = "INSERT-YOUR-APP-ID-HERE";
 
 int main() {
-    auto appConfig = realm::App::configuration();
-    appConfig.app_id = APP_ID;
+    auto appConfig = realm::App::configuration {
+        .app_id = APP_ID
+    };
     auto app = std::make_shared<realm::App>(appConfig);
-    std::shared_ptr<AuthManager> g_auth_manager =
+    auto authManager =
             std::make_shared<AuthManager>(app);
 
     // Depth controls whether a modal is displayed over the main dashboard.
@@ -36,8 +37,8 @@ int main() {
     auto currentUser = app->get_current_user();
 
     auto screen = ftxui::ScreenInteractive::FitComponent();
-    auto optionsWindow = g_options.init(g_auth_manager, screen);
-    auto authModal = g_authentication.init(g_auth_manager);
+    auto optionsWindow = g_options.init(authManager, screen);
+    auto authModal = g_authentication.init(authManager);
 
     auto dashboardContainer = ftxui::Container::Vertical({
                                                                  optionsWindow,
@@ -52,7 +53,7 @@ int main() {
 
     if (currentUser.has_value() && currentUser->is_logged_in()) {
         auto& user = *currentUser;
-        auto itemWindow = g_itemList.init(user, 0, 0);
+        auto itemWindow = g_itemList.init(user, 1, 0);
         dashboardContainer = ftxui::Container::Vertical({
                                                                      optionsWindow,
                                                                      itemWindow
@@ -61,7 +62,7 @@ int main() {
         dashboardRenderer = Renderer(dashboardContainer, [&] {
             auto content = ftxui::vbox({
                                                optionsWindow->Render(),
-                                               itemWindow->Render()
+                                               //itemWindow->Render()
                                        });
             return window(ftxui::text(L" Todo Tracker "), content);
         });

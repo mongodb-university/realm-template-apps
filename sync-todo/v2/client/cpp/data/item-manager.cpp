@@ -32,9 +32,9 @@ void ItemManager::init(realm::user mUser, int subscriptionSelection, int offline
     database.refresh();
 
     // Item manager.
-    databasePtr = std::make_shared<realm::db>(database);
-    auto items = database.objects<realm::Item>();
-    itemList = std::make_shared<realm::results<realm::Item>>(items);
+    databasePtr = std::make_unique<realm::db>(database);
+//    auto items = database.objects<realm::Item>();
+//    itemList = std::make_shared<realm::results<realm::Item>>(items);
 
     //itemCount = items.size();
     //incompleteItemCount = items.where([](auto &thisItem) { return thisItem.isComplete == false; }).size();
@@ -79,5 +79,6 @@ void ItemManager::markComplete(realm::managed<realm::Item> itemToMarkComplete) {
 }
 
 realm::results<realm::Item> ItemManager::getItemList() {
-    return *itemList.get();
+    auto items = databasePtr->objects<realm::Item>();
+    return items;
 };

@@ -7,15 +7,15 @@ private:
     std::string allItemSubscriptionName;
     std::string myItemSubscriptionName;
     realm::user mUser;
-    std::shared_ptr<realm::db> databasePtr;
-    std::shared_ptr<realm::results<realm::Item>> itemList;
+    std::unique_ptr<realm::db> databasePtr;
+    //std::shared_ptr<realm::results<realm::Item>> itemList;
 
 public:
     //std::shared_ptr<realm::results<realm::Item>> itemList;
-    int itemCount;
-    int completedItemCount;
-    int incompleteItemCount;
-    int myItemCount;
+//    int itemCount;
+//    int completedItemCount;
+//    int incompleteItemCount;
+//    int myItemCount;
 
     void init(realm::user mUser, int subscriptionSelection, int offlineModeSelection);
     void addNew(std::string summary, bool isComplete, std::string userId);

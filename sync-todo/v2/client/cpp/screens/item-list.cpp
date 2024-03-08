@@ -98,19 +98,19 @@ ftxui::Component ItemList::init(realm::user mUser, int subscriptionSelection, in
                              scrollerContainer->Render(),
                              ftxui::separator(),
                              ftxui::text("In the list, press 'c' to mark the selected item complete, 'd' to delete"),
-                             ftxui::separator(),
-                             ftxui::hbox({
-                                ftxui::vbox({ftxui::text(L" Completed   "), ftxui::text(std::to_string(itemManager.completedItemCount)) | ftxui::bold}) |
-                                color(ftxui::Color::Green),
-                                ftxui::vbox({ftxui::text(L" My Tasks    "), ftxui::text(std::to_string(itemManager.myItemCount)) | ftxui::bold}) |
-                                color(ftxui::Color::BlueLight),
-                                ftxui::vbox({ftxui::text(L" All Tasks   "), ftxui::text(std::to_string(itemManager.itemCount)) | ftxui::bold}) |
-                                color(ftxui::Color::YellowLight),
-                                ftxui::vbox({ftxui::text(L" Incomplete   "), ftxui::text(std::to_string(itemManager.incompleteItemCount)) | ftxui::bold}) |
-                                color(ftxui::Color::YellowLight),
-                                })
+//                             ftxui::separator(),
+//                             ftxui::hbox({
+//                                ftxui::vbox({ftxui::text(L" Completed   "), ftxui::text(std::to_string(itemManager.completedItemCount)) | ftxui::bold}) |
+//                                color(ftxui::Color::Green),
+//                                ftxui::vbox({ftxui::text(L" My Tasks    "), ftxui::text(std::to_string(itemManager.myItemCount)) | ftxui::bold}) |
+//                                color(ftxui::Color::BlueLight),
+//                                ftxui::vbox({ftxui::text(L" All Tasks   "), ftxui::text(std::to_string(itemManager.itemCount)) | ftxui::bold}) |
+//                                color(ftxui::Color::YellowLight),
+//                                ftxui::vbox({ftxui::text(L" Incomplete   "), ftxui::text(std::to_string(itemManager.incompleteItemCount)) | ftxui::bold}) |
+//                                color(ftxui::Color::YellowLight),
+//                                })
                      }) | ftxui::center;
-        return window(ftxui::text(L" Todo Tracker "), content);
+        return window(ftxui::text(L" Todo List "), content);
     });
     return mainRenderer;
 }
