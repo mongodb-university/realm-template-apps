@@ -1,11 +1,12 @@
 #include "item-manager.hpp"
 
-void ItemManager::init(realm::user mUser, int subscriptionSelection, int offlineModeSelection) {
+void ItemManager::init(realm::user* mUser, int subscriptionSelection, int offlineModeSelection) {
     // Sync configuration and sync subscription management.
     allItemSubscriptionName = "all_items";
     myItemSubscriptionName = "my_items";
 
-    auto config = mUser.flexible_sync_configuration();
+    // TODO: Change user to a reference
+    auto config = mUser->flexible_sync_configuration();
     // TODO: Make a pointer to this that I can pass to the methods that need to use the DB
     auto database = realm::db(std::move(config));
     database.subscriptions().update([&](realm::mutable_sync_subscription_set& subs) {
@@ -17,7 +18,7 @@ void ItemManager::init(realm::user mUser, int subscriptionSelection, int offline
             // If there isn't yet a subscription for my own items, add it
             subs.add<realm::Item>(myItemSubscriptionName,
                                   [&](auto &item){
-                return item.owner_id == mUser.identifier();
+                return item.owner_id == mUser->identifier();
             });
             // If the `showMyItems` toggle is not selected, and
             // there isn't yet a subscription for all items, add it.

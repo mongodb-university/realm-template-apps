@@ -9,15 +9,21 @@
 #include "./data/auth-manager.hpp"
 #include "./screens/authentication.hpp"
 #include "./screens/options.hpp"
-#include "./screens/item-list.hpp"
+//#include "./screens/item-list.hpp"
+#include "./data/item-manager.hpp"
+#include "./screens/scroller.hpp"
 
 Options g_options;
 Authentication g_authentication;
-ItemList g_itemList;
+//ItemList g_itemList;
+ItemManager itemManager;
 
 auto APP_ID = "INSERT-YOUR-APP-ID-HERE";
 
 int main() {
+    std::string newTaskSummary;
+    auto newTaskIsComplete = false;
+
     auto appConfig = realm::App::configuration {
         .app_id = APP_ID
     };
@@ -44,7 +50,7 @@ int main() {
                                                                  optionsWindow,
                                                          });
 
-    auto dashboardRenderer = Renderer(dashboardContainer, [&] {
+    auto dashboardRenderer = Renderer(dashboardContainer, [=] {
         auto content = ftxui::vbox({
                                            optionsWindow->Render(),
                                    });
@@ -53,16 +59,118 @@ int main() {
 
     if (currentUser.has_value() && currentUser->is_logged_in()) {
         auto& user = *currentUser;
-        auto itemWindow = g_itemList.init(user, 1, 0);
+        //auto itemWindow = g_itemList.init(user, 1, 0);
+
+        itemManager.init(&user, 0, 0);
+
+        //std::string newTaskSummary;
+        auto inputNewTaskSummary =
+                ftxui::Input(&newTaskSummary, "Enter new task summary");
+
+        //auto newTaskIsComplete = false;
+        auto newTaskCompletionStatus = ftxui::Checkbox("Complete", &newTaskIsComplete);
+
+        auto saveButton = ftxui::Button("Save", [&] {
+            itemManager.addNew(newTaskSummary, newTaskIsComplete, user.identifier());
+            newTaskSummary = "";
+        });
+
+        auto newTaskLayout = ftxui::Container::Horizontal(
+                {inputNewTaskSummary, newTaskCompletionStatus, saveButton});
+
+        // Lay out and render scrollable task list
+        // Shared pointer to items
+        auto itemList = itemManager.getItemList();
+
+        auto renderTasks = ftxui::Renderer([=]() mutable {
+            ftxui::Elements tasks;
+            for (auto &item: itemList) {
+                std::string completionString = (item.isComplete) ? " Complete " : " Incomplete ";
+                std::string mineOrNot = (item.owner_id == user.identifier()) ? " Mine " : " Them ";
+                auto taskRow = ftxui::hbox({
+                                                   ftxui::text(item.summary) | ftxui::flex,
+                                                   align_right(ftxui::text(completionString)),
+                                                   align_right(ftxui::text(mineOrNot))
+                                           }) | size(ftxui::WIDTH, ftxui::GREATER_THAN, 80);
+                tasks.push_back(taskRow);
+            }
+            auto content = vbox(std::move(tasks));
+            return content;
+        });
+
+        auto scroller = Scroller(renderTasks);
+
+        auto scrollerRenderer = Renderer(scroller, [=] {
+            return ftxui::vbox({
+                                       scroller->Render() | ftxui::flex,
+                               });
+        });
+
+        auto scrollerContainer = scrollerRenderer;
+        scrollerContainer =
+                Renderer(scrollerContainer, [=] { return scrollerContainer->Render() | ftxui::flex; });
+
+        // Handle keyboard events.
+        scrollerContainer = CatchEvent(scrollerContainer, [=](ftxui::Event const &event) mutable {
+            // Delete items from the database
+            if (event == ftxui::Event::Character('d')) {
+                // Get index of selected item in the scroller
+                auto scrollerIndex = scroller->getScrollerIndex();
+                // Get the matching managed Item from the Results set
+                auto managedItemAtIndex = itemList[scrollerIndex];
+                // Delete the item from the database
+                itemManager.remove(managedItemAtIndex);
+                return true;
+            }
+
+            // Mark items complete
+            if (event == ftxui::Event::Character('c')) {
+                auto scrollerIndex = scroller->getScrollerIndex();
+                auto managedItemAtIndex = itemList[scrollerIndex];
+                itemManager.markComplete(managedItemAtIndex);
+                return true;
+            }
+            return false;
+        });
+
+        // Lay out and render the dashboard
+        ftxui::Element taskTableHeaderRow = ftxui::hbox({
+                                                                ftxui::text(L" Summary ") | ftxui::flex | ftxui::bold,
+                                                                align_right(ftxui::text(L" Status ")),
+                                                                align_right(ftxui::text(L" Owner ")),
+                                                        });
+
+        auto itemListLayout = ftxui::Container::Vertical({
+                                                             newTaskLayout, scrollerContainer
+                                                     });
+
+        auto itemListRenderer = Renderer(itemListLayout, [=] {
+            auto content =
+                    ftxui::vbox({
+                                        ftxui::hbox({
+                                                            inputNewTaskSummary->Render() | ftxui::flex,
+                                                            newTaskCompletionStatus->Render() | ftxui::center,
+                                                            saveButton->Render(),
+                                                    }) | size(ftxui::WIDTH, ftxui::GREATER_THAN, 80),
+                                        ftxui::separator(),
+                                        taskTableHeaderRow,
+                                        ftxui::separator(),
+                                        scrollerContainer->Render(),
+                                        ftxui::separator(),
+                                        ftxui::text("In the list, press 'c' to mark the selected item complete, 'd' to delete"),
+                                }) | ftxui::center;
+            return window(ftxui::text(L" Todo List "), content);
+        });
+
         dashboardContainer = ftxui::Container::Vertical({
                                                                      optionsWindow,
-                                                                     itemWindow
+                                                                     itemListLayout
                                                              });
 
-        dashboardRenderer = Renderer(dashboardContainer, [&] {
+        dashboardRenderer = Renderer(dashboardContainer, [=] {
             auto content = ftxui::vbox({
                                                optionsWindow->Render(),
-                                               //itemWindow->Render()
+                                               itemListRenderer->Render()
                                        });
             return window(ftxui::text(L" Todo Tracker "), content);
         });

@@ -37,5 +37,5 @@ private:
     std::shared_ptr<ftxui::ComponentBase> mainRenderer;
 
 public:
-    ftxui::Component init(realm::user mUser, int subscriptionSelection, int offlineModeSelection);
+    ftxui::Component init(realm::user* mUser, int subscriptionSelection, int offlineModeSelection);
 };

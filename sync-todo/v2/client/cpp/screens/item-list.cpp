@@ -1,7 +1,7 @@
 #include "item-list.hpp"
 
-ftxui::Component ItemList::init(realm::user mUser, int subscriptionSelection, int offlineModeSelection) {
-    itemManager.init(std::move(mUser), subscriptionSelection, offlineModeSelection);
+ftxui::Component ItemList::init(realm::user* mUser, int subscriptionSelection, int offlineModeSelection) {
+    itemManager.init(mUser, subscriptionSelection, offlineModeSelection);
 
     inputNewTaskSummary =
             ftxui::Input(&newTaskSummary, "Enter new task summary");
@@ -11,7 +11,7 @@ ftxui::Component ItemList::init(realm::user mUser, int subscriptionSelection, in
 
     saveButtonLabel = "Save";
     saveButton = ftxui::Button(&saveButtonLabel, [&] {
-            itemManager.addNew(newTaskSummary, newTaskIsComplete, mUser.identifier());
+            itemManager.addNew(newTaskSummary, newTaskIsComplete, mUser->identifier());
             newTaskSummary = "";
     });
 
@@ -26,7 +26,7 @@ ftxui::Component ItemList::init(realm::user mUser, int subscriptionSelection, in
         ftxui::Elements tasks;
         for (auto const &item: itemList) {
             std::string completionString = (item.isComplete) ? " Complete " : " Incomplete ";
-            std::string mineOrNot = (item.owner_id == mUser.identifier()) ? " Mine " : " Them ";
+            std::string mineOrNot = (item.owner_id == mUser->identifier()) ? " Mine " : " Them ";
             auto taskRow = ftxui::hbox({
                                         ftxui::text(item.summary) | ftxui::flex,
                                         align_right(ftxui::text(completionString)),
