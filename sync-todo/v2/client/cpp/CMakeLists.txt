@@ -39,6 +39,9 @@ add_executable(sync_todo
         data/item-manager.cpp
         screens/scroller.hpp
         screens/scroller.cpp
+        ss.hpp
+        screens/error-modal.hpp
+        screens/error-modal.cpp
 )
 
 target_include_directories(sync_todo PRIVATE screens)

@@ -1,7 +1,9 @@
 #include "item-list.hpp"
 
 ftxui::Component ItemList::init(realm::user* mUser, int subscriptionSelection, int offlineModeSelection) {
-    itemManager.init(mUser, subscriptionSelection, offlineModeSelection);
+    std::string errorMessage;
+    int depth = 0;
+    itemManager.init(mUser, subscriptionSelection, offlineModeSelection, &errorMessage, &depth);
 
     inputNewTaskSummary =
             ftxui::Input(&newTaskSummary, "Enter new task summary");

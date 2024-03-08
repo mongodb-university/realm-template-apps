@@ -1,12 +1,20 @@
 #include "item-manager.hpp"
 
-void ItemManager::init(realm::user* mUser, int subscriptionSelection, int offlineModeSelection) {
+void ItemManager::init(realm::user* mUser, int subscriptionSelection, int offlineModeSelection, std::string* errorMessage, int* depth) {
     // Sync configuration and sync subscription management.
     allItemSubscriptionName = "all_items";
     myItemSubscriptionName = "my_items";
 
     // TODO: Change user to a reference
     auto config = mUser->flexible_sync_configuration();
+    config.sync_config().set_error_handler([&errorMessage, &depth](const realm::sync_session &session,
+                                              const realm::internal::bridge::sync_error &error) {
+        //std::stringstream ss;
+        //ss << "A sync error occurred. Message: " << error.message() << std::endl;
+        auto errorText = SS("A sync error occurred. Message: " << error.message() << std::endl);
+        *errorMessage = errorText;
+        *depth = 2;
+    });
     // TODO: Make a pointer to this that I can pass to the methods that need to use the DB
     auto database = realm::db(std::move(config));
     database.subscriptions().update([&](realm::mutable_sync_subscription_set& subs) {

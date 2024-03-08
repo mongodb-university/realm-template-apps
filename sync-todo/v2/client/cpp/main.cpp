@@ -12,16 +12,19 @@
 //#include "./screens/item-list.hpp"
 #include "./data/item-manager.hpp"
 #include "./screens/scroller.hpp"
+#include "./screens/error-modal.hpp"
 
 Options g_options;
 Authentication g_authentication;
 //ItemList g_itemList;
 ItemManager itemManager;
+ErrorModal g_errorModal;
 
 auto APP_ID = "INSERT-YOUR-APP-ID-HERE";
 
 int main() {
     std::string newTaskSummary;
+    std::string errorMessage;
     auto newTaskIsComplete = false;
 
     auto appConfig = realm::App::configuration {
@@ -38,6 +41,7 @@ int main() {
     // 1 = authModal
     // TODO: 2 = errorModal
     int depth = 0;
+    auto errorModal = g_errorModal.init(&errorMessage, &depth);
 
     // What's the right pattern to re-check this after logging in for the first time?
     auto currentUser = app->get_current_user();
@@ -61,7 +65,7 @@ int main() {
         auto& user = *currentUser;
         //auto itemWindow = g_itemList.init(user, 1, 0);
 
-        itemManager.init(&user, 0, 0);
+        itemManager.init(&user, 0, 0, &errorMessage, &depth);
 
         //std::string newTaskSummary;
         auto inputNewTaskSummary =
@@ -183,6 +187,7 @@ int main() {
             {
                     dashboardContainer,
                     authModal,
+                    errorModal
             },
             &depth);
 
@@ -202,6 +207,11 @@ int main() {
                                     document,
                                     authModal->Render() | ftxui::clear_under | ftxui::center,
                             });
+        } else if (depth == 2) {
+            document = ftxui::dbox({
+                document,
+                errorModal->Render() | ftxui::clear_under | ftxui::center,
+            });
         }
         return document;
     });
