@@ -13,6 +13,7 @@
 #include "./data/item-manager.hpp"
 #include "./screens/scroller.hpp"
 #include "./screens/error-modal.hpp"
+#include "display-screen.hpp"
 
 Options g_options;
 Authentication g_authentication;
@@ -34,14 +35,10 @@ int main() {
     auto authManager =
             std::make_shared<AuthManager>(app);
 
-    // Depth controls whether a modal is displayed over the main dashboard.
     // For most startups, we will already have a logged-in user on the device,
-    // so assume no modal and go right to the dasbhoard.
-    // 0 = dashboard
-    // 1 = authModal
-    // TODO: 2 = errorModal
-    int depth = 0;
-    auto errorModal = g_errorModal.init(&errorMessage, &depth);
+    // so assume no modal and go right to the dashboard.
+    int displayScreen = DisplayScreen::dashboardComponent;
+    auto errorModal = g_errorModal.init(&errorMessage, &displayScreen);
 
     // What's the right pattern to re-check this after logging in for the first time?
     auto currentUser = app->get_current_user();
@@ -65,7 +62,7 @@ int main() {
         auto& user = *currentUser;
         //auto itemWindow = g_itemList.init(user, 1, 0);
 
-        itemManager.init(&user, 0, 0, &errorMessage, &depth);
+        itemManager.init(&user, 0, 0, &errorMessage, &displayScreen);
 
         //std::string newTaskSummary;
         auto inputNewTaskSummary =
@@ -180,7 +177,7 @@ int main() {
         });
     } else {
         // Do show modal because there is no logged-in user
-        depth = 1;
+        displayScreen = authModalComponent;
     }
 
     auto main_container = ftxui::Container::Tab(
@@ -189,7 +186,7 @@ int main() {
                     authModal,
                     errorModal
             },
-            &depth);
+            &displayScreen);
 
     auto main_renderer = Renderer(main_container, [&] {
         ftxui::Element document = optionsWindow->Render();
@@ -198,16 +195,16 @@ int main() {
         };
 
         if (!currentUser.has_value() || !currentUser->is_logged_in()) {
-            depth = 1;
+            displayScreen = authModalComponent;
         } else {
-            depth = 0;
+            displayScreen = dashboardComponent;
         }
-        if (depth == 1) {
+        if (displayScreen == authModalComponent) {
             document = ftxui::dbox({
                                     document,
                                     authModal->Render() | ftxui::clear_under | ftxui::center,
                             });
-        } else if (depth == 2) {
+        } else if (displayScreen == errorModalComponent) {
             document = ftxui::dbox({
                 document,
                 errorModal->Render() | ftxui::clear_under | ftxui::center,

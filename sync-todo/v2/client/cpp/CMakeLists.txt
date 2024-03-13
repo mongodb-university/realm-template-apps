@@ -42,6 +42,7 @@ add_executable(sync_todo
         ss.hpp
         screens/error-modal.hpp
         screens/error-modal.cpp
+        display-screen.hpp
 )
 
 target_include_directories(sync_todo PRIVATE screens)

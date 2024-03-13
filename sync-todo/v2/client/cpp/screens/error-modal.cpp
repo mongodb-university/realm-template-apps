@@ -1,7 +1,7 @@
 #include "error-modal.hpp"
 
-ftxui::Component ErrorModal::init(std::string* errorMessage, int* depth) {
-    okButton = ftxui::Button("Dismiss", [errorMessage, depth]{ dismissErrorMessage(errorMessage, depth); });
+ftxui::Component ErrorModal::init(std::string* errorMessage, int* displayScreen) {
+    okButton = ftxui::Button("Dismiss", [errorMessage, displayScreen]{ dismissErrorMessage(errorMessage, displayScreen); });
 
     buttonLayout = ftxui::Container::Horizontal({ okButton });
 
@@ -14,7 +14,7 @@ ftxui::Component ErrorModal::init(std::string* errorMessage, int* depth) {
     });
 }
 
-void ErrorModal::dismissErrorMessage(std::string* errorMessage, int* depth) {
+void ErrorModal::dismissErrorMessage(std::string* errorMessage, int* displayScreen) {
     errorMessage->clear();
-    *depth = 0;
+    *displayScreen = dashboardComponent;
 }
