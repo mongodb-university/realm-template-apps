@@ -29,20 +29,17 @@ add_executable(sync_todo
         main.cpp
         screens/authentication.cpp
         screens/options.cpp
-        screens/static-dashboard.cpp
         data/auth-manager.cpp
         data/item.hpp
         data/item-manager.hpp
         data/item-manager.cpp
-        screens/item-list.hpp
-        screens/item-list.cpp
         data/item-manager.cpp
         screens/scroller.hpp
         screens/scroller.cpp
         ss.hpp
         screens/error-modal.hpp
         screens/error-modal.cpp
-        display-screen.hpp
+        screens/display-screen.hpp
         data/subscription-selection.hpp
         data/offline-mode-selection.hpp
 )

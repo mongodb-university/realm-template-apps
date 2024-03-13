@@ -1,5 +1,6 @@
 #include <cpprealm/sdk.hpp>
 #include <iostream>
+#include <ftxui/component/loop.hpp>
 
 #include "ftxui/component/component.hpp"  // for Checkbox, Renderer, Horizontal, Vertical, Input, Menu, Radiobox, ResizableSplitLeft, Tab
 #include "ftxui/component/screen_interactive.hpp"  // for Component, ScreenInteractive
@@ -9,17 +10,15 @@
 #include "./data/auth-manager.hpp"
 #include "./screens/authentication.hpp"
 #include "./screens/options.hpp"
-//#include "./screens/item-list.hpp"
 #include "./data/item-manager.hpp"
 #include "./screens/scroller.hpp"
 #include "./screens/error-modal.hpp"
-#include "display-screen.hpp"
+#include "./screens/display-screen.hpp"
 #include "./data/subscription-selection.hpp"
 #include "./data/offline-mode-selection.hpp"
 
 Options g_options;
 Authentication g_authentication;
-//ItemList g_itemList;
 ItemManager itemManager;
 ErrorModal g_errorModal;
 
@@ -29,6 +28,11 @@ int main() {
     std::string newTaskSummary;
     std::string errorMessage;
     auto newTaskIsComplete = false;
+
+    // Create a component counting the number of frames drawn and event handled.
+    int custom_loop_count = 0;
+    int frame_count = 0;
+    int event_count = 0;
 
     auto appConfig = realm::App::configuration {
         .app_id = APP_ID
@@ -197,6 +201,7 @@ int main() {
             &displayScreen);
 
     auto main_renderer = Renderer(main_container, [&] {
+        frame_count++;
         ftxui::Element document = optionsWindow->Render();
         if (currentUser.has_value()) {
             document = dashboardRenderer->Render();
@@ -221,8 +226,20 @@ int main() {
         return document;
     });
 
+    main_renderer |= ftxui::CatchEvent([&](const ftxui::Event&) -> bool {
+        event_count++;
+        return false;
+    });
+
+    ftxui::Loop loop(&screen, main_renderer);
+
     try {
-        screen.Loop(main_renderer);
+        while (!loop.HasQuitted()) {
+            custom_loop_count++;
+            loop.RunOnce();
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            itemManager.refreshDatabase();
+        }
     } catch(...) {
         std::cout << "The app crashed with an error." << std::endl;
     }
