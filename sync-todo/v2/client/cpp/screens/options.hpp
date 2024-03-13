@@ -21,7 +21,6 @@ private:
     int offlineModeSelection;
     std::vector<std::string> offlineModeOptions;
     ftxui::Component offlineMode;
-    int subscriptionSelection;
     std::vector<std::string> subscriptionOptions;
     ftxui::Component subscriptionToggle;
     bool hideCompletedSelected;
@@ -32,5 +31,5 @@ private:
     ftxui::Component quitButton;
     ftxui::Component optionsLayout;
  public:
-  ftxui::Component init(std::shared_ptr<AuthManager> g_auth_manager, ftxui::ScreenInteractive& screen);
+  ftxui::Component init(std::shared_ptr<AuthManager> g_auth_manager, ftxui::ScreenInteractive& screen, int* subscriptionSelection);
 };

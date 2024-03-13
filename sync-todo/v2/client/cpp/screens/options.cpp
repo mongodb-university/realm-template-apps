@@ -21,7 +21,7 @@ ftxui::Component VWrap(std::string name, ftxui::Component component) {
   });
 }
 
-ftxui::Component Options::init(std::shared_ptr<AuthManager> g_auth_manager, ftxui::ScreenInteractive& screen) {
+ftxui::Component Options::init(std::shared_ptr<AuthManager> g_auth_manager, ftxui::ScreenInteractive& screen, int* subscriptionSelection) {
     // First row of options
     offlineModeSelection = 0;
     offlineModeOptions = {
@@ -30,14 +30,13 @@ ftxui::Component Options::init(std::shared_ptr<AuthManager> g_auth_manager, ftxu
     };
     offlineMode = ftxui::Toggle(&offlineModeOptions, &offlineModeSelection);
     offlineMode = VWrap("Offline Mode", offlineMode);
-
-    subscriptionSelection = 0;
+    ;
     subscriptionOptions = {
-            "All Tasks",
             "My Tasks",
+            "All Tasks",
     };
     subscriptionToggle =
-            ftxui::Toggle(&subscriptionOptions, &subscriptionSelection);
+            ftxui::Toggle(&subscriptionOptions, subscriptionSelection);
     subscriptionToggle = VWrap("Subscriptions", subscriptionToggle);
 
     hideCompletedSelected = false;

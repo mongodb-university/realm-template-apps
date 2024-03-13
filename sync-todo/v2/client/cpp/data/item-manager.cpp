@@ -1,6 +1,6 @@
 #include "item-manager.hpp"
 
-void ItemManager::init(realm::user* mUser, int subscriptionSelection, int offlineModeSelection, std::string* errorMessage, int* displayScreen) {
+void ItemManager::init(realm::user* mUser, int* subscriptionSelection, int offlineModeSelection, std::string* errorMessage, int* displayScreen) {
     // Sync configuration and sync subscription management.
     allItemSubscriptionName = "all_items";
     myItemSubscriptionName = "my_items";
@@ -15,22 +15,23 @@ void ItemManager::init(realm::user* mUser, int subscriptionSelection, int offlin
         *errorMessage = errorText;
         *displayScreen = errorModalComponent;
     });
-    // TODO: Make a pointer to this that I can pass to the methods that need to use the DB
     auto database = realm::db(std::move(config));
     database.subscriptions().update([&](realm::mutable_sync_subscription_set& subs) {
         // If the `subscriptionSelection` is 1, the toggle for `My Items` is selected.
         // Remove the subscription to all items.
-        if (subscriptionSelection == 1) {
+        if (*subscriptionSelection == 0) {
             subs.remove(allItemSubscriptionName);
-        } else if (!subs.find(myItemSubscriptionName)) {
             // If there isn't yet a subscription for my own items, add it
-            subs.add<realm::Item>(myItemSubscriptionName,
-                                  [&](auto &item){
-                return item.owner_id == mUser->identifier();
-            });
-            // If the `showMyItems` toggle is not selected, and
+            if (!subs.find(myItemSubscriptionName)) {
+                subs.add<realm::Item>(myItemSubscriptionName,
+                                      [&](auto &item){
+                                          return item.owner_id == mUser->identifier();
+                                      });
+            }
+        } else if (*subscriptionSelection == 1) {
+            // If the `showAllItems` toggle is selected, and
             // there isn't yet a subscription for all items, add it.
-            if (!subs.find(allItemSubscriptionName) && !subs.find(allItemSubscriptionName)) {
+            if (!subs.find(allItemSubscriptionName)) {
                 subs.add<realm::Item>(allItemSubscriptionName);
             }
         }

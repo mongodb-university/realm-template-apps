@@ -14,6 +14,7 @@
 #include "./screens/scroller.hpp"
 #include "./screens/error-modal.hpp"
 #include "display-screen.hpp"
+#include "./data/subscription-selection.hpp"
 
 Options g_options;
 Authentication g_authentication;
@@ -44,7 +45,9 @@ int main() {
     auto currentUser = app->get_current_user();
 
     auto screen = ftxui::ScreenInteractive::FitComponent();
-    auto optionsWindow = g_options.init(authManager, screen);
+
+    int subscriptionSelection = SubscriptionSelection::allItems;
+    auto optionsWindow = g_options.init(authManager, screen, &subscriptionSelection);
     auto authModal = g_authentication.init(authManager);
 
     auto dashboardContainer = ftxui::Container::Vertical({
@@ -62,7 +65,7 @@ int main() {
         auto& user = *currentUser;
         //auto itemWindow = g_itemList.init(user, 1, 0);
 
-        itemManager.init(&user, 0, 0, &errorMessage, &displayScreen);
+        itemManager.init(&user, &subscriptionSelection, 0, &errorMessage, &displayScreen);
 
         //std::string newTaskSummary;
         auto inputNewTaskSummary =
