@@ -1,6 +1,6 @@
 #include "item-list.hpp"
 
-ftxui::Component ItemList::init(realm::user* mUser, int* subscriptionSelection, int offlineModeSelection) {
+ftxui::Component ItemList::init(realm::user* mUser, int* subscriptionSelection, int* offlineModeSelection) {
     std::string errorMessage;
     int depth = 0;
     itemManager.init(mUser, subscriptionSelection, offlineModeSelection, &errorMessage, &depth);

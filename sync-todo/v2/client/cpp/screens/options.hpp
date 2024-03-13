@@ -18,7 +18,6 @@
 
 class Options {
 private:
-    int offlineModeSelection;
     std::vector<std::string> offlineModeOptions;
     ftxui::Component offlineMode;
     std::vector<std::string> subscriptionOptions;
@@ -31,5 +30,5 @@ private:
     ftxui::Component quitButton;
     ftxui::Component optionsLayout;
  public:
-  ftxui::Component init(std::shared_ptr<AuthManager> g_auth_manager, ftxui::ScreenInteractive& screen, int* subscriptionSelection);
+  ftxui::Component init(std::shared_ptr<AuthManager> g_auth_manager, ftxui::ScreenInteractive& screen, int* subscriptionSelection, int* offlineModeSelection);
 };

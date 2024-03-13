@@ -44,6 +44,7 @@ add_executable(sync_todo
         screens/error-modal.cpp
         display-screen.hpp
         data/subscription-selection.hpp
+        data/offline-mode-selection.hpp
 )
 
 target_include_directories(sync_todo PRIVATE screens)

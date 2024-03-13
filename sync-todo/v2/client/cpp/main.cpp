@@ -15,6 +15,7 @@
 #include "./screens/error-modal.hpp"
 #include "display-screen.hpp"
 #include "./data/subscription-selection.hpp"
+#include "./data/offline-mode-selection.hpp"
 
 Options g_options;
 Authentication g_authentication;
@@ -46,8 +47,12 @@ int main() {
 
     auto screen = ftxui::ScreenInteractive::FitComponent();
 
+    // By default, we start with showing all items so you can see "Mine" and "Theirs" items in the UI.
     int subscriptionSelection = SubscriptionSelection::allItems;
-    auto optionsWindow = g_options.init(authManager, screen, &subscriptionSelection);
+
+    // By default, we start with offline mode disabled so you can see items syncing.
+    int offlineModeSelection = OfflineModeSelection::offlineModeDisabled;
+    auto optionsWindow = g_options.init(authManager, screen, &subscriptionSelection, &offlineModeSelection);
     auto authModal = g_authentication.init(authManager);
 
     auto dashboardContainer = ftxui::Container::Vertical({
@@ -65,7 +70,7 @@ int main() {
         auto& user = *currentUser;
         //auto itemWindow = g_itemList.init(user, 1, 0);
 
-        itemManager.init(&user, &subscriptionSelection, 0, &errorMessage, &displayScreen);
+        itemManager.init(&user, &subscriptionSelection, &offlineModeSelection, &errorMessage, &displayScreen);
 
         //std::string newTaskSummary;
         auto inputNewTaskSummary =

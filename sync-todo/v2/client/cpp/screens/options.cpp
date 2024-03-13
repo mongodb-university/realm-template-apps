@@ -21,14 +21,13 @@ ftxui::Component VWrap(std::string name, ftxui::Component component) {
   });
 }
 
-ftxui::Component Options::init(std::shared_ptr<AuthManager> g_auth_manager, ftxui::ScreenInteractive& screen, int* subscriptionSelection) {
+ftxui::Component Options::init(std::shared_ptr<AuthManager> g_auth_manager, ftxui::ScreenInteractive& screen, int* subscriptionSelection, int* offlineModeSelection) {
     // First row of options
-    offlineModeSelection = 0;
     offlineModeOptions = {
-            "Disabled",
             "Enabled ",
+            "Disabled",
     };
-    offlineMode = ftxui::Toggle(&offlineModeOptions, &offlineModeSelection);
+    offlineMode = ftxui::Toggle(&offlineModeOptions, offlineModeSelection);
     offlineMode = VWrap("Offline Mode", offlineMode);
     ;
     subscriptionOptions = {

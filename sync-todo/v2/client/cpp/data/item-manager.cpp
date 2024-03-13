@@ -1,6 +1,6 @@
 #include "item-manager.hpp"
 
-void ItemManager::init(realm::user* mUser, int* subscriptionSelection, int offlineModeSelection, std::string* errorMessage, int* displayScreen) {
+void ItemManager::init(realm::user* mUser, int* subscriptionSelection, int* offlineModeSelection, std::string* errorMessage, int* displayScreen) {
     // Sync configuration and sync subscription management.
     allItemSubscriptionName = "all_items";
     myItemSubscriptionName = "my_items";
@@ -19,7 +19,7 @@ void ItemManager::init(realm::user* mUser, int* subscriptionSelection, int offli
     database.subscriptions().update([&](realm::mutable_sync_subscription_set& subs) {
         // If the `subscriptionSelection` is 1, the toggle for `My Items` is selected.
         // Remove the subscription to all items.
-        if (*subscriptionSelection == 0) {
+        if (*subscriptionSelection == myItems) {
             subs.remove(allItemSubscriptionName);
             // If there isn't yet a subscription for my own items, add it
             if (!subs.find(myItemSubscriptionName)) {
@@ -28,7 +28,7 @@ void ItemManager::init(realm::user* mUser, int* subscriptionSelection, int offli
                                           return item.owner_id == mUser->identifier();
                                       });
             }
-        } else if (*subscriptionSelection == 1) {
+        } else if (*subscriptionSelection == allItems) {
             // If the `showAllItems` toggle is selected, and
             // there isn't yet a subscription for all items, add it.
             if (!subs.find(allItemSubscriptionName)) {
@@ -37,9 +37,19 @@ void ItemManager::init(realm::user* mUser, int* subscriptionSelection, int offli
         }
     }).get();
 
-    // Wait for downloads after potentially changing the subscription, and refresh the database.
-    database.get_sync_session()->wait_for_download_completion().get();
-    database.refresh();
+    auto syncSession = database.get_sync_session();
+
+    if (*offlineModeSelection == offlineModeDisabled) {
+        // Wait for downloads after potentially changing the subscription, and refresh the database.
+        syncSession->wait_for_download_completion().get();
+        database.refresh();
+    }
+
+    if (*offlineModeSelection == offlineModeEnabled) {
+        syncSession->pause();
+    } else if (*offlineModeSelection == offlineModeDisabled) {
+        syncSession->resume();
+    }
 
     // Item manager.
     databasePtr = std::make_unique<realm::db>(database);
