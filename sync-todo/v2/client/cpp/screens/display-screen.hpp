@@ -4,6 +4,7 @@
 // By default, we display the dashboard. We may overlay that with an authModal or
 // errorModal.
 enum DisplayScreen: int {
+    placeholderComponent,
     dashboardComponent,
     authModalComponent,
     errorModalComponent

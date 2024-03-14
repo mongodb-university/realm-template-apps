@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 
 #include "item.hpp"
@@ -11,12 +13,16 @@ private:
     std::string allItemSubscriptionName;
     std::string myItemSubscriptionName;
     std::unique_ptr<realm::db> databasePtr;
+    std::string userId;
 
 public:
-    void init(realm::user* mUser, int* subscriptionSelection, int* offlineModeSelection, std::string* errorMessage, int* displayScreen);
-    void addNew(std::string summary, bool isComplete, std::string userId);
+    void init(realm::user* mUser, std::string* errorMessage, int* displayScreen);
+    void addNew(std::string summary, bool isComplete);
     void remove(realm::managed<realm::Item> itemToDelete);
     void markComplete(realm::managed<realm::Item> itemToMarkComplete);
     void refreshDatabase();
+    void toggleOfflineMode(int* offlineModeSelection);
     realm::results<realm::Item> getItemList();
+    realm::results<realm::Item> getIncompleteItemList();
+    void toggleSubscriptions(int* subscriptionSelection);
 };

@@ -15,13 +15,23 @@
 #include "ftxui/screen/screen.hpp"      // for Size, Dimensions
 #include "ftxui/screen/terminal.hpp"    // for Size, Dimensions
 #include "authentication.hpp"
+#include "../data/offline-mode-selection.hpp"
+#include "../data/item-manager.hpp"
 
 class Options {
 private:
-    std::vector<std::string> offlineModeOptions;
-    ftxui::Component offlineMode;
-    std::vector<std::string> subscriptionOptions;
-    ftxui::Component subscriptionToggle;
+//    std::vector<std::string> offlineModeOptions;
+//    ftxui::Component offlineMode;
+    std::string goOfflineButtonLabel;
+    std::string goOnlineButtonLabel;
+    std::string toggleOfflineModeButtonLabel;
+    ftxui::Component toggleOfflineModeButton;
+    std::string showAllButtonLabel;
+    std::string showMineButtonLabel;
+    std::string toggleSubscriptionsButtonLabel;
+    ftxui::Component toggleSubscriptionsButton;
+//    std::vector<std::string> subscriptionOptions;
+//    ftxui::Component subscriptionToggle;
     bool hideCompletedSelected;
     ftxui::Component filters;
     std::string logoutButtonLabel;
@@ -30,5 +40,5 @@ private:
     ftxui::Component quitButton;
     ftxui::Component optionsLayout;
  public:
-  ftxui::Component init(std::shared_ptr<AuthManager> g_auth_manager, ftxui::ScreenInteractive& screen, int* subscriptionSelection, int* offlineModeSelection);
+  ftxui::Component init(std::shared_ptr<AuthManager> g_auth_manager, ItemManager* itemManager, ftxui::ScreenInteractive& screen, int* subscriptionSelection, int* offlineModeSelection, bool* hideComplete);
 };

@@ -9,8 +9,8 @@
 
 #include "./data/auth-manager.hpp"
 #include "./screens/authentication.hpp"
-#include "./screens/options.hpp"
 #include "./data/item-manager.hpp"
+#include "./screens/options.hpp"
 #include "./screens/scroller.hpp"
 #include "./screens/error-modal.hpp"
 #include "./screens/display-screen.hpp"
@@ -28,6 +28,7 @@ int main() {
     std::string newTaskSummary;
     std::string errorMessage;
     auto newTaskIsComplete = false;
+    auto hideCompletedTasks = true;
 
     // Create a component counting the number of frames drawn and event handled.
     int custom_loop_count = 0;
@@ -41,10 +42,9 @@ int main() {
     auto authManager =
             std::make_shared<AuthManager>(app);
 
-    // For most startups, we will already have a logged-in user on the device,
-    // so assume no modal and go right to the dashboard.
-    int displayScreen = DisplayScreen::dashboardComponent;
+    int displayScreen = DisplayScreen::placeholderComponent;
     auto errorModal = g_errorModal.init(&errorMessage, &displayScreen);
+    auto authModal = g_authentication.init(authManager);
 
     // What's the right pattern to re-check this after logging in for the first time?
     auto currentUser = app->get_current_user();
@@ -56,25 +56,33 @@ int main() {
 
     // By default, we start with offline mode disabled so you can see items syncing.
     int offlineModeSelection = OfflineModeSelection::offlineModeDisabled;
-    auto optionsWindow = g_options.init(authManager, screen, &subscriptionSelection, &offlineModeSelection);
-    auto authModal = g_authentication.init(authManager);
+
+    auto placeholder =  //
+            ftxui::vbox({
+                                ftxui::text("Welcome to the Atlas Device SDK C++ Task Tracker"),
+                                ftxui::text("Please log in or register a user to proceed.")
+                        });
+
+    placeholder = placeholder | size(ftxui::WIDTH, ftxui::LESS_THAN, 80);
 
     auto dashboardContainer = ftxui::Container::Vertical({
-                                                                 optionsWindow,
+
                                                          });
 
     auto dashboardRenderer = Renderer(dashboardContainer, [=] {
         auto content = ftxui::vbox({
-                                           optionsWindow->Render(),
+                                           placeholder,
                                    });
         return window(ftxui::text(L" Todo Tracker "), content);
     });
 
     if (currentUser.has_value() && currentUser->is_logged_in()) {
         auto& user = *currentUser;
-        //auto itemWindow = g_itemList.init(user, 1, 0);
+        itemManager.init(&user, &errorMessage, &displayScreen);
+        //auto sharedItemManager = std::make_unique<ItemManager>(itemManager);
 
-        itemManager.init(&user, &subscriptionSelection, &offlineModeSelection, &errorMessage, &displayScreen);
+        // TODO: Options window needs access to ItemManager so it can call functions to change subscriptions, pause sync, and hide completed tasks
+        auto optionsWindow = g_options.init(authManager, &itemManager, screen, &subscriptionSelection, &offlineModeSelection, &hideCompletedTasks);
 
         //std::string newTaskSummary;
         auto inputNewTaskSummary =
@@ -84,7 +92,7 @@ int main() {
         auto newTaskCompletionStatus = ftxui::Checkbox("Complete", &newTaskIsComplete);
 
         auto saveButton = ftxui::Button("Save", [&] {
-            itemManager.addNew(newTaskSummary, newTaskIsComplete, user.identifier());
+            itemManager.addNew(newTaskSummary, newTaskIsComplete);
             newTaskSummary = "";
         });
 
@@ -94,9 +102,16 @@ int main() {
         // Lay out and render scrollable task list
         // Shared pointer to items
         auto itemList = itemManager.getItemList();
+        auto allItemList = itemManager.getItemList();
+        auto incompleteItemList = itemManager.getIncompleteItemList();
 
         auto renderTasks = ftxui::Renderer([=]() mutable {
             ftxui::Elements tasks;
+            if (hideCompletedTasks) {
+                itemList = incompleteItemList;
+            } else if (!hideCompletedTasks) {
+                itemList = allItemList;
+            }
             for (auto &item: itemList) {
                 std::string completionString = (item.isComplete) ? " Complete " : " Incomplete ";
                 std::string mineOrNot = (item.owner_id == user.identifier()) ? " Mine " : " Them ";
@@ -202,17 +217,17 @@ int main() {
 
     auto main_renderer = Renderer(main_container, [&] {
         frame_count++;
-        ftxui::Element document = optionsWindow->Render();
-        if (currentUser.has_value()) {
-            document = dashboardRenderer->Render();
-        };
+        ftxui::Element document = placeholder;
 
         if (!currentUser.has_value() || !currentUser->is_logged_in()) {
             displayScreen = authModalComponent;
         } else {
             displayScreen = dashboardComponent;
         }
-        if (displayScreen == authModalComponent) {
+
+        if (displayScreen == dashboardComponent) {
+            document = dashboardRenderer->Render();
+        } else if (displayScreen == authModalComponent) {
             document = ftxui::dbox({
                                     document,
                                     authModal->Render() | ftxui::clear_under | ftxui::center,

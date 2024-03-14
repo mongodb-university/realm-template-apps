@@ -1,16 +1,5 @@
 #include "options.hpp"
 
-ftxui::Component HWrap(std::string name, ftxui::Component component) {
-  return Renderer(component, [name, component] {
-    return ftxui::hbox({
-               ftxui::text(name) | size(ftxui::WIDTH, ftxui::EQUAL, 8),
-               ftxui::separator(),
-               component->Render() | ftxui::xflex,
-           }) |
-           ftxui::xflex;
-  });
-}
-
 ftxui::Component VWrap(std::string name, ftxui::Component component) {
   return Renderer(component, [name, component] {
     return ftxui::vbox({
@@ -21,24 +10,49 @@ ftxui::Component VWrap(std::string name, ftxui::Component component) {
   });
 }
 
-ftxui::Component Options::init(std::shared_ptr<AuthManager> g_auth_manager, ftxui::ScreenInteractive& screen, int* subscriptionSelection, int* offlineModeSelection) {
+ftxui::Component Options::init(std::shared_ptr<AuthManager> g_auth_manager, ItemManager* itemManager, ftxui::ScreenInteractive& screen, int* subscriptionSelection, int* offlineModeSelection, bool* hideComplete) {
     // First row of options
-    offlineModeOptions = {
-            "Enabled ",
-            "Disabled",
-    };
-    offlineMode = ftxui::Toggle(&offlineModeOptions, offlineModeSelection);
-    offlineMode = VWrap("Offline Mode", offlineMode);
-    ;
-    subscriptionOptions = {
-            "My Tasks",
-            "All Tasks",
-    };
-    subscriptionToggle =
-            ftxui::Toggle(&subscriptionOptions, subscriptionSelection);
-    subscriptionToggle = VWrap("Subscriptions", subscriptionToggle);
+//    offlineModeOptions = {
+//            "Enabled ",
+//            "Disabled",
+//    };
+//    offlineMode = ftxui::Toggle(&offlineModeOptions, offlineModeSelection);
+//    offlineMode = VWrap("Offline Mode", offlineMode);
+    goOfflineButtonLabel = "Go Offline";
+    goOnlineButtonLabel = "Go Online";
 
-    hideCompletedSelected = false;
+    toggleOfflineModeButtonLabel = "";
+    if (*offlineModeSelection == offlineModeEnabled) {
+        toggleOfflineModeButtonLabel = goOnlineButtonLabel;
+    } else if (*offlineModeSelection == offlineModeDisabled) {
+        toggleOfflineModeButtonLabel = goOfflineButtonLabel;
+    }
+
+    toggleOfflineModeButton = ftxui::Button(&toggleOfflineModeButtonLabel, [&]{ itemManager->toggleOfflineMode(offlineModeSelection); });
+    toggleOfflineModeButton = VWrap("Offline Mode", toggleOfflineModeButton);
+
+    showAllButtonLabel = "Show All Tasks";
+    showMineButtonLabel = "Show Only My Tasks";
+
+    toggleSubscriptionsButtonLabel = "";
+    if (*subscriptionSelection == allItems) {
+        toggleSubscriptionsButtonLabel = showMineButtonLabel;
+    } else if (*subscriptionSelection == myItems) {
+        toggleSubscriptionsButtonLabel = showAllButtonLabel;
+    }
+
+    toggleSubscriptionsButton = ftxui::Button(&toggleSubscriptionsButtonLabel, [&]{ itemManager->toggleSubscriptions(subscriptionSelection); });
+    toggleSubscriptionsButton = VWrap("Offline Mode", toggleSubscriptionsButton);
+
+//    subscriptionOptions = {
+//            "My Tasks",
+//            "All Tasks",
+//    };
+//    subscriptionToggle =
+//            ftxui::Toggle(&subscriptionOptions, subscriptionSelection);
+//    subscriptionToggle = VWrap("Subscriptions", subscriptionToggle);
+
+    hideCompletedSelected = *hideComplete;
     filters = ftxui::Checkbox("Hide completed", &hideCompletedSelected);
     filters = VWrap("Filters", filters);
 
@@ -51,11 +65,11 @@ ftxui::Component Options::init(std::shared_ptr<AuthManager> g_auth_manager, ftxu
     quitButton = VWrap("Exit", quitButton);
 
     optionsLayout = ftxui::Container::Horizontal(
-        {offlineMode, subscriptionToggle, filters, logoutButton, quitButton});
+        {toggleOfflineModeButton, toggleSubscriptionsButton, filters, logoutButton, quitButton});
 
     return Renderer(optionsLayout, [&] {
       return vbox(
-          hbox(offlineMode->Render(), ftxui::separator(), subscriptionToggle->Render(),
+          hbox(toggleOfflineModeButton->Render(), ftxui::separator(), toggleSubscriptionsButton->Render(),
                ftxui::separator(), filters->Render(), ftxui::separator(),
                logoutButton->Render(), ftxui::separator(), quitButton->Render()) |
                ftxui::border);
