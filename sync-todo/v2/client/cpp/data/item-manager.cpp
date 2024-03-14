@@ -1,21 +1,26 @@
 #include "item-manager.hpp"
 
-void ItemManager::init(realm::user* mUser, std::string* errorMessage, int* displayScreen) {
+void ItemManager::init(realm::user& user, AppState* appState) {
     // Sync configuration and sync subscription management.
     allItemSubscriptionName = "all_items";
     myItemSubscriptionName = "my_items";
-    userId = mUser->identifier();
+    userId = user.identifier();
 
-    // TODO: Change user to a reference
-    auto config = mUser->flexible_sync_configuration();
-    config.sync_config().set_error_handler([&errorMessage, &displayScreen](const realm::sync_session &session,
+    auto config = user.flexible_sync_configuration();
+
+    // Handle database sync errors. If there is an error, add the message to the `appState`
+    // and change the screen that is displaying to the error modal.
+    config.sync_config().set_error_handler([&appState](const realm::sync_session &session,
                                               const realm::internal::bridge::sync_error &error) {
-        //std::stringstream ss;
-        //ss << "A sync error occurred. Message: " << error.message() << std::endl;
+
         auto errorText = SS("A sync error occurred. Message: " << error.message() << std::endl);
-        *errorMessage = errorText;
-        *displayScreen = errorModalComponent;
+        appState->errorMessage = errorText;
+        appState->screenDisplaying = errorModalComponent;
     });
+
+    /* Initialize the database, and add a subscription to all items. This enables the app to read
+       all items in the data source linked to the App Services App. App Services Rules for the Item collection
+       mean that while the user can read all items, they can only write to their own items. */
     auto database = realm::db(std::move(config));
     database.subscriptions().update([&](realm::mutable_sync_subscription_set& subs) {
         // By default, we show all items.
@@ -28,23 +33,25 @@ void ItemManager::init(realm::user* mUser, std::string* errorMessage, int* displ
     database.get_sync_session()->wait_for_download_completion().get();
     database.refresh();
 
+    // Add a pointer to the database as a class member, so we can access the database later when making changes.
     databasePtr = std::make_unique<realm::db>(database);
 }
 
-void ItemManager::addNew(std::string summary, bool isComplete) {
+/// Add a new item to the task list.
+void ItemManager::addNew(AppState* appState) {
     auto item = realm::Item {
-        .isComplete = isComplete,
-        .summary = std::move(summary),
+        .isComplete = appState->newTaskIsComplete,
+        .summary = std::move(appState->newTaskSummary),
         .owner_id = std::move(userId),
     };
-//    auto config = mUser.flexible_sync_configuration();
-//    auto database = realm::db(std::move(config));
+
     auto database = *databasePtr;
     database.write([&]{
         database.add(std::move(item));
     });
 }
 
+/// Delete an item when the user presses "D" on a selected item.
 void ItemManager::remove(realm::managed<realm::Item> itemToDelete) {
     auto database = *databasePtr;
     database.write([&]{
@@ -52,6 +59,7 @@ void ItemManager::remove(realm::managed<realm::Item> itemToDelete) {
     });
 }
 
+/// Mark an item as "Completed" when the user presses "C" on a selected item.
 void ItemManager::markComplete(realm::managed<realm::Item> itemToMarkComplete) {
     auto database = *databasePtr;
     database.write([&]{
@@ -63,11 +71,13 @@ void ItemManager::markComplete(realm::managed<realm::Item> itemToMarkComplete) {
     });
 }
 
+/// Get a list of all items in the database.
 realm::results<realm::Item> ItemManager::getItemList() {
     auto items = databasePtr->objects<realm::Item>();
     return items;
 };
 
+/// Get a list of items in the database, filtered to hide completed items.
 realm::results<realm::Item> ItemManager::getIncompleteItemList() {
     auto items = databasePtr->objects<realm::Item>();
     auto incompleteItems = items.where(
@@ -75,25 +85,29 @@ realm::results<realm::Item> ItemManager::getIncompleteItemList() {
     return incompleteItems;
 };
 
+/// Refresh the database from the UI runloop to show data that has synced in the background.
 void ItemManager::refreshDatabase() {
     databasePtr->refresh();
 };
 
-void ItemManager::toggleOfflineMode(int* offlineModeSelection) {
+/// Toggling offline mode simulates having no network connection by pausing sync.
+/// The user can write to the database on device, and the data syncs automatically when sync is resumed.
+void ItemManager::toggleOfflineMode(AppState* appState) {
     auto syncSession = databasePtr->get_sync_session();
     if (syncSession->state() == realm::internal::bridge::sync_session::state::paused) {
         syncSession->resume();
-        *offlineModeSelection = offlineModeDisabled;
+        appState->offlineModeSelection = offlineModeDisabled;
     } else if (syncSession->state() == realm::internal::bridge::sync_session::state::active) {
         syncSession->pause();
-        *offlineModeSelection = offlineModeEnabled;
+        appState->offlineModeSelection = offlineModeEnabled;
     }
 }
 
-void ItemManager::toggleSubscriptions(int* subscriptionSelection) {
+/// Changing the database subscriptions changes which data syncs to the device.
+void ItemManager::toggleSubscriptions(AppState* appState) {
     // Note the subscription state at the start of the toggle operation.
     // We'll change it after updating the subscriptions.
-    int currentSubscriptionState = *subscriptionSelection;
+    int currentSubscriptionState = appState->subscriptionSelection;
 
     databasePtr->subscriptions().update([&](realm::mutable_sync_subscription_set& subs) {
         // If the currentSubscriptionState is `allItems`, toggling it should show only my items.
@@ -109,7 +123,7 @@ void ItemManager::toggleSubscriptions(int* subscriptionSelection) {
             }
 
             // Update the subscription selection to reflect the new subscription.
-            *subscriptionSelection = myItems;
+            appState->subscriptionSelection = myItems;
 
             // If the currentSubscriptionState is `myItems`, toggling should show all items.
             // Remove the `myItems` subscription and make sure the subscription for the all items is present.
@@ -122,7 +136,7 @@ void ItemManager::toggleSubscriptions(int* subscriptionSelection) {
             }
 
             // Update the subscription selection to reflect the new subscription.
-            *subscriptionSelection = allItems;
+            appState->subscriptionSelection = allItems;
         }
     }).get();
 

@@ -10,50 +10,35 @@ ftxui::Component VWrap(std::string name, ftxui::Component component) {
   });
 }
 
-ftxui::Component Options::init(std::shared_ptr<AuthManager> g_auth_manager, ItemManager* itemManager, ftxui::ScreenInteractive& screen, int* subscriptionSelection, int* offlineModeSelection, bool* hideComplete) {
-    // First row of options
-//    offlineModeOptions = {
-//            "Enabled ",
-//            "Disabled",
-//    };
-//    offlineMode = ftxui::Toggle(&offlineModeOptions, offlineModeSelection);
-//    offlineMode = VWrap("Offline Mode", offlineMode);
+/// Options display at the top of the dashboard and provide most of the interactions that change app state.
+ftxui::Component Options::init(std::shared_ptr<AuthManager> g_auth_manager, ItemManager* itemManager, AppState* appState) {
     goOfflineButtonLabel = "Go Offline";
     goOnlineButtonLabel = "Go Online";
 
     toggleOfflineModeButtonLabel = "";
-    if (*offlineModeSelection == offlineModeEnabled) {
+    if (appState->offlineModeSelection == offlineModeEnabled) {
         toggleOfflineModeButtonLabel = goOnlineButtonLabel;
-    } else if (*offlineModeSelection == offlineModeDisabled) {
+    } else if (appState->offlineModeSelection == offlineModeDisabled) {
         toggleOfflineModeButtonLabel = goOfflineButtonLabel;
     }
 
-    toggleOfflineModeButton = ftxui::Button(&toggleOfflineModeButtonLabel, [&]{ itemManager->toggleOfflineMode(offlineModeSelection); });
+    toggleOfflineModeButton = ftxui::Button(&toggleOfflineModeButtonLabel, [&]{ itemManager->toggleOfflineMode(appState); });
     toggleOfflineModeButton = VWrap("Offline Mode", toggleOfflineModeButton);
 
     showAllButtonLabel = "Show All Tasks";
     showMineButtonLabel = "Show Only My Tasks";
 
     toggleSubscriptionsButtonLabel = "";
-    if (*subscriptionSelection == allItems) {
+    if (appState->subscriptionSelection == allItems) {
         toggleSubscriptionsButtonLabel = showMineButtonLabel;
-    } else if (*subscriptionSelection == myItems) {
+    } else if (appState->subscriptionSelection == myItems) {
         toggleSubscriptionsButtonLabel = showAllButtonLabel;
     }
 
-    toggleSubscriptionsButton = ftxui::Button(&toggleSubscriptionsButtonLabel, [&]{ itemManager->toggleSubscriptions(subscriptionSelection); });
+    toggleSubscriptionsButton = ftxui::Button(&toggleSubscriptionsButtonLabel, [&]{ itemManager->toggleSubscriptions(appState); });
     toggleSubscriptionsButton = VWrap("Offline Mode", toggleSubscriptionsButton);
 
-//    subscriptionOptions = {
-//            "My Tasks",
-//            "All Tasks",
-//    };
-//    subscriptionToggle =
-//            ftxui::Toggle(&subscriptionOptions, subscriptionSelection);
-//    subscriptionToggle = VWrap("Subscriptions", subscriptionToggle);
-
-    hideCompletedSelected = *hideComplete;
-    filters = ftxui::Checkbox("Hide completed", &hideCompletedSelected);
+    filters = ftxui::Checkbox("Hide completed", &appState->hideCompletedTasks);
     filters = VWrap("Filters", filters);
 
     logoutButtonLabel = "Logout";
@@ -61,7 +46,7 @@ ftxui::Component Options::init(std::shared_ptr<AuthManager> g_auth_manager, Item
     logoutButton = VWrap("Auth", logoutButton);
 
     quitButtonLabel = "Quit";
-    quitButton = ftxui::Button(&quitButtonLabel, screen.ExitLoopClosure());
+    quitButton = ftxui::Button(&quitButtonLabel, appState->screen.ExitLoopClosure());
     quitButton = VWrap("Exit", quitButton);
 
     optionsLayout = ftxui::Container::Horizontal(

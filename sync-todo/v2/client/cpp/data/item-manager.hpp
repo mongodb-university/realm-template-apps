@@ -7,6 +7,7 @@
 #include "display-screen.hpp"
 #include "subscription-selection.hpp"
 #include "offline-mode-selection.hpp"
+#include "../app-state.hpp"
 
 class ItemManager {
 private:
@@ -16,13 +17,13 @@ private:
     std::string userId;
 
 public:
-    void init(realm::user* mUser, std::string* errorMessage, int* displayScreen);
-    void addNew(std::string summary, bool isComplete);
+    void init(realm::user& user, AppState* appState);
+    void addNew(AppState* appState);
     void remove(realm::managed<realm::Item> itemToDelete);
     void markComplete(realm::managed<realm::Item> itemToMarkComplete);
     void refreshDatabase();
-    void toggleOfflineMode(int* offlineModeSelection);
+    void toggleOfflineMode(AppState* appState);
     realm::results<realm::Item> getItemList();
     realm::results<realm::Item> getIncompleteItemList();
-    void toggleSubscriptions(int* subscriptionSelection);
+    void toggleSubscriptions(AppState* appState);
 };

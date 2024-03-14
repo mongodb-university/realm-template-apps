@@ -13,51 +13,41 @@
 #include "./screens/options.hpp"
 #include "./screens/scroller.hpp"
 #include "./screens/error-modal.hpp"
-#include "./screens/display-screen.hpp"
-#include "./data/subscription-selection.hpp"
-#include "./data/offline-mode-selection.hpp"
-
-Options g_options;
-Authentication g_authentication;
-ItemManager itemManager;
-ErrorModal g_errorModal;
+#include "app-state.hpp"
 
 auto APP_ID = "INSERT-YOUR-APP-ID-HERE";
 
-int main() {
-    std::string newTaskSummary;
-    std::string errorMessage;
-    auto newTaskIsComplete = false;
-    auto hideCompletedTasks = true;
+ItemManager itemManager;
 
-    // Create a component counting the number of frames drawn and event handled.
-    int custom_loop_count = 0;
-    int frame_count = 0;
-    int event_count = 0;
+int main() {
+    // Refer to `AppState` for descriptions of these fields.
+    auto appState = AppState {
+      .newTaskSummary = "",
+      .newTaskIsComplete = false,
+      .errorMessage = "",
+      .hideCompletedTasks = false,
+      .subscriptionSelection = SubscriptionSelection::allItems,
+      .offlineModeSelection = OfflineModeSelection::offlineModeDisabled,
+      .customLoopCount = 0,
+      .frameCount = 0,
+      .eventCount = 0,
+      .screenDisplaying = DisplayScreen::placeholderComponent,
+      .screen = ftxui::ScreenInteractive::FitComponent()
+    };
 
     auto appConfig = realm::App::configuration {
-        .app_id = APP_ID
+            .app_id = APP_ID
     };
     auto app = std::make_shared<realm::App>(appConfig);
     auto authManager =
             std::make_shared<AuthManager>(app);
 
-    int displayScreen = DisplayScreen::placeholderComponent;
-    auto errorModal = g_errorModal.init(&errorMessage, &displayScreen);
-    auto authModal = g_authentication.init(authManager);
+    auto errorModal = ErrorModal().init(&appState);
+    auto authModal = Authentication().init(authManager);
 
-    // What's the right pattern to re-check this after logging in for the first time?
-    auto currentUser = app->get_current_user();
-
-    auto screen = ftxui::ScreenInteractive::FitComponent();
-
-    // By default, we start with showing all items so you can see "Mine" and "Theirs" items in the UI.
-    int subscriptionSelection = SubscriptionSelection::allItems;
-
-    // By default, we start with offline mode disabled so you can see items syncing.
-    int offlineModeSelection = OfflineModeSelection::offlineModeDisabled;
-
-    auto placeholder =  //
+    // Populate a placeholder screen when there is no logged-in user. The authentication modal will pop up
+    // over this placeholder screen.
+    auto placeholder =
             ftxui::vbox({
                                 ftxui::text("Welcome to the Atlas Device SDK C++ Task Tracker"),
                                 ftxui::text("Please log in or register a user to proceed.")
@@ -76,40 +66,45 @@ int main() {
         return window(ftxui::text(L" Todo Tracker "), content);
     });
 
+    // If there is a logged-in user, render the scrollable task list.
+    auto currentUser = app->get_current_user();
     if (currentUser.has_value() && currentUser->is_logged_in()) {
         auto& user = *currentUser;
-        itemManager.init(&user, &errorMessage, &displayScreen);
-        //auto sharedItemManager = std::make_unique<ItemManager>(itemManager);
 
-        // TODO: Options window needs access to ItemManager so it can call functions to change subscriptions, pause sync, and hide completed tasks
-        auto optionsWindow = g_options.init(authManager, &itemManager, screen, &subscriptionSelection, &offlineModeSelection, &hideCompletedTasks);
+        // The ItemManager handles all the database operations.
+        //itemManager.init(user, &appState);
+        itemManager.init(user, &appState);
+        // The Options UI element contains most of the interactive elements to change app state.
+        auto optionsWindow = Options().init(authManager, &itemManager, &appState);
 
-        //std::string newTaskSummary;
+        // The app uses these new task elements to accept user inputs and create new items in the database.
         auto inputNewTaskSummary =
-                ftxui::Input(&newTaskSummary, "Enter new task summary");
-
-        //auto newTaskIsComplete = false;
-        auto newTaskCompletionStatus = ftxui::Checkbox("Complete", &newTaskIsComplete);
+                ftxui::Input(appState.newTaskSummary, "Enter new task summary");
+        auto newTaskCompletionStatus = ftxui::Checkbox("Complete", &appState.newTaskIsComplete);
 
         auto saveButton = ftxui::Button("Save", [&] {
-            itemManager.addNew(newTaskSummary, newTaskIsComplete);
-            newTaskSummary = "";
+            itemManager.addNew(&appState);
+            appState.newTaskSummary = "";
         });
 
         auto newTaskLayout = ftxui::Container::Horizontal(
                 {inputNewTaskSummary, newTaskCompletionStatus, saveButton});
 
-        // Lay out and render scrollable task list
-        // Shared pointer to items
+        /// Lay out and render scrollable task list.
+        /* Because Atlas Device SDK lazy loads managed items when they are accessed, there is very little performance
+           cost to maintain handles to multiple lists. The app shows all items by default, but the user can toggle
+           a checkbox in the Options UI element to hide completed tasks.*/
         auto itemList = itemManager.getItemList();
         auto allItemList = itemManager.getItemList();
         auto incompleteItemList = itemManager.getIncompleteItemList();
 
-        auto renderTasks = ftxui::Renderer([=]() mutable {
+        auto renderTasks = ftxui::Renderer([&appState, &itemList, &allItemList, &incompleteItemList, &user]() mutable {
             ftxui::Elements tasks;
-            if (hideCompletedTasks) {
+            // If the user has toggled the checkbox to hide completed tasks, show only the incomplete task list.
+            // Otherwise, show all items.
+            if (appState.hideCompletedTasks) {
                 itemList = incompleteItemList;
-            } else if (!hideCompletedTasks) {
+            } else if (!appState.hideCompletedTasks) {
                 itemList = allItemList;
             }
             for (auto &item: itemList) {
@@ -126,6 +121,7 @@ int main() {
             return content;
         });
 
+        // Render a scrollable task list that can accept keyboard events to mark items as complete or delete them.
         auto scroller = Scroller(renderTasks);
 
         auto scrollerRenderer = Renderer(scroller, [=] {
@@ -190,10 +186,14 @@ int main() {
             return window(ftxui::text(L" Todo List "), content);
         });
 
-        dashboardContainer = ftxui::Container::Vertical({
-                                                                     optionsWindow,
-                                                                     itemListLayout
-                                                             });
+        dashboardContainer->Add(optionsWindow);
+        dashboardContainer->Add(itemListLayout);
+
+
+//        dashboardContainer = ftxui::Container::Vertical({
+//                                                                     optionsWindow,
+//                                                                     itemListLayout
+//                                                             });
 
         dashboardRenderer = Renderer(dashboardContainer, [=] {
             auto content = ftxui::vbox({
@@ -203,8 +203,8 @@ int main() {
             return window(ftxui::text(L" Todo Tracker "), content);
         });
     } else {
-        // Do show modal because there is no logged-in user
-        displayScreen = authModalComponent;
+        // Show the auth modal because there is no logged-in user.
+        appState.screenDisplaying = authModalComponent;
     }
 
     auto main_container = ftxui::Container::Tab(
@@ -213,26 +213,26 @@ int main() {
                     authModal,
                     errorModal
             },
-            &displayScreen);
+            &appState.screenDisplaying);
 
     auto main_renderer = Renderer(main_container, [&] {
-        frame_count++;
+        appState.frameCount++;
         ftxui::Element document = placeholder;
 
         if (!currentUser.has_value() || !currentUser->is_logged_in()) {
-            displayScreen = authModalComponent;
+            appState.screenDisplaying = authModalComponent;
         } else {
-            displayScreen = dashboardComponent;
+            appState.screenDisplaying = dashboardComponent;
         }
 
-        if (displayScreen == dashboardComponent) {
+        if (appState.screenDisplaying == dashboardComponent) {
             document = dashboardRenderer->Render();
-        } else if (displayScreen == authModalComponent) {
+        } else if (appState.screenDisplaying == authModalComponent) {
             document = ftxui::dbox({
                                     document,
                                     authModal->Render() | ftxui::clear_under | ftxui::center,
                             });
-        } else if (displayScreen == errorModalComponent) {
+        } else if (appState.screenDisplaying == errorModalComponent) {
             document = ftxui::dbox({
                 document,
                 errorModal->Render() | ftxui::clear_under | ftxui::center,
@@ -242,15 +242,15 @@ int main() {
     });
 
     main_renderer |= ftxui::CatchEvent([&](const ftxui::Event&) -> bool {
-        event_count++;
+        appState.eventCount++;
         return false;
     });
 
-    ftxui::Loop loop(&screen, main_renderer);
+    ftxui::Loop loop(&appState.screen, main_renderer);
 
     try {
         while (!loop.HasQuitted()) {
-            custom_loop_count++;
+            appState.customLoopCount++;
             loop.RunOnce();
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
             itemManager.refreshDatabase();

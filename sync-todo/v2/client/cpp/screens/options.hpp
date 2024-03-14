@@ -17,11 +17,10 @@
 #include "authentication.hpp"
 #include "../data/offline-mode-selection.hpp"
 #include "../data/item-manager.hpp"
+#include "../app-state.hpp"
 
 class Options {
 private:
-//    std::vector<std::string> offlineModeOptions;
-//    ftxui::Component offlineMode;
     std::string goOfflineButtonLabel;
     std::string goOnlineButtonLabel;
     std::string toggleOfflineModeButtonLabel;
@@ -30,9 +29,6 @@ private:
     std::string showMineButtonLabel;
     std::string toggleSubscriptionsButtonLabel;
     ftxui::Component toggleSubscriptionsButton;
-//    std::vector<std::string> subscriptionOptions;
-//    ftxui::Component subscriptionToggle;
-    bool hideCompletedSelected;
     ftxui::Component filters;
     std::string logoutButtonLabel;
     ftxui::Component logoutButton;
@@ -40,5 +36,5 @@ private:
     ftxui::Component quitButton;
     ftxui::Component optionsLayout;
  public:
-  ftxui::Component init(std::shared_ptr<AuthManager> g_auth_manager, ItemManager* itemManager, ftxui::ScreenInteractive& screen, int* subscriptionSelection, int* offlineModeSelection, bool* hideComplete);
+  ftxui::Component init(std::shared_ptr<AuthManager> g_auth_manager, ItemManager* itemManager, AppState* appState);
 };
