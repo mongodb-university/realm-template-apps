@@ -56,7 +56,13 @@ This app uses CMake to manage dependencies. You must have CMake installed to use
   ```shell
      mkdir build && cd build
   ```
-  
+
+- Use CMake to create the Makefile
+
+  ```shell
+     cmake ../
+  ```
+
 - Use CMake to build the app executable.
 
   ```shell
