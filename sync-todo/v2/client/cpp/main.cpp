@@ -55,20 +55,20 @@ int main() {
     auto errorModal = ErrorModal().init(&appState);
     auto authModal = Authentication().init(authManager);
 
-    // Populate a placeholder screen when there is no logged-in user. The authentication modal will pop up
-    // over this placeholder screen.
-    auto placeholder =
+    // Populate a notLoggedInScreen when there is no logged-in user. The authentication modal will pop up
+    // over this notLoggedInScreen.
+    auto notLoggedInScreen =
             ftxui::vbox({
                                 ftxui::text("Welcome to the Atlas Device SDK C++ Task Tracker"),
                                 ftxui::text("Please log in or register a user to proceed.")
                         });
 
-    placeholder = placeholder | size(ftxui::WIDTH, ftxui::GREATER_THAN, 80);
+    notLoggedInScreen = notLoggedInScreen | size(ftxui::WIDTH, ftxui::GREATER_THAN, 80);
 
-    auto placeholderContainer = ftxui::Container::Vertical({});
-    auto placeholderRenderer = Renderer(placeholderContainer, [=] {
+    auto notLoggedInContainer = ftxui::Container::Vertical({});
+    auto notLoggedInRenderer = Renderer(notLoggedInContainer, [=] {
         auto content = ftxui::vbox({
-                                           placeholder,
+                                           notLoggedInScreen,
                                    });
         return window(ftxui::text(L" Todo Tracker "), content);
     });
@@ -79,7 +79,7 @@ int main() {
 
     auto dashboardRenderer = Renderer(dashboardContainer, [=] {
         auto content = ftxui::vbox({
-                                           placeholder,
+                                           notLoggedInScreen,
                                    });
         return window(ftxui::text(L" Todo Tracker "), content);
     });
@@ -213,16 +213,16 @@ int main() {
 
     auto main_container = ftxui::Container::Tab(
             {
-                    placeholderContainer,
+                    notLoggedInContainer,
                     dashboardContainer,
                     authModal,
                     errorModal
             },
             &appState.screenDisplaying);
 
-    auto main_renderer = Renderer(main_container, [&appState, currentUser, dashboardRenderer, authModal, errorModal, placeholderRenderer] {
+    auto main_renderer = Renderer(main_container, [&appState, currentUser, dashboardRenderer, authModal, errorModal, notLoggedInRenderer] {
         appState.frameCount++;
-        auto document = placeholderRenderer->Render();
+        auto document = notLoggedInRenderer->Render();
 
         if (!currentUser.has_value() || !currentUser->is_logged_in()) {
             appState.screenDisplaying = authModalComponent;
