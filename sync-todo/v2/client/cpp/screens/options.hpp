@@ -14,10 +14,11 @@
 #include "ftxui/screen/color_info.hpp"  // for ColorInfo
 #include "ftxui/screen/screen.hpp"      // for Size, Dimensions
 #include "ftxui/screen/terminal.hpp"    // for Size, Dimensions
-#include "authentication.hpp"
-#include "../data/offline-mode-selection.hpp"
+
+#include "../data/app-state.hpp"
 #include "../data/item-manager.hpp"
-#include "../app-state.hpp"
+#include "../data/offline-mode-selection.hpp"
+#include "authentication.hpp"
 
 class Options {
 private:

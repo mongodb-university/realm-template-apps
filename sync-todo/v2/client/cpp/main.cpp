@@ -7,13 +7,13 @@
 #include "ftxui/dom/elements.hpp"  // for text, color, operator|, bgcolor, filler, Element, vbox, size, hbox, separator, flex, window, graph, EQUAL, paragraph, WIDTH, hcenter, Elements, bold, vscroll_indicator, HEIGHT, flexbox, hflow, border, frame, flex_grow, gauge, paragraphAlignCenter, paragraphAlignJustify, paragraphAlignLeft, paragraphAlignRight, dim, spinner, LESS_THAN, center, yframe, GREATER_THAN
 #include "ftxui/screen/color.hpp"  // for Color, Color::BlueLight, Color::RedLight, Color::Black, Color::Blue, Color::Cyan, Color::CyanLight, Color::GrayDark, Color::GrayLight, Color::Green, Color::GreenLight, Color::Magenta, Color::MagentaLight, Color::Red, Color::White, Color::Yellow, Color::YellowLight, Color::Default, Color::Palette256, ftxui
 
-#include "./data/auth-manager.hpp"
-#include "./screens/authentication.hpp"
-#include "./data/item-manager.hpp"
-#include "./screens/options.hpp"
-#include "./screens/scroller.hpp"
-#include "./screens/error-modal.hpp"
-#include "app-state.hpp"
+#include "data/app-state.hpp"
+#include "data/auth-manager.hpp"
+#include "data/item-manager.hpp"
+#include "screens/authentication.hpp"
+#include "screens/error-modal.hpp"
+#include "screens/options.hpp"
+#include "screens/scroller.hpp"
 
 auto APP_ID = "INSERT-YOUR-APP-ID-HERE";
 

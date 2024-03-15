@@ -1,5 +1,6 @@
-#include <cpprealm/sdk.hpp>
 #pragma once
+
+#include <cpprealm/sdk.hpp>
 
 class AuthManager {
 private:

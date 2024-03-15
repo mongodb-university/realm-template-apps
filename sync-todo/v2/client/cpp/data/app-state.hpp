@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <cpprealm/sdk.hpp>
 #include "ftxui/component/screen_interactive.hpp"
 
 struct AppState {

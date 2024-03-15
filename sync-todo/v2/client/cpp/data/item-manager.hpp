@@ -2,12 +2,12 @@
 
 #include <string>
 
-#include "item.hpp"
-#include "/Users/dachary.carey/workspace/realm-template-apps/sync-todo/v2/client/cpp/ss.hpp"
+#include "../ss.hpp"
+#include "app-state.hpp"
 #include "display-screen.hpp"
-#include "subscription-selection.hpp"
+#include "item.hpp"
 #include "offline-mode-selection.hpp"
-#include "../app-state.hpp"
+#include "subscription-selection.hpp"
 
 class ItemManager {
 private:

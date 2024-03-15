@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cpprealm/sdk.hpp>
+
 #include "ftxui/component/captured_mouse.hpp"  // for ftxui
 #include "ftxui/component/component.hpp"       // for Input, Renderer, Vertical
 #include "ftxui/component/screen_interactive.hpp"  // for Component, ScreenInteractive

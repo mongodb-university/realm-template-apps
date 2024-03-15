@@ -27,21 +27,20 @@ FetchContent_MakeAvailable(cpprealm ftxui)
 
 add_executable(sync_todo
         main.cpp
-        screens/authentication.cpp
-        screens/options.cpp
         data/auth-manager.cpp
         data/item.hpp
         data/item-manager.hpp
         data/item-manager.cpp
-        data/item-manager.cpp
-        screens/scroller.hpp
-        screens/scroller.cpp
-        ss.hpp
+        data/offline-mode-selection.hpp
+        data/subscription-selection.hpp
+        screens/authentication.cpp
         screens/error-modal.hpp
         screens/error-modal.cpp
         screens/display-screen.hpp
-        data/subscription-selection.hpp
-        data/offline-mode-selection.hpp
+        screens/options.cpp
+        screens/scroller.hpp
+        screens/scroller.cpp
+        ss.hpp
 )
 
 target_include_directories(sync_todo PRIVATE screens)
