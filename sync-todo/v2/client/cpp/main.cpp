@@ -19,7 +19,7 @@
 #include "screens/options.hpp"
 #include "screens/scroller.hpp"
 
-ItemManager itemManager;
+static ItemManager itemManager;
 
 int main() {
     /* Read the contents of the atlasConfig.json to get the metadata for the App Services App.
@@ -89,7 +89,7 @@ int main() {
 
         // The app uses these new task elements to accept user inputs and create new items in the database.
         auto inputNewTaskSummary =
-                ftxui::Input(appState.newTaskSummary, "Enter new task summary");
+                ftxui::Input(&appState.newTaskSummary, "Enter new task summary");
         auto newTaskCompletionStatus = ftxui::Checkbox("Complete", &appState.newTaskIsComplete);
 
         auto saveButton = ftxui::Button("Save", [&] {
@@ -101,22 +101,11 @@ int main() {
                 {inputNewTaskSummary, newTaskCompletionStatus, saveButton});
 
         /// Lay out and render scrollable task list.
-        /* Because Atlas Device SDK lazy loads managed items when they are accessed, there is very little performance
-           cost to maintain handles to multiple lists. The app shows all items by default, but the user can toggle
-           a checkbox in the Options UI element to hide completed tasks.*/
-        auto itemList = itemManager.getItemList();
-        auto allItemList = itemManager.getItemList();
-        auto incompleteItemList = itemManager.getIncompleteItemList();
-
-        auto renderTasks = ftxui::Renderer([&appState, &itemList, &allItemList, &incompleteItemList, &user]() mutable {
+        auto renderTasks = ftxui::Renderer([&appState, &user] {
+            auto itemList = appState.hideCompletedTasks? itemManager.getIncompleteItemList(): itemManager.getItemList();
             ftxui::Elements tasks;
             // If the user has toggled the checkbox to hide completed tasks, show only the incomplete task list.
             // Otherwise, show all items.
-            if (appState.hideCompletedTasks) {
-                itemList = incompleteItemList;
-            } else if (!appState.hideCompletedTasks) {
-                itemList = allItemList;
-            }
             for (auto &item: itemList) {
                 std::string completionString = (item.isComplete) ? " Complete " : " Incomplete ";
                 std::string mineOrNot = (item.owner_id == user.identifier()) ? " Mine " : " Them ";
@@ -145,7 +134,8 @@ int main() {
                 Renderer(scrollerContainer, [=] { return scrollerContainer->Render() | ftxui::flex; });
 
         // Handle keyboard events.
-        scrollerContainer = CatchEvent(scrollerContainer, [=](ftxui::Event const &event) mutable {
+        scrollerContainer = CatchEvent(scrollerContainer, [&appState, scroller](ftxui::Event const &event) {
+            auto itemList = appState.hideCompletedTasks? itemManager.getIncompleteItemList(): itemManager.getItemList();
             // Delete items from the database
             if (event == ftxui::Event::Character('d')) {
                 // Get index of selected item in the scroller
@@ -196,14 +186,10 @@ int main() {
             return window(ftxui::text(L" Todo List "), content);
         });
 
-        dashboardContainer->Add(optionsWindow);
-        dashboardContainer->Add(itemListLayout);
-
-
-//        dashboardContainer = ftxui::Container::Vertical({
-//                                                                     optionsWindow,
-//                                                                     itemListLayout
-//                                                             });
+        dashboardContainer = ftxui::Container::Vertical({
+                                                                     optionsWindow,
+                                                                     itemListLayout
+                                                             });
 
         dashboardRenderer = Renderer(dashboardContainer, [=] {
             auto content = ftxui::vbox({
@@ -220,14 +206,14 @@ int main() {
     auto main_container = ftxui::Container::Tab(
             {
                     dashboardContainer,
-                    authModal,
-                    errorModal
+                    //authModal,
+                    //errorModal
             },
             &appState.screenDisplaying);
 
-    auto main_renderer = Renderer(main_container, [&] {
+    auto main_renderer = Renderer(main_container, [&appState, currentUser, dashboardRenderer, authModal, errorModal] {
         appState.frameCount++;
-        ftxui::Element document = placeholder;
+        auto document = dashboardRenderer->Render();
 
         if (!currentUser.has_value() || !currentUser->is_logged_in()) {
             appState.screenDisplaying = authModalComponent;
