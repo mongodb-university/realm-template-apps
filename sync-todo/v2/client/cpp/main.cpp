@@ -63,7 +63,15 @@ int main() {
                                 ftxui::text("Please log in or register a user to proceed.")
                         });
 
-    placeholder = placeholder | size(ftxui::WIDTH, ftxui::LESS_THAN, 80);
+    placeholder = placeholder | size(ftxui::WIDTH, ftxui::GREATER_THAN, 80);
+
+    auto placeholderContainer = ftxui::Container::Vertical({});
+    auto placeholderRenderer = Renderer(placeholderContainer, [=] {
+        auto content = ftxui::vbox({
+                                           placeholder,
+                                   });
+        return window(ftxui::text(L" Todo Tracker "), content);
+    });
 
     auto dashboardContainer = ftxui::Container::Vertical({
 
@@ -205,15 +213,16 @@ int main() {
 
     auto main_container = ftxui::Container::Tab(
             {
+                    placeholderContainer,
                     dashboardContainer,
-                    //authModal,
-                    //errorModal
+                    authModal,
+                    errorModal
             },
             &appState.screenDisplaying);
 
-    auto main_renderer = Renderer(main_container, [&appState, currentUser, dashboardRenderer, authModal, errorModal] {
+    auto main_renderer = Renderer(main_container, [&appState, currentUser, dashboardRenderer, authModal, errorModal, placeholderRenderer] {
         appState.frameCount++;
-        auto document = dashboardRenderer->Render();
+        auto document = placeholderRenderer->Render();
 
         if (!currentUser.has_value() || !currentUser->is_logged_in()) {
             appState.screenDisplaying = authModalComponent;
