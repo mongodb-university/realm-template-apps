@@ -6,15 +6,19 @@ set(CMAKE_CXX_STANDARD 17)
 
 Include(FetchContent)
 
-FetchContent_Declare(
-  cpprealm
-  GIT_REPOSITORY https://github.com/realm/realm-cpp.git
-  GIT_TAG        v1.0.0
+FetchContent_Declare(cpprealm
+        GIT_REPOSITORY https://github.com/realm/realm-cpp.git
+        GIT_TAG        v1.0.0
 )
 
 FetchContent_Declare(ftxui
-  GIT_REPOSITORY https://github.com/ArthurSonzogni/ftxui
-  GIT_TAG v5.0.0
+        GIT_REPOSITORY https://github.com/ArthurSonzogni/ftxui
+        GIT_TAG v5.0.0
+)
+
+FetchContent_Declare(nlohmann_json
+        GIT_REPOSITORY https://github.com/nlohmann/json.git
+        GIT_TAG v3.11.3
 )
 
 FetchContent_GetProperties(ftxui)
@@ -23,10 +27,12 @@ if(NOT ftxui_POPULATED)
   add_subdirectory(${ftxui_SOURCE_DIR} ${ftxui_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
 
-FetchContent_MakeAvailable(cpprealm ftxui)
+FetchContent_MakeAvailable(cpprealm ftxui nlohmann_json)
 
 add_executable(sync_todo
         main.cpp
+        data/app-config-metadata.hpp
+        data/app-config-metadata.cpp
         data/auth-manager.cpp
         data/item.hpp
         data/item-manager.hpp
@@ -37,6 +43,7 @@ add_executable(sync_todo
         screens/error-modal.hpp
         screens/error-modal.cpp
         screens/display-screen.hpp
+        screens/options.hpp
         screens/options.cpp
         screens/scroller.hpp
         screens/scroller.cpp
@@ -47,3 +54,4 @@ target_include_directories(sync_todo PRIVATE screens)
 
 target_link_libraries(sync_todo PRIVATE cpprealm)
 target_link_libraries(sync_todo PRIVATE ftxui::component)
+target_link_libraries(sync_todo PRIVATE nlohmann_json::nlohmann_json)
