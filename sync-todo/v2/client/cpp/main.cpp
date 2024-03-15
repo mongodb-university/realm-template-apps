@@ -263,7 +263,9 @@ int main() {
             appState.customLoopCount++;
             loop.RunOnce();
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
-            itemManager.refreshDatabase();
+            if (currentUser.has_value() && currentUser->is_logged_in()) {
+                itemManager.refreshDatabase();
+            }
         }
     } catch(...) {
         std::cout << "The app crashed with an error." << std::endl;
