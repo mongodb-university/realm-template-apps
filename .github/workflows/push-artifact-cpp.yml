@@ -1,0 +1,19 @@
+name: Push Artifact - C++
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "sync-todo/v2/generated/cpp/**"
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/push-to-artifact-repo
+        with:
+          source: ./sync-todo/v2/generated/cpp
+          destination_repo: mongodb/template-app-cpp-todo.git
+          access_token: ${{ secrets.ARTIFACT_REPO_ACCESS_TOKEN }}
