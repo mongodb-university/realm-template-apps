@@ -16,4 +16,4 @@ class Controller {
   }
 };
 
-Controller::~Controller() = default;
+inline Controller::~Controller() = default;

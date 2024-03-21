@@ -39,11 +39,14 @@ add_executable(sync_todo
         controllers/controller.hpp
         controllers/home_controller.hpp
         controllers/login_controller.hpp
+        controllers/login_controller.cpp
         controllers/navigation.hpp
         managers/auth_manager.hpp
         managers/error_manager.hpp
         managers/item_manager.hpp
         managers/item_manager.cpp
+        views/login_view.hpp
+        views/login_view.cpp
 )
 
 target_link_libraries(sync_todo PRIVATE cpprealm)
