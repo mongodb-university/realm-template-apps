@@ -30,6 +30,8 @@ endif()
 FetchContent_MakeAvailable(cpprealm ftxui nlohmann_json)
 
 add_executable(sync_todo
+        app_config_metadata.hpp
+        app_config_metadata.cpp
         app_state.hpp
         database_state.hpp
         item.hpp
@@ -38,6 +40,7 @@ add_executable(sync_todo
         controllers/app_controller.hpp
         controllers/controller.hpp
         controllers/home_controller.hpp
+        controllers/home_controller.cpp
         controllers/login_controller.hpp
         controllers/login_controller.cpp
         controllers/navigation.hpp
@@ -45,8 +48,12 @@ add_executable(sync_todo
         managers/error_manager.hpp
         managers/item_manager.hpp
         managers/item_manager.cpp
+        views/home_screen_button_row.hpp
+        views/home_screen_button_row.cpp
         views/login_view.hpp
         views/login_view.cpp
+        views/scroller.hpp
+        views/scroller.cpp
 )
 
 target_link_libraries(sync_todo PRIVATE cpprealm)

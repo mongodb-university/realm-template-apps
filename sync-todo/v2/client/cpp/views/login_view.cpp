@@ -1,26 +1,25 @@
 //#include "login_view.hpp"
 //
 //ftxui::Component LoginView::init(LoginController* _loginController) {
-//  inputEmail = ftxui::Input(&login, "Email");
+//  auto inputEmail = ftxui::Input(&state.userEmail, "Email");
+//  auto inputOptionForPassword = ftxui::InputOption{};
 //  inputOptionForPassword.password = true;
-//  inputPassword = Input(&password, "password", inputOptionForPassword);
+//  auto inputPassword = Input(&state.userPassword, "password", inputOptionForPassword);
 //
-//  loginButtonLabel = "Login";
-//  onLoginButtonClick = [&] {
-//    _authManager->loginUser(email, password); };
-//  loginButton = ftxui::Button(&loginButtonLabel, onLoginButtonClick);
+//  auto loginButton = ftxui::Button("Login", [this] {
+//    _appState->authManager->logIn(_appState->app.get(), state.userEmail, state.userPassword);
+//  });
 //
-//  registerButtonLabel = "Register";
-//  onRegisterButtonClick = [&] {
-//    _authManager->registerAndLoginUser(email, password);};
-//  registerButton = ftxui::Button(&registerButtonLabel, onRegisterButtonClick);
+//  auto registerButton = ftxui::Button("Register", [this] {
+//    _appState->authManager->registerAndLoginUser(_appState->app.get(), state.userEmail, state.userPassword);
+//  });
 //
-//  buttonLayout = ftxui::Container::Horizontal({loginButton, registerButton});
+//  auto buttonLayout = ftxui::Container::Horizontal({loginButton, registerButton});
 //
-//  screenLayout = ftxui::Container::Vertical(
+//  auto screenLayout = ftxui::Container::Vertical(
 //      {inputEmail, inputPassword, buttonLayout});
 //
-//  return Renderer(screenLayout, [&] {
+//  auto view = Renderer(screenLayout, [=] {
 //    return ftxui::vbox({
 //                           ftxui::hbox(ftxui::text(" Atlas Device SDK C++ Todo ") | ftxui::hcenter),
 //                           ftxui::separator(),

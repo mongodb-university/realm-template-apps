@@ -102,12 +102,13 @@ void ItemManager::toggleOfflineMode(DatabaseState* databaseState) {
   }
 }
 
-/// Changing the database subscriptions changes which data syncs to the device.
+/** Changing the database subscriptions changes which data syncs to the device. */
 void ItemManager::toggleSubscriptions(DatabaseState* databaseState) {
   // Note the subscription state at the start of the toggle operation.
   // We'll change it after updating the subscriptions.
   int currentSubscriptionState = databaseState->subscriptionSelection;
 
+  // TODO: THIS COULD BE A PROBLEM
   databasePtr->subscriptions().update([&](realm::mutable_sync_subscription_set& subs) {
     // If the currentSubscriptionState is `allItems`, toggling it should show only my items.
     // Remove the `allItems` subscription and make sure the subscription for the user's items is present.
@@ -120,7 +121,6 @@ void ItemManager::toggleSubscriptions(DatabaseState* databaseState) {
                                 return item.owner_id == userId;
                               });
       }
-
       // Update the subscription selection to reflect the new subscription.
       databaseState->subscriptionSelection = myItems;
 
