@@ -31,7 +31,10 @@ FetchContent_MakeAvailable(cpprealm ftxui nlohmann_json)
 
 add_executable(sync_todo
         app_state.hpp
+        database_state.hpp
+        item.hpp
         main.cpp
+        ss.hpp
         controllers/app_controller.hpp
         controllers/controller.hpp
         controllers/home_controller.hpp
@@ -39,6 +42,8 @@ add_executable(sync_todo
         controllers/navigation.hpp
         managers/auth_manager.hpp
         managers/error_manager.hpp
+        managers/item_manager.hpp
+        managers/item_manager.cpp
 )
 
 target_link_libraries(sync_todo PRIVATE cpprealm)
