@@ -9,6 +9,8 @@
 #include "home_controller.hpp"
 #include "login_controller.hpp"
 
+#include <cpprealm/sdk.hpp>
+
 class AppController final : public Controller, public AuthManager::Delegate, public ErrorManager::Delegate {
  private:
   AppState _appState;
@@ -21,6 +23,11 @@ class AppController final : public Controller, public AuthManager::Delegate, pub
  public:
 //  AppController();
   AppController() {
+
+    auto appConfig = realm::App::configuration {
+        .app_id = "INSERT-YOUR-APP-ID-HERE"
+    };
+    _appState.app = std::make_unique<realm::App>(appConfig);
 
     _appState.authManager = std::make_unique<AuthManager>(this);
     _appState.errorManager = std::make_unique<ErrorManager>(this);
@@ -44,6 +51,10 @@ class AppController final : public Controller, public AuthManager::Delegate, pub
   }
 
  private:
+  void onRegisteredAndLoggedIn() override {
+    _navigation.goTo(std::make_unique<HomeController>(&_appState));
+  }
+
   void onLoggedIn() override {
     _navigation.goTo(std::make_unique<HomeController>(&_appState));
   }

@@ -6,4 +6,5 @@
 struct AppState {
   std::unique_ptr<AuthManager> authManager;
   std::unique_ptr<ErrorManager> errorManager;
+  std::unique_ptr<realm::App> app;
 };
