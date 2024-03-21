@@ -10,6 +10,7 @@ class Controller {
   Controller(): Controller(ftxui::Container::Stacked({})) {}
   Controller(ftxui::Component component): _component(component) {}
   virtual ~Controller() = 0;
+  virtual void onFrame() {}
 
   ftxui::Component component() {
     return _component;

@@ -1,20 +1,23 @@
 #include "item_manager.hpp"
 
-void ItemManager::init(realm::user& user, AppState* appState) {
+void ItemManager::init(AppState* appState) {
+  _appState = appState;
+  auto user = _appState->app->get_current_user();
+
   // Sync configuration and sync subscription management.
   allItemSubscriptionName = "all_items";
   myItemSubscriptionName = "my_items";
-  userId = user.identifier();
+  userId = user->identifier();
 
-  auto config = user.flexible_sync_configuration();
+  auto config = user->flexible_sync_configuration();
 
   // Handle database sync errors. If there is an error, add the message to the `appState`
   // and change the screen that is displaying to the error modal.
-  config.sync_config().set_error_handler([&appState](const realm::sync_session &session,
+  config.sync_config().set_error_handler([=](const realm::sync_session &session,
                                                      const realm::internal::bridge::sync_error &error) {
 
     auto errorText = SS("A sync error occurred. Message: " << error.message() << std::endl);
-    appState->errorManager->setError(errorText);
+    _appState->errorManager->setError(errorText);
   });
 
   /* Initialize the database, and add a subscription to all items. This enables the app to read
@@ -37,10 +40,10 @@ void ItemManager::init(realm::user& user, AppState* appState) {
 }
 
 /// Add a new item to the task list.
-void ItemManager::addNew(DatabaseState* databaseState) {
+void ItemManager::addNew() {
   auto item = realm::Item {
-      .isComplete = databaseState->newTaskIsComplete,
-      .summary = std::move(databaseState->newTaskSummary),
+      .isComplete = _appState->databaseState->newTaskIsComplete,
+      .summary = std::move(_appState->databaseState->newTaskSummary),
       .owner_id = std::move(userId),
   };
 
@@ -91,22 +94,22 @@ void ItemManager::refreshDatabase() {
 
 /// Toggling offline mode simulates having no network connection by pausing sync.
 /// The user can write to the database on device, and the data syncs automatically when sync is resumed.
-void ItemManager::toggleOfflineMode(DatabaseState* databaseState) {
+void ItemManager::toggleOfflineMode() {
   auto syncSession = databasePtr->get_sync_session();
   if (syncSession->state() == realm::internal::bridge::sync_session::state::paused) {
     syncSession->resume();
-    databaseState->offlineModeSelection = offlineModeDisabled;
+    _appState->databaseState->offlineModeSelection = offlineModeDisabled;
   } else if (syncSession->state() == realm::internal::bridge::sync_session::state::active) {
     syncSession->pause();
-    databaseState->offlineModeSelection = offlineModeEnabled;
+    _appState->databaseState->offlineModeSelection = offlineModeEnabled;
   }
 }
 
 /** Changing the database subscriptions changes which data syncs to the device. */
-void ItemManager::toggleSubscriptions(DatabaseState* databaseState) {
+void ItemManager::toggleSubscriptions() {
   // Note the subscription state at the start of the toggle operation.
   // We'll change it after updating the subscriptions.
-  int currentSubscriptionState = databaseState->subscriptionSelection;
+  int currentSubscriptionState = _appState->databaseState->subscriptionSelection;
 
   // TODO: THIS COULD BE A PROBLEM
   databasePtr->subscriptions().update([&](realm::mutable_sync_subscription_set& subs) {
@@ -122,7 +125,7 @@ void ItemManager::toggleSubscriptions(DatabaseState* databaseState) {
                               });
       }
       // Update the subscription selection to reflect the new subscription.
-      databaseState->subscriptionSelection = myItems;
+      _appState->databaseState->subscriptionSelection = myItems;
 
       // If the currentSubscriptionState is `myItems`, toggling should show all items.
       // Remove the `myItems` subscription and make sure the subscription for the all items is present.
@@ -135,7 +138,7 @@ void ItemManager::toggleSubscriptions(DatabaseState* databaseState) {
       }
 
       // Update the subscription selection to reflect the new subscription.
-      databaseState->subscriptionSelection = allItems;
+      _appState->databaseState->subscriptionSelection = allItems;
     }
   }).get();
 

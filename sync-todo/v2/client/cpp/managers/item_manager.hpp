@@ -15,15 +15,15 @@ class ItemManager {
     virtual void onOfflineModeChange() = 0;
   };
 
-  void init(realm::user& user, AppState* appState);
-  void addNew(DatabaseState* databaseState);
+  void init(AppState* appState);
+  void addNew();
   void remove(realm::managed<realm::Item> itemToDelete);
   void markComplete(realm::managed<realm::Item> itemToMarkComplete);
   void refreshDatabase();
-  void toggleOfflineMode(DatabaseState* databaseState);
+  void toggleOfflineMode();
   realm::results<realm::Item> getItemList();
   realm::results<realm::Item> getIncompleteItemList();
-  void toggleSubscriptions(DatabaseState* databaseState);
+  void toggleSubscriptions();
 
  private:
   std::string allItemSubscriptionName;
@@ -31,4 +31,5 @@ class ItemManager {
   std::unique_ptr<realm::db> databasePtr;
   std::string userId;
   Delegate *_delegate{nullptr};
+  AppState *_appState;
 };

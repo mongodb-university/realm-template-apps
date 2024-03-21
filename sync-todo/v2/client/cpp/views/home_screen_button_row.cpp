@@ -1,17 +1,17 @@
 #include "home_screen_button_row.hpp"
 
-ftxui::Component VWrap(std::string name, ftxui::Component component) {
-  return Renderer(component, [name, component] {
-    return ftxui::vbox({
-                           hbox(ftxui::text(name)) | ftxui::hcenter | size(ftxui::WIDTH, ftxui::EQUAL, 18),
-                           ftxui::separator(),
-                           component->Render() | ftxui::hcenter,
-                       });
-  });
-}
-
-/// Options display at the top of the dashboard and provide most of the interactions that change app state.
-//ftxui::Component Options::init(std::shared_ptr<AuthManager> g_auth_manager, ItemManager* itemManager, AppState* appState) {
+//ftxui::Component VWrap(std::string name, ftxui::Component component) {
+//  return Renderer(component, [name, component] {
+//    return ftxui::vbox({
+//                           hbox(ftxui::text(name)) | ftxui::hcenter | size(ftxui::WIDTH, ftxui::EQUAL, 18),
+//                           ftxui::separator(),
+//                           component->Render() | ftxui::hcenter,
+//                       });
+//  });
+//}
+//
+///** This button row displays at the top of the home screen and provides most of the interactions that change app state.*/
+//ftxui::Component Options::init(AppState *appState, ItemManager* itemManager) {
 //  goOfflineButtonLabel = "Go Offline";
 //  goOnlineButtonLabel = "Go Online";
 //

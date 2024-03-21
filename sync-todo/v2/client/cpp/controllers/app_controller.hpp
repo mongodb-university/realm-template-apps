@@ -10,6 +10,7 @@
 #include "../managers/auth_manager.hpp"
 #include "../managers/error_manager.hpp"
 #include "../app_state.hpp"
+#include "../database_state.hpp"
 #include "home_controller.hpp"
 #include "login_controller.hpp"
 #include "../app_config_metadata.hpp"
@@ -17,6 +18,7 @@
 class AppController final : public Controller, public AuthManager::Delegate, public ErrorManager::Delegate {
  private:
   AppState _appState;
+  DatabaseState _databaseState;
   Navigation _navigation;
 
   bool _showErrorModal{true};
@@ -25,7 +27,8 @@ class AppController final : public Controller, public AuthManager::Delegate, pub
 
  public:
 //  AppController();
-  AppController() {
+  AppController(ftxui::ScreenInteractive *screen) {
+    _appState.screen = screen;
 
     /** Read the contents of the atlasConfig.json to get the metadata for the App Services App.
      * This path assumes you are running the app from a `/build` directory within this project. If you're
@@ -45,6 +48,9 @@ class AppController final : public Controller, public AuthManager::Delegate, pub
     _appState.authManager = std::make_unique<AuthManager>(this);
     _appState.errorManager = std::make_unique<ErrorManager>(this);
 
+    auto dbState = DatabaseState();
+    _appState.databaseState = std::make_unique<DatabaseState>(std::move(dbState));
+
     _errorModal = ftxui::Container::Vertical({
       ftxui::Renderer([this] {
         return ftxui::text(_appState.errorManager->getError().value());
@@ -62,6 +68,8 @@ class AppController final : public Controller, public AuthManager::Delegate, pub
       _navigation.goTo(std::make_unique<LoginController>(&_appState));
     }
   }
+
+  void onFrame() override;
 
  private:
   void onRegisteredAndLoggedIn() override {

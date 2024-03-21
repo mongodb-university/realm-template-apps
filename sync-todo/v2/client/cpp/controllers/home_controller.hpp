@@ -11,8 +11,15 @@ class HomeController final : public Controller {
  private:
   AppState *_appState{nullptr};
 
+  struct HomeControllerViewState {
+    std::string toggleOfflineModeButtonLabel;
+    std::string toggleSubscriptionsButtonLabel;
+  } state;
+
  public:
   HomeController(AppState *appState);
+
+  void onFrame() override;
 //  HomeController(AppState *appState): Controller(ftxui::Container::Vertical({
 //    ftxui::Button("Log out", [this] {
 //      _appState->authManager->logOut(_appState->app.get());

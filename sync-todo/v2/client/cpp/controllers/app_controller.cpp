@@ -1,5 +1,9 @@
 #include "app_controller.hpp"
 
+void AppController::onFrame() {
+  _navigation.onFrame();
+}
+
 //AppController::AppController() {
 //
 //  _appState.authManager = std::make_unique<AuthManager>(this);

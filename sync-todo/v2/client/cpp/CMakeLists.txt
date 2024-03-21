@@ -38,6 +38,7 @@ add_executable(sync_todo
         main.cpp
         ss.hpp
         controllers/app_controller.hpp
+        controllers/app_controller.cpp
         controllers/controller.hpp
         controllers/home_controller.hpp
         controllers/home_controller.cpp
