@@ -18,7 +18,6 @@
 class AppController final : public Controller, public AuthManager::Delegate, public ErrorManager::Delegate {
  private:
   AppState _appState;
-  DatabaseState _databaseState;
   Navigation _navigation;
 
   bool _showErrorModal{true};
@@ -42,14 +41,9 @@ class AppController final : public Controller, public AuthManager::Delegate, pub
         .app_id = appConfigMetadata.appId
     };
     _appState.app = std::make_unique<realm::App>(appConfig);
-    if (_appState.app->get_current_user()) {
-      isUserLoggedIn = true;
-    }
     _appState.authManager = std::make_unique<AuthManager>(this);
+    //_appState.authManager->logIn(_appState.app.get(), "dac", "testing9786");
     _appState.errorManager = std::make_unique<ErrorManager>(this);
-
-    auto dbState = DatabaseState();
-    _appState.databaseState = std::make_unique<DatabaseState>(std::move(dbState));
 
     _errorModal = ftxui::Container::Vertical({
       ftxui::Renderer([this] {
@@ -61,6 +55,10 @@ class AppController final : public Controller, public AuthManager::Delegate, pub
       });
 
     component()->Add(_navigation.component());
+
+    if (_appState.app->get_current_user()) {
+      isUserLoggedIn = true;
+    }
 
     if (isUserLoggedIn) {
       _navigation.goTo(std::make_unique<HomeController>(&_appState));

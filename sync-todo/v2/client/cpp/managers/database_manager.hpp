@@ -23,7 +23,7 @@ class DatabaseManager {
  private:
   std::string allItemSubscriptionName;
   std::string myItemSubscriptionName;
-  std::unique_ptr<realm::db> databasePtr{nullptr};
+  std::unique_ptr<realm::db> databasePtr;
   std::string userId;
   AppState *_appState;
 };

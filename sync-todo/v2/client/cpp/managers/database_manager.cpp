@@ -42,8 +42,8 @@ DatabaseManager::DatabaseManager(AppState *appState): _appState(appState) {
 void DatabaseManager::addNew() {
   auto item = realm::Item {
       .isComplete = _appState->databaseState->newTaskIsComplete,
-      .summary = std::move(_appState->databaseState->newTaskSummary),
-      .owner_id = std::move(userId),
+      .summary = _appState->databaseState->newTaskSummary,
+      .owner_id = userId,
   };
 
   auto database = *databasePtr;

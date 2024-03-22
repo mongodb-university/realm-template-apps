@@ -1,6 +1,6 @@
 #include "home_controller.hpp"
 
-ftxui::Component VWrap(std::string name, ftxui::Component component) {
+ftxui::Component VWrap(const std::string& name, const ftxui::Component& component) {
   return Renderer(component, [name, component] {
     return ftxui::vbox({
                            hbox(ftxui::text(name)) | ftxui::hcenter | size(ftxui::WIDTH, ftxui::EQUAL, 18),
@@ -11,64 +11,64 @@ ftxui::Component VWrap(std::string name, ftxui::Component component) {
 }
 
 HomeController::HomeController(AppState *appState): Controller(ftxui::Container::Vertical({})), _appState(appState) {
-//  ItemManager *itemManager;
-//  itemManager->init(appState);
-//  buttonRowState = HomeScreenButtonRowState{
-//    .appState = appState
-//  };
-//
-//  homeScreenButtonRow = HomeScreenButtonRow(*buttonRowState);
-  auto dbManager = DatabaseManager(appState);
-  _databaseManager = std::make_unique<DatabaseManager>(std::move(dbManager));
-    /** This button row displays at the top of the home screen and provides most of the interactions that change app state.*/
-    auto goOfflineButtonLabel = std::string{"Go Offline"};
-    auto goOnlineButtonLabel = std::string{"Go Online"};
+  auto dbState = DatabaseState();
+  _appState->databaseState = std::make_unique<DatabaseState>(std::move(dbState));
+  auto databaseManager = DatabaseManager(appState);
+  auto dbManagerPointer = &databaseManager;
+  // If I hard-code the below, the app successfully makes a new task. But if I try to enter text and use the Save button,
+  // the app crashes and does not write.
+//  _appState->databaseState->newTaskSummary = "Make a new task from HomeController";
+//  _appState->databaseState->newTaskIsComplete = true;
+  //dbManager->addNew();
+  /** This button row displays at the top of the home screen and provides most of the interactions that change app state.*/
+  auto goOfflineButtonLabel = std::string{"Go Offline"};
+  auto goOnlineButtonLabel = std::string{"Go Online"};
 
-    if (_appState->databaseState->offlineModeSelection == offlineModeEnabled) {
-      state.toggleOfflineModeButtonLabel = goOnlineButtonLabel;
-    } else if (_appState->databaseState->offlineModeSelection == offlineModeDisabled) {
-      state.toggleOfflineModeButtonLabel = goOfflineButtonLabel;
-    }
+  if (_appState->databaseState->offlineModeSelection == offlineModeEnabled) {
+    state.toggleOfflineModeButtonLabel = goOnlineButtonLabel;
+  } else if (_appState->databaseState->offlineModeSelection == offlineModeDisabled) {
+    state.toggleOfflineModeButtonLabel = goOfflineButtonLabel;
+  }
 
 //    auto toggleOfflineModeButton = ftxui::Button(&state.toggleOfflineModeButtonLabel, [=]{ itemManager->toggleOfflineMode(); });
-    auto toggleOfflineModeButton = ftxui::Button(&state.toggleOfflineModeButtonLabel, [=]{  });
-    toggleOfflineModeButton = VWrap("Offline Mode", toggleOfflineModeButton);
+  auto toggleOfflineModeButton = ftxui::Button(&state.toggleOfflineModeButtonLabel, [=]{  });
+  toggleOfflineModeButton = VWrap("Sync Items", toggleOfflineModeButton);
 
-    auto showAllButtonLabel = std::string{"Show All Tasks"};
-    auto showMineButtonLabel = std::string{"Show Only My Tasks"};
+  auto showAllButtonLabel = std::string{"All Tasks"};
+  auto showMineButtonLabel = std::string{"Only Mine"};
 
-    if (_appState->databaseState->subscriptionSelection == allItems) {
-      state.toggleSubscriptionsButtonLabel = showMineButtonLabel;
-    } else if (_appState->databaseState->subscriptionSelection == myItems) {
-      state.toggleSubscriptionsButtonLabel = showAllButtonLabel;
-    }
+  if (_appState->databaseState->subscriptionSelection == allItems) {
+    state.toggleSubscriptionsButtonLabel = showMineButtonLabel;
+  } else if (_appState->databaseState->subscriptionSelection == myItems) {
+    state.toggleSubscriptionsButtonLabel = showAllButtonLabel;
+  }
 
-    //auto toggleSubscriptionsButton = ftxui::Button(&state.toggleSubscriptionsButtonLabel, [&]{ itemManager->toggleSubscriptions(); });
-    auto toggleSubscriptionsButton = ftxui::Button(&state.toggleSubscriptionsButtonLabel, [&]{  });
-    toggleSubscriptionsButton = VWrap("Offline Mode", toggleSubscriptionsButton);
+  //auto toggleSubscriptionsButton = ftxui::Button(&state.toggleSubscriptionsButtonLabel, [&]{ itemManager->toggleSubscriptions(); });
+  auto toggleSubscriptionsButton = ftxui::Button(&state.toggleSubscriptionsButtonLabel, [=]{  });
+  toggleSubscriptionsButton = VWrap("Offline Mode", toggleSubscriptionsButton);
 
-    auto filters = ftxui::Checkbox("Hide completed", &_appState->databaseState->hideCompletedTasks);
-    filters = VWrap("Filters", filters);
+  auto filters = ftxui::Checkbox("Hide completed", &_appState->databaseState->hideCompletedTasks);
+  filters = VWrap("Filters", filters);
 
-    auto logoutButton = ftxui::Button("Logout", [&]{ _appState->authManager->logOut(_appState->app.get()); });
-    logoutButton = VWrap("Auth", logoutButton);
+  auto logoutButton = ftxui::Button("Logout", [&]{ _appState->authManager->logOut(_appState->app.get()); });
+  logoutButton = VWrap("Auth", logoutButton);
 
-    auto quitButton = ftxui::Button("Quit", appState->screen->ExitLoopClosure());
-    //auto quitButton = ftxui::Button("Quit", {});
-    quitButton = VWrap("Exit", quitButton);
+  auto quitButton = ftxui::Button("Quit", appState->screen->ExitLoopClosure());
+  //auto quitButton = ftxui::Button("Quit", {});
+  quitButton = VWrap("Exit", quitButton);
 
-    auto optionsLayout = ftxui::Container::Horizontal(
-        {toggleOfflineModeButton, toggleSubscriptionsButton, filters, logoutButton, quitButton});
+  auto optionsLayout = ftxui::Container::Horizontal(
+      {toggleOfflineModeButton, toggleSubscriptionsButton, filters, logoutButton, quitButton});
 
-    auto homeControllerButtonView = Renderer(optionsLayout, [=] {
-      return vbox(
-          hbox(toggleOfflineModeButton->Render(), ftxui::separator(), toggleSubscriptionsButton->Render(),
-               ftxui::separator(), filters->Render(), ftxui::separator(),
-               logoutButton->Render(), ftxui::separator(), quitButton->Render()) |
-              ftxui::border);
-    });
+//  auto homeControllerButtonView = Renderer(optionsLayout, [=] {
+//    return vbox(
+//        hbox(toggleOfflineModeButton->Render(), ftxui::separator(), toggleSubscriptionsButton->Render(),
+//             ftxui::separator(), filters->Render(), ftxui::separator(),
+//             logoutButton->Render(), ftxui::separator(), quitButton->Render()) |
+//            ftxui::border);
+//  });
 
-    //component()->Add(homeControllerButtonView);
+  //component()->Add(homeControllerButtonView);
 
   /** The ItemManager handles all the database operations. */
   auto user = _appState->app->get_current_user();
@@ -79,17 +79,18 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
       ftxui::Input(&_appState->databaseState->newTaskSummary, "Enter new task summary");
   auto newTaskCompletionStatus = ftxui::Checkbox("Complete", &_appState->databaseState->newTaskIsComplete);
 
-  auto saveButton = ftxui::Button("Save", [&dbManager, &appState] {
-    dbManager.addNew();
-    appState->databaseState->newTaskSummary = "";
+  auto saveButton = ftxui::Button("Save", [=] {
+    dbManagerPointer->addNew();
+    _appState->databaseState->newTaskSummary = "";
+    _appState->databaseState->newTaskIsComplete = false;
   });
 
   auto newTaskLayout = ftxui::Container::Horizontal(
       {inputNewTaskSummary, newTaskCompletionStatus, saveButton});
 
-  /// Lay out and render scrollable task list.
-  auto renderTasks = ftxui::Renderer([&appState, &userId, &dbManager] {
-    auto itemList = appState->databaseState->hideCompletedTasks? dbManager.getIncompleteItemList(): dbManager.getItemList();
+  /** Lay out and render scrollable task list. */
+  auto renderTasks = ftxui::Renderer([=] {
+    auto itemList = appState->databaseState->hideCompletedTasks? dbManagerPointer->getIncompleteItemList(): dbManagerPointer->getItemList();
     ftxui::Elements tasks;
     // If the user has toggled the checkbox to hide completed tasks, show only the incomplete task list.
     // Otherwise, show all items.
@@ -121,8 +122,8 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
       Renderer(scrollerContainer, [=] { return scrollerContainer->Render() | ftxui::flex; });
 
   // Handle keyboard events.
-  scrollerContainer = CatchEvent(scrollerContainer, [&appState, scroller, &dbManager](ftxui::Event const &event) {
-    auto itemList = appState->databaseState->hideCompletedTasks? dbManager.getIncompleteItemList(): dbManager.getItemList();
+  scrollerContainer = CatchEvent(scrollerContainer, [=](ftxui::Event const &event) {
+    auto itemList = appState->databaseState->hideCompletedTasks? dbManagerPointer->getIncompleteItemList(): dbManagerPointer->getItemList();
     // Delete items from the database
     if (event == ftxui::Event::Character('d')) {
       // Get index of selected item in the scroller
@@ -130,7 +131,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
       // Get the matching managed Item from the Results set
       auto managedItemAtIndex = itemList[scrollerIndex];
       // Delete the item from the database
-      dbManager.remove(managedItemAtIndex);
+      dbManagerPointer->remove(managedItemAtIndex);
       return true;
     }
 
@@ -138,7 +139,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
     if (event == ftxui::Event::Character('c')) {
       auto scrollerIndex = scroller->getScrollerIndex();
       auto managedItemAtIndex = itemList[scrollerIndex];
-      dbManager.markComplete(managedItemAtIndex);
+      dbManagerPointer->markComplete(managedItemAtIndex);
       return true;
     }
     return false;
@@ -174,18 +175,24 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
   });
 
   auto dashboardContainer = ftxui::Container::Vertical({
-    homeControllerButtonView,
-                                                      itemListLayout
-                                                  });
+    //homeControllerButtonView,
+    itemListLayout
+  });
 
   auto dashboardRenderer = Renderer(dashboardContainer, [=] {
     auto content = ftxui::vbox({
-      homeControllerButtonView->Render(),
-                                   itemListRenderer->Render()
-                               });
+      //homeControllerButtonView->Render(),
+      itemListRenderer->Render()
+    });
     return window(ftxui::text(L" Todo Tracker "), content);
   });
-  component()->Add(dashboardRenderer);
+  //component()->Add(homeControllerButtonView);
+  component()->Add(newTaskLayout);
+  // Dashboard renderer doesn't work, but a similar implementation in this file did: https://github.com/mongodb-university/realm-template-apps/blob/8fde0bf86d0c290c047f3f4702462d1fa417416f/sync-todo/v2/client/cpp/main.cpp
+  // I render homeControllerButtonView and newTaskLayout above, and I can add a new task if I hardcode the call
+  // to the dbManager->addNew() method, but if I try to press the button in the app it crashes.
+  //component()->Add(renderTasks);
+  //component()->Add(dashboardRenderer);
 }
 
 void HomeController::onFrame() {

@@ -12,9 +12,6 @@
 class HomeController final : public Controller {
  private:
   AppState *_appState{nullptr};
-  std::unique_ptr<DatabaseManager> _databaseManager;
-//  std::shared_ptr<HomeScreenButtonRowBase> *homeScreenButtonRow{nullptr};
-//  HomeScreenButtonRowState buttonRowState;
 
   struct HomeControllerViewState {
     std::string toggleOfflineModeButtonLabel;
