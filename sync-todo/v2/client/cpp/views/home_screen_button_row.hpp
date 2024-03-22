@@ -15,10 +15,11 @@
 //#include "ftxui/screen/screen.hpp"      // for Size, Dimensions
 //#include "ftxui/screen/terminal.hpp"    // for Size, Dimensions
 //
-//#include "../data/app-state.hpp"
-//#include "../data/item-manager.hpp"
+//#include "../app_state.hpp"
+////#include "../data/item-manager.hpp"
 //#include "../offline_mode_selection.hpp"
-//
+//#include "../state/home_screen_button_state.hpp"
+
 //class HomeScreenButtonRow {
 // private:
 //  std::string goOfflineButtonLabel;
@@ -38,3 +39,14 @@
 // public:
 //  ftxui::Component init(AppState *appState, ItemManager* itemManager);
 //};
+
+//class HomeScreenButtonRowBase: public ftxui::ComponentBase {
+// public:
+//  HomeScreenButtonRowBase(ftxui::Component child);
+//  ftxui::Element Render() final;
+//
+// private:
+//  bool Focusable() const final;
+//};
+//
+//std::shared_ptr<HomeScreenButtonRowBase> HomeScreenButtonRow(HomeScreenButtonRowState *state);

@@ -5,11 +5,16 @@
 #include "../app_state.hpp"
 #include "../database_state.hpp"
 #include "../views/scroller.hpp"
-#include "../managers/item_manager.hpp"
+#include "../managers/database_manager.hpp"
+//#include "../state/home_screen_button_state.hpp"
+//#include "../views/home_screen_button_row.hpp"
 
 class HomeController final : public Controller {
  private:
   AppState *_appState{nullptr};
+  std::unique_ptr<DatabaseManager> _databaseManager;
+//  std::shared_ptr<HomeScreenButtonRowBase> *homeScreenButtonRow{nullptr};
+//  HomeScreenButtonRowState buttonRowState;
 
   struct HomeControllerViewState {
     std::string toggleOfflineModeButtonLabel;
@@ -20,13 +25,4 @@ class HomeController final : public Controller {
   HomeController(AppState *appState);
 
   void onFrame() override;
-//  HomeController(AppState *appState): Controller(ftxui::Container::Vertical({
-//    ftxui::Button("Log out", [this] {
-//      _appState->authManager->logOut(_appState->app.get());
-//    }),
-//    ftxui::Button("Trigger error", [this] {
-//      _appState->errorManager->setError("Uh oh!");
-//    })
-//  })), _appState(appState) {
-//  }
 };

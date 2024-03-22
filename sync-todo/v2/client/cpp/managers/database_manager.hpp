@@ -7,13 +7,9 @@
 #include "../item.hpp"
 #include "../ss.hpp"
 
-class ItemManager {
+class DatabaseManager {
  public:
-  struct Delegate {
-    virtual ~Delegate() = default;
-    virtual void onSubscriptionChange() = 0;
-    virtual void onOfflineModeChange() = 0;
-  };
+  DatabaseManager(AppState *appState);
 
   void init(AppState* appState);
   void addNew();
@@ -24,12 +20,10 @@ class ItemManager {
   realm::results<realm::Item> getItemList();
   realm::results<realm::Item> getIncompleteItemList();
   void toggleSubscriptions();
-
  private:
   std::string allItemSubscriptionName;
   std::string myItemSubscriptionName;
-  std::unique_ptr<realm::db> databasePtr;
+  std::unique_ptr<realm::db> databasePtr{nullptr};
   std::string userId;
-  Delegate *_delegate{nullptr};
   AppState *_appState;
 };

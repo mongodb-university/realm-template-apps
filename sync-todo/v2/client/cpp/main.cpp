@@ -4,7 +4,7 @@
 
 int main() {
   // Initialize render destination
-  auto screen = ftxui::ScreenInteractive::Fullscreen();
+  auto screen = ftxui::ScreenInteractive::FitComponent();
 
   AppController appController(&screen);
 

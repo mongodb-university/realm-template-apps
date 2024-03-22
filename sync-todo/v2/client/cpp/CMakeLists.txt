@@ -46,9 +46,10 @@ add_executable(sync_todo
         controllers/login_controller.cpp
         controllers/navigation.hpp
         managers/auth_manager.hpp
+        managers/database_manager.hpp
+        managers/database_manager.cpp
         managers/error_manager.hpp
-        managers/item_manager.hpp
-        managers/item_manager.cpp
+        state/home_screen_button_state.hpp
         views/home_screen_button_row.hpp
         views/home_screen_button_row.cpp
         views/login_view.hpp
