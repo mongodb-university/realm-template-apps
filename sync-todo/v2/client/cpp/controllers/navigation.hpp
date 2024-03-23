@@ -8,18 +8,9 @@ class Navigation final : public Controller {
   std::unique_ptr<Controller> _currentController;
 
  public:
-  Navigation(): Controller(ftxui::Container::Vertical({})) {}
-  //Navigation();
+  Navigation();
 
-  void onFrame() override {
-    if (_currentController) {
-      _currentController->onFrame();
-    }
-  }
+  void onFrame() override;
 
-  void goTo(std::unique_ptr<Controller> controller) {
-    component()->DetachAllChildren();
-    _currentController = std::move(controller);
-    component()->Add(_currentController->component());
-  }
+  void goTo(std::unique_ptr<Controller> controller);
 };

@@ -45,6 +45,7 @@ add_executable(sync_todo
         controllers/login_controller.hpp
         controllers/login_controller.cpp
         controllers/navigation.hpp
+        controllers/navigation.cpp
         managers/auth_manager.hpp
         managers/database_manager.hpp
         managers/database_manager.cpp
