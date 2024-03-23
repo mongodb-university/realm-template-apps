@@ -9,7 +9,6 @@ class LoginController final : public Controller {
   AppState *_appState{nullptr};
 
   struct LoginViewState {
-    bool isLoggingIn{false};
     std::string userEmail;
     std::string userPassword;
   } state;
