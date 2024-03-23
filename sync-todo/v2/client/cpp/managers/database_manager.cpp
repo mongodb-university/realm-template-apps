@@ -20,8 +20,8 @@ DatabaseManager::DatabaseManager(AppState *appState): _appState(appState) {
   });
 
   /** Initialize the database, and add a subscription to all items. This enables the app to read
-     all items in the data source linked to the App Services App. App Services Rules for the Item collection
-     mean that while the user can read all items, they can only write to their own items. */
+   *  all items in the data source linked to the App Services App. App Services Rules for the Item collection
+   *  mean that while the user can read all items, they can only write to their own items. */
   auto database = realm::db(std::move(config));
   database.subscriptions().update([&](realm::mutable_sync_subscription_set& subs) {
     /** By default, we show all items.*/
@@ -41,9 +41,9 @@ DatabaseManager::DatabaseManager(AppState *appState): _appState(appState) {
 /** Add a new item to the task list. */
 void DatabaseManager::addNew() {
   auto item = realm::Item {
-      .isComplete = _appState->databaseState->newTaskIsComplete,
-      .summary = _appState->databaseState->newTaskSummary,
-      .owner_id = userId,
+    .isComplete = _appState->databaseState->newTaskIsComplete,
+    .summary = _appState->databaseState->newTaskSummary,
+    .owner_id = userId,
   };
 
   auto database = *databasePtr;
@@ -72,7 +72,7 @@ void DatabaseManager::markComplete(realm::managed<realm::Item> itemToMarkComplet
   });
 }
 
-/** Get a list of all items in the database. */
+/** Get a list of all items in the database. Sort it to show the most recent items on top. */
 realm::results<realm::Item> DatabaseManager::getItemList() {
   auto items = databasePtr->objects<realm::Item>();
   items.sort("_id", false);
@@ -94,7 +94,7 @@ void DatabaseManager::refreshDatabase() {
 };
 
 /** Toggling offline mode simulates having no network connection by pausing sync.
- * The user can write to the database on device, and the data syncs automatically when sync is resumed. */
+ *  The user can write to the database on device, and the data syncs automatically when sync is resumed. */
 void DatabaseManager::toggleOfflineMode() {
   auto syncSession = databasePtr->get_sync_session();
   if (syncSession->state() == realm::internal::bridge::sync_session::state::paused) {
@@ -114,10 +114,9 @@ void DatabaseManager::toggleSubscriptions() {
    * We'll change it after updating the subscriptions. */
   int currentSubscriptionState = _appState->databaseState->subscriptionSelection;
 
-  // TODO: THIS COULD BE A PROBLEM
   databasePtr->subscriptions().update([&](realm::mutable_sync_subscription_set& subs) {
     /** If the currentSubscriptionState is `allItems`, toggling it should show only my items.
-     * Remove the `allItems` subscription and make sure the subscription for the user's items is present. */
+     *  Remove the `allItems` subscription and make sure the subscription for the user's items is present. */
     if (currentSubscriptionState == allItems) {
       subs.remove(allItemSubscriptionName);
       // If there isn't yet a subscription for my own items, add it
@@ -132,11 +131,11 @@ void DatabaseManager::toggleSubscriptions() {
       _appState->databaseState->subscriptionSelectionLabel = "Switch to All";
 
       /** If the currentSubscriptionState is `myItems`, toggling should show all items.
-       * Remove the `myItems` subscription and make sure the subscription for the all items is present. */
+       *  Remove the `myItems` subscription and make sure the subscription for the all items is present. */
     } else if (currentSubscriptionState == myItems) {
       subs.remove(myItemSubscriptionName);
       /** If the `showAllItems` toggle is selected, and
-       * there isn't yet a subscription for all items, add it. */
+       *  there isn't yet a subscription for all items, add it. */
       if (!subs.find(allItemSubscriptionName)) {
         subs.add<realm::Item>(allItemSubscriptionName);
       }

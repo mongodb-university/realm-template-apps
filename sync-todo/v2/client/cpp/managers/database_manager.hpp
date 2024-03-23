@@ -11,7 +11,6 @@ class DatabaseManager {
  public:
   DatabaseManager(AppState *appState);
 
-  void init(AppState* appState);
   void addNew();
   void remove(realm::managed<realm::Item> itemToDelete);
   void markComplete(realm::managed<realm::Item> itemToMarkComplete);
@@ -20,6 +19,7 @@ class DatabaseManager {
   realm::results<realm::Item> getItemList();
   realm::results<realm::Item> getIncompleteItemList();
   void toggleSubscriptions();
+
  private:
   std::string allItemSubscriptionName;
   std::string myItemSubscriptionName;

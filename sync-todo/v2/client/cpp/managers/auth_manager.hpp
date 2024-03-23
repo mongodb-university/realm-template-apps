@@ -10,7 +10,7 @@ class AuthManager {
     virtual void onLoggedOut() = 0;
   };
 
-  AuthManager(Delegate *delegate);
+  explicit AuthManager(Delegate *delegate);
 
   void registerUser(realm::App *app, std::string const& userEmail, std::string const& userPassword);
 
