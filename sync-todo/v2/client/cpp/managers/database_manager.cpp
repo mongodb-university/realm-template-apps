@@ -75,6 +75,7 @@ void DatabaseManager::markComplete(realm::managed<realm::Item> itemToMarkComplet
 /** Get a list of all items in the database. */
 realm::results<realm::Item> DatabaseManager::getItemList() {
   auto items = databasePtr->objects<realm::Item>();
+  items.sort("_id", false);
   return items;
 };
 
@@ -83,6 +84,7 @@ realm::results<realm::Item> DatabaseManager::getIncompleteItemList() {
   auto items = databasePtr->objects<realm::Item>();
   auto incompleteItems = items.where(
       [](auto &item) { return item.isComplete == false; });
+  incompleteItems.sort("_id", false);
   return incompleteItems;
 };
 
