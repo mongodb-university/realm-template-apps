@@ -11,21 +11,10 @@ class ErrorManager {
     virtual void onErrorCleared(ErrorManager &error) = 0;
   };
 
-  ErrorManager(Delegate *delegate): _delegate(delegate) {}
-
-  void setError(std::string error) {
-    _error = std::move(error);
-    _delegate->onError(*this);
-  }
-
-  void clearError() {
-    _error.reset();
-    _delegate->onErrorCleared(*this);
-  }
-
-  std::optional<std::string> const &getError() const {
-    return _error;
-  }
+  ErrorManager(Delegate *delegate);
+  void setError(std::string error);
+  void clearError();
+  std::optional<std::string> const &getError() const;
 
  private:
   Delegate *_delegate{nullptr};

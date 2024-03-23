@@ -59,6 +59,7 @@ add_executable(sync_todo
         views/scroller.hpp
         views/scroller.cpp
         managers/auth_manager.cpp
+        managers/error_manager.cpp
 )
 
 target_link_libraries(sync_todo PRIVATE cpprealm)
