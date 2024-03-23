@@ -6,6 +6,7 @@
 #include "../state/app_state.hpp"
 #include "../state/database_state.hpp"
 #include "../views/scroller.hpp"
+#include "../ss.hpp"
 
 class HomeController final : public Controller {
  private:

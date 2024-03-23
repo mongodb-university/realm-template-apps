@@ -63,10 +63,15 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
 
   auto homeControllerButtonView = Renderer(optionsLayout, [=] {
     return vbox(
-        hbox(toggleOfflineModeButton->Render(), ftxui::separator(), toggleSubscriptionsButton->Render(),
-             ftxui::separator(), filters->Render(), ftxui::separator(),
-             logoutButton->Render(), ftxui::separator(), quitButton->Render()) |
-            ftxui::border);
+        hbox(toggleOfflineModeButton->Render(),
+             ftxui::separator(),
+             toggleSubscriptionsButton->Render(),
+             ftxui::separator(),
+             filters->Render(), ftxui::separator(),
+             logoutButton->Render(),
+             ftxui::separator(),
+             quitButton->Render()
+             ) | ftxui::border | ftxui::center | size(ftxui::WIDTH, ftxui::GREATER_THAN, 100)) ;
   });
 
   /** Accept user inputs and create new items in the database. */
@@ -96,7 +101,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
         ftxui::text(item.summary) | ftxui::flex,
         align_right(ftxui::text(completionString)),
         align_right(ftxui::text(mineOrNot))
-      }) | size(ftxui::WIDTH, ftxui::GREATER_THAN, 80);
+      }) | size(ftxui::WIDTH, ftxui::GREATER_THAN, 100);
       tasks.push_back(taskRow);
     }
     auto content = vbox(std::move(tasks));
@@ -164,6 +169,9 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
         scrollerContainer->Render(),
         ftxui::separator(),
         ftxui::text("In the list, press 'c' to mark the selected item complete, 'd' to delete"),
+        ftxui::separator(),
+        ftxui::text("To view your data in Atlas, visit the following link: "),
+        ftxui::text(_appState->appConfigMetadata->dataExplorerLink)
         }) | ftxui::center;
     return window(ftxui::text(L" Todo List "), content);
   });
