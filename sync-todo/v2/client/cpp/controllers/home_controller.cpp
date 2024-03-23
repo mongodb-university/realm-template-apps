@@ -15,32 +15,31 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
   _appState->databaseState = std::make_unique<DatabaseState>(std::move(dbState));
   auto databaseManager = DatabaseManager(appState);
   dbManagerPtr = std::make_unique<DatabaseManager>(std::move(databaseManager));
+
   /** This button row displays at the top of the home screen and provides most of the interactions that change app state.*/
   auto goOfflineButtonLabel = std::string{"Go Offline"};
   auto goOnlineButtonLabel = std::string{"Go Online"};
 
   if (_appState->databaseState->offlineModeSelection == offlineModeEnabled) {
-    state.toggleOfflineModeButtonLabel = goOnlineButtonLabel;
+    _appState->databaseState->offlineModeLabel = goOnlineButtonLabel;
   } else if (_appState->databaseState->offlineModeSelection == offlineModeDisabled) {
-    state.toggleOfflineModeButtonLabel = goOfflineButtonLabel;
+    _appState->databaseState->offlineModeLabel = goOfflineButtonLabel;
   }
 
-//    auto toggleOfflineModeButton = ftxui::Button(&state.toggleOfflineModeButtonLabel, [=]{ itemManager->toggleOfflineMode(); });
-  auto toggleOfflineModeButton = ftxui::Button(&state.toggleOfflineModeButtonLabel, [=]{  });
-  toggleOfflineModeButton = VWrap("Sync Items", toggleOfflineModeButton);
+  auto toggleOfflineModeButton = ftxui::Button(&_appState->databaseState->offlineModeLabel, [=]{ dbManagerPtr->toggleOfflineMode(); });
+  toggleOfflineModeButton = VWrap("Offline Mode", toggleOfflineModeButton);
 
-  auto showAllButtonLabel = std::string{"All Tasks"};
-  auto showMineButtonLabel = std::string{"Only Mine"};
+  auto showAllButtonLabel = std::string{"Switch to All"};
+  auto showMineButtonLabel = std::string{"Switch to Mine"};
 
   if (_appState->databaseState->subscriptionSelection == allItems) {
-    state.toggleSubscriptionsButtonLabel = showMineButtonLabel;
+    _appState->databaseState->subscriptionSelectionLabel = showMineButtonLabel;
   } else if (_appState->databaseState->subscriptionSelection == myItems) {
-    state.toggleSubscriptionsButtonLabel = showAllButtonLabel;
+    _appState->databaseState->subscriptionSelectionLabel = showAllButtonLabel;
   }
 
-  //auto toggleSubscriptionsButton = ftxui::Button(&state.toggleSubscriptionsButtonLabel, [&]{ itemManager->toggleSubscriptions(); });
-  auto toggleSubscriptionsButton = ftxui::Button(&state.toggleSubscriptionsButtonLabel, [=]{  });
-  toggleSubscriptionsButton = VWrap("Offline Mode", toggleSubscriptionsButton);
+  auto toggleSubscriptionsButton = ftxui::Button(&_appState->databaseState->subscriptionSelectionLabel, [=]{ dbManagerPtr->toggleSubscriptions(); });
+  toggleSubscriptionsButton = VWrap("Subscription", toggleSubscriptionsButton);
 
   auto filters = ftxui::Checkbox("Hide completed", &_appState->databaseState->hideCompletedTasks);
   filters = VWrap("Filters", filters);
@@ -185,6 +184,6 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
 }
 
 void HomeController::onFrame() {
-  // TODO: Refresh the realm from here to get the synced data between runloops
+  /** Refresh the database to show new items that have synced in the background. */
   dbManagerPtr->refreshDatabase();
 }

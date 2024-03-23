@@ -17,9 +17,11 @@ struct DatabaseState {
    * whether to subscribe to all items, or only the user's items.
    */
   SubscriptionSelection subscriptionSelection{allItems};
+  std::string subscriptionSelectionLabel;
 
   /** The app uses this int with the `OfflineModeSelection` enum to determine
    * whether to immediately sync all changes, or simulate offline mode and stop syncing.
    */
   OfflineModeSelection offlineModeSelection{offlineModeDisabled};
+  std::string offlineModeLabel;
 };

@@ -100,9 +100,11 @@ void DatabaseManager::toggleOfflineMode() {
   if (syncSession->state() == realm::internal::bridge::sync_session::state::paused) {
     syncSession->resume();
     _appState->databaseState->offlineModeSelection = offlineModeDisabled;
+    _appState->databaseState->offlineModeLabel = "Go Offline";
   } else if (syncSession->state() == realm::internal::bridge::sync_session::state::active) {
     syncSession->pause();
     _appState->databaseState->offlineModeSelection = offlineModeEnabled;
+    _appState->databaseState->offlineModeLabel = "Go Online";
   }
 }
 
@@ -127,6 +129,7 @@ void DatabaseManager::toggleSubscriptions() {
       }
       /** Update the subscription selection to reflect the new subscription. */
       _appState->databaseState->subscriptionSelection = myItems;
+      _appState->databaseState->subscriptionSelectionLabel = "Switch to All";
 
       /** If the currentSubscriptionState is `myItems`, toggling should show all items.
        * Remove the `myItems` subscription and make sure the subscription for the all items is present. */
@@ -140,6 +143,7 @@ void DatabaseManager::toggleSubscriptions() {
 
       /** Update the subscription selection to reflect the new subscription. */
       _appState->databaseState->subscriptionSelection = allItems;
+      _appState->databaseState->subscriptionSelectionLabel = "Switch to Mine";
     }
   }).get();
 
