@@ -16,6 +16,8 @@ For this template app to work, you must ensure that `atlasConfig.json` exists an
 - **dataExplorerLink:** the URL to browse to your collections in Atlas. Go here to see data syncing from your app.
 - **dataSourceName:** the name of the data source in Atlas. This information is not used by this template app.
 
+## Create an Atlas Device Sync Template App
+
 ### Create the Template App using App Services CLI
 
 The easiest way to work with this client is to create the template app using App Services CLI. If you use the CLI to
@@ -93,3 +95,49 @@ check that your input string or stream contains the expected JSON
 
 Confirm that the `atlasConfig.json` exists in the project. If you did not make the `build` directory inside this project
 directory, update the path in `main.cpp` at line 28 to match the path of the `atlasConfig.json` on your system.
+
+## Structure
+
+To see the code examples concerned with Atlas Device SDK for C++, these files are the most relevant:
+
+- Controllers:
+  - `app_controller.cpp`: Set up app state, including reading the `atlasConfig.json` and setting up the Atlas App connection.
+  - `home_controller.cpp`: Create the task list, add new items, and let the user change app state.
+- Managers
+  - `auth_manager.cpp`: Authenticate users with the Atlas Device Sync app.
+  - `database_manager.cpp`: Handles Device Sync subscriptions, Sync sessions, and database CRUD operations.
+- State
+  - `item.hpp`: The Atlas Device SDK data model.
+
+```
+├── controllers
+│   ├── app_controller.cpp
+│   ├── app_controller.hpp
+│   ├── controller.hpp
+│   ├── home_controller.cpp
+│   ├── home_controller.hpp
+│   ├── login_controller.cpp
+│   ├── login_controller.hpp
+│   ├── navigation.cpp
+│   └── navigation.hpp
+├── main.cpp
+├── managers
+│   ├── auth_manager.cpp
+│   ├── auth_manager.hpp
+│   ├── database_manager.cpp
+│   ├── database_manager.hpp
+│   ├── error_manager.cpp
+│   └── error_manager.hpp
+├── ss.hpp
+├── state
+│   ├── app_config_metadata.cpp
+│   ├── app_config_metadata.hpp
+│   ├── app_state.hpp
+│   ├── database_state.hpp
+│   ├── item.hpp
+│   ├── offline_mode_selection.hpp
+│   └── subscription_selection.hpp
+└── views
+    ├── scroller.cpp
+    └── scroller.hpp
+```
