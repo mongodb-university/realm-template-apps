@@ -6,8 +6,6 @@
 #include "../database_state.hpp"
 #include "../views/scroller.hpp"
 #include "../managers/database_manager.hpp"
-//#include "../state/home_screen_button_state.hpp"
-//#include "../views/home_screen_button_row.hpp"
 
 class HomeController final : public Controller {
  private:
