@@ -47,7 +47,7 @@ bool ScrollerBase::OnEvent(ftxui::Event event) {
     indexOfSelectedItem = size_;
 
   indexOfSelectedItem = std::max(0, std::min(size_ - 1, indexOfSelectedItem));
-  //setSelectedItem
+
   return selected_old != indexOfSelectedItem;
 }
 

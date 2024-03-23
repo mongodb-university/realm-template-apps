@@ -2,10 +2,10 @@
 
 #include "ftxui/component/component.hpp"
 #include "controller.hpp"
-#include "../app_state.hpp"
-#include "../database_state.hpp"
-#include "../views/scroller.hpp"
 #include "../managers/database_manager.hpp"
+#include "../state/app_state.hpp"
+#include "../state/database_state.hpp"
+#include "../views/scroller.hpp"
 
 class HomeController final : public Controller {
  private:

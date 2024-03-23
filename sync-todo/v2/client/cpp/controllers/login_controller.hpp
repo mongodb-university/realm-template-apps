@@ -2,7 +2,7 @@
 
 #include "ftxui/component/component.hpp"
 #include "controller.hpp"
-#include "../app_state.hpp"
+#include "../state/app_state.hpp"
 
 class LoginController final : public Controller {
  private:

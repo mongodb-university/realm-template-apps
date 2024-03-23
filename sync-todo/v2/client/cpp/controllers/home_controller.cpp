@@ -16,9 +16,10 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
   _appState->databaseState = std::make_unique<DatabaseState>(std::move(dbState));
   auto databaseManager = DatabaseManager(appState);
   dbManagerPtr = std::make_unique<DatabaseManager>(std::move(databaseManager));
+  auto user = _appState->app->get_current_user();
+  auto userId = user->identifier();
 
-  /** This group of components creates the button row that displays at the top of the home screen and provides most of
-   * the interactions that change app state. */
+  /** This button row displays at the top of the home screen and provides most of the interactions to change app state. */
   auto goOfflineButtonLabel = std::string{"Go Offline"};
   auto goOnlineButtonLabel = std::string{"Go Online"};
 
@@ -68,11 +69,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
             ftxui::border);
   });
 
-  /** The next set of components sets up the dashboard elements to create items and display the tasks. */
-  auto user = _appState->app->get_current_user();
-  auto userId = user->identifier();
-
-  /** The app uses these new task elements to accept user inputs and create new items in the database. */
+  /** Accept user inputs and create new items in the database. */
   auto inputNewTaskSummary =
       ftxui::Input(&_appState->databaseState->newTaskSummary, "Enter new task summary");
   auto newTaskCompletionStatus = ftxui::Checkbox("Complete", &_appState->databaseState->newTaskIsComplete);
@@ -91,7 +88,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
     auto itemList = appState->databaseState->hideCompletedTasks? dbManagerPtr->getIncompleteItemList(): dbManagerPtr->getItemList();
     ftxui::Elements tasks;
     /** If the user has toggled the checkbox to hide completed tasks, show only the incomplete task list.
-     * Otherwise, show all items. */
+     *  Otherwise, show all items. */
     for (auto &item: itemList) {
       std::string completionString = (item.isComplete) ? " Complete " : " Incomplete ";
       std::string mineOrNot = (item.owner_id == userId) ? " Mine " : " Them ";

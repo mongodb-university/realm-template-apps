@@ -2,9 +2,9 @@
 
 #include <string>
 #include <cpprealm/sdk.hpp>
-#include "../app_state.hpp"
-#include "../database_state.hpp"
-#include "../item.hpp"
+#include "../state/app_state.hpp"
+#include "../state/database_state.hpp"
+#include "../state/item.hpp"
 #include "../ss.hpp"
 
 class DatabaseManager {

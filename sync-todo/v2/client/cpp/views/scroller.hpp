@@ -7,9 +7,9 @@
 
 #include "ftxui/component/component.hpp"
 #include "ftxui/component/component_base.hpp"
-#include "ftxui/component/mouse.hpp"
 #include "ftxui/dom/deprecated.hpp"
 #include "ftxui/dom/elements.hpp"
+#include "ftxui/component/mouse.hpp"
 
 class ScrollerBase: public ftxui::ComponentBase {
  public:

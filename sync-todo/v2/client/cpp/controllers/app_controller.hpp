@@ -6,14 +6,14 @@
 
 #include "ftxui/component/component.hpp"
 #include "controller.hpp"
+#include "home_controller.hpp"
+#include "login_controller.hpp"
 #include "navigation.hpp"
 #include "../managers/auth_manager.hpp"
 #include "../managers/error_manager.hpp"
-#include "../app_state.hpp"
-#include "../database_state.hpp"
-#include "home_controller.hpp"
-#include "login_controller.hpp"
-#include "../app_config_metadata.hpp"
+#include "../state/app_config_metadata.hpp"
+#include "../state/app_state.hpp"
+#include "../state/database_state.hpp"
 
 class AppController final : public Controller, public AuthManager::Delegate, public ErrorManager::Delegate {
  private:
