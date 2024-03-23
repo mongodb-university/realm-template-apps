@@ -13,7 +13,7 @@ LoginController::LoginController(AppState *appState): Controller(
   });
 
   auto registerButton = ftxui::Button("Register", [this] {
-    _appState->authManager->registerAndLoginUser(_appState->app.get(), state.userEmail, state.userPassword);
+    _appState->authManager->registerUser(_appState->app.get(), state.userEmail, state.userPassword);
   });
 
   auto buttonLayout = ftxui::Container::Horizontal({loginButton, registerButton});

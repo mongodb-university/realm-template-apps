@@ -47,6 +47,7 @@ add_executable(sync_todo
         controllers/navigation.hpp
         controllers/navigation.cpp
         managers/auth_manager.hpp
+        managers/auth_manager.cpp
         managers/database_manager.hpp
         managers/database_manager.cpp
         managers/error_manager.hpp
@@ -57,6 +58,7 @@ add_executable(sync_todo
         views/login_view.cpp
         views/scroller.hpp
         views/scroller.cpp
+        managers/auth_manager.cpp
 )
 
 target_link_libraries(sync_todo PRIVATE cpprealm)

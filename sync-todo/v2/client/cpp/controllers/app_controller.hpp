@@ -20,7 +20,6 @@ class AppController final : public Controller, public AuthManager::Delegate, pub
   AppState _appState;
   Navigation _navigation;
 
-  bool _showErrorModal{true};
   bool isUserLoggedIn{false};
   ftxui::Component _errorModal;
 
@@ -30,8 +29,6 @@ class AppController final : public Controller, public AuthManager::Delegate, pub
   void onFrame() override;
 
  private:
-  void onRegisteredAndLoggedIn() override;
-
   void onLoggedIn() override;
 
   void onLoggedOut() override;

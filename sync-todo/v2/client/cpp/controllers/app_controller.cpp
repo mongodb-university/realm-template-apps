@@ -44,10 +44,6 @@ AppController::AppController(ftxui::ScreenInteractive *screen) {
   }
 }
 
-void AppController::onRegisteredAndLoggedIn() {
-  _navigation.goTo(std::make_unique<HomeController>(&_appState));
-}
-
 void AppController::onLoggedIn() {
   _navigation.goTo(std::make_unique<HomeController>(&_appState));
 }
