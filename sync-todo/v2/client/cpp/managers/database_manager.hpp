@@ -11,7 +11,7 @@ class DatabaseManager {
  public:
   DatabaseManager(AppState *appState);
 
-  void addNew();
+  void addNew(bool newItemIsComplete, std::string newItemSummary);
   void remove(realm::managed<realm::Item> itemToDelete);
   void markComplete(realm::managed<realm::Item> itemToMarkComplete);
   void refreshDatabase();

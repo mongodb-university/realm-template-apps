@@ -1,5 +1,7 @@
 #include "database_manager.hpp"
 
+#include <utility>
+
 DatabaseManager::DatabaseManager(AppState *appState): _appState(appState) {
   auto user = _appState->app->get_current_user();
 
@@ -39,10 +41,10 @@ DatabaseManager::DatabaseManager(AppState *appState): _appState(appState) {
 }
 
 /** Add a new item to the task list. */
-void DatabaseManager::addNew() {
+void DatabaseManager::addNew(bool newItemIsComplete, std::string newItemSummary) {
   auto item = realm::Item {
-    .isComplete = _appState->databaseState->newTaskIsComplete,
-    .summary = _appState->databaseState->newTaskSummary,
+    .isComplete = newItemIsComplete,
+    .summary = std::move(newItemSummary),
     .owner_id = userId,
   };
 

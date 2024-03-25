@@ -80,7 +80,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
   auto newTaskCompletionStatus = ftxui::Checkbox("Complete", &_appState->databaseState->newTaskIsComplete);
 
   auto saveButton = ftxui::Button("Save", [=] {
-    _dbManager->addNew();
+    _dbManager->addNew(_appState->databaseState->newTaskIsComplete, _appState->databaseState->newTaskSummary);
     _appState->databaseState->newTaskSummary = "";
     _appState->databaseState->newTaskIsComplete = false;
   });
