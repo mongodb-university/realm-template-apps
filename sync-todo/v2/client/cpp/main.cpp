@@ -2,18 +2,26 @@
 #include "controllers/app_controller.hpp"
 #include <ftxui/component/loop.hpp>
 
-int main() {
-  /** Initialize render destination */
-  auto screen = ftxui::ScreenInteractive::FitComponent();
+int main(int argc, char *argv[]) {
+  if (argc == 1) {
+    printf("\nPlease pass the path to atlasConfig.json when running the application. \n");
+  }
 
-  AppController appController(&screen);
+  if (argc >= 2) {
+    // Get the path to the Atlas config
+    auto pathToAtlasConfig = argv[1];
 
-  /** Declare loop that handles events and renders the component to the screen */
-  ftxui::Loop loop(&screen, appController.component());
+    // Initialize render destination
+    auto screen = ftxui::ScreenInteractive::FitComponent();
+    AppController appController(&screen, pathToAtlasConfig);
 
-  while (!loop.HasQuitted()) {
-    appController.onFrame();
-    loop.RunOnce();
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    // Declare loop that handles events and renders the component to the screen
+    ftxui::Loop loop(&screen, appController.component());
+
+    while (!loop.HasQuitted()) {
+      appController.onFrame();
+      loop.RunOnce();
+      std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
   }
 }

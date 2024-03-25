@@ -71,30 +71,15 @@ This app uses CMake to manage dependencies. You must have CMake installed to use
      cmake --build .
   ```
 
-- Run the executable.
+- Run the executable. Pass the path to the `atlasConfig.json` as an argument when you run the application.
 
   ```shell
-     ./sync_todo
+     ./sync_todo /path-to-file/atlasConfig.json
   ```
 
 ## Issues
 
 Please report issues with the template at https://github.com/mongodb-university/realm-template-apps/issues/new
-
-### Troubleshooting
-
-#### Attempting to parse an empty input
-
-If your `atlasConfig.json` does not exist, or the path to this file is not correct, you may encounter this error:
-
-```shell
-terminating due to uncaught exception of type nlohmann::json_abi_v3_11_3::detail::parse_error: 
-[json.exception.parse_error.101] parse error at line 1, column 1: attempting to parse an empty input; 
-check that your input string or stream contains the expected JSON
-```
-
-Confirm that the `atlasConfig.json` exists in the project. If you did not make the `build` directory inside this project
-directory, update the path in `main.cpp` at line 28 to match the path of the `atlasConfig.json` on your system.
 
 ## Structure
 
