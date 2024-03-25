@@ -64,11 +64,7 @@ void DatabaseManager::remove(realm::managed<realm::Item> itemToDelete) {
 void DatabaseManager::markComplete(realm::managed<realm::Item> itemToMarkComplete) {
   auto database = *databasePtr;
   database.write([&]{
-    if (itemToMarkComplete.isComplete == true) {
-      itemToMarkComplete.isComplete = false;
-    } else if (itemToMarkComplete.isComplete == false) {
-      itemToMarkComplete.isComplete = true;
-    }
+    itemToMarkComplete.isComplete = !itemToMarkComplete.isComplete;
   });
 }
 
