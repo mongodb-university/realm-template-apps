@@ -19,7 +19,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
   auto user = _appState->app->get_current_user();
   auto userId = user->identifier();
 
-  /** This button row displays at the top of the home screen and provides most of the interactions to change app state. */
+  // This button row displays at the top of the home screen and provides most of the interactions to change app state.
   auto goOfflineButtonLabel = std::string{"Go Offline"};
   auto goOnlineButtonLabel = std::string{"Go Online"};
 
@@ -74,7 +74,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
              ) | ftxui::border | ftxui::center | size(ftxui::WIDTH, ftxui::GREATER_THAN, 100)) ;
   });
 
-  /** Accept user inputs and create new items in the database. */
+  // Accept user inputs and create new items in the database.
   auto inputNewTaskSummary =
       ftxui::Input(&_appState->databaseState->newTaskSummary, "Enter new task summary");
   auto newTaskCompletionStatus = ftxui::Checkbox("Complete", &_appState->databaseState->newTaskIsComplete);
@@ -88,12 +88,12 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
   auto newTaskLayout = ftxui::Container::Horizontal(
       {inputNewTaskSummary, newTaskCompletionStatus, saveButton});
 
-  /** Lay out and render the scrollable task list. */
+  // Lay out and render the scrollable task list.
   auto renderTasks = ftxui::Renderer([=] {
     auto itemList = appState->databaseState->hideCompletedTasks? dbManagerPtr->getIncompleteItemList(): dbManagerPtr->getItemList();
     ftxui::Elements tasks;
-    /** If the user has toggled the checkbox to hide completed tasks, show only the incomplete task list.
-     *  Otherwise, show all items. */
+    // If the user has toggled the checkbox to hide completed tasks, show only the incomplete task list.
+    // Otherwise, show all items.
     for (auto &item: itemList) {
       std::string completionString = (item.isComplete) ? " Complete " : " Incomplete ";
       std::string mineOrNot = (item.owner_id == userId) ? " Mine " : " Them ";
@@ -108,7 +108,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
     return content;
   });
 
-  /** Render a scrollable task list that can accept keyboard events to mark items as complete or delete them. */
+  // Render a scrollable task list that can accept keyboard events to mark items as complete or delete them.
   auto scroller = Scroller(renderTasks);
 
   auto scrollerRenderer = Renderer(scroller, [=] {
@@ -121,21 +121,21 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
   scrollerContainer =
       Renderer(scrollerContainer, [=] { return scrollerContainer->Render() | ftxui::flex; });
 
-  /** Handle keyboard events. */
+  // Handle keyboard events.
   scrollerContainer = CatchEvent(scrollerContainer, [=](ftxui::Event const &event) {
     auto itemList = appState->databaseState->hideCompletedTasks? dbManagerPtr->getIncompleteItemList(): dbManagerPtr->getItemList();
-    /** Delete items from the database */
+    // Delete items from the database
     if (event == ftxui::Event::Character('d')) {
-      /** Get index of selected item in the scroller */
+      // Get index of selected item in the scroller
       auto scrollerIndex = scroller->getScrollerIndex();
-      /** Get the matching managed Item from the Results set */
+      // Get the matching managed Item from the Results set
       auto managedItemAtIndex = itemList[scrollerIndex];
-      /** Delete the item from the database */
+      // Delete the item from the database
       dbManagerPtr->remove(managedItemAtIndex);
       return true;
     }
 
-    /** Mark items complete */
+    // Mark items complete
     if (event == ftxui::Event::Character('c')) {
       auto scrollerIndex = scroller->getScrollerIndex();
       auto managedItemAtIndex = itemList[scrollerIndex];
@@ -145,7 +145,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
     return false;
   });
 
-  /** Lay out and render the item list */
+  // Lay out and render the item list
   ftxui::Element taskTableHeaderRow = ftxui::hbox({
     ftxui::text(L" Summary ") | ftxui::flex | ftxui::bold,
     align_right(ftxui::text(L" Status ")),
@@ -192,6 +192,6 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
 }
 
 void HomeController::onFrame() {
-  /** Refresh the database to show new items that have synced in the background. */
+  // Refresh the database to show new items that have synced in the background.
   dbManagerPtr->refreshDatabase();
 }

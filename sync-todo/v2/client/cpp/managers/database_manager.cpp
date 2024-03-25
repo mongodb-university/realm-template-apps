@@ -3,15 +3,15 @@
 DatabaseManager::DatabaseManager(AppState *appState): _appState(appState) {
   auto user = _appState->app->get_current_user();
 
-  /** Sync configuration and sync subscription management. */
+  // Sync configuration and sync subscription management.
   allItemSubscriptionName = "all_items";
   myItemSubscriptionName = "my_items";
   userId = user->identifier();
 
   auto config = user->flexible_sync_configuration();
 
-  /** Handle database sync errors. If there is an error, add the message to the `appState`
-   * and change the screen that is displaying to the error modal. */
+  // Handle database sync errors. If there is an error, add the message to the `appState`
+  // and change the screen that is displaying to the error modal.
   config.sync_config().set_error_handler([=](const realm::sync_session &session,
                                              const realm::internal::bridge::sync_error &error) {
 
@@ -19,22 +19,22 @@ DatabaseManager::DatabaseManager(AppState *appState): _appState(appState) {
     _appState->errorManager->setError(errorText);
   });
 
-  /** Initialize the database, and add a subscription to all items. This enables the app to read
-   *  all items in the data source linked to the App Services App. App Services Rules for the Item collection
-   *  mean that while the user can read all items, they can only write to their own items. */
+  // Initialize the database, and add a subscription to all items. This enables the app to read
+  // all items in the data source linked to the App Services App. App Services Rules for the Item collection
+  // mean that while the user can read all items, they can only write to their own items.
   auto database = realm::db(std::move(config));
   database.subscriptions().update([&](realm::mutable_sync_subscription_set& subs) {
-    /** By default, we show all items.*/
+    // By default, we show all items.
     if (!subs.find(allItemSubscriptionName)) {
       subs.add<realm::Item>(allItemSubscriptionName);
     }
   }).get();
 
-  /** Wait for downloads after loading the app, and refresh the database.*/
+  // Wait for downloads after loading the app, and refresh the database.
   database.get_sync_session()->wait_for_download_completion().get();
   database.refresh();
 
-  /** Add a pointer to the database as a class member, so we can access the database later when making changes. */
+  // Add a pointer to the database as a class member, so we can access the database later when making changes.
   databasePtr = std::make_unique<realm::db>(database);
 }
 
@@ -110,13 +110,13 @@ void DatabaseManager::toggleOfflineMode() {
 
 /** Changing the database subscriptions changes which data syncs to the device. */
 void DatabaseManager::toggleSubscriptions() {
-  /** Note the subscription state at the start of the toggle operation.
-   * We'll change it after updating the subscriptions. */
+  // Note the subscription state at the start of the toggle operation.
+  // We'll change it after updating the subscriptions.
   int currentSubscriptionState = _appState->databaseState->subscriptionSelection;
 
   databasePtr->subscriptions().update([&](realm::mutable_sync_subscription_set& subs) {
-    /** If the currentSubscriptionState is `allItems`, toggling it should show only my items.
-     *  Remove the `allItems` subscription and make sure the subscription for the user's items is present. */
+    // If the currentSubscriptionState is `allItems`, toggling it should show only my items.
+    // Remove the `allItems` subscription and make sure the subscription for the user's items is present.
     if (currentSubscriptionState == allItems) {
       subs.remove(allItemSubscriptionName);
       // If there isn't yet a subscription for my own items, add it
@@ -126,26 +126,26 @@ void DatabaseManager::toggleSubscriptions() {
                                 return item.owner_id == userId;
                               });
       }
-      /** Update the subscription selection to reflect the new subscription. */
+      // Update the subscription selection to reflect the new subscription.
       _appState->databaseState->subscriptionSelection = myItems;
       _appState->databaseState->subscriptionSelectionLabel = "Switch to All";
 
-      /** If the currentSubscriptionState is `myItems`, toggling should show all items.
-       *  Remove the `myItems` subscription and make sure the subscription for the all items is present. */
+      // If the currentSubscriptionState is `myItems`, toggling should show all items.
+      // Remove the `myItems` subscription and make sure the subscription for the all items is present.
     } else if (currentSubscriptionState == myItems) {
       subs.remove(myItemSubscriptionName);
-      /** If the `showAllItems` toggle is selected, and
-       *  there isn't yet a subscription for all items, add it. */
+      // If the `showAllItems` toggle is selected, and
+      // there isn't yet a subscription for all items, add it.
       if (!subs.find(allItemSubscriptionName)) {
         subs.add<realm::Item>(allItemSubscriptionName);
       }
 
-      /** Update the subscription selection to reflect the new subscription. */
+      // Update the subscription selection to reflect the new subscription.
       _appState->databaseState->subscriptionSelection = allItems;
       _appState->databaseState->subscriptionSelectionLabel = "Switch to Mine";
     }
   }).get();
 
-  /** Wait for downloads after changing the subscription. */
+  // Wait for downloads after changing the subscription.
   databasePtr->get_sync_session()->wait_for_download_completion().get();
 }
