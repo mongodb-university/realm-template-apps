@@ -33,10 +33,6 @@ AppController::AppController(ftxui::ScreenInteractive *screen, char* pathToAtlas
   component()->Add(_navigation.component());
 
   if (_appState.app->get_current_user()) {
-    isUserLoggedIn = true;
-  }
-
-  if (isUserLoggedIn) {
     _navigation.goTo(std::make_unique<HomeController>(&_appState));
   } else {
     _navigation.goTo(std::make_unique<LoginController>(&_appState));

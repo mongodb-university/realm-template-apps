@@ -21,7 +21,6 @@ class AppController final : public Controller, public AuthManager::Delegate, pub
   AppState _appState;
   Navigation _navigation;
 
-  bool isUserLoggedIn{false};
   ftxui::Component _errorModal;
 
  public:
