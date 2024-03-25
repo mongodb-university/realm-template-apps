@@ -11,7 +11,7 @@
 class HomeController final : public Controller {
  private:
   AppState *_appState{nullptr};
-  std::unique_ptr<DatabaseManager> dbManagerPtr{nullptr};
+  std::unique_ptr<DatabaseManager> _dbManager{nullptr};
 
  public:
   HomeController(AppState *appState);
