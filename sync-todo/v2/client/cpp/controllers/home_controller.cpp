@@ -12,8 +12,7 @@ ftxui::Component VWrap(const std::string& name, const ftxui::Component& componen
 }
 
 HomeController::HomeController(AppState *appState): Controller(ftxui::Container::Vertical({})), _appState(appState), _homeControllerState(new HomeControllerState) {
-  auto databaseManager = DatabaseManager(_appState, _homeControllerState);
-  _dbManager = std::make_unique<DatabaseManager>(std::move(databaseManager));
+  _dbManager = std::make_unique<DatabaseManager>(DatabaseManager(_appState, _homeControllerState));
   auto user = _appState->app->get_current_user();
   auto userId = user->identifier();
 
