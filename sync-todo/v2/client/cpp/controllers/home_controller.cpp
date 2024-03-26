@@ -27,8 +27,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
   }
 
   auto toggleOfflineModeButton = ftxui::Button(&_homeControllerState->offlineModeLabel,
-                                               [=]{ _dbManager->toggleOfflineMode();
-  });
+                                               [=]{ _dbManager->toggleOfflineMode(); });
   toggleOfflineModeButton = VWrap("Offline Mode", toggleOfflineModeButton);
 
   auto showAllButtonLabel = std::string{"Switch to All"};
