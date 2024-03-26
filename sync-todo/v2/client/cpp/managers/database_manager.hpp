@@ -3,13 +3,13 @@
 #include <string>
 #include <cpprealm/sdk.hpp>
 #include "../state/app_state.hpp"
-#include "../state/database_state.hpp"
+#include "../state/home_controller_state.hpp"
 #include "../state/item.hpp"
 #include "../ss.hpp"
 
 class DatabaseManager {
  public:
-  DatabaseManager(AppState *appState);
+  DatabaseManager(AppState *appState, HomeControllerState *homeControllerState);
 
   void addNew(bool newItemIsComplete, std::string newItemSummary);
   void remove(realm::managed<realm::Item> itemToDelete);
@@ -26,4 +26,5 @@ class DatabaseManager {
   std::unique_ptr<realm::db> databasePtr;
   std::string userId;
   AppState *_appState;
+  HomeControllerState *_homeControllerState;
 };

@@ -13,7 +13,7 @@
 #include "../managers/error_manager.hpp"
 #include "../state/app_config_metadata.hpp"
 #include "../state/app_state.hpp"
-#include "../state/database_state.hpp"
+#include "../state/home_controller_state.hpp"
 #include "../ss.hpp"
 
 class AppController final : public Controller, public AuthManager::Delegate, public ErrorManager::Delegate {

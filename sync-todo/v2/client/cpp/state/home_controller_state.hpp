@@ -3,7 +3,7 @@
 #include "offline_mode_selection.hpp"
 #include "subscription_selection.hpp"
 
-struct DatabaseState {
+struct HomeControllerState {
   // Used for creating a new task.
   std::string newTaskSummary;
   bool newTaskIsComplete{false};

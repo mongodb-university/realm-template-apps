@@ -2,7 +2,7 @@
 
 #include <utility>
 
-DatabaseManager::DatabaseManager(AppState *appState): _appState(appState) {
+DatabaseManager::DatabaseManager(AppState *appState, HomeControllerState *homeControllerState): _appState(appState), _homeControllerState(homeControllerState) {
   auto user = _appState->app->get_current_user();
 
   // Sync configuration and sync subscription management.
@@ -97,12 +97,12 @@ void DatabaseManager::toggleOfflineMode() {
   auto syncSession = databasePtr->get_sync_session();
   if (syncSession->state() == realm::internal::bridge::sync_session::state::paused) {
     syncSession->resume();
-    _appState->databaseState->offlineModeSelection = offlineModeDisabled;
-    _appState->databaseState->offlineModeLabel = "Go Offline";
+    _homeControllerState->offlineModeSelection = offlineModeDisabled;
+    _homeControllerState->offlineModeLabel = "Go Offline";
   } else if (syncSession->state() == realm::internal::bridge::sync_session::state::active) {
     syncSession->pause();
-    _appState->databaseState->offlineModeSelection = offlineModeEnabled;
-    _appState->databaseState->offlineModeLabel = "Go Online";
+    _homeControllerState->offlineModeSelection = offlineModeEnabled;
+    _homeControllerState->offlineModeLabel = "Go Online";
   }
 }
 
@@ -110,7 +110,7 @@ void DatabaseManager::toggleOfflineMode() {
 void DatabaseManager::toggleSubscriptions() {
   // Note the subscription state at the start of the toggle operation.
   // We'll change it after updating the subscriptions.
-  int currentSubscriptionState = _appState->databaseState->subscriptionSelection;
+  int currentSubscriptionState = _homeControllerState->subscriptionSelection;
 
   databasePtr->subscriptions().update([&](realm::mutable_sync_subscription_set& subs) {
     // If the currentSubscriptionState is `allItems`, toggling it should show only my items.
@@ -125,8 +125,8 @@ void DatabaseManager::toggleSubscriptions() {
                               });
       }
       // Update the subscription selection to reflect the new subscription.
-      _appState->databaseState->subscriptionSelection = myItems;
-      _appState->databaseState->subscriptionSelectionLabel = "Switch to All";
+      _homeControllerState->subscriptionSelection = myItems;
+      _homeControllerState->subscriptionSelectionLabel = "Switch to All";
 
       // If the currentSubscriptionState is `myItems`, toggling should show all items.
       // Remove the `myItems` subscription and make sure the subscription for the all items is present.
@@ -139,8 +139,8 @@ void DatabaseManager::toggleSubscriptions() {
       }
 
       // Update the subscription selection to reflect the new subscription.
-      _appState->databaseState->subscriptionSelection = allItems;
-      _appState->databaseState->subscriptionSelectionLabel = "Switch to Mine";
+      _homeControllerState->subscriptionSelection = allItems;
+      _homeControllerState->subscriptionSelectionLabel = "Switch to Mine";
     }
   }).get();
 

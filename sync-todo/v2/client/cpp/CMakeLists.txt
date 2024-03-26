@@ -50,7 +50,7 @@ add_executable(sync_todo
         state/app_config_metadata.hpp
         state/app_config_metadata.cpp
         state/app_state.hpp
-        state/database_state.hpp
+        state/home_controller_state.hpp
         state/item.hpp
         views/scroller.hpp
         views/scroller.cpp
