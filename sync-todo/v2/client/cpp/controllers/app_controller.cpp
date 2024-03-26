@@ -17,7 +17,7 @@ AppController::AppController(ftxui::ScreenInteractive *screen, char* pathToAtlas
       .app_id = appConfigMetadata.appId
   };
   _appState.app = std::make_unique<realm::App>(appConfig);
-  _appState.authManager = std::make_unique<AuthManager>(this);
+  _appState.authManager = std::make_unique<AuthManager>(this, _appState.app.get());
   _appState.errorManager = std::make_unique<ErrorManager>(this);
   _appState.appConfigMetadata = appConfigMetadata;
 

@@ -9,11 +9,11 @@ LoginController::LoginController(AppState *appState): Controller(
   auto inputPassword = Input(&state.userPassword, "password", inputOptionForPassword);
 
   auto loginButton = ftxui::Button("Login", [this] {
-    _appState->authManager->logIn(_appState->app.get(), state.userEmail, state.userPassword);
+    _appState->authManager->logIn(state.userEmail, state.userPassword);
   });
 
   auto registerButton = ftxui::Button("Register", [this] {
-    _appState->authManager->registerUser(_appState->app.get(), state.userEmail, state.userPassword);
+    _appState->authManager->registerUser(state.userEmail, state.userPassword);
   });
 
   auto buttonLayout = ftxui::Container::Horizontal({loginButton, registerButton});

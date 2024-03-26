@@ -48,7 +48,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
   filters = VWrap("Filters", filters);
 
   auto logoutButton = ftxui::Button("Logout",
-                                    [&]{ _appState->authManager->logOut(_appState->app.get()); });
+                                    [&]{ _appState->authManager->logOut(); });
   logoutButton = VWrap("Auth", logoutButton);
 
   auto quitButton = ftxui::Button("Quit", appState->screen->ExitLoopClosure());
