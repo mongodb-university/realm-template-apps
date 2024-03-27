@@ -21,13 +21,17 @@ AppController::AppController(ftxui::ScreenInteractive *screen, std::string const
   _appState.errorManager = std::make_unique<ErrorManager>(this);
   _appState.appConfigMetadata = appConfigMetadata;
 
-  _errorModal = ftxui::Container::Vertical({
-    ftxui::Renderer([this] {
-      return ftxui::text(_appState.errorManager->getError().value());
-    }),
-    ftxui::Button("Dismiss", [=] {
-      _appState.errorManager->clearError();
-    }),
+  // Lay out and style the error modal.
+  auto dismissButton = ftxui::Button("Dismiss", [=]{ _appState.errorManager->clearError(); });
+  auto buttonLayout = ftxui::Container::Horizontal({ dismissButton });
+
+  _errorModal = Renderer(buttonLayout, [=] {
+    auto content = ftxui::vbox({
+      ftxui::hbox(ftxui::text(_appState.errorManager->getError().value()) | ftxui::hcenter),
+      ftxui::hbox(dismissButton->Render()) | ftxui::hcenter
+    }) | ftxui::center | size(ftxui::HEIGHT, ftxui::GREATER_THAN, 10);
+    return window(
+        ftxui::text(L" Error "), content) | ftxui::clear_under | ftxui::center | size(ftxui::WIDTH, ftxui::GREATER_THAN, 80);
   });
 
   component()->Add(_navigation.component());
