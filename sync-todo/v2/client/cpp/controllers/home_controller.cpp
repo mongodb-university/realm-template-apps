@@ -11,9 +11,8 @@ ftxui::Component VWrap(const std::string& name, const ftxui::Component& componen
   });
 }
 
-HomeController::HomeController(AppState *appState): Controller(ftxui::Container::Vertical({})), _appState(appState) {
-//  _homeControllerState = std::make_unique<HomeControllerState>();
-  _dbManager = std::make_unique<DatabaseManager>(_appState, &_homeControllerState);
+HomeController::HomeController(AppState *appState): Controller(ftxui::Container::Vertical({})), _appState(appState),
+                                                    _dbManager(_appState, &_homeControllerState) {
   auto user = _appState->app->get_current_user();
   auto userId = user->identifier();
 
@@ -28,7 +27,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
   }
 
   auto toggleOfflineModeButton = ftxui::Button(&_homeControllerState.offlineModeLabel,
-                                               [=]{ _dbManager->toggleOfflineMode(); });
+                                               [=]{ _dbManager.toggleOfflineMode(); });
   toggleOfflineModeButton = VWrap("Offline Mode", toggleOfflineModeButton);
 
   auto showAllButtonLabel = std::string{"Switch to All"};
@@ -41,7 +40,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
   }
 
   auto toggleSubscriptionsButton = ftxui::Button(&_homeControllerState.subscriptionSelectionLabel,
-                                                 [=]{ _dbManager->toggleSubscriptions();
+                                                 [=]{ _dbManager.toggleSubscriptions();
   });
   toggleSubscriptionsButton = VWrap("Subscription", toggleSubscriptionsButton);
 
@@ -77,7 +76,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
   auto newTaskCompletionStatus = ftxui::Checkbox("Complete", &_homeControllerState.newTaskIsComplete);
 
   auto saveButton = ftxui::Button("Save", [=] {
-    _dbManager->addNew(_homeControllerState.newTaskIsComplete, _homeControllerState.newTaskSummary);
+    _dbManager.addNew(_homeControllerState.newTaskIsComplete, _homeControllerState.newTaskSummary);
     _homeControllerState.newTaskSummary = "";
     _homeControllerState.newTaskIsComplete = false;
   });
@@ -87,7 +86,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
 
   // Lay out and render the scrollable task list.
   auto renderTasks = ftxui::Renderer([=] {
-    auto itemList = _homeControllerState.hideCompletedTasks ? _dbManager->getIncompleteItemList() : _dbManager->getItemList();
+    auto itemList = _homeControllerState.hideCompletedTasks ? _dbManager.getIncompleteItemList() : _dbManager.getItemList();
     ftxui::Elements tasks;
     // If the user has toggled the checkbox to hide completed tasks, show only the incomplete task list.
     // Otherwise, show all items.
@@ -120,7 +119,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
 
   // Handle keyboard events.
   scrollerContainer = CatchEvent(scrollerContainer, [=](ftxui::Event const &event) {
-    auto itemList = _homeControllerState.hideCompletedTasks ? _dbManager->getIncompleteItemList() : _dbManager->getItemList();
+    auto itemList = _homeControllerState.hideCompletedTasks ? _dbManager.getIncompleteItemList() : _dbManager.getItemList();
     // Delete items from the database
     if (event == ftxui::Event::Character('d')) {
       // Get index of selected item in the scroller
@@ -128,7 +127,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
       // Get the matching managed Item from the Results set
       auto managedItemAtIndex = itemList[scrollerIndex];
       // Delete the item from the database
-      _dbManager->remove(managedItemAtIndex);
+      _dbManager.remove(managedItemAtIndex);
       return true;
     }
 
@@ -136,7 +135,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
     if (event == ftxui::Event::Character('c')) {
       auto scrollerIndex = scroller->getScrollerIndex();
       auto managedItemAtIndex = itemList[scrollerIndex];
-      _dbManager->markComplete(managedItemAtIndex);
+      _dbManager.markComplete(managedItemAtIndex);
       return true;
     }
     return false;
@@ -190,5 +189,5 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
 
 void HomeController::onFrame() {
   // Refresh the database to show new items that have synced in the background.
-  _dbManager->refreshDatabase();
+  _dbManager.refreshDatabase();
 }
