@@ -1,0 +1,9 @@
+{
+  "appId": "INSERT-YOUR-APP-ID-HERE",
+  "appUrl": "https://services.cloud.mongodb.com/groups/INSERT-PROJECT-ID-HERE/apps/INSERT-APP-ID-HERE",
+  "baseUrl": "https://services.cloud.mongodb.com",
+  "clientApiBaseUrl": "https://us-east-1.aws.services.cloud.mongodb.com",
+  "dataApiBaseUrl": "https://us-east-1.aws.data.mongodb-api.com",
+  "dataExplorerLink": "https://cloud.mongodb.com/links/INSERT-PROJECT-ID-HERE/explorer/Cluster0/database/collection/find",
+  "dataSourceName": "mongodb-atlas"
+}
