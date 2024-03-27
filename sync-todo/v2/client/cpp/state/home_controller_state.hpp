@@ -12,10 +12,10 @@ struct HomeControllerState {
   bool hideCompletedTasks{false};
 
   // Whether to subscribe to all items, or only the user's items.
-  SubscriptionSelection subscriptionSelection{allItems};
+  SubscriptionSelection subscriptionSelection{SubscriptionSelection::allItems};
   std::string subscriptionSelectionLabel;
 
   // Whether to immediately sync all changes, or simulate offline mode and stop syncing.
-  OfflineModeSelection offlineModeSelection{offlineModeDisabled};
+  OfflineModeSelection offlineModeSelection{OfflineModeSelection::offlineModeDisabled};
   std::string offlineModeLabel;
 };

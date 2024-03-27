@@ -11,10 +11,10 @@ class ErrorManager {
     virtual void onErrorCleared(ErrorManager &error) = 0;
   };
 
-  ErrorManager(Delegate *delegate);
+  explicit ErrorManager(Delegate *delegate);
   void setError(std::string error);
   void clearError();
-  std::optional<std::string> const &getError() const;
+  [[nodiscard]] std::optional<std::string> const &getError() const;
 
  private:
   Delegate *_delegate{nullptr};

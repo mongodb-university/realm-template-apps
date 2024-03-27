@@ -20,9 +20,9 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
   auto goOfflineButtonLabel = std::string{"Go Offline"};
   auto goOnlineButtonLabel = std::string{"Go Online"};
 
-  if (_homeControllerState.offlineModeSelection == offlineModeEnabled) {
+  if (_homeControllerState.offlineModeSelection == OfflineModeSelection::offlineModeEnabled) {
     _homeControllerState.offlineModeLabel = goOnlineButtonLabel;
-  } else if (_homeControllerState.offlineModeSelection == offlineModeDisabled) {
+  } else if (_homeControllerState.offlineModeSelection == OfflineModeSelection::offlineModeDisabled) {
     _homeControllerState.offlineModeLabel = goOfflineButtonLabel;
   }
 
@@ -33,9 +33,9 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
   auto showAllButtonLabel = std::string{"Switch to All"};
   auto showMineButtonLabel = std::string{"Switch to Mine"};
 
-  if (_homeControllerState.subscriptionSelection == allItems) {
+  if (_homeControllerState.subscriptionSelection == SubscriptionSelection::allItems) {
     _homeControllerState.subscriptionSelectionLabel = showMineButtonLabel;
-  } else if (_homeControllerState.subscriptionSelection == myItems) {
+  } else if (_homeControllerState.subscriptionSelection == SubscriptionSelection::myItems) {
     _homeControllerState.subscriptionSelectionLabel = showAllButtonLabel;
   }
 
