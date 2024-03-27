@@ -6,9 +6,9 @@ DatabaseManager::DatabaseManager(AppState *appState, HomeControllerState *homeCo
   auto user = _appState->app->get_current_user();
 
   // Sync configuration and sync subscription management.
-  allItemSubscriptionName = "all_items";
-  myItemSubscriptionName = "my_items";
-  userId = user->identifier();
+  _allItemSubscriptionName = "all_items";
+  _myItemSubscriptionName = "my_items";
+  _userId = user->identifier();
 
   auto config = user->flexible_sync_configuration();
 
@@ -27,8 +27,8 @@ DatabaseManager::DatabaseManager(AppState *appState, HomeControllerState *homeCo
   _database = std::make_unique<realm::db>(std::move(config));
   _database->subscriptions().update([&](realm::mutable_sync_subscription_set& subs) {
     // By default, we show all items.
-    if (!subs.find(allItemSubscriptionName)) {
-      subs.add<realm::Item>(allItemSubscriptionName);
+    if (!subs.find(_allItemSubscriptionName)) {
+      subs.add<realm::Item>(_allItemSubscriptionName);
     }
   }).get();
 
@@ -42,7 +42,7 @@ void DatabaseManager::addNew(bool newItemIsComplete, std::string newItemSummary)
   auto item = realm::Item {
     .isComplete = newItemIsComplete,
     .summary = std::move(newItemSummary),
-    .owner_id = userId,
+    .owner_id = _userId,
   };
 
   _database->write([&]{
@@ -62,22 +62,6 @@ void DatabaseManager::markComplete(realm::managed<realm::Item> itemToMarkComplet
   _database->write([&]{
     itemToMarkComplete.isComplete = !itemToMarkComplete.isComplete;
   });
-}
-
-/** Get a list of all items in the database. Sort it to show the most recent items on top. */
-realm::results<realm::Item> DatabaseManager::getItemList() {
-  auto items = _database->objects<realm::Item>();
-  items.sort("_id", false);
-  return items;
-}
-
-/** Get a list of items in the database, filtered to hide completed items. */
-realm::results<realm::Item> DatabaseManager::getIncompleteItemList() {
-  auto items = _database->objects<realm::Item>();
-  auto incompleteItems = items.where(
-      [](auto &item) { return item.isComplete == false; });
-  incompleteItems.sort("_id", false);
-  return incompleteItems;
 }
 
 /** Refresh the database from the UI runloop to show data that has synced in the background. */
@@ -115,12 +99,12 @@ void DatabaseManager::toggleSubscriptions() {
     // If the currentSubscriptionState is `allItems`, toggling it should show only my items.
     // Remove the `allItems` subscription and make sure the subscription for the user's items is present.
     if (currentSubscriptionState == SubscriptionSelection::allItems) {
-      subs.remove(allItemSubscriptionName);
+      subs.remove(_allItemSubscriptionName);
       // If there isn't yet a subscription for my own items, add it
-      if (!subs.find(myItemSubscriptionName)) {
-        subs.add<realm::Item>(myItemSubscriptionName,
+      if (!subs.find(_myItemSubscriptionName)) {
+        subs.add<realm::Item>(_myItemSubscriptionName,
                               [&](auto &item){
-                                return item.owner_id == userId;
+                                return item.owner_id == _userId;
                               });
       }
       // Update the subscription selection to reflect the new subscription.
@@ -130,11 +114,11 @@ void DatabaseManager::toggleSubscriptions() {
       // If the currentSubscriptionState is `myItems`, toggling should show all items.
       // Remove the `myItems` subscription and make sure the subscription for the all items is present.
     } else if (currentSubscriptionState == SubscriptionSelection::myItems) {
-      subs.remove(myItemSubscriptionName);
+      subs.remove(_myItemSubscriptionName);
       // If the `showAllItems` toggle is selected, and
       // there isn't yet a subscription for all items, add it.
-      if (!subs.find(allItemSubscriptionName)) {
-        subs.add<realm::Item>(allItemSubscriptionName);
+      if (!subs.find(_allItemSubscriptionName)) {
+        subs.add<realm::Item>(_allItemSubscriptionName);
       }
 
       // Update the subscription selection to reflect the new subscription.
@@ -145,4 +129,20 @@ void DatabaseManager::toggleSubscriptions() {
 
   // Wait for downloads after changing the subscription.
   _database->get_sync_session()->wait_for_download_completion().get();
+}
+
+/** Get a list of all items in the database. Sort it to show the most recent items on top. */
+realm::results<realm::Item> DatabaseManager::getItemList() {
+  auto items = _database->objects<realm::Item>();
+  items.sort("_id", false);
+  return items;
+}
+
+/** Get a list of items in the database, filtered to hide completed items. */
+realm::results<realm::Item> DatabaseManager::getIncompleteItemList() {
+  auto items = _database->objects<realm::Item>();
+  auto incompleteItems = items.where(
+      [](auto &item) { return item.isComplete == false; });
+  incompleteItems.sort("_id", false);
+  return incompleteItems;
 }

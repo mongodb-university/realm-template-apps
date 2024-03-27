@@ -21,10 +21,10 @@ class DatabaseManager {
   realm::results<realm::Item> getIncompleteItemList();
 
  private:
-  std::string allItemSubscriptionName;
-  std::string myItemSubscriptionName;
+  std::string _allItemSubscriptionName;
+  std::string _myItemSubscriptionName;
   std::unique_ptr<realm::db> _database;
-  std::string userId;
+  std::string _userId;
   AppState *_appState;
   HomeControllerState *_homeControllerState;
 };

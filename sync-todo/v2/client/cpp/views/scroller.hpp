@@ -19,14 +19,14 @@ class ScrollerBase: public ftxui::ComponentBase {
   ftxui::Element Render() final;
 
  private:
-  int indexOfSelectedItem = 0;
+  int _indexOfSelectedItem = 0;
 
   bool OnEvent(ftxui::Event event) final;
 
   bool Focusable() const final;
 
-  int size_ = 0;
-  ftxui::Box box_;
+  int _size = 0;
+  ftxui::Box _box;
 };
 
 std::shared_ptr<ScrollerBase> Scroller(ftxui::Component child);

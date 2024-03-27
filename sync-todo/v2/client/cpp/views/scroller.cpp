@@ -3,7 +3,7 @@
 ScrollerBase::ScrollerBase(ftxui::Component child) { Add(child); }
 
 int ScrollerBase::getScrollerIndex() const {
-  return indexOfSelectedItem;
+  return _indexOfSelectedItem;
 }
 
 ftxui::Element ScrollerBase::Render() {
@@ -12,43 +12,43 @@ ftxui::Element ScrollerBase::Render() {
 
   ftxui::Element background = ComponentBase::Render();
   background->ComputeRequirement();
-  size_ = background->requirement().min_y;
+  _size = background->requirement().min_y;
   return ftxui::dbox({
                          std::move(background),
                          ftxui::vbox({
                                          ftxui::text(L"") |
-                                             size(ftxui::HEIGHT, ftxui::EQUAL, indexOfSelectedItem),
+                                             size(ftxui::HEIGHT, ftxui::EQUAL, _indexOfSelectedItem),
                                          ftxui::text(L"") | style | focused,
                                      }),
                      }) |
-      ftxui::vscroll_indicator | ftxui::yframe | ftxui::yflex | reflect(box_);
+      ftxui::vscroll_indicator | ftxui::yframe | ftxui::yflex | reflect(_box);
 }
 
 bool ScrollerBase::OnEvent(ftxui::Event event) {
-  if (event.is_mouse() && box_.Contain(event.mouse().x, event.mouse().y))
+  if (event.is_mouse() && _box.Contain(event.mouse().x, event.mouse().y))
     TakeFocus();
 
-  int selected_old = indexOfSelectedItem;
+  int selected_old = _indexOfSelectedItem;
   if (event == ftxui::Event::ArrowUp || event == ftxui::Event::Character('k') ||
       (event.is_mouse() && event.mouse().button == ftxui::Mouse::WheelUp)) {
-    indexOfSelectedItem--;
+    _indexOfSelectedItem--;
   }
   if ((event == ftxui::Event::ArrowDown || event == ftxui::Event::Character('j') ||
       (event.is_mouse() && event.mouse().button == ftxui::Mouse::WheelDown))) {
-    indexOfSelectedItem++;
+    _indexOfSelectedItem++;
   }
   if (event == ftxui::Event::PageDown)
-    indexOfSelectedItem += box_.y_max - box_.y_min;
+    _indexOfSelectedItem += _box.y_max - _box.y_min;
   if (event == ftxui::Event::PageUp)
-    indexOfSelectedItem -= box_.y_max - box_.y_min;
+    _indexOfSelectedItem -= _box.y_max - _box.y_min;
   if (event == ftxui::Event::Home)
-    indexOfSelectedItem = 0;
+    _indexOfSelectedItem = 0;
   if (event == ftxui::Event::End)
-    indexOfSelectedItem = size_;
+    _indexOfSelectedItem = _size;
 
-  indexOfSelectedItem = std::max(0, std::min(size_ - 1, indexOfSelectedItem));
+  _indexOfSelectedItem = std::max(0, std::min(_size - 1, _indexOfSelectedItem));
 
-  return selected_old != indexOfSelectedItem;
+  return selected_old != _indexOfSelectedItem;
 }
 
 bool ScrollerBase::Focusable() const { return true; }
