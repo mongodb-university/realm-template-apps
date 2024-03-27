@@ -4,7 +4,7 @@ void AppController::onFrame() {
   _navigation.onFrame();
 }
 
-AppController::AppController(ftxui::ScreenInteractive *screen, char* pathToAtlasConfig) {
+AppController::AppController(ftxui::ScreenInteractive *screen, std::string const& pathToAtlasConfig) {
   _appState.screen = screen;
 
   // Read the contents of the atlasConfig.json to get the metadata for the App Services App.

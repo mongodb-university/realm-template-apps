@@ -14,5 +14,5 @@ class LoginController final : public Controller {
   } state;
 
  public:
-  LoginController(AppState *appState);
+  explicit LoginController(AppState *appState);
 };

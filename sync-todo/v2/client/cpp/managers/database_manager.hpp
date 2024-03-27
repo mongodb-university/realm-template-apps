@@ -16,14 +16,14 @@ class DatabaseManager {
   void markComplete(realm::managed<realm::Item> itemToMarkComplete);
   void refreshDatabase();
   void toggleOfflineMode();
+  void toggleSubscriptions();
   realm::results<realm::Item> getItemList();
   realm::results<realm::Item> getIncompleteItemList();
-  void toggleSubscriptions();
 
  private:
   std::string allItemSubscriptionName;
   std::string myItemSubscriptionName;
-  std::unique_ptr<realm::db> databasePtr;
+  std::unique_ptr<realm::db> _database;
   std::string userId;
   AppState *_appState;
   HomeControllerState *_homeControllerState;

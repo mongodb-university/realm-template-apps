@@ -24,7 +24,7 @@ class AppController final : public Controller, public AuthManager::Delegate, pub
   ftxui::Component _errorModal;
 
  public:
-  explicit AppController(ftxui::ScreenInteractive *screen, char* pathToAtlasConfig);
+  explicit AppController(ftxui::ScreenInteractive *screen, std::string const& pathToAtlasConfig);
 
   void onFrame() override;
 

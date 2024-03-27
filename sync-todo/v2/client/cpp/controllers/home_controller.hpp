@@ -15,7 +15,7 @@ class HomeController final : public Controller {
   DatabaseManager _dbManager;
 
  public:
-  HomeController(AppState *appState);
+  explicit HomeController(AppState *appState);
 
   void onFrame() override;
 };
