@@ -11,8 +11,10 @@ For this template app to work, you must ensure that `atlasConfig.json` exists an
 - **appId:** your Atlas App Services App ID.
 - **appUrl:** the URL to browse directly to your App Services App.
 - **baseUrl:** the App Services backend URL. This should be https://services.cloud.mongodb.com in most cases.
-- **clientApiBaseUrl:** the deployment region and baseURL a client application can use to connect to a specific regional deployment.
-- **dataApiBaseUrl:** the deployment region and Data API baseURL a client application can use to connect to a specific Data API app in a given region.
+- **clientApiBaseUrl:** the deployment region and baseURL a client application can use to connect to a specific regional 
+  deployment. This information is not used by this template app.
+- **dataApiBaseUrl:** the deployment region and Data API baseURL a client application can use to connect to a specific 
+  Data API app in a given region. This information is not used by this template app.
 - **dataExplorerLink:** the URL to browse to your collections in Atlas. Go here to see data syncing from your app.
 - **dataSourceName:** the name of the data source in Atlas. This information is not used by this template app.
 
@@ -35,9 +37,9 @@ enabled to use this client. You can find information about how to do this
 in the Atlas App Services documentation page:
 [Template Apps -> Create a Template App](https://www.mongodb.com/docs/atlas/app-services/reference/template-apps/)
 
-Once you have created the App Services App, replace any value in this client's
-`appId` field with your App Services App ID. For help finding this ID, refer
-to: [Find Your Project or App Id](https://www.mongodb.com/docs/atlas/app-services/reference/find-your-project-or-app-id/)
+Once you have created the App Services App, replace the value in this client's `appId` field 
+in the `atlasConfig.json` file with your App Services App ID. For help finding this ID, refer
+to: [Find Your Project or App ID](https://www.mongodb.com/docs/atlas/app-services/reference/find-your-project-or-app-id/)
 
 ### Making a Template App in the App Services UI
 
@@ -90,7 +92,7 @@ To see the code examples concerned with Atlas Device SDK for C++, these files ar
   - `home_controller.cpp`: Create the task list, add new items, and let the user change app state.
 - Managers
   - `auth_manager.cpp`: Authenticate users with the Atlas Device Sync app.
-  - `database_manager.cpp`: Handles Device Sync subscriptions, Sync sessions, and database CRUD operations.
+  - `database_manager.cpp`: Handle Device Sync client configuration, Sync subscriptions, Sync sessions, and database CRUD operations.
 - State
   - `item.hpp`: The Atlas Device SDK data model.
 
@@ -118,7 +120,7 @@ To see the code examples concerned with Atlas Device SDK for C++, these files ar
 │   ├── app_config_metadata.cpp
 │   ├── app_config_metadata.hpp
 │   ├── app_state.hpp
-│   ├── database_state.hpp
+│   ├── home_controller_state.hpp
 │   ├── item.hpp
 │   ├── offline_mode_selection.hpp
 │   └── subscription_selection.hpp
