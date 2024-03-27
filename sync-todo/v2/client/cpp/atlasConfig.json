@@ -1,0 +1,9 @@
+{
+  "appId": "INSERT-YOUR-APP-ID-HERE",
+  "appUrl": "https://services.cloud.mongodb.com/groups/6388cb218e4d865c34158da5/apps/65f46bd16a5a245b65769e5d",
+  "baseUrl": "https://services.cloud.mongodb.com",
+  "clientApiBaseUrl": "https://us-east-1.aws.services.cloud.mongodb.com",
+  "dataApiBaseUrl": "https://us-east-1.aws.data.mongodb-api.com",
+  "dataExplorerLink": "https://cloud.mongodb.com/links/6388cb218e4d865c34158da5/explorer/Cluster0/database/collection/find",
+  "dataSourceName": "mongodb-atlas"
+}
