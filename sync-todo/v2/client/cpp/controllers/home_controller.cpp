@@ -27,7 +27,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
   }
 
   auto toggleOfflineModeButton = ftxui::Button(&_homeControllerState.offlineModeLabel,
-                                               [=]{ _dbManager.toggleOfflineMode(); });
+                                               [this]{ _dbManager.toggleOfflineMode(); });
   toggleOfflineModeButton = VWrap("Offline Mode", toggleOfflineModeButton);
 
   auto showAllButtonLabel = std::string{"Switch to All"};
@@ -40,7 +40,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
   }
 
   auto toggleSubscriptionsButton = ftxui::Button(&_homeControllerState.subscriptionSelectionLabel,
-                                                 [=]{ _dbManager.toggleSubscriptions();
+                                                 [this]{ _dbManager.toggleSubscriptions();
   });
   toggleSubscriptionsButton = VWrap("Subscription", toggleSubscriptionsButton);
 
@@ -48,7 +48,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
   filters = VWrap("Filters", filters);
 
   auto logoutButton = ftxui::Button("Logout",
-                                    [&]{ _appState->authManager->logOut(); });
+                                    [this]{ _appState->authManager->logOut(); });
   logoutButton = VWrap("Auth", logoutButton);
 
   auto quitButton = ftxui::Button("Quit", appState->screen->ExitLoopClosure());
@@ -75,7 +75,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
       ftxui::Input(&_homeControllerState.newTaskSummary, "Enter new task summary");
   auto newTaskCompletionStatus = ftxui::Checkbox("Complete", &_homeControllerState.newTaskIsComplete);
 
-  auto saveButton = ftxui::Button("Save", [=] {
+  auto saveButton = ftxui::Button("Save", [this] {
     _dbManager.addNew(_homeControllerState.newTaskIsComplete, _homeControllerState.newTaskSummary);
     _homeControllerState.newTaskSummary = "";
     _homeControllerState.newTaskIsComplete = false;
@@ -146,7 +146,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
     ftxui::text(L" Summary ") | ftxui::flex | ftxui::bold,
     align_right(ftxui::text(L" Status ")),
     align_right(ftxui::text(L" Owner ")),
-    });
+  });
 
   auto itemListLayout = ftxui::Container::Vertical({
     newTaskLayout, scrollerContainer

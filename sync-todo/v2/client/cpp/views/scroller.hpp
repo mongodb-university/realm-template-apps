@@ -31,6 +31,6 @@ class ScrollerBase: public ftxui::ComponentBase {
 
 std::shared_ptr<ScrollerBase> Scroller(ftxui::Component child);
 
-#endif /* end of include guard: SCROLLER_H */
+#endif
 
 // Based on Arthur Sonzogni/git-tui (MIT License)

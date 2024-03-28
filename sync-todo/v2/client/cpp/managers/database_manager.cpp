@@ -25,7 +25,7 @@ DatabaseManager::DatabaseManager(AppState *appState, HomeControllerState *homeCo
   // all items in the data source linked to the App Services App. App Services Rules for the Item collection
   // mean that while the user can read all items, they can only write to their own items.
   _database = std::make_unique<realm::db>(std::move(config));
-  _database->subscriptions().update([&](realm::mutable_sync_subscription_set& subs) {
+  _database->subscriptions().update([this](realm::mutable_sync_subscription_set& subs) {
     // By default, we show all items.
     if (!subs.find(_allItemSubscriptionName)) {
       subs.add<realm::Item>(_allItemSubscriptionName);
@@ -142,7 +142,7 @@ realm::results<realm::Item> DatabaseManager::getItemList() {
 realm::results<realm::Item> DatabaseManager::getIncompleteItemList() {
   auto items = _database->objects<realm::Item>();
   auto incompleteItems = items.where(
-      [](auto &item) { return item.isComplete == false; });
+      [](auto const &item) { return item.isComplete == false; });
   incompleteItems.sort("_id", false);
   return incompleteItems;
 }
