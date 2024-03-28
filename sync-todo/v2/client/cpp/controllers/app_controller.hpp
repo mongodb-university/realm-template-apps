@@ -1,4 +1,5 @@
-#pragma once
+#ifndef APP_CONTROLLER_HPP
+#define APP_CONTROLLER_HPP
 
 #include <nlohmann/json.hpp>
 #include <cpprealm/sdk.hpp>
@@ -37,3 +38,5 @@ class AppController final : public Controller, public AuthManager::Delegate, pub
 
   void onErrorCleared(ErrorManager &error) override;
 };
+
+#endif

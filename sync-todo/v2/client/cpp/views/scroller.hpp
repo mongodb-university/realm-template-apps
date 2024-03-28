@@ -1,5 +1,5 @@
-#ifndef SCROLLER_H
-#define SCROLLER_H
+#ifndef SCROLLER_HPP
+#define SCROLLER_HPP
 
 #include <algorithm>
 #include <ftxui/component/component_base.hpp>
@@ -31,6 +31,5 @@ class ScrollerBase: public ftxui::ComponentBase {
 
 std::shared_ptr<ScrollerBase> Scroller(ftxui::Component child);
 
-#endif
-
 // Based on Arthur Sonzogni/git-tui (MIT License)
+#endif

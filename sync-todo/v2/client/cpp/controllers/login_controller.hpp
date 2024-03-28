@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LOGIN_CONTROLLER_HPP
+#define LOGIN_CONTROLLER_HPP
 
 #include "ftxui/component/component.hpp"
 #include "controller.hpp"
@@ -16,3 +17,5 @@ class LoginController final : public Controller {
  public:
   explicit LoginController(AppState *appState);
 };
+
+#endif

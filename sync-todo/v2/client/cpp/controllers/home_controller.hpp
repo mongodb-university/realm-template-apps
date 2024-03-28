@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HOME_CONTROLLER_HPP
+#define HOME_CONTROLLER_HPP
 
 #include "ftxui/component/component.hpp"
 #include "controller.hpp"
@@ -19,3 +20,5 @@ class HomeController final : public Controller {
 
   void onFrame() override;
 };
+
+#endif

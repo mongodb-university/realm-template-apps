@@ -1,4 +1,5 @@
-#pragma once
+#ifndef APP_STATE_HPP
+#define APP_STATE_HPP
 
 #include "../managers/auth_manager.hpp"
 #include "../managers/error_manager.hpp"
@@ -14,3 +15,5 @@ struct AppState {
 
   ftxui::ScreenInteractive *screen;
 };
+
+#endif

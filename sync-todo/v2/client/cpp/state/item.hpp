@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ITEM_HPP
+#define ITEM_HPP
 
 #include "cpprealm/sdk.hpp"
 
@@ -13,3 +14,5 @@ struct Item {
 REALM_SCHEMA(Item, _id, isComplete, summary, owner_id)
 
 }  // namespace realm
+
+#endif

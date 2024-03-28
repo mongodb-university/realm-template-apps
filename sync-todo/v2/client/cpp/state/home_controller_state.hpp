@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HOME_CONTROLLER_STATE_HPP
+#define HOME_CONTROLLER_STATE_HPP
 
 #include "offline_mode_selection.hpp"
 #include "subscription_selection.hpp"
@@ -19,3 +20,5 @@ struct HomeControllerState {
   OfflineModeSelection offlineModeSelection{OfflineModeSelection::offlineModeDisabled};
   std::string offlineModeLabel;
 };
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef AUTH_MANAGER_HPP
+#define AUTH_MANAGER_HPP
 
 #include <cpprealm/sdk.hpp>
 
@@ -22,3 +23,5 @@ class AuthManager {
   Delegate *_delegate{nullptr};
   realm::App *_app{nullptr};
 };
+
+#endif
