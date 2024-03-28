@@ -21,7 +21,6 @@ class AppController final : public Controller, public AuthManager::Delegate, pub
  private:
   AppState _appState;
   Navigation _navigation;
-
   ftxui::Component _errorModal;
 
  public:

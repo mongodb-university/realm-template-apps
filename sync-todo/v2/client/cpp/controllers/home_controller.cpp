@@ -92,7 +92,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
     // Otherwise, show all items.
     for (auto &item: itemList) {
       std::string completionString = (item.isComplete) ? " Complete " : " Incomplete ";
-      std::string mineOrNot = (item.owner_id == userId) ? " Mine " : " Them ";
+      std::string mineOrNot = (item.owner_id == userId) ? "   Mine " : " Theirs ";
       auto taskRow = ftxui::hbox({
         ftxui::text(item.summary) | ftxui::flex,
         align_right(ftxui::text(completionString)),
