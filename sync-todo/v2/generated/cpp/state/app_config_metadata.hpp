@@ -1,4 +1,5 @@
-#pragma once
+#ifndef APP_CONFIG_METADATA_HPP
+#define APP_CONFIG_METADATA_HPP
 
 #include <string>
 #include "nlohmann/json.hpp"
@@ -15,3 +16,5 @@ struct AppConfigMetadata {
 
 void to_json(nlohmann::json& j, const AppConfigMetadata& appConfigMetadata);
 void from_json(const nlohmann::json& j, AppConfigMetadata& appConfigMetadata);
+
+#endif

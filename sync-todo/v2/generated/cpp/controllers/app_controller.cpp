@@ -22,7 +22,7 @@ AppController::AppController(ftxui::ScreenInteractive *screen, std::string const
   _appState.appConfigMetadata = appConfigMetadata;
 
   // Lay out and style the error modal.
-  auto dismissButton = ftxui::Button("Dismiss", [=]{ _appState.errorManager->clearError(); });
+  auto dismissButton = ftxui::Button("Dismiss", [this]{ _appState.errorManager->clearError(); });
   auto buttonLayout = ftxui::Container::Horizontal({ dismissButton });
 
   _errorModal = Renderer(buttonLayout, [=] {

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DATABASE_MANAGER_HPP
+#define DATABASE_MANAGER_HPP
 
 #include <string>
 #include <cpprealm/sdk.hpp>
@@ -28,3 +29,5 @@ class DatabaseManager {
   AppState *_appState;
   HomeControllerState *_homeControllerState;
 };
+
+#endif

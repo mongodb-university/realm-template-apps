@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CONTROLLER_HPP
+#define CONTROLLER_HPP
 
 #include "ftxui/component/component.hpp"
 
@@ -18,3 +19,5 @@ class Controller {
 };
 
 inline Controller::~Controller() = default;
+
+#endif

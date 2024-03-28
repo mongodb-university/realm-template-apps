@@ -1,4 +1,5 @@
-#pragma once
+#ifndef NAVIGATION_HPP
+#define NAVIGATION_HPP
 
 #include "ftxui/component/component.hpp"
 #include "controller.hpp"
@@ -14,3 +15,5 @@ class Navigation final : public Controller {
 
   void goTo(std::unique_ptr<Controller> controller);
 };
+
+#endif

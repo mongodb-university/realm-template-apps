@@ -2,12 +2,11 @@
 
 pushd "$(dirname "$0")"
 
-rm -r generated
-
 for client in client/*; do
   # Can't Bluehawk copy the cpp client because of `:state:` in the code
   # Can remove if block when this issue is resolved: https://github.com/mongodb-university/Bluehawk/issues/145
   if [[ "$client" != "client/cpp"* ]]; then
+  rm -r generated/$(basename $client)
   npx bluehawk copy -o generated/$(basename $client) $client/;
   fi
 done

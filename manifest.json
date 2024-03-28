@@ -5,6 +5,16 @@
     "repo_name": "realm-template-apps",
     "backend_path": "sync-todo/v2/backend"
   },
+  "cpp.todo.flex": {
+    "name": "C++ Todo App",
+    "repo_owner": "mongodb-university",
+    "repo_name": "realm-template-apps",
+    "backend_path": "sync-todo/v2/backend",
+    "client_path": "sync-todo/v2/generated/cpp",
+    "metadata_path": "sync-todo/v2/generated/cpp",
+    "metadata_filename": "atlasConfig",
+    "file_format": "json"
+  },
   "react-native.todo.flex": {
     "name": "React Native Todo App (TypeScript)",
     "repo_owner": "mongodb-university",

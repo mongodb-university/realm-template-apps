@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ERROR_MANAGER_HPP
+#define ERROR_MANAGER_HPP
 
 #include <string>
 #include <optional>
@@ -20,3 +21,5 @@ class ErrorManager {
   Delegate *_delegate{nullptr};
   std::optional<std::string> _error;
 };
+
+#endif
