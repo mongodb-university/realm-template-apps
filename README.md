@@ -33,6 +33,7 @@ from another source, probably using
 
 A GitHub Action creates "artifact repos" of a few subdirectories so that the client code can be examined and cloned easily.
 
+- https://github.com/mongodb/template-app-cpp-todo
 - https://github.com/mongodb/template-app-dart-flutter-todo
 - https://github.com/mongodb/template-app-kotlin-todo
 - https://github.com/mongodb/template-app-maui-todo
