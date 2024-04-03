@@ -1,4 +1,5 @@
 {
+  "_comment_": "This file is automatically populated by the server when you create a Flutter template app through the Atlas App Services UI or CLI. You must manually update this file if your app is not based on the Flutter template app.",
   "appId": "sync-todo-v2-oxdgx",
   "baseUrl": "https://services.cloud.mongodb.com",
   "dataExplorerLink": "",
