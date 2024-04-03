@@ -43,7 +43,7 @@ class _LogInState extends State<LogIn> {
             child: Column(
               children: [
                 Text(_isLogin ? 'Log In' : 'Sign Up', style: const TextStyle(fontSize: 25)),
-                loginField(_emailController, labelText: "Email", hintText: "Enter valid email (e.g. abc@gmail.com)"),
+                loginField(_emailController, labelText: "Email", hintText: "Enter valid email (example@mail.com)"),
                 loginField(_passwordController, labelText: "Password", hintText: "Enter secure password", obscure: true),
                 const Padding(
                   padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
