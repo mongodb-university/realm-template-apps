@@ -55,6 +55,7 @@ const addTodo = (request, response) => __awaiter(void 0, void 0, void 0, functio
         const body = request.body;
         const todo = {
             _id: new mongodb_1.ObjectId(body._id),
+            owner_id: "edge",
             summary: body.summary,
             isComplete: body.isComplete,
         };

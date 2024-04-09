@@ -30,6 +30,7 @@ const addTodo = async (request: Request, response: Response): Promise<void> => {
     const body = request.body as Pick<Todo, "_id" | "summary" | "isComplete">;
     const todo: Todo = {
       _id: new ObjectId(body._id),
+      owner_id: "edge",
       summary: body.summary,
       isComplete: body.isComplete,
     };

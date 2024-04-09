@@ -1,7 +1,7 @@
 import { Todo } from "./types";
 
 // This baseUrl points to the local Express server.
-const baseUrl: string = "http://localhost:5000";
+const baseUrl: string = "http://localhost:5055";
 
 export const getTodos = async () => {
   try {
