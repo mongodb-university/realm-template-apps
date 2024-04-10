@@ -4,7 +4,7 @@
   "description": "This example todo application demonstrates using Edge Server with a MongoDB Driver.  It uses the [MongoDB Node.js Driver](https://www.mongodb.com/docs/drivers/node/current/)  in an Express server application to connect to Edge Server. It has a React  frontend for performing CRUD operations.",
   "main": "index.js",
   "scripts": {
-    "set-up": "npm run install-server && npm run install-client",
+    "install": "npm run install-server && npm run install-client",
     "start": "concurrently --names \"EDGE    SERVER,EXPRESS SERVER,REACT   CLIENT\" -c \"bgBlue.bold,bgCyan.bold,bgGreen.bold\" \"npm run start-edge-server\" \"npm run start-server\" \"npm run start-client\"",
     "shut-down": "killall node && cd edge_server && make down",
     "install-server": "cd client/node-server && npm install",

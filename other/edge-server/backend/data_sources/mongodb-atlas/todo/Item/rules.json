@@ -1,0 +1,38 @@
+{
+    "collection": "Item",
+    "database": "todo",
+    "roles": [
+        {
+            "name": "readAndWriteAll",
+            "apply_when": {
+                "%%user.type": {
+                    "$eq": "mtss"
+                }
+            },
+            "document_filters": {
+                "read": true,
+                "write": true
+            },
+            "insert": true,
+            "delete": true,
+            "search": true,
+            "read": true,
+            "write": true
+        },
+        {
+            "name": "write-own-items",
+            "apply_when": {},
+            "document_filters": {
+                "write": {
+                    "owner_id": "%%user.id"
+                },
+                "read": true
+            },
+            "read": true,
+            "write": true,
+            "insert": true,
+            "delete": true,
+            "search": true
+        }
+    ]
+}

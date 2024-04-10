@@ -34,9 +34,10 @@ previewing Edge Server, refer to the product page at
 1. Create an App Services App based on the `edge-server.todo` template app, and
    get Edge Server enabled for your new app.
 2. Download and configure the Edge Server.
-3. From the project's root directory, run `npm run install`.
-4. Then run `npm run start`.
-5. Explore how CRUD works from both the React Client and the App Services UI.
+3. Start Docker
+4. From the project's root directory, run `npm run install`.
+5. Then run `npm run start`.
+6. Explore how CRUD works from both the React Client and the App Services UI.
 
 When you're done with the template app, make sure to shut everything down,
 including the Edge Server. From the project's root directory, run
@@ -430,3 +431,10 @@ For information about how to check the App Services logs, refer to
 ## Issues
 
 Please report issues with the template at: https://github.com/mongodb-university/realm-template-apps/issues/new
+
+## Project npm commands
+
+- `install`: installs the dependencies for the Express server and
+  React client. You must install the Edge Server dependencies separately.
+- `start`: starts the Edge Server, Express server, and React client.
+- `shut-down`: shuts down the Edge Server, Express server, and React client.
