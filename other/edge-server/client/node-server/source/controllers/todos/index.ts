@@ -13,7 +13,6 @@ const getTodos = async (
     let todos: Todo[] = [];
 
     for await (const todo of cursor) {
-      console.dir(todo);
       todos.push(todo);
     }
 

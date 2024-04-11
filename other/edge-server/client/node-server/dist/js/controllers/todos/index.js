@@ -30,7 +30,6 @@ const getTodos = (request, response) => __awaiter(void 0, void 0, void 0, functi
                 _c = cursor_1_1.value;
                 _d = false;
                 const todo = _c;
-                console.dir(todo);
                 todos.push(todo);
             }
         }

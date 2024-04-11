@@ -4,7 +4,6 @@ import cors from "cors";
 
 import { connectToEdgeServer } from "./db/connect.js";
 import todoRoutes from "./routes/index.js";
-import config from "../../config.js";
 
 const app: Express = express();
 
