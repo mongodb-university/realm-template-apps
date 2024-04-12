@@ -43,8 +43,19 @@ previewing Edge Server, refer to the product page at
 2. Download and configure the Edge Server.
 3. Start Docker
 4. From the project's root directory, run `npm run install-deps`.
-5. Then run `npm run start`.
-6. Explore how CRUD works from both the React Client and the App Services UI.
+5. Add a `.env` file inside the `node-server` directory with the details
+   required to run the Express Server.
+
+   ```env
+   # This URI string is for Atlas Edge Server
+   EDGE_SERVER_URI="mongodb://localhost:27021"
+
+   # This port is for the Node.js server
+   PORT=5055
+   ```
+
+6. Then run `npm run start`.
+7. Explore how CRUD works from both the React Client and the App Services UI.
 
 When you're done with the template app, make sure to shut everything down,
 including the Edge Server. From the project's root directory, run
