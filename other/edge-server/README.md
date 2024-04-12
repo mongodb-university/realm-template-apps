@@ -29,6 +29,13 @@ Atlas Edge Server is currently in Private Preview. To learn more about
 previewing Edge Server, refer to the product page at
 [Edge Server](https://www.mongodb.com/products/platform/atlas-edge-server).
 
+## Project npm commands
+
+- `install`: installs the dependencies for the Express server and
+  React client. You must install the Edge Server dependencies separately.
+- `start`: starts the Edge Server, Express server, and React client.
+- `shut-down`: shuts down the Edge Server, Express server, and React client.
+
 ## Quick Start
 
 1. Create an App Services App based on the `edge-server.todo` template app, and
@@ -51,12 +58,13 @@ For this example application, you'll create an App Services App based on the
 
 This template app uses a backend with Atlas Device Sync enabled and configured with:
 
-- An already defined `Item` collection in a `todo` database
+- An pre-defined `Item` collection in a `todo` database
 - A single default rule that allows _any_ user to read or write Items to
   the collection
 
-> **NOTE:** This example application is NOT interoperable with any of the Atlas
-> Device SDK template apps. You must use the `edge-server.todo` template app.
+> **NOTE:** You must use the `edge-server.todo` template app. You can sync data
+> with Atlas Device SDK clients if they connect to the same Atlas cluster that
+> your Edge Server connects to.
 
 ### Set up your MongoDB Atlas account
 
@@ -255,31 +263,49 @@ For a proof-of-concept test app, we recommend stopping the Edge Server when
 it's not in use. While it is running, it continues to check in regularly with
 the Atlas Sync server, even if no clients are connected to it.
 
-## Install dependencies and start the Node.js Express server
+## Install Express and React dependencies and start servers
 
-With the Edge Server running, cd into the `node-server` directory.
+1. Install and configure the Edge Server. You must [install the Edge Server dependencies](#install-required-dependencies-to-run-the-edge-server) yourself.
+2. Install the Express server and React client dependencies. From the project
+   root, run:
 
-Install the required dependencies:
+   ```shell
+   npm run install
+   ```
+
+3. Add a `.env` file inside the `client/node-server` directory with the details
+   required to run the Express Server.
+
+   ```env
+   # This URI string is for Atlas Edge Server
+   EDGE_SERVER_URI="mongodb://localhost:27021"
+
+   # This port is for the Node.js server
+   PORT=5055
+   ```
+
+4. Start the Edge Server, Express server, and React client server. From the
+   project root, run:
+
+   ```shell
+   npm run start
+   ```
+
+   This should open a browser window with the UI where you can perform CRUD
+   operations through the Express server that is connected to the Edge Server.
+   You can open Atlas and see your updates reflected there.
+
+   If this doesn't open a browser, you can open one and navigate to the following
+   URL to view the React app:
+
+   ```
+   http://localhost:3000/
+   ```
+
+5. When you're done, shut down all three servers. From the project root, run:
 
 ```shell
-npm install
-```
-
-Add a `.env` file inside the `node-server` directory with the details
-required to run the Express Server.
-
-```env
-# This URI string is for Atlas Edge Server
-EDGE_SERVER_URI="mongodb://localhost:27021"
-
-# This port is for the Node.js server
-PORT=5055
-```
-
-Then, run the Express server:
-
-```shell
-npm run start
+npm run shut-down
 ```
 
 ### Troubleshooting
@@ -289,13 +315,13 @@ npm run start
 When you run the Express server, you may see this error:
 
 ```shell
-[1]     PATH/edge-server/node-server/node_modules/mongodb-connection-string-url/lib/index.js:9
+[1]     PATH/edge-server/client/node-server/node_modules/mongodb-connection-string-url/lib/index.js:9
 [1]     return (connectionString.startsWith('mongodb://') ||
 ```
 
-This error occurs when there is no `.env` file at the root of your `node-server`
-directory containing an `EDGE_SERVER_URI`. Add the `.env` file as detailed
-above.
+This error occurs when there is no `.env` file at the root of your
+`client/node-server` directory containing an `EDGE_SERVER_URI`. Add the `.env`
+file as detailed above.
 
 #### Address Already in Use
 
@@ -333,33 +359,7 @@ that the Edge Server is running. If you have changed the URI and/or port where
 the Edge Server is listening for wireprotocol connections, change the URI
 and/or port in your `.env` file.
 
-## Install dependencies and start the React server
-
-With the Edge Server and the Express server running, cd into the `react-client`
-directory.
-
-Install the required dependencies:
-
-```shell
-npm install
-```
-
-Then, run the React client:
-
-```shell
-npm run start
-```
-
-This should open a browser window with the UI where you can perform CRUD
-operations through the Express server that is connected to the Edge Server.
-You can open Atlas and see your updates reflected there.
-
-If this doesn't open a browser, you can open one and navigate to the following
-URL to view the React app:
-
-```
-http://localhost:3000/
-```
+## Using the React client
 
 ### Add, Update, and Delete Items
 
@@ -413,11 +413,14 @@ check:
     "isComplete": {
       "bsonType": "bool"
     },
+    "owner_id": {
+      "bsonType": "string"
+    },
     "summary": {
       "bsonType": "string"
     }
   },
-  "required": ["_id", "isComplete", "summary"]
+  "required": ["_id", "owner_id", "isComplete", "summary"]
 }
 ```
 
@@ -431,10 +434,3 @@ For information about how to check the App Services logs, refer to
 ## Issues
 
 Please report issues with the template at: https://github.com/mongodb-university/realm-template-apps/issues/new
-
-## Project npm commands
-
-- `install`: installs the dependencies for the Express server and
-  React client. You must install the Edge Server dependencies separately.
-- `start`: starts the Edge Server, Express server, and React client.
-- `shut-down`: shuts down the Edge Server, Express server, and React client.
