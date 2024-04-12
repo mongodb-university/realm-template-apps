@@ -59,8 +59,12 @@ For this example application, you'll create an App Services App based on the
 This template app uses a backend with Atlas Device Sync enabled and configured with:
 
 - An pre-defined `Item` collection in a `todo` database
-- A single default rule that allows _any_ user to read or write Items to
-  the collection
+- Three rules:
+  - A default rule that allows _any_ user to read, but not write, Items to
+    the collection
+  - A rule that allows the Edge Server to read and write Items to the collection
+  - A rule that allows Atlas Device SDK client users to read all Items, but only
+    write their own Items to the collection
 
 > **NOTE:** You must use the `edge-server.todo` template app. You can sync data
 > with Atlas Device SDK clients if they connect to the Edge Server.
