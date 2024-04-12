@@ -18,13 +18,12 @@ const cors_1 = __importDefault(require("cors"));
 const connect_js_1 = require("./db/connect.js");
 const index_js_1 = __importDefault(require("./routes/index.js"));
 const app = (0, express_1.default)();
-const port = process.env.PORT || 5000;
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.use(index_js_1.default);
+const port = process.env.PORT || 5055;
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     console.log("Connecting to Edge Server...");
     // Connect to Edge Server database when Express server starts.
-    yield (0, connect_js_1.connectToEdgeServer)();
-    console.log(`Express server is running on port: ${port}`);
+    yield (0, connect_js_1.connectToEdgeServer)(port);
 }));

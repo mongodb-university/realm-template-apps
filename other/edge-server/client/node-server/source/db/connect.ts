@@ -8,16 +8,19 @@ const client = new MongoClient(uri!);
 const database = client.db("todo");
 const todos = database.collection<Todo>("Item");
 
-const connectToEdgeServer = async () => {
+const connectToEdgeServer = async (port: string | number) => {
   try {
     await client.connect();
+    console.log(`Connected to Atlas Edge Server at: ${uri}`);
+    console.log(`Express server is running on port: ${port}`);
   } catch (error) {
     if (error instanceof Error) {
-      console.error(error.message);
+      console.log(
+        `Could not connect to Edge Server. Are you sure your Edge Server is running?`
+      );
+      throw error.message;
     }
   }
-
-  console.log(`Connected to Atlas Edge Server at: ${uri}`);
 };
 
 const getTodoCollection = () => {

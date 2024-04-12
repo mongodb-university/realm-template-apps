@@ -1,0 +1,22 @@
+{
+  "name": "client",
+  "version": "0.0.1",
+  "description": "This example todo application demonstrates using Edge Server with a MongoDB Driver.  It uses the [MongoDB Node.js Driver](https://www.mongodb.com/docs/drivers/node/current/)  in an Express server application to connect to Edge Server. It has a React  frontend for performing CRUD operations.",
+  "main": "index.js",
+  "scripts": {
+    "install-deps": "npm install && npm run install-server && npm run install-client",
+    "start": "concurrently --names \"EDGE    SERVER,EXPRESS SERVER,REACT   CLIENT\" -c \"bgBlue.bold,bgCyan.bold,bgGreen.bold\" \"npm run start-edge-server\" \"npm run start-server\" \"npm run start-client\"",
+    "shut-down": "killall node && cd edge_server && make down",
+    "install-server": "cd node-server && npm install",
+    "install-client": "cd react-client && npm install",
+    "start-server": "cd node-server && npm run start",
+    "start-client": "npm run sleep1s && cd react-client && npm run start",
+    "start-edge-server": "cd edge_server && make up && make status",
+    "sleep1s": "node -e \"setTimeout(() => process.exit(0), 1000)\""
+  },
+  "keywords": [],
+  "author": "",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

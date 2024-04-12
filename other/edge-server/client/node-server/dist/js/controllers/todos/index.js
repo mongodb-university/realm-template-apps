@@ -30,7 +30,6 @@ const getTodos = (request, response) => __awaiter(void 0, void 0, void 0, functi
                 _c = cursor_1_1.value;
                 _d = false;
                 const todo = _c;
-                console.dir(todo);
                 todos.push(todo);
             }
         }
@@ -55,6 +54,7 @@ const addTodo = (request, response) => __awaiter(void 0, void 0, void 0, functio
         const body = request.body;
         const todo = {
             _id: new mongodb_1.ObjectId(body._id),
+            owner_id: "edge",
             summary: body.summary,
             isComplete: body.isComplete,
         };
