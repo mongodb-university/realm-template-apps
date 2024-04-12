@@ -307,12 +307,12 @@ EADDRINUSE, Address already in use
 
 This indicates that another device on your machine is using the port that
 the Express server is trying to use to listen for incoming connections.
-This example app uses port `5000` by default.
+This example app uses port `5055` by default.
 
 You can change the port used in your `.env` file at the root of the
-`node-server` directory. If you change this port, you must also change
+`client/node-server` directory. If you change this port, you must also change
 the port that the React client uses to communicate with the Express server.
-Change the port in `react-client/src/endpoints.ts` on line 4 to match
+Change the port in `client/react-client/src/endpoints.ts` on line 4 to match
 the new port in your `.env` file:
 
 ```typescript
