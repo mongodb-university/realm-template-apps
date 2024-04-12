@@ -63,8 +63,7 @@ This template app uses a backend with Atlas Device Sync enabled and configured w
   the collection
 
 > **NOTE:** You must use the `edge-server.todo` template app. You can sync data
-> with Atlas Device SDK clients if they connect to the same Atlas cluster that
-> your Edge Server connects to.
+> with Atlas Device SDK clients if they connect to the Edge Server.
 
 ### Set up your MongoDB Atlas account
 
