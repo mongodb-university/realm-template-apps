@@ -31,7 +31,7 @@ previewing Edge Server, refer to the product page at
 
 ## Project npm commands
 
-- `install`: installs the dependencies for the Express server and
+- `install-deps`: installs the dependencies for the Express server and
   React client. You must install the Edge Server dependencies separately.
 - `start`: starts the Edge Server, Express server, and React client.
 - `shut-down`: shuts down the Edge Server, Express server, and React client.
@@ -42,7 +42,7 @@ previewing Edge Server, refer to the product page at
    get Edge Server enabled for your new app.
 2. Download and configure the Edge Server.
 3. Start Docker
-4. From the project's root directory, run `npm run install`.
+4. From the project's root directory, run `npm run install-deps`.
 5. Then run `npm run start`.
 6. Explore how CRUD works from both the React Client and the App Services UI.
 
@@ -171,7 +171,8 @@ the example application on your local machine.
 
 ### Get the Edge Server code
 
-Use wget to get the current Edge Server code as a .tar file:
+In the project's root directory, use wget to get the current Edge Server code
+as a .tar file:
 
 ```shell
 wget --content-disposition https://services.cloud.mongodb.com/api/client/v2.0/tiered-sync/package/latest
@@ -185,12 +186,12 @@ tar -xvf *.tgz
 
 You now have an `edge_server` directory containing the server files. For the
 project's npm scripts to work, the `edge_server` directory should be at the same
-level as the `backend` and `client` directories:
+level as the `node-server` and `react-client` directories:
 
 ```shell
 | - <edge-server-template-app>
-|  | - backend
-|  | - client
+|  | - node-server
+|  | - react-client
 |  | - edge_server
 ```
 
@@ -270,10 +271,10 @@ the Atlas Sync server, even if no clients are connected to it.
    root, run:
 
    ```shell
-   npm run install
+   npm run install-deps
    ```
 
-3. Add a `.env` file inside the `client/node-server` directory with the details
+3. Add a `.env` file inside the `node-server` directory with the details
    required to run the Express Server.
 
    ```env
@@ -315,12 +316,12 @@ npm run shut-down
 When you run the Express server, you may see this error:
 
 ```shell
-[1]     PATH/edge-server/client/node-server/node_modules/mongodb-connection-string-url/lib/index.js:9
+[1]     PATH/edge-server/node-server/node_modules/mongodb-connection-string-url/lib/index.js:9
 [1]     return (connectionString.startsWith('mongodb://') ||
 ```
 
 This error occurs when there is no `.env` file at the root of your
-`client/node-server` directory containing an `EDGE_SERVER_URI`. Add the `.env`
+`node-server` directory containing an `EDGE_SERVER_URI`. Add the `.env`
 file as detailed above.
 
 #### Address Already in Use
@@ -336,9 +337,9 @@ the Express server is trying to use to listen for incoming connections.
 This example app uses port `5055` by default.
 
 You can change the port used in your `.env` file at the root of the
-`client/node-server` directory. If you change this port, you must also change
+`node-server` directory. If you change this port, you must also change
 the port that the React client uses to communicate with the Express server.
-Change the port in `client/react-client/src/endpoints.ts` on line 4 to match
+Change the port in `react-client/src/endpoints.ts` on line 4 to match
 the new port in your `.env` file:
 
 ```typescript
