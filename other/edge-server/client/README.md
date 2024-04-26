@@ -9,15 +9,16 @@ React client -> Express server (Node.js Driver) -> Edge Server -> Atlas
 
 To use this example application, you must:
 
-1. Create an App Services App based on the `edge-server.todo` template app, and
-   get Edge Server enabled for your new app.
-2. Download, configure, and start the Edge Server.
-3. Install dependencies and start the Node.js Express server.
-4. Install dependencies and start the React server.
+1. Create an App Services App based on the `edge-server.todo` template app.
+2. Install Edge Server dependencies
+3. Download, configure, and start the Edge Server.
+4. Install Express server and React client dependencies
+5. Start the Express server and React client.
 
 This is a MERN stack that connects to the Edge Server instead of Atlas.
 In this version of the example app, MongoDB wire protocol connections connect
-directly to Edge Server without authorization.
+directly to Edge Server. You can use email/password authentication with an
+App Services user or bypass authentication altogether.
 
 For a MERN stack tutorial, refer to
 [How to Use Mern Stack: A Complete Guide](https://www.mongodb.com/languages/mern-stack-tutorial).
@@ -34,32 +35,34 @@ previewing Edge Server, refer to the product page at
 - `install-deps`: installs the dependencies for the Express server and
   React client. You must install the Edge Server dependencies separately.
 - `start`: starts the Edge Server, Express server, and React client.
-- `shut-down`: shuts down the Edge Server, Express server, and React client.
+- `stop`: shuts down the Edge Server, Express server, and React client.
 
 ## Quick Start
 
-1. Create an App Services App based on the `edge-server.todo` template app, and
-   get Edge Server enabled for your new app.
+1. Create an App Services App based on the `edge-server.todo` template app.
 2. Download and configure the Edge Server.
-3. Start Docker
-4. From the project's root directory, run `npm run install-deps`.
-5. Add a `.env` file inside the `node-server` directory with the details
+3. As part of the Edge Server installation, choose to create a new user. Remember
+   the user's email and password for later.
+4. Start Docker
+5. From the project's root directory, run `npm run install-deps`.
+6. Add a `.env` file inside the `express-server` directory with the details
    required to run the Express Server.
 
    ```env
-   # This URI string is for Atlas Edge Server
-   EDGE_SERVER_URI="mongodb://localhost:27021"
+    # The Edge Server uses this connection string for anonymous authentication
+    EDGE_SERVER_URI="mongodb://localhost:27021"
 
-   # This port is for the Node.js server
-   PORT=5055
+    # This port is for the Express server
+    PORT=5055
    ```
 
-6. Then run `npm run start`.
-7. Explore how CRUD works from both the React Client and the App Services UI.
+7. Then run `npm run start`.
+8. In the rendered React client, either bypass authentication or use the email
+   and password for the user you created earlier.
 
 When you're done with the template app, make sure to shut everything down,
 including the Edge Server. From the project's root directory, run
-`npm run shut-down`.
+`npm run stop`.
 
 ## Create an App Services App
 
@@ -156,131 +159,13 @@ not contain information about running the Edge Server template. You can view
 the Edge Server client README - this document you're currently viewing - for
 those details.
 
-## Enable Edge Server for your App
+## Set up Edge Server
 
-After your App is created, coordinate with your Product or Account Representative
-to enable Edge Server and generate an authorization secret for your app.
-
-You will need to provide the App Sevices App ID.
-If you don't know your App ID, you can get it from the CLI using:
-
-```shell
-appservices apps list
-```
-
-For other ways to find your App Services App ID, refer to
-[Find Your App ID](https://www.mongodb.com/docs/atlas/app-services/apps/metadata/#find-your-app-id)
-
-## Download, configure, and start the Edge Server
-
-To download, configure, and start the Edge Server, complete these steps:
-
-1. Get the Edge Server code.
-2. Complete the Edge Server configuration details.
-3. Install required dependencies to run the Edge Server.
-4. Run the Edge Server.
-
-This example application assumes that you're running the Edge Server and
-the example application on your local machine.
-
-### Get the Edge Server code
-
-In the project's root directory, use wget to get the current Edge Server code
-as a .tar file:
-
-```shell
-wget --content-disposition https://services.cloud.mongodb.com/api/client/v2.0/tiered-sync/package/latest
-```
-
-Unzip the .tar to get the files:
-
-```shell
-tar -xvf *.tgz
-```
-
-You now have an `edge_server` directory containing the server files. For the
-project's npm scripts to work, the `edge_server` directory should be at the same
-level as the `node-server` and `react-client` directories:
-
-```shell
-| - <edge-server-template-app>
-|  | - node-server
-|  | - react-client
-|  | - edge_server
-```
-
-### Configure the Edge Server
-
-The `edge_server` directory contains a `config.json` file you must edit with
-the appropriate values to configure the server.
-
-Replace the `clientAppId` value with the App Services App ID for the Edge Server-enabled App
-you created above. For information about how to find the App Sevices App ID,
-refer to
-[Find Your App ID](https://www.mongodb.com/docs/atlas/app-services/apps/metadata/#find-your-app-id).
-
-Replace the `cloudSyncServerAuthSecret` value with the auth secret for your
-Edge Server.
-
-For more details about this configuration file, refer to the
-[Configure Edge Server](https://www.mongodb.com/docs/atlas/app-services/edge-server/configure/#complete-the-edge-server-configuration-details)
-documentation.
-
-### Install required dependencies to run the Edge Server
-
-The `edge_server` directory contains a `README.md` file with instructions
-for installing dependencies and starting the Edge Server. The host running
-the Edge Server must have `docker`, `docker-compose`, `make` and `jq`
-installed.
-
-For computers running macOS, we recommend using `brew` to install required
-dependencies.
-
-### Run the Edge Server
-
-Make sure Docker is running on your local machine. Then, run the following
-command to start the Edge Server:
-
-```shell
-make up
-```
-
-You can check the Edge Server's status at any time using the following command:
-
-```shell
-make status
-```
-
-We recommend checking the Edge Server's status after you run it for the
-first time to confirm that you have successfully configured the Edge Server
-and it is running. If it is successfully configured, you should see a JSON
-blob similar to:
-
-```json
-{
-  "version": "v0.16.0",
-  "status": "ACTIVE",
-  "cloud_connected": true,
-  "num_local_clients": 0,
-  "query": {
-    "Item": "truepredicate"
-  }
-}
-```
-
-To stop the Edge Server, run the following command:
-
-```shell
-make down
-```
-
-For a proof-of-concept test app, we recommend stopping the Edge Server when
-it's not in use. While it is running, it continues to check in regularly with
-the Atlas Sync server, even if no clients are connected to it.
+For information about creating, configuring, and running an Edge Server instance, Refer to the [Edge Server documentation](https://www.mongodb.com/docs/atlas/app-services/edge-server/).
 
 ## Install Express and React dependencies and start servers
 
-1. Install and configure the Edge Server. You must [install the Edge Server dependencies](#install-required-dependencies-to-run-the-edge-server) yourself.
+1. Install and configure the Edge Server. You must install the Edge Server dependencies yourself for details, refer to the [Edge Server documentation](https://www.mongodb.com/docs/atlas/app-services/edge-server/).
 2. Install the Express server and React client dependencies. From the project
    root, run:
 
@@ -288,15 +173,15 @@ the Atlas Sync server, even if no clients are connected to it.
    npm run install-deps
    ```
 
-3. Add a `.env` file inside the `node-server` directory with the details
+3. Add a `.env` file inside the `express-server` directory with the details
    required to run the Express Server.
 
    ```env
-   # This URI string is for Atlas Edge Server
-   EDGE_SERVER_URI="mongodb://localhost:27021"
+    # The Edge Server uses this connection string for anonymous authentication
+    EDGE_SERVER_URI="mongodb://localhost:27021"
 
-   # This port is for the Node.js server
-   PORT=5055
+    # This port is for the Express server
+    PORT=5055
    ```
 
 4. Start the Edge Server, Express server, and React client server. From the
@@ -306,12 +191,12 @@ the Atlas Sync server, even if no clients are connected to it.
    npm run start
    ```
 
-   This should open a browser window with the UI where you can perform CRUD
-   operations through the Express server that is connected to the Edge Server.
-   You can open Atlas and see your updates reflected there.
+   This should open a browser window with the UI where you can either bypass
+   authentication or pass a user's email address and password to the Edge Server. After logging in, you can perform CRUD operations through the Express server
+   that is connected to the Edge Server. You can open Atlas and see your updates reflected there.
 
-   If this doesn't open a browser, you can open one and navigate to the following
-   URL to view the React app:
+   If a browser windwo doesn't open automatically, you can open one and navigate
+   to the following URL to view the React app:
 
    ```
    http://localhost:3000/
@@ -320,7 +205,7 @@ the Atlas Sync server, even if no clients are connected to it.
 5. When you're done, shut down all three servers. From the project root, run:
 
 ```shell
-npm run shut-down
+npm run stop
 ```
 
 ### Troubleshooting
@@ -335,7 +220,7 @@ When you run the Express server, you may see this error:
 ```
 
 This error occurs when there is no `.env` file at the root of your
-`node-server` directory containing an `EDGE_SERVER_URI`. Add the `.env`
+`express-server` directory containing an `EDGE_SERVER_URI`. Add the `.env`
 file as detailed above.
 
 #### Address Already in Use
@@ -351,7 +236,7 @@ the Express server is trying to use to listen for incoming connections.
 This example app uses port `5055` by default.
 
 You can change the port used in your `.env` file at the root of the
-`node-server` directory. If you change this port, you must also change
+`express-server` directory. If you change this port, you must also change
 the port that the React client uses to communicate with the Express server.
 Change the port in `react-client/src/endpoints.ts` on line 4 to match
 the new port in your `.env` file:
@@ -375,6 +260,15 @@ the Edge Server is listening for wireprotocol connections, change the URI
 and/or port in your `.env` file.
 
 ## Using the React client
+
+### Authenticate
+
+Before you can read or write any data from the Edge Server, you must either
+bypass authentication or log in with a user email address and password.
+
+You can manage users in the App Services UI. If you don't have one yet, you
+can create a new user that uses email/password authentication. See the App
+Services [authenticate and manage users docs](https://www.mongodb.com/docs/atlas/app-services/users/) for details.
 
 ### Add, Update, and Delete Items
 

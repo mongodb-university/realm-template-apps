@@ -6,7 +6,7 @@
   "scripts": {
     "install-deps": "npm install && npm run install-server && npm run install-client",
     "start": "concurrently --names \"EDGE    SERVER,EXPRESS SERVER,REACT   CLIENT\" -c \"bgBlue.bold,bgCyan.bold,bgGreen.bold\" \"npm run start-edge-server\" \"npm run start-server\" \"npm run start-client\"",
-    "shut-down": "killall node && edgectl stop",
+    "stop": "killall node && edgectl stop",
     "install-server": "cd node-server && npm install",
     "install-client": "cd react-client && npm install",
     "start-server": "cd node-server && npm run start",
