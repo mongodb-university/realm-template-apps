@@ -96,7 +96,7 @@ export const login = async (user?: { email: string; password: string }) => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: user ? JSON.stringify(user) : null,
+      body: user ? JSON.stringify(user) : "",
     });
     const response = await rawResponse.json();
 

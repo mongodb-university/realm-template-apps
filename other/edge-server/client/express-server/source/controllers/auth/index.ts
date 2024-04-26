@@ -4,7 +4,7 @@ import { connectToEdgeServer } from "../../db/connect";
 import { User } from "../../types/types.js";
 
 const login = async (request: Request, response: Response): Promise<void> => {
-  if (request.body) {
+  if (request.body.email) {
     // Connect to Edge Server with email/password auth
     try {
       const rawUser = request.body as User;
@@ -26,7 +26,7 @@ const login = async (request: Request, response: Response): Promise<void> => {
 
     return;
   } else {
-    // Connect to Edge Server and bypass auth
+    // Bypass auth and connect to Edge Server
     try {
       await connectToEdgeServer();
 

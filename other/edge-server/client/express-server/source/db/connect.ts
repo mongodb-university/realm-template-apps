@@ -20,9 +20,7 @@ const connectToEdgeServer = async (user?: User) => {
     console.log(`Connected to Atlas Edge Server at: ${connectionString}`);
   } catch (error) {
     if (error instanceof Error) {
-      console.error(
-        `Could not connect to Edge Server. Are you sure your Edge Server is running?`
-      );
+      console.error(`Could not connect to Edge Server at: ${connectionString}`);
       throw new Error(error.message);
     }
   }
