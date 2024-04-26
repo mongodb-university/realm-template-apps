@@ -6,3 +6,8 @@ export interface Todo extends Document {
   summary: string;
   isComplete: boolean;
 }
+
+export interface User {
+  email: string;
+  password: string;
+}

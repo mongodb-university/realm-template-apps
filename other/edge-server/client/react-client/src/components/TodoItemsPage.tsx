@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Container,
   Button,
@@ -12,7 +11,6 @@ import { TodoItem } from "./TodoItem";
 import { useDraftTodos } from "../hooks/useDraftTodos";
 import { DraftTodoItem } from "./DraftTodoItem";
 import { useShowLoader } from "../hooks/util-hooks";
-import { MoreInfo } from "./MoreInfo";
 import { getTodoId } from "../utils";
 
 export function TodoItemsPage() {
@@ -67,7 +65,6 @@ export function TodoItemsPage() {
           </List>
         </div>
       )}
-      <MoreInfo />
     </Container>
   );
 }

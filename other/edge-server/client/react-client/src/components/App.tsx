@@ -1,7 +1,11 @@
 import React from "react";
 import { AppBar, Toolbar, Typography } from "@mui/material";
-import { TodoItemsPage } from "./TodoItemsPage";
 import { ThemeProvider } from "./Theme";
+
+import { LoginPage } from "./LoginPage";
+import { TodoItemsPage } from "./TodoItemsPage";
+import { MoreInfo } from "./MoreInfo";
+
 import "./App.css";
 
 export default function ProvidedApp() {
@@ -13,6 +17,8 @@ export default function ProvidedApp() {
 }
 
 function App() {
+  const [loggedIn, setLoggedIn] = React.useState<boolean>(false);
+
   return (
     <div className="App">
       <AppBar position="sticky">
@@ -26,7 +32,10 @@ function App() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <TodoItemsPage />
+      {/* TODO: If not logged in, show auth page. */}
+      {loggedIn ? <TodoItemsPage /> : <LoginPage setLoggedIn={setLoggedIn} />}
+
+      <MoreInfo />
     </div>
   );
 }

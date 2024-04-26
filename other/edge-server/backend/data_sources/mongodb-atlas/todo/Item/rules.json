@@ -6,7 +6,7 @@
             "name": "readAndWriteAll",
             "apply_when": {
                 "%%user.type": {
-                    "$eq": "mtss"
+                    "$eq": "edge"
                 }
             },
             "document_filters": {

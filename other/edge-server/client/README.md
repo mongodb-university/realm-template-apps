@@ -330,7 +330,7 @@ npm run shut-down
 When you run the Express server, you may see this error:
 
 ```shell
-[1]     PATH/edge-server/node-server/node_modules/mongodb-connection-string-url/lib/index.js:9
+[1]     PATH/edge-server/express-server/node_modules/mongodb-connection-string-url/lib/index.js:9
 [1]     return (connectionString.startsWith('mongodb://') ||
 ```
 

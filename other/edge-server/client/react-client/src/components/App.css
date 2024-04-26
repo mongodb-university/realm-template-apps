@@ -37,6 +37,14 @@
   height: calc(100% - 64px);
 }
 
+.main-container.login button {
+  margin: 2em 0;
+}
+
+.main-container.login p {
+  margin-bottom: 1em;
+}
+
 .todo-items-container {
   display: flex;
   flex-direction: column;

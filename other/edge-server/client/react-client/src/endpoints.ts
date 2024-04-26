@@ -87,3 +87,27 @@ export const deleteTodo = async (id: string) => {
     }
   }
 };
+
+export const login = async (user?: { email: string; password: string }) => {
+  try {
+    const rawResponse = await fetch(`${baseUrl}/login/`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: user ? JSON.stringify(user) : null,
+    });
+    const response = await rawResponse.json();
+
+    if (response && response.message == "Logged into Edge Server with email") {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
+};
