@@ -1,7 +1,10 @@
 import { Response, Request } from "express";
-import { connectToEdgeServer } from "../../db/connect";
+import {
+  connectToEdgeServer,
+  disconnectFromEdgeServer,
+} from "../../db/mongoUtils";
 
-import { User } from "../../types/types.js";
+import { EdgeConnectionStatus, User } from "../../types/types.js";
 
 const login = async (request: Request, response: Response): Promise<void> => {
   if (request.body.email) {
@@ -13,11 +16,11 @@ const login = async (request: Request, response: Response): Promise<void> => {
         password: rawUser.password,
       };
 
-      await connectToEdgeServer(user);
+      const connectionResult: EdgeConnectionStatus = await connectToEdgeServer(
+        user
+      );
 
-      response.status(200).json({
-        message: `Logged into Edge Server with email`,
-      });
+      response.status(200).json(connectionResult);
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -28,11 +31,10 @@ const login = async (request: Request, response: Response): Promise<void> => {
   } else {
     // Bypass auth and connect to Edge Server
     try {
-      await connectToEdgeServer();
+      const connectionResult: EdgeConnectionStatus =
+        await connectToEdgeServer();
 
-      response.status(200).json({
-        message: `Logged into Edge Server. Bypassed authentication.`,
-      });
+      response.status(200).json(connectionResult);
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -41,4 +43,17 @@ const login = async (request: Request, response: Response): Promise<void> => {
   }
 };
 
-export { login };
+const logout = async (request: Request, response: Response) => {
+  try {
+    const connectionResult: EdgeConnectionStatus =
+      await disconnectFromEdgeServer();
+
+    response.status(200).json(connectionResult);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
+};
+
+export { login, logout };

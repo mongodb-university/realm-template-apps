@@ -1,9 +1,8 @@
-import React from "react";
 import { AppBar, Toolbar, Typography } from "@mui/material";
 import { ThemeProvider } from "./Theme";
+import { AuthProvider } from "../context/AuthProvider";
 
-import { LoginPage } from "./LoginPage";
-import { TodoItemsPage } from "./TodoItemsPage";
+import { Content } from "../components/Content";
 import { MoreInfo } from "./MoreInfo";
 
 import "./App.css";
@@ -17,25 +16,25 @@ export default function ProvidedApp() {
 }
 
 function App() {
-  const [loggedIn, setLoggedIn] = React.useState<boolean>(false);
-
   return (
-    <div className="App">
-      <AppBar position="sticky">
-        <Toolbar>
-          <Typography
-            className="app-bar-title"
-            component="h1"
-            variant="h5"
-          >
-            Edge Server Wire Protocol App
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      {/* TODO: If not logged in, show auth page. */}
-      {loggedIn ? <TodoItemsPage /> : <LoginPage setLoggedIn={setLoggedIn} />}
+    <AuthProvider>
+      <div className="App">
+        <AppBar position="sticky">
+          <Toolbar>
+            <Typography
+              className="app-bar-title"
+              component="h1"
+              variant="h5"
+            >
+              Edge Server Wire Protocol App
+            </Typography>
+          </Toolbar>
+        </AppBar>
 
-      <MoreInfo />
-    </div>
+        <Content />
+
+        <MoreInfo />
+      </div>
+    </AuthProvider>
   );
 }

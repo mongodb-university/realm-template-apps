@@ -15,11 +15,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useAuth } from "../hooks/useAuth";
 
-interface LoginPageProps {
-  setLoggedIn: React.Dispatch<React.SetStateAction<any>>;
-}
-
-export function LoginPage({ setLoggedIn }: LoginPageProps) {
+export function LoginPage() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [showPassword, setShowPassword] = React.useState(false);
@@ -30,28 +26,6 @@ export function LoginPage({ setLoggedIn }: LoginPageProps) {
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
-  };
-  const handleAuthBypass = async () => {
-    try {
-      await loginNoAuth();
-
-      setLoggedIn(true);
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-    }
-  };
-  const handleEmailPassAuth = async () => {
-    try {
-      await loginWithEmailPassword({ email, password });
-
-      setLoggedIn(true);
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-    }
   };
 
   return (
@@ -122,7 +96,9 @@ export function LoginPage({ setLoggedIn }: LoginPageProps) {
         <Button
           variant="contained"
           color="primary"
-          onClick={handleEmailPassAuth}
+          onClick={() => {
+            loginWithEmailPassword({ email, password });
+          }}
         >
           Log in
         </Button>
@@ -140,7 +116,9 @@ export function LoginPage({ setLoggedIn }: LoginPageProps) {
         <Button
           variant="contained"
           color="primary"
-          onClick={handleAuthBypass}
+          onClick={() => {
+            loginNoAuth();
+          }}
         >
           Bypass authentication
         </Button>

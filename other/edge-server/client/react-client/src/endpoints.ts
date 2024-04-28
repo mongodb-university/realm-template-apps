@@ -1,4 +1,4 @@
-import { Todo } from "./types";
+import { EdgeConnectionStatus, Todo } from "./types";
 
 // This baseUrl points to the local Express server.
 const baseUrl: string = "http://localhost:5055";
@@ -88,9 +88,12 @@ export const deleteTodo = async (id: string) => {
   }
 };
 
-export const login = async (user?: { email: string; password: string }) => {
+export const login = async (user?: {
+  email: string;
+  password: string;
+}): Promise<EdgeConnectionStatus | null> => {
   try {
-    const rawResponse = await fetch(`${baseUrl}/login/`, {
+    const rawResponse = await fetch(`${baseUrl}/login`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -98,16 +101,35 @@ export const login = async (user?: { email: string; password: string }) => {
       },
       body: user ? JSON.stringify(user) : "",
     });
-    const response = await rawResponse.json();
+    const response = (await rawResponse.json()) as EdgeConnectionStatus;
 
-    if (response && response.message == "Logged into Edge Server with email") {
-      return true;
-    } else {
-      return false;
-    }
+    return response;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
   }
+
+  return null;
+};
+
+export const logout = async () => {
+  try {
+    const rawResponse = await fetch(`${baseUrl}/logout`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    const response = (await rawResponse.json()) as EdgeConnectionStatus;
+
+    return response;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
+
+  return null;
 };

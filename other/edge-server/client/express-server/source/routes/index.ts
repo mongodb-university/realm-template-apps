@@ -5,7 +5,7 @@ import {
   updateTodo,
   deleteTodo,
 } from "../controllers/todos";
-import { login } from "../controllers/auth";
+import { login, logout } from "../controllers/auth";
 
 const router: Router = Router();
 
@@ -17,5 +17,6 @@ router.delete("/delete-todo/:id", deleteTodo);
 
 // Auth routes
 router.post("/login", login);
+router.post("/logout", logout);
 
 export default router;

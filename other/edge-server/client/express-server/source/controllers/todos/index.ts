@@ -1,6 +1,6 @@
 import { Response, Request } from "express";
 import { ObjectId } from "mongodb";
-import { getTodoCollection } from "../../db/connect.js";
+import { getTodoCollection } from "../../db/mongoUtils.js";
 import { Todo } from "../../types/types.js";
 
 const getTodos = async (
