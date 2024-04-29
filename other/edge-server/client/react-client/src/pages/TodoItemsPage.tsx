@@ -6,10 +6,12 @@ import {
   LinearProgress,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+
+import { TodoItem } from "../components/TodoItem";
+import { DraftTodoItem } from "../components/DraftTodoItem";
+
 import { useTodos } from "../hooks/useTodos";
-import { TodoItem } from "./TodoItem";
 import { useDraftTodos } from "../hooks/useDraftTodos";
-import { DraftTodoItem } from "./DraftTodoItem";
 import { useShowLoader } from "../hooks/util-hooks";
 import { getTodoId } from "../utils";
 
@@ -17,6 +19,7 @@ export function TodoItemsPage() {
   const { loading, todos, ...todoActions } = useTodos();
   const { draftTodos, ...draftTodoActions } = useDraftTodos();
   const showLoader = useShowLoader(loading, 200);
+
   return (
     <Container
       className="main-container"

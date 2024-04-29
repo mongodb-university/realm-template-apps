@@ -22,9 +22,10 @@ const login = async (request: Request, response: Response): Promise<void> => {
 
       response.status(200).json(connectionResult);
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
+      console.log("Hit Express Server, but couldn't connect to Edge Server.");
+      response
+        .status(502)
+        .json({ message: "Could not connect to Edge Server. Is it running?" });
     }
 
     return;
@@ -36,9 +37,10 @@ const login = async (request: Request, response: Response): Promise<void> => {
 
       response.status(200).json(connectionResult);
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
+      console.log("Hit Express Server, but couldn't connect to Edge Server.");
+      response
+        .status(502)
+        .json({ message: "Could not connect to Edge Server. Is it running?" });
     }
   }
 };

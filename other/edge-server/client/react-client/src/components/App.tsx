@@ -1,6 +1,6 @@
 import { AppBar, Toolbar, Typography } from "@mui/material";
-import { ThemeProvider } from "./Theme";
-import { AuthProvider } from "../context/AuthProvider";
+import { ThemeProvider } from "../providers/ThemeProvider";
+import { AuthProvider } from "../providers/AuthProvider";
 
 import { Content } from "../components/Content";
 import { MoreInfo } from "./MoreInfo";

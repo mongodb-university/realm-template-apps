@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocalStorage } from "./useLocalStorage";
-import { useAuthContext } from "../context/AuthProvider";
+import { useAuthContext } from "../providers/AuthProvider";
 import { login, logout } from "../endpoints";
 import { ObjectId } from "bson";
 

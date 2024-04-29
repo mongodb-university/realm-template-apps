@@ -15,7 +15,7 @@ export function useTodos() {
 
   // Fetch all todos on first load
   React.useEffect(() => {
-    (async () => {
+    const fetchTodos = async () => {
       try {
         const todos = await getTodos();
 
@@ -27,7 +27,12 @@ export function useTodos() {
       } catch (err) {
         console.error(err);
       }
-    })();
+    };
+
+    const intervalId = setInterval(() => {
+      fetchTodos();
+    }, 1000 * 5); // in milliseconds
+    return () => clearInterval(intervalId);
   }, []);
 
   // Given a draft todo, format it and then insert it

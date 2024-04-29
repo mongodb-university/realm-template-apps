@@ -1,9 +1,9 @@
 import { Button } from "@mui/material";
 
-import { LoginPage } from "./LoginPage";
-import { TodoItemsPage } from "./TodoItemsPage";
+import { LoginPage } from "../pages/LoginPage";
+import { TodoItemsPage } from "../pages/TodoItemsPage";
 
-import { useAuthContext } from "../context/AuthProvider";
+import { useAuthContext } from "../providers/AuthProvider";
 import { useAuth } from "../hooks/useAuth";
 
 export function Content() {

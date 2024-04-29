@@ -1,7 +1,8 @@
-import { Collection, MongoClient } from "mongodb";
+import { Collection, Db, MongoClient } from "mongodb";
 import { EdgeConnectionStatus, Todo, User } from "../types/types";
 
 let client: MongoClient;
+let database: Db;
 let todos: Collection<Todo>;
 
 const connectToEdgeServer = async (
@@ -17,17 +18,17 @@ const connectToEdgeServer = async (
     : process.env.EDGE_SERVER_URI!;
 
   client = new MongoClient(connectionString!);
-  const database = client.db("todo");
+  database = client.db("todo");
   todos = database.collection<Todo>("Item");
 
   try {
     await client.connect();
-    message = "Logged into Atlas Edge Server with email";
+    message = "Logged into Atlas Edge Server";
 
     console.log(`Connected to Atlas Edge Server at: ${connectionString}`);
   } catch (error) {
     if (error instanceof Error) {
-      message = "Logged into Atlas Edge Server. Bypassed authentication.";
+      message = "Could not connect to Atlas Edge Server";
       console.error(
         `Could not connect to Atlas Edge Server at: ${connectionString}`
       );
