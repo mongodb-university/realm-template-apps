@@ -10,10 +10,9 @@ React client -> Express server (Node.js Driver) -> Edge Server -> Atlas
 To use this example application, you must:
 
 1. Create an App Services App based on the `edge-server.todo` template app.
-2. Install Edge Server dependencies
-3. Download, configure, and start the Edge Server.
-4. Install Express server and React client dependencies
-5. Start the Express server and React client.
+2. Download, configure, and start the Edge Server.
+3. Install Express server and React client dependencies
+4. Start the Express server and React client.
 
 This is a MERN stack that connects to the Edge Server instead of Atlas.
 In this version of the example app, MongoDB wire protocol connections connect

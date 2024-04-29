@@ -5,9 +5,7 @@
         {
             "name": "edgeServerReadWriteAll",
             "apply_when": {
-                "%%user.type": {
-                    "$eq": "edge"
-                }
+                "%%user.type": "edge"
             },
             "document_filters": {
                 "read": true,
