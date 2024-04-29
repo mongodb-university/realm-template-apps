@@ -56,7 +56,7 @@ previewing Edge Server, refer to the product page at
     PORT=5055
    ```
 
-7. Then run `npm run start`.
+7. From the project's root directory, run `npm run start`.
 8. In the rendered React client, either bypass authentication or use the email
    and password for the user you created earlier.
 

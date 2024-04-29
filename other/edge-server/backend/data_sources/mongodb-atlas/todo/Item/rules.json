@@ -3,7 +3,7 @@
     "database": "todo",
     "roles": [
         {
-            "name": "readAndWriteAll",
+            "name": "edgeServerReadWriteAll",
             "apply_when": {
                 "%%user.type": {
                     "$eq": "edge"
