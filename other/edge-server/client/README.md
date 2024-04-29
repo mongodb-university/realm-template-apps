@@ -42,6 +42,7 @@ previewing Edge Server, refer to the product page at
 2. Download and configure the Edge Server.
 3. As part of the Edge Server installation, choose to create a new user. Remember
    the user's email and password for later.
+   Alternatively, you can skip user creation and disable authentication by running `edgectl config --insecure-disable-auth=true`.
 4. Start Docker
 5. From the project's root directory, run `npm run install-deps`.
 6. Add a `.env` file inside the `express-server` directory with the details
@@ -257,6 +258,12 @@ This indicates that the Edge Server is not running on port 27021. Verify
 that the Edge Server is running. If you have changed the URI and/or port where
 the Edge Server is listening for wireprotocol connections, change the URI
 and/or port in your `.env` file.
+
+## Run Multiple Edge Server Instances on a Host
+
+If you want to run multiple Edge Servers, you can't use this project's `npm run start` script. Instead, you'll need to run each server separately, passing the `--profile` flag to differentiate the Edge Servers.
+
+See the [Edge Server documentation](https://www.mongodb.com/docs/atlas/edge-server/configure/#run-multiple-edge-server-instances-on-a-host) for more details.
 
 ## Using the React client
 
