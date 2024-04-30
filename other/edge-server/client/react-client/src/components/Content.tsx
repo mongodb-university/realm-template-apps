@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { AppBar, Button, Container, Toolbar, Typography } from "@mui/material";
 
 import { LoginPage } from "../pages/LoginPage";
 import { TodoItemsPage } from "../pages/TodoItemsPage";
@@ -12,16 +12,33 @@ export function Content() {
 
   return (
     <div>
-      {user && user.id ? <TodoItemsPage /> : <LoginPage />}
-      {user && (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={logoutAndDisconnect}
-        >
-          Log out
-        </Button>
-      )}
+      <AppBar position="sticky">
+        <Toolbar>
+          <Typography
+            className="app-bar-title"
+            component="h1"
+            variant="h5"
+          >
+            Edge Server Wire Protocol App
+          </Typography>
+          {user && (
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={logoutAndDisconnect}
+            >
+              Log out
+            </Button>
+          )}
+        </Toolbar>
+      </AppBar>
+
+      <Container
+        className="main-container"
+        maxWidth="sm"
+      >
+        {user && user.id ? <TodoItemsPage /> : <LoginPage />}
+      </Container>
     </div>
   );
 }

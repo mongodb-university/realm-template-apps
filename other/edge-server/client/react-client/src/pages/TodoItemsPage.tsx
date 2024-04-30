@@ -1,10 +1,4 @@
-import {
-  Container,
-  Button,
-  Typography,
-  List,
-  LinearProgress,
-} from "@mui/material";
+import { Button, Typography, List, LinearProgress } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
 import { TodoItem } from "../components/TodoItem";
@@ -21,10 +15,7 @@ export function TodoItemsPage() {
   const showLoader = useShowLoader(loading, 200);
 
   return (
-    <Container
-      className="main-container"
-      maxWidth="sm"
-    >
+    <div>
       {loading ? (
         showLoader ? (
           <LinearProgress />
@@ -68,6 +59,6 @@ export function TodoItemsPage() {
           </List>
         </div>
       )}
-    </Container>
+    </div>
   );
 }

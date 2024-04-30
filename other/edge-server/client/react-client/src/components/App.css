@@ -37,11 +37,15 @@
   height: calc(100% - 64px);
 }
 
-.main-container.login button {
-  margin: 2em 0;
+.login-button {
+  max-width: 150px;
 }
 
-.main-container.login p {
+.login-page .input-row {
+  margin-bottom: 2em;
+}
+
+.login-page p {
   margin-bottom: 1em;
 }
 
@@ -63,4 +67,11 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.more-info {
+  text-align: center;
+  padding: 14px 0;
+  margin-top: 3rem;
+  border-top: 1px solid;
 }

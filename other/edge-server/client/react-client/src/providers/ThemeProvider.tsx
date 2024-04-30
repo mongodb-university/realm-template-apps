@@ -4,14 +4,13 @@ import {
   createTheme,
   StyledEngineProvider,
   ThemeOptions,
-  PaletteColorOptions,
 } from "@mui/material/styles";
 import { colors } from "../colors";
 
 const themeConfig: ThemeOptions = {
   palette: {
     primary: colors.green,
-    secondary: colors.slate,
+    secondary: colors.mist,
   },
 };
 

@@ -15,6 +15,23 @@ export function useTodos() {
 
   // Fetch all todos on first load
   React.useEffect(() => {
+    (async () => {
+      try {
+        const todos = await getTodos();
+
+        if (todos?.length) {
+          setTodos(todos);
+        }
+
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, []);
+
+  // Retry fetching all todos every 5 seconds
+  React.useEffect(() => {
     const fetchTodos = async () => {
       try {
         const todos = await getTodos();

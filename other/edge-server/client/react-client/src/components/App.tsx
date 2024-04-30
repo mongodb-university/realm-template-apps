@@ -19,20 +19,7 @@ function App() {
   return (
     <AuthProvider>
       <div className="App">
-        <AppBar position="sticky">
-          <Toolbar>
-            <Typography
-              className="app-bar-title"
-              component="h1"
-              variant="h5"
-            >
-              Edge Server Wire Protocol App
-            </Typography>
-          </Toolbar>
-        </AppBar>
-
         <Content />
-
         <MoreInfo />
       </div>
     </AuthProvider>
