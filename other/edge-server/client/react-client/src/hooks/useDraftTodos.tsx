@@ -1,9 +1,9 @@
-import React from "react";
+import { useState } from "react";
 import { createObjectId } from "../utils";
 import { Todo } from "../types";
 
 export function useDraftTodos() {
-  const [drafts, setDrafts] = React.useState<Todo[]>([]);
+  const [drafts, setDrafts] = useState<Todo[]>([]);
 
   const createDraftTodo = () => {
     const draftTodo: Todo = {

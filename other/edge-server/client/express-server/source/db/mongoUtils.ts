@@ -10,7 +10,12 @@ const connectToEdgeServer = async (
 ): Promise<EdgeConnectionStatus> => {
   console.log("Connecting to Edge Server...");
 
-  let message = "";
+  const edgeConnectionStatus: EdgeConnectionStatus = {
+    message: "",
+    connectionString: "",
+    status: "",
+  };
+
   // If User object is passed connect to Edge Server with email/password auth.
   // Otherwise, bypass auth.
   const connectionString = user
@@ -23,24 +28,29 @@ const connectToEdgeServer = async (
 
   try {
     await client.connect();
-    message = "Logged into Atlas Edge Server";
 
+    // Set status object for response to client
+    edgeConnectionStatus.message = "Logged into Atlas Edge Server";
+    edgeConnectionStatus.connectionString = connectionString;
+    edgeConnectionStatus.status = "connected";
+
+    // Log for express server
     console.log(`Connected to Atlas Edge Server at: ${connectionString}`);
   } catch (error) {
     if (error instanceof Error) {
-      message = "Could not connect to Atlas Edge Server";
+      // Set status object for response to client
+      edgeConnectionStatus.message = "Could not connect to Atlas Edge Server";
+      edgeConnectionStatus.connectionString = connectionString;
+      edgeConnectionStatus.status = "disconnected";
+
+      // Log for express server
       console.error(
         `Could not connect to Atlas Edge Server at: ${connectionString}`
       );
-
-      throw new Error(error.message);
     }
   }
 
-  return {
-    message,
-    connectionString,
-  };
+  return edgeConnectionStatus;
 };
 
 const disconnectFromEdgeServer = async (): Promise<EdgeConnectionStatus> => {
@@ -50,6 +60,7 @@ const disconnectFromEdgeServer = async (): Promise<EdgeConnectionStatus> => {
   return {
     message: "Disconnected from Atlas Edge Server",
     connectionString: "",
+    status: "disconnected",
   };
 };
 
@@ -57,13 +68,4 @@ const getTodoCollection = () => {
   return todos;
 };
 
-// const getClient = async () => {
-//   return client;
-// };
-
-export {
-  connectToEdgeServer,
-  disconnectFromEdgeServer,
-  // getClient,
-  getTodoCollection,
-};
+export { connectToEdgeServer, disconnectFromEdgeServer, getTodoCollection };

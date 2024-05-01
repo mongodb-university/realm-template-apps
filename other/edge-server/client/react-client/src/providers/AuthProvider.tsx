@@ -1,4 +1,4 @@
-import React from "react";
+import { ReactNode } from "react";
 import { useContext, createContext } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
@@ -17,7 +17,7 @@ const AuthContext = createContext<AuthContext>({
 
 const useAuthContext = () => useContext(AuthContext);
 
-const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const auth = useAuth();
 

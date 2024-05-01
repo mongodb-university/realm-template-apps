@@ -15,4 +15,5 @@ export interface User {
 export interface EdgeConnectionStatus {
   message: string;
   connectionString: string;
+  status: string;
 }

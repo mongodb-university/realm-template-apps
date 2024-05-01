@@ -4,9 +4,8 @@ import { useAuthContext } from "../providers/AuthProvider";
 import { login, logout } from "../endpoints";
 import { ObjectId } from "bson";
 
-import { User } from "../types";
+import { User, EdgeConnectionStatus } from "../types";
 
-// TODO: Add error handling and general messaging.
 export const useAuth = () => {
   const { getItem, setItem } = useLocalStorage();
   const { setUser } = useAuthContext();
@@ -19,28 +18,44 @@ export const useAuth = () => {
     }
   }, []);
 
-  const loginNoAuth = async () => {
+  const loginNoAuth = async (): Promise<EdgeConnectionStatus> => {
     const id = new ObjectId().toString();
-    setTimeout(() => {}, 500);
-    await login();
+    const loginResponse = await login();
 
-    addUser({ id });
+    // If connection to Edge Server succeeds, add user
+    // to local storage. Otherwise return early with response object.
+    if (loginResponse.error || loginResponse?.status == "disconnected") {
+      return loginResponse;
+    } else {
+      addUser({ id });
+    }
+
+    return loginResponse;
   };
 
   const loginWithEmailPassword = async (user: {
     email: string;
     password: string;
-  }) => {
-    await login(user);
-    addUser({ id: new ObjectId().toString() });
+  }): Promise<EdgeConnectionStatus> => {
+    const loginResponse = await login(user);
+
+    // If connection to Edge Server succeeds, add user
+    // to local storage. Otherwise return early with response object.
+    if (loginResponse.error || loginResponse?.status == "disconnected") {
+      return loginResponse;
+    } else {
+      addUser({ id: new ObjectId().toString() });
+    }
+
+    return loginResponse;
   };
 
-  const logoutAndDisconnect = async () => {
-    const connectionResult = await logout();
+  const logoutAndDisconnect = async (): Promise<EdgeConnectionStatus> => {
+    const logoutResult = await logout();
 
     removeUser();
 
-    return connectionResult;
+    return logoutResult;
   };
 
   const addUser = (newUser: User) => {

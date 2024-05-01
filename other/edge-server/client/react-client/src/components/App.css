@@ -49,6 +49,18 @@
   margin-bottom: 1em;
 }
 
+.login-page blockquote {
+  border-left: 1px solid;
+  margin-left: 1rem;
+  padding-left: 1rem;
+  font-family: monospace;
+}
+
+.connection-card {
+  margin-top: 2em;
+  text-align: center;
+}
+
 .todo-items-container {
   display: flex;
   flex-direction: column;

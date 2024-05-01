@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, MouseEvent } from "react";
 import {
   Container,
   Button,
@@ -11,21 +11,41 @@ import {
   InputLabel,
   FormControl,
 } from "@mui/material";
+
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useAuth } from "../hooks/useAuth";
 
-export function LoginPage() {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [showPassword, setShowPassword] = React.useState(false);
+import { LoginPageProps } from "../types";
+
+export function LoginPage({ handleAuthResult }: LoginPageProps) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const { loginNoAuth, loginWithEmailPassword } = useAuth();
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+  };
+
+  const handleEmailLogin = async () => {
+    if (email && password) {
+      const loginResult = await loginWithEmailPassword({ email, password });
+      handleAuthResult(loginResult);
+    } else {
+      handleAuthResult({
+        message: "Please enter a user email and password",
+        status: "",
+        connectionString: "",
+        error: "Email or password missing",
+      });
+    }
+  };
+
+  const handleNoAuthLogin = async () => {
+    const loginResult = await loginNoAuth();
+    handleAuthResult(loginResult);
   };
 
   return (
@@ -37,6 +57,7 @@ export function LoginPage() {
       >
         Log into your Edge Server
       </Typography>
+
       <Typography component="p">
         This React client connects to your Edge Server through a Node.js Express
         Server. You have two ways to connect: with an email/password user or
@@ -94,9 +115,7 @@ export function LoginPage() {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => {
-            loginWithEmailPassword({ email, password });
-          }}
+          onClick={handleEmailLogin}
           className="login-button"
         >
           Log in
@@ -116,9 +135,7 @@ export function LoginPage() {
       <Button
         variant="contained"
         color="primary"
-        onClick={() => {
-          loginNoAuth();
-        }}
+        onClick={handleNoAuthLogin}
       >
         Bypass authentication
       </Button>

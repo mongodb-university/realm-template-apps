@@ -1,8 +1,8 @@
-import React from "react";
+import { ReactNode } from "react";
 import { Container, Link } from "@mui/material";
 export const MoreInfo = MoreInfoDocsLink;
 
-function MoreInfoItem({ children }: { children: React.ReactNode }) {
+function MoreInfoItem({ children }: { children: ReactNode }) {
   return (
     <Container
       className="more-info"

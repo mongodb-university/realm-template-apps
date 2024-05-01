@@ -32,8 +32,18 @@ export interface TodoItemProps {
 export interface EdgeConnectionStatus {
   message: string;
   connectionString: string;
+  status: string;
+  error?: string | null;
 }
 
 export interface User {
   id: string;
+}
+
+export interface LoginPageProps {
+  handleAuthResult: (connectionResult: EdgeConnectionStatus) => Promise<void>;
+}
+
+export interface TodoPageProps {
+  connectionString: string;
 }

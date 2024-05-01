@@ -23,12 +23,11 @@ export function TodoItemsPage() {
       ) : (
         <div className="todo-items-container">
           <Typography
-            component="p"
-            variant="h5"
+            component="h2"
+            variant="h4"
+            gutterBottom
           >
-            {`You have ${todos.length} To-Do Item${
-              todos.length === 1 ? "" : "s"
-            }`}
+            You have {todos.length} To-Do Item{todos.length === 1 ? "" : "s"}
           </Typography>
           <Button
             variant="contained"

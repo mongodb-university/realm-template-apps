@@ -6,6 +6,8 @@ import {
 
 import { EdgeConnectionStatus, User } from "../../types/types.js";
 
+let connectionResult: EdgeConnectionStatus;
+
 const login = async (request: Request, response: Response): Promise<void> => {
   if (request.body.email) {
     // Connect to Edge Server with email/password auth
@@ -16,44 +18,34 @@ const login = async (request: Request, response: Response): Promise<void> => {
         password: rawUser.password,
       };
 
-      const connectionResult: EdgeConnectionStatus = await connectToEdgeServer(
-        user
-      );
+      connectionResult = await connectToEdgeServer(user);
 
       response.status(200).json(connectionResult);
     } catch (error) {
-      console.log("Hit Express Server, but couldn't connect to Edge Server.");
-      response
-        .status(502)
-        .json({ message: "Could not connect to Edge Server. Is it running?" });
+      response.status(502).json(connectionResult!);
     }
 
     return;
   } else {
     // Bypass auth and connect to Edge Server
     try {
-      const connectionResult: EdgeConnectionStatus =
-        await connectToEdgeServer();
+      connectionResult = await connectToEdgeServer();
 
       response.status(200).json(connectionResult);
     } catch (error) {
-      console.log("Hit Express Server, but couldn't connect to Edge Server.");
-      response
-        .status(502)
-        .json({ message: "Could not connect to Edge Server. Is it running?" });
+      response.status(502).json(connectionResult!);
     }
   }
 };
 
 const logout = async (request: Request, response: Response) => {
   try {
-    const connectionResult: EdgeConnectionStatus =
-      await disconnectFromEdgeServer();
+    connectionResult = await disconnectFromEdgeServer();
 
     response.status(200).json(connectionResult);
   } catch (error) {
     if (error instanceof Error) {
-      throw new Error(error.message);
+      response.status(502).json(connectionResult!);
     }
   }
 };

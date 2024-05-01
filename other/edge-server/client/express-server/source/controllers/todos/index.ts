@@ -18,7 +18,6 @@ const getTodos = async (
 
     response.status(200).json(todos);
   } catch (error) {
-    // TODO: Add different error responses depending on the exact error.
     response.status(502).json({
       message: "Could not get Todos from Edge Server. Is it running?",
     });
@@ -42,7 +41,6 @@ const addTodo = async (request: Request, response: Response): Promise<void> => {
       .status(201)
       .json({ message: "Todo added", todo: newTodo, todos: allTodos });
   } catch (error) {
-    // TODO: Add different error responses depending on the exact error.
     response
       .status(502)
       .json({ message: "Could not add Todo to Edge Server. Is it running?" });
@@ -78,7 +76,6 @@ const updateTodo = async (
       });
     }
   } catch (error) {
-    // TODO: Add different error responses depending on the exact error.
     response.status(502).json({
       message: "Could not update Todo on Edge Server. Is it running?",
     });
@@ -110,7 +107,6 @@ const deleteTodo = async (
       });
     }
   } catch (error) {
-    // TODO: Add different error responses depending on the exact error.
     response.status(502).json({
       message: "Could not delete Todo on Edge Server. Is it running?",
     });

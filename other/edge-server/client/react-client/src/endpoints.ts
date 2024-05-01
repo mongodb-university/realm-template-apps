@@ -91,7 +91,14 @@ export const deleteTodo = async (id: string) => {
 export const login = async (user?: {
   email: string;
   password: string;
-}): Promise<EdgeConnectionStatus | null> => {
+}): Promise<EdgeConnectionStatus> => {
+  let connectionResult: EdgeConnectionStatus = {
+    message: "",
+    connectionString: "",
+    status: "",
+    error: "",
+  };
+
   try {
     const rawResponse = await fetch(`${baseUrl}/login`, {
       method: "POST",
@@ -101,19 +108,26 @@ export const login = async (user?: {
       },
       body: user ? JSON.stringify(user) : "",
     });
-    const response = (await rawResponse.json()) as EdgeConnectionStatus;
-
-    return response;
+    connectionResult = (await rawResponse.json()) as EdgeConnectionStatus;
   } catch (error) {
     if (error instanceof Error) {
-      throw new Error(error.message);
+      connectionResult.message =
+        "Can't reach the Express server. Are you sure it's running?";
+      connectionResult.error = error.message;
     }
   }
 
-  return null;
+  return connectionResult;
 };
 
-export const logout = async () => {
+export const logout = async (): Promise<EdgeConnectionStatus> => {
+  let connectionResult: EdgeConnectionStatus = {
+    message: "",
+    connectionString: "",
+    status: "",
+    error: "",
+  };
+
   try {
     const rawResponse = await fetch(`${baseUrl}/logout`, {
       method: "POST",
@@ -122,14 +136,14 @@ export const logout = async () => {
         "Content-Type": "application/json",
       },
     });
-    const response = (await rawResponse.json()) as EdgeConnectionStatus;
-
-    return response;
+    connectionResult = (await rawResponse.json()) as EdgeConnectionStatus;
   } catch (error) {
     if (error instanceof Error) {
-      throw new Error(error.message);
+      connectionResult.message =
+        "Can't reach the Express server. Are you sure it's running?";
+      connectionResult.error = error.message;
     }
   }
 
-  return null;
+  return connectionResult;
 };

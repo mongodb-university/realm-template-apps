@@ -1,7 +1,7 @@
-import React from "react";
+import { useEffect, useState } from "react";
 
 export function useTimeout(fn: () => void, ms: number) {
-  React.useEffect(() => {
+  useEffect(() => {
     const timeout = setTimeout(() => {
       fn();
     }, ms);
@@ -10,7 +10,7 @@ export function useTimeout(fn: () => void, ms: number) {
 }
 
 export function useShowLoader(loading: boolean, delayMs: number) {
-  const [showLoader, setShowLoader] = React.useState(false);
+  const [showLoader, setShowLoader] = useState(false);
 
   useTimeout(() => {
     if (loading) {
@@ -18,7 +18,7 @@ export function useShowLoader(loading: boolean, delayMs: number) {
     }
   }, delayMs);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!loading) {
       setShowLoader(false);
     }
