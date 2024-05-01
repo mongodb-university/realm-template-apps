@@ -24,14 +24,13 @@ and the [Edge Server documentation](https://www.mongodb.com/docs/atlas/app-servi
 1. Create an App Services App based on the `edge-server.todo` template app. Refer
    to [the documentation](https://www.mongodb.com/docs/atlas/app-services/reference/template-apps/#create-a-template-app) for details.
 2. [Create a Service for Edge Server](https://www.mongodb.com/docs/atlas/app-services/edge-server/manage-edge-servers/#create-a-service-for-edge-server)
-3. [Create an Edge Server Instance](https://www.mongodb.com/docs/atlas/app-services/edge-server/manage-edge-servers/#create-an-edge-server-instance)
+3. Start Docker
 4. [Install and Configure the Edge Server Instance](https://www.mongodb.com/docs/atlas/app-services/edge-server/configure/#install-and-configure-the-edge-server-instance)
 5. As part of the Edge Server installation, choose to create a new user. Remember
    the user's email and password for later.
    Alternatively, you can skip user creation and disable authentication by running `edgectl config --insecure-disable-auth=true`.
-6. Start Docker
-7. From the project's root directory, run `npm run install-deps`.
-8. Add a `.env` file inside the `express-server` directory with the details
+6. From the project's root directory, run `npm run install-deps`.
+7. Add a `.env` file inside the `express-server` directory with the details
    required to run the Express Server.
 
    ```env
@@ -42,9 +41,9 @@ and the [Edge Server documentation](https://www.mongodb.com/docs/atlas/app-servi
     PORT=5055
    ```
 
-9. From the project's root directory, run `npm run start`.
-10. In the rendered React client, either bypass authentication or use the email
-    and password for the user you created earlier.
+8. From the project's root directory, run `npm run start`.
+9. In the rendered React client, either bypass authentication or use the email
+   and password for the user you created earlier.
 
 When you're done with the template app, make sure to shut everything down,
 including the Edge Server. From the project's root directory, run
@@ -160,8 +159,7 @@ Edge Server.
 To set up an Edge Server:
 
 1. [Create a Service for Edge Server](https://www.mongodb.com/docs/atlas/app-services/edge-server/manage-edge-servers/#create-a-service-for-edge-server)
-2. [Create an Edge Server Instance](https://www.mongodb.com/docs/atlas/app-services/edge-server/manage-edge-servers/#create-an-edge-server-instance)
-3. [Install and Configure the Edge Server Instance](https://www.mongodb.com/docs/atlas/app-services/edge-server/configure/#install-and-configure-the-edge-server-instance)
+2. [Install and Configure the Edge Server Instance](https://www.mongodb.com/docs/atlas/app-services/edge-server/configure/#install-and-configure-the-edge-server-instance)
 
 For more information about Atlas Edge Server instance, refer to the [Edge Server documentation](https://www.mongodb.com/docs/atlas/app-services/edge-server/).
 
