@@ -1,6 +1,6 @@
 # Edge Server with MongoDB Node.js Driver
 
-This example todo application demonstrates using Edge Server with a MongoDB Driver.
+This example todo application demonstrates using Atlas Edge Server with a MongoDB Driver.
 It uses the [MongoDB Node.js Driver](https://www.mongodb.com/docs/drivers/node/current/)
 in an Express server application to connect to Edge Server. It has a React
 frontend for performing CRUD operations.
@@ -9,10 +9,9 @@ React client -> Express server (Node.js Driver) -> Edge Server -> Atlas
 
 To use this example application, you must:
 
-1. Create an App Services App based on the `edge-server.todo` template app.
-2. Download, configure, and start the Edge Server.
+1. Create an App Services App based on the `edge-server.todo` template app
+2. Set up an Edge Server
 3. Install Express server and React client dependencies
-4. Start the Express server and React client.
 
 This is a MERN stack that connects to the Edge Server instead of Atlas.
 In this version of the example app, MongoDB wire protocol connections connect
@@ -22,12 +21,9 @@ App Services user or bypass authentication altogether.
 For a MERN stack tutorial, refer to
 [How to Use Mern Stack: A Complete Guide](https://www.mongodb.com/languages/mern-stack-tutorial).
 
-For more information about Edge Server, refer to the
-[Edge Server documentation](https://www.mongodb.com/docs/atlas/app-services/edge-server/).
-
-Atlas Edge Server is currently in Private Preview. To learn more about
-previewing Edge Server, refer to the product page at
-[Edge Server](https://www.mongodb.com/products/platform/atlas-edge-server).
+Atlas Edge Server is currently in Public Preview. To learn more about Edge Server,
+refer to the product page at [Edge Server](https://www.mongodb.com/products/platform/atlas-edge-server)
+and the [Edge Server documentation](https://www.mongodb.com/docs/atlas/app-services/edge-server/).
 
 ## Project npm commands
 
@@ -39,7 +35,7 @@ previewing Edge Server, refer to the product page at
 ## Quick Start
 
 1. Create an App Services App based on the `edge-server.todo` template app.
-2. Download and configure the Edge Server.
+2. Set up an Edge Server.
 3. As part of the Edge Server installation, choose to create a new user. Remember
    the user's email and password for later.
    Alternatively, you can skip user creation and disable authentication by running `edgectl config --insecure-disable-auth=true`.
@@ -161,7 +157,16 @@ those details.
 
 ## Set up Edge Server
 
-For information about creating, configuring, and running an Edge Server instance, Refer to the [Edge Server documentation](https://www.mongodb.com/docs/atlas/app-services/edge-server/).
+Before you can run the template app in this repo, you need to have a functional
+Edge Server.
+
+To set up an Edge Server:
+
+1. [Create a Service for Edge Server](https://www.mongodb.com/docs/atlas/app-services/edge-server/manage-edge-servers/#create-a-service-for-edge-server)
+2. [Create an Edge Server Instance](https://www.mongodb.com/docs/atlas/app-services/edge-server/manage-edge-servers/#create-an-edge-server-instance)
+3. [Install and Configure the Edge Server Instance](https://www.mongodb.com/docs/atlas/app-services/edge-server/configure/#install-and-configure-the-edge-server-instance)
+
+For more information about Atlas Edge Server instance, refer to the [Edge Server documentation](https://www.mongodb.com/docs/atlas/app-services/edge-server/).
 
 ## Install Express and React dependencies and start servers
 
@@ -263,7 +268,7 @@ and/or port in your `.env` file.
 
 If you want to run multiple Edge Servers, you can't use this project's `npm run start` script. Instead, you'll need to run each server separately, passing the `--profile` flag to differentiate the Edge Servers.
 
-See the [Edge Server documentation](https://www.mongodb.com/docs/atlas/edge-server/configure/#run-multiple-edge-server-instances-on-a-host) for more details.
+See the [Edge Server documentation](https://www.mongodb.com/docs/atlas/app-services/edge-server/configure/#run-multiple-edge-server-instances-on-a-host) for more details.
 
 ## Using the React client
 
