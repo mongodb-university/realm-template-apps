@@ -1,4 +1,4 @@
-import { Todo } from "./types";
+import { EdgeConnectionStatus, Todo } from "./types";
 
 // This baseUrl points to the local Express server.
 const baseUrl: string = "http://localhost:5055";
@@ -86,4 +86,64 @@ export const deleteTodo = async (id: string) => {
       throw new Error(error.message);
     }
   }
+};
+
+export const login = async (user?: {
+  email: string;
+  password: string;
+}): Promise<EdgeConnectionStatus> => {
+  let connectionResult: EdgeConnectionStatus = {
+    message: "",
+    connectionString: "",
+    status: "",
+    error: "",
+  };
+
+  try {
+    const rawResponse = await fetch(`${baseUrl}/login`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: user ? JSON.stringify(user) : "",
+    });
+    connectionResult = (await rawResponse.json()) as EdgeConnectionStatus;
+  } catch (error) {
+    if (error instanceof Error) {
+      connectionResult.message =
+        "Can't reach the Express server. Are you sure it's running?";
+      connectionResult.error = error.message;
+    }
+  }
+
+  return connectionResult;
+};
+
+export const logout = async (): Promise<EdgeConnectionStatus> => {
+  let connectionResult: EdgeConnectionStatus = {
+    message: "",
+    connectionString: "",
+    status: "",
+    error: "",
+  };
+
+  try {
+    const rawResponse = await fetch(`${baseUrl}/logout`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    connectionResult = (await rawResponse.json()) as EdgeConnectionStatus;
+  } catch (error) {
+    if (error instanceof Error) {
+      connectionResult.message =
+        "Can't reach the Express server. Are you sure it's running?";
+      connectionResult.error = error.message;
+    }
+  }
+
+  return connectionResult;
 };

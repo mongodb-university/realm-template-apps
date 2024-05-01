@@ -10,7 +10,7 @@
 
 # production
 /build
-/node-server/dist/
+/express-server/dist/
 
 # misc
 .DS_Store

@@ -6,12 +6,12 @@
   "scripts": {
     "install-deps": "npm install && npm run install-server && npm run install-client",
     "start": "concurrently --names \"EDGE    SERVER,EXPRESS SERVER,REACT   CLIENT\" -c \"bgBlue.bold,bgCyan.bold,bgGreen.bold\" \"npm run start-edge-server\" \"npm run start-server\" \"npm run start-client\"",
-    "shut-down": "killall node && cd edge_server && make down",
-    "install-server": "cd node-server && npm install",
+    "stop": "killall node && edgectl stop",
+    "install-server": "cd express-server && npm install",
     "install-client": "cd react-client && npm install",
-    "start-server": "cd node-server && npm run start",
+    "start-server": "cd express-server && npm run start",
     "start-client": "npm run sleep1s && cd react-client && npm run start",
-    "start-edge-server": "cd edge_server && make up && make status",
+    "start-edge-server": "edgectl start && edgectl status",
     "sleep1s": "node -e \"setTimeout(() => process.exit(0), 1000)\""
   },
   "keywords": [],

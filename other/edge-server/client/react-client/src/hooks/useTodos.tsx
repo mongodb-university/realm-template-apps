@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { getTodos, addTodo, updateTodo, deleteTodo } from "../endpoints";
 import {
   addValueAtIndex,
@@ -10,11 +10,11 @@ import { Todo } from "../types";
 
 export function useTodos() {
   // Set up a list of todos in state
-  const [todos, setTodos] = React.useState<Todo[]>([]);
-  const [loading, setLoading] = React.useState(true);
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [loading, setLoading] = useState(true);
 
   // Fetch all todos on first load
-  React.useEffect(() => {
+  useEffect(() => {
     (async () => {
       try {
         const todos = await getTodos();
@@ -28,6 +28,28 @@ export function useTodos() {
         console.error(err);
       }
     })();
+  }, []);
+
+  // Retry fetching all todos every 5 seconds
+  useEffect(() => {
+    const fetchTodos = async () => {
+      try {
+        const todos = await getTodos();
+
+        if (todos?.length) {
+          setTodos(todos);
+        }
+
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    const intervalId = setInterval(() => {
+      fetchTodos();
+    }, 1000 * 5); // in milliseconds
+    return () => clearInterval(intervalId);
   }, []);
 
   // Given a draft todo, format it and then insert it

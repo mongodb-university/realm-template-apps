@@ -1,4 +1,4 @@
-import { Document } from "bson";
+import { Document, ObjectId } from "bson";
 
 export interface Todo {
   _id: Document;
@@ -27,4 +27,23 @@ export interface DraftTodoItemProps {
 export interface TodoItemProps {
   todo: Todo;
   todoActions: TodoActions;
+}
+
+export interface EdgeConnectionStatus {
+  message: string;
+  connectionString: string;
+  status: string;
+  error?: string | null;
+}
+
+export interface User {
+  id: string;
+}
+
+export interface LoginPageProps {
+  handleAuthResult: (connectionResult: EdgeConnectionStatus) => Promise<void>;
+}
+
+export interface TodoPageProps {
+  connectionString: string;
 }

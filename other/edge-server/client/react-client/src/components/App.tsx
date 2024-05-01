@@ -1,7 +1,10 @@
-import React from "react";
 import { AppBar, Toolbar, Typography } from "@mui/material";
-import { TodoItemsPage } from "./TodoItemsPage";
-import { ThemeProvider } from "./Theme";
+import { ThemeProvider } from "../providers/ThemeProvider";
+import { AuthProvider } from "../providers/AuthProvider";
+
+import { Content } from "../components/Content";
+import { MoreInfo } from "./MoreInfo";
+
 import "./App.css";
 
 export default function ProvidedApp() {
@@ -14,19 +17,11 @@ export default function ProvidedApp() {
 
 function App() {
   return (
-    <div className="App">
-      <AppBar position="sticky">
-        <Toolbar>
-          <Typography
-            className="app-bar-title"
-            component="h1"
-            variant="h5"
-          >
-            Edge Server Wire Protocol App
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <TodoItemsPage />
-    </div>
+    <AuthProvider>
+      <div className="App">
+        <Content />
+        <MoreInfo />
+      </div>
+    </AuthProvider>
   );
 }

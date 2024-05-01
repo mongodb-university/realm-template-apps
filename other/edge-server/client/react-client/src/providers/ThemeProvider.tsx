@@ -1,23 +1,22 @@
-import React from "react";
+import { ReactNode } from "react";
 import {
   ThemeProvider as MuiThemeProvider,
   createTheme,
   StyledEngineProvider,
   ThemeOptions,
-  PaletteColorOptions,
 } from "@mui/material/styles";
 import { colors } from "../colors";
 
 const themeConfig: ThemeOptions = {
   palette: {
     primary: colors.green,
-    secondary: colors.slate,
+    secondary: colors.mist,
   },
 };
 
 const theme = createTheme(themeConfig);
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+export function ThemeProvider({ children }: { children: ReactNode }) {
   return (
     <StyledEngineProvider injectFirst>
       <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>

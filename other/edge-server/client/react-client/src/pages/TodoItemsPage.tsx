@@ -1,29 +1,21 @@
-import React from "react";
-import {
-  Container,
-  Button,
-  Typography,
-  List,
-  LinearProgress,
-} from "@mui/material";
+import { Button, Typography, List, LinearProgress } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+
+import { TodoItem } from "../components/TodoItem";
+import { DraftTodoItem } from "../components/DraftTodoItem";
+
 import { useTodos } from "../hooks/useTodos";
-import { TodoItem } from "./TodoItem";
 import { useDraftTodos } from "../hooks/useDraftTodos";
-import { DraftTodoItem } from "./DraftTodoItem";
 import { useShowLoader } from "../hooks/util-hooks";
-import { MoreInfo } from "./MoreInfo";
 import { getTodoId } from "../utils";
 
 export function TodoItemsPage() {
   const { loading, todos, ...todoActions } = useTodos();
   const { draftTodos, ...draftTodoActions } = useDraftTodos();
   const showLoader = useShowLoader(loading, 200);
+
   return (
-    <Container
-      className="main-container"
-      maxWidth="sm"
-    >
+    <div>
       {loading ? (
         showLoader ? (
           <LinearProgress />
@@ -31,12 +23,11 @@ export function TodoItemsPage() {
       ) : (
         <div className="todo-items-container">
           <Typography
-            component="p"
-            variant="h5"
+            component="h2"
+            variant="h4"
+            gutterBottom
           >
-            {`You have ${todos.length} To-Do Item${
-              todos.length === 1 ? "" : "s"
-            }`}
+            You have {todos.length} To-Do Item{todos.length === 1 ? "" : "s"}
           </Typography>
           <Button
             variant="contained"
@@ -67,7 +58,6 @@ export function TodoItemsPage() {
           </List>
         </div>
       )}
-      <MoreInfo />
-    </Container>
+    </div>
   );
 }

@@ -3,15 +3,15 @@
     "database": "todo",
     "roles": [
         {
-            "name": "readAndWriteAll",
+            "name": "edgeServerReadAllWriteOwn",
             "apply_when": {
-                "%%user.type": {
-                    "$eq": "mtss"
-                }
+                "%%user.type": "edge"
             },
             "document_filters": {
-                "read": true,
-                "write": true
+                "write": {
+                    "owner_id": "edge"
+                },
+                "read": true
             },
             "insert": true,
             "delete": true,
