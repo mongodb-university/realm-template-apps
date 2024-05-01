@@ -31,9 +31,6 @@ export function Content() {
   const [connectionError, setConnectionError] = useState("");
   const [connectionString, setConnectionString] = useState("");
 
-  // TODO: abstract all of this one level up - to <Content>.
-  // Currently, it all gets hidden when changing to the todos page.
-  // Also, should show connection string.
   const handleAuthResult = async (connectionResult: EdgeConnectionStatus) => {
     if (connectionResult.status == "disconnected") {
       setConnectionMessage(connectionResult.message);

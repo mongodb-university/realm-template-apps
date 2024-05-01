@@ -7,12 +7,6 @@ frontend for performing CRUD operations.
 
 React client -> Express server (Node.js Driver) -> Edge Server -> Atlas
 
-To use this example application, you must:
-
-1. Create an App Services App based on the `edge-server.todo` template app
-2. Set up an Edge Server
-3. Install Express server and React client dependencies
-
 This is a MERN stack that connects to the Edge Server instead of Atlas.
 In this version of the example app, MongoDB wire protocol connections connect
 directly to Edge Server. You can use email/password authentication with an
@@ -25,23 +19,19 @@ Atlas Edge Server is currently in Public Preview. To learn more about Edge Serve
 refer to the product page at [Edge Server](https://www.mongodb.com/products/platform/atlas-edge-server)
 and the [Edge Server documentation](https://www.mongodb.com/docs/atlas/app-services/edge-server/).
 
-## Project npm commands
-
-- `install-deps`: installs the dependencies for the Express server and
-  React client. You must install the Edge Server dependencies separately.
-- `start`: starts the Edge Server, Express server, and React client.
-- `stop`: shuts down the Edge Server, Express server, and React client.
-
 ## Quick Start
 
-1. Create an App Services App based on the `edge-server.todo` template app.
-2. Set up an Edge Server.
-3. As part of the Edge Server installation, choose to create a new user. Remember
+1. Create an App Services App based on the `edge-server.todo` template app. Refer
+   to [the documentation](https://www.mongodb.com/docs/atlas/app-services/reference/template-apps/#create-a-template-app) for details.
+2. [Create a Service for Edge Server](https://www.mongodb.com/docs/atlas/app-services/edge-server/manage-edge-servers/#create-a-service-for-edge-server)
+3. [Create an Edge Server Instance](https://www.mongodb.com/docs/atlas/app-services/edge-server/manage-edge-servers/#create-an-edge-server-instance)
+4. [Install and Configure the Edge Server Instance](https://www.mongodb.com/docs/atlas/app-services/edge-server/configure/#install-and-configure-the-edge-server-instance)
+5. As part of the Edge Server installation, choose to create a new user. Remember
    the user's email and password for later.
    Alternatively, you can skip user creation and disable authentication by running `edgectl config --insecure-disable-auth=true`.
-4. Start Docker
-5. From the project's root directory, run `npm run install-deps`.
-6. Add a `.env` file inside the `express-server` directory with the details
+6. Start Docker
+7. From the project's root directory, run `npm run install-deps`.
+8. Add a `.env` file inside the `express-server` directory with the details
    required to run the Express Server.
 
    ```env
@@ -52,13 +42,20 @@ and the [Edge Server documentation](https://www.mongodb.com/docs/atlas/app-servi
     PORT=5055
    ```
 
-7. From the project's root directory, run `npm run start`.
-8. In the rendered React client, either bypass authentication or use the email
-   and password for the user you created earlier.
+9. From the project's root directory, run `npm run start`.
+10. In the rendered React client, either bypass authentication or use the email
+    and password for the user you created earlier.
 
 When you're done with the template app, make sure to shut everything down,
 including the Edge Server. From the project's root directory, run
 `npm run stop`.
+
+## Project npm commands
+
+- `install-deps`: installs the dependencies for the Express server and
+  React client. You must install the Edge Server dependencies separately.
+- `start`: starts the Edge Server, Express server, and React client.
+- `stop`: shuts down the Edge Server, Express server, and React client.
 
 ## Create an App Services App
 
@@ -209,64 +206,13 @@ For more information about Atlas Edge Server instance, refer to the [Edge Server
 
 5. When you're done, shut down all three servers. From the project root, run:
 
-```shell
-npm run stop
-```
-
-### Troubleshooting
-
-#### Cannot read properties of undefined (reading 'startsWith')
-
-When you run the Express server, you may see this error:
-
-```shell
-[1]     PATH/edge-server/express-server/node_modules/mongodb-connection-string-url/lib/index.js:9
-[1]     return (connectionString.startsWith('mongodb://') ||
-```
-
-This error occurs when there is no `.env` file at the root of your
-`express-server` directory containing an `EDGE_SERVER_URI`. Add the `.env`
-file as detailed above.
-
-#### Address Already in Use
-
-When you run the Express server, you may see this error:
-
-```shell
-EADDRINUSE, Address already in use
-```
-
-This indicates that another device on your machine is using the port that
-the Express server is trying to use to listen for incoming connections.
-This example app uses port `5055` by default.
-
-You can change the port used in your `.env` file at the root of the
-`express-server` directory. If you change this port, you must also change
-the port that the React client uses to communicate with the Express server.
-Change the port in `react-client/src/endpoints.ts` on line 4 to match
-the new port in your `.env` file:
-
-```typescript
-const baseUrl: string = "http://localhost:5055";
-```
-
-#### Connection refused
-
-When you run the Express server, you may see 'Connecting to Edge Server...'
-for a long period of time, followed by this error:
-
-```shell
-connect ECONNREFUSED ::1:27021, connect ECONNREFUSED 127.0.0.1:27021
-```
-
-This indicates that the Edge Server is not running on port 27021. Verify
-that the Edge Server is running. If you have changed the URI and/or port where
-the Edge Server is listening for wireprotocol connections, change the URI
-and/or port in your `.env` file.
+   ```shell
+   npm run stop
+   ```
 
 ## Run Multiple Edge Server Instances on a Host
 
-If you want to run multiple Edge Servers, you can't use this project's `npm run start` script. Instead, you'll need to run each server separately, passing the `--profile` flag to differentiate the Edge Servers.
+If your device has multiple Edge Server instances, running this project's `npm run start` script uses the default `edgectl` profile. If you want to use a different profile, you must run the Edge Server with the appropriate --profile flag, and run the express-server and react-client separately.
 
 See the [Edge Server documentation](https://www.mongodb.com/docs/atlas/app-services/edge-server/configure/#run-multiple-edge-server-instances-on-a-host) for more details.
 
@@ -289,67 +235,7 @@ in the Express server to perform CRUD operations with the MongoDB instance
 running in the Edge Server. The Edge Server then syncs these changes to Atlas.
 
 You can see the changes that you make in the React app reflected in Atlas.
-
-When you make changes in Atlas, you can reload the React app to see the changes
-reflected in the browser.
-
-### Troubleshooting
-
-#### Stuck on loading view
-
-When you run the React client, you may encounter an issue where the
-'Edge Server Wire Protocol App' UI displays an endless loading progress
-indicator.
-
-This can indicate two possible issues:
-
-- The Express server isn't running
-- Edge Server isn't running
-
-Confirm that both servers are running and try again.
-
-#### My new Item added in Atlas doesn't show up in the React client
-
-When you add a new `Item` in Atlas, it doesn't show up automatically in
-the React client. The client does not have a listener observing changes
-to the collection. You can manually reload the React client to view the
-new `Item`.
-
-If you reload the React client and it still doesn't show the new `Item`,
-check:
-
-- The Edge Server is running
-- The Node.js Express server is running
-- The schema of the `Item` you added in Atlas matches the App Services Schema
-  for the Edge Server App, with required fields of the appropriate types:
-
-```json
-{
-  "title": "Item",
-  "properties": {
-    "_id": {
-      "bsonType": "objectId"
-    },
-    "isComplete": {
-      "bsonType": "bool"
-    },
-    "owner_id": {
-      "bsonType": "string"
-    },
-    "summary": {
-      "bsonType": "string"
-    }
-  },
-  "required": ["_id", "owner_id", "isComplete", "summary"]
-}
-```
-
-If you've confirmed these details and you still don't see the new `Item`
-that you added in Atlas reflected in the React client, check the App Services
-logs and Edge Server for error messages.
-
-For information about how to check the App Services logs, refer to
-[View Application Logs](https://www.mongodb.com/docs/atlas/app-services/activity/view-logs/)
+The React client fetches todos from the Edge Server every 5 seconds.
 
 ## Issues
 

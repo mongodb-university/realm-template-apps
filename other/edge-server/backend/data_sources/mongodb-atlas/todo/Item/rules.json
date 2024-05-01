@@ -8,8 +8,10 @@
                 "%%user.type": "edge"
             },
             "document_filters": {
-                "read": true,
-                "write": true
+                "write": {
+                    "owner_id": "edge"
+                },
+                "read": true
             },
             "insert": true,
             "delete": true,
