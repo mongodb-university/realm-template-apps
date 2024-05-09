@@ -59,7 +59,8 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
 
   auto homeControllerButtonView = Renderer(optionsLayout, [=] {
     return vbox(
-        hbox(toggleOfflineModeButton->Render(),
+        hbox(
+             toggleOfflineModeButton->Render() | size(ftxui::HEIGHT, ftxui::EQUAL, 10),
              ftxui::separator(),
              toggleSubscriptionsButton->Render(),
              ftxui::separator(),
@@ -67,7 +68,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
              logoutButton->Render(),
              ftxui::separator(),
              quitButton->Render()
-             ) | ftxui::border | ftxui::center | size(ftxui::WIDTH, ftxui::GREATER_THAN, 100)) ;
+             ) | ftxui::border | ftxui::center | size(ftxui::WIDTH, ftxui::EQUAL, 100)) ;
   });
 
   // Accept user inputs and create new items in the database.
