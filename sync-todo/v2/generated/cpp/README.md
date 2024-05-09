@@ -1,8 +1,5 @@
 # C++ Template App
 
-> [!NOTE]  
-> This is a Preview release of the C++ template app.
-
 A todo list application built with the [Atlas Device SDK for C++](https://www.mongodb.com/docs/realm/sdk/cpp/) and [Atlas Device Sync](https://www.mongodb.com/docs/atlas/app-services/sync/).
 
 This app uses a terminal UI built with [FTXUI](https://github.com/ArthurSonzogni/FTXUI).

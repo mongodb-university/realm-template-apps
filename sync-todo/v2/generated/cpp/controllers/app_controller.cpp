@@ -17,9 +17,7 @@ AppController::AppController(ftxui::ScreenInteractive *screen, std::string const
       .app_id = appConfigMetadata.appId
   };
   _appState.app = std::make_unique<realm::App>(appConfig);
-  _appState.authManager = std::make_unique<AuthManager>(this, _appState.app.get());
   _appState.errorManager = std::make_unique<ErrorManager>(this);
-  _appState.appConfigMetadata = appConfigMetadata;
 
   // Lay out and style the error modal.
   auto dismissButton = ftxui::Button("Dismiss", [this]{ _appState.errorManager->clearError(); });
@@ -27,14 +25,17 @@ AppController::AppController(ftxui::ScreenInteractive *screen, std::string const
 
   _errorModal = Renderer(buttonLayout, [=] {
     auto content = ftxui::vbox({
-      ftxui::hbox(ftxui::text(_appState.errorManager->getError().value()) | ftxui::hcenter),
-      ftxui::hbox(dismissButton->Render()) | ftxui::hcenter
-    }) | ftxui::center | size(ftxui::HEIGHT, ftxui::GREATER_THAN, 10);
+                                   ftxui::hbox(ftxui::paragraph(_appState.errorManager->getError().value()) | ftxui::hcenter),
+                                   ftxui::hbox(dismissButton->Render()) | ftxui::hcenter
+                               }) | ftxui::center | size(ftxui::HEIGHT, ftxui::GREATER_THAN, 10);
     return window(
         ftxui::text(L" Error "), content) | ftxui::clear_under | ftxui::center | size(ftxui::WIDTH, ftxui::GREATER_THAN, 80);
   });
 
   component()->Add(_navigation.component());
+
+  _appState.authManager = std::make_unique<AuthManager>(this, _appState.app.get(), _appState.errorManager.get());
+  _appState.appConfigMetadata = appConfigMetadata;
 
   if (_appState.app->get_current_user()) {
     _navigation.goTo(std::make_unique<HomeController>(&_appState));
