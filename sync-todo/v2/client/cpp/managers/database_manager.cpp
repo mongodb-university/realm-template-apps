@@ -130,8 +130,8 @@ void DatabaseManager::toggleSubscriptions() {
 /** Get a list of all items in the database. Sort it to show the most recent items on top. */
 realm::results<realm::Item> DatabaseManager::getItemList() {
   auto items = _database->objects<realm::Item>();
-  items.sort("_id", false);
-  return items;
+  auto sortedItems = items.sort("_id", false);
+  return sortedItems;
 }
 
 /** Get a list of items in the database, filtered to hide completed items. */
@@ -139,6 +139,6 @@ realm::results<realm::Item> DatabaseManager::getIncompleteItemList() {
   auto items = _database->objects<realm::Item>();
   auto incompleteItems = items.where(
       [](auto const &item) { return item.isComplete == false; });
-  incompleteItems.sort("_id", false);
-  return incompleteItems;
+  auto sortedIncompleteItems = incompleteItems.sort("_id", false);
+  return sortedIncompleteItems;
 }
