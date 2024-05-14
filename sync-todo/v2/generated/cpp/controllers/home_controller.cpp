@@ -91,7 +91,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
     ftxui::Elements tasks;
     // If the user has toggled the checkbox to hide completed tasks, show only the incomplete task list.
     // Otherwise, show all items.
-    for (auto const item: itemList) {
+    for (auto const &item: itemList) {
       std::string completionString = (item.isComplete) ? " Complete " : " Incomplete ";
       std::string mineOrNot = (item.owner_id == userId) ? "   Mine " : " Theirs ";
       auto taskRow = ftxui::hbox({
