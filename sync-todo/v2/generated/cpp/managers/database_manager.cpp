@@ -1,7 +1,5 @@
 #include "database_manager.hpp"
 
-#include <utility>
-
 DatabaseManager::DatabaseManager(Delegate *delegate, AppState *appState): _delegate(delegate), _appState(appState) {
   auto user = _appState->app->get_current_user();
 
