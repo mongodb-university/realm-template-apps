@@ -10,7 +10,16 @@
 
 class DatabaseManager {
  public:
-  DatabaseManager(AppState *appState, HomeControllerState *homeControllerState);
+  struct Delegate {
+    virtual ~Delegate() = default;
+    virtual void onSyncSessionPaused() = 0;
+    virtual void onSyncSessionResumed() = 0;
+    virtual void onSubscriptionSelectionMyItems() = 0;
+    virtual void onSubscriptionSelectionAllItems() = 0;
+    virtual SubscriptionSelection getSubscriptionSelection() = 0;
+  };
+
+  DatabaseManager(Delegate *delegate, AppState *appState);
 
   void addNew(bool newItemIsComplete, std::string newItemSummary);
   void remove(realm::managed<realm::Item> itemToDelete);
@@ -22,12 +31,12 @@ class DatabaseManager {
   realm::results<realm::Item> getIncompleteItemList();
 
  private:
+  Delegate *_delegate{nullptr};
   std::string _allItemSubscriptionName;
   std::string _myItemSubscriptionName;
   std::unique_ptr<realm::db> _database;
   std::string _userId;
   AppState *_appState;
-  HomeControllerState *_homeControllerState;
 };
 
 #endif

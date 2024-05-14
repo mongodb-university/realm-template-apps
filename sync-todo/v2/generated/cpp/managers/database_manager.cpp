@@ -2,7 +2,7 @@
 
 #include <utility>
 
-DatabaseManager::DatabaseManager(AppState *appState, HomeControllerState *homeControllerState): _appState(appState), _homeControllerState(homeControllerState) {
+DatabaseManager::DatabaseManager(Delegate *delegate, AppState *appState): _delegate(delegate), _appState(appState) {
   auto user = _appState->app->get_current_user();
 
   // Sync configuration and sync subscription management.
@@ -75,12 +75,10 @@ void DatabaseManager::toggleOfflineMode() {
   auto syncSession = _database->get_sync_session();
   if (syncSession->state() == realm::internal::bridge::sync_session::state::paused) {
     syncSession->resume();
-    _homeControllerState->offlineModeSelection = OfflineModeSelection::offlineModeDisabled;
-    _homeControllerState->offlineModeLabel = "Go Offline";
+    _delegate->onSyncSessionResumed();
   } else if (syncSession->state() == realm::internal::bridge::sync_session::state::active) {
     syncSession->pause();
-    _homeControllerState->offlineModeSelection = OfflineModeSelection::offlineModeEnabled;
-    _homeControllerState->offlineModeLabel = "Go Online";
+    _delegate->onSyncSessionPaused();
   }
 }
 
@@ -93,7 +91,7 @@ void DatabaseManager::toggleSubscriptions() {
   }
   // Note the subscription state at the start of the toggle operation.
   // We'll change it after updating the subscriptions.
-  auto currentSubscriptionState = _homeControllerState->subscriptionSelection;
+  auto currentSubscriptionState = _delegate->getSubscriptionSelection();
 
   _database->subscriptions().update([&](realm::mutable_sync_subscription_set& subs) {
     // If the currentSubscriptionState is `allItems`, toggling it should show only my items.
@@ -108,8 +106,7 @@ void DatabaseManager::toggleSubscriptions() {
                               });
       }
       // Update the subscription selection to reflect the new subscription.
-      _homeControllerState->subscriptionSelection = SubscriptionSelection::myItems;
-      _homeControllerState->subscriptionSelectionLabel = "Switch to All";
+      _delegate->onSubscriptionSelectionMyItems();
 
       // If the currentSubscriptionState is `myItems`, toggling should show all items.
       // Remove the `myItems` subscription and make sure the subscription for the all items is present.
@@ -122,8 +119,7 @@ void DatabaseManager::toggleSubscriptions() {
       }
 
       // Update the subscription selection to reflect the new subscription.
-      _homeControllerState->subscriptionSelection = SubscriptionSelection::allItems;
-      _homeControllerState->subscriptionSelectionLabel = "Switch to Mine";
+      _delegate->onSubscriptionSelectionAllItems();
     }
   }).get();
 
@@ -134,8 +130,8 @@ void DatabaseManager::toggleSubscriptions() {
 /** Get a list of all items in the database. Sort it to show the most recent items on top. */
 realm::results<realm::Item> DatabaseManager::getItemList() {
   auto items = _database->objects<realm::Item>();
-  items.sort("_id", false);
-  return items;
+  auto sortedItems = items.sort("_id", false);
+  return sortedItems;
 }
 
 /** Get a list of items in the database, filtered to hide completed items. */
@@ -143,6 +139,6 @@ realm::results<realm::Item> DatabaseManager::getIncompleteItemList() {
   auto items = _database->objects<realm::Item>();
   auto incompleteItems = items.where(
       [](auto const &item) { return item.isComplete == false; });
-  incompleteItems.sort("_id", false);
-  return incompleteItems;
+  auto sortedIncompleteItems = incompleteItems.sort("_id", false);
+  return sortedIncompleteItems;
 }

@@ -9,16 +9,23 @@
 #include "../views/scroller.hpp"
 #include "../ss.hpp"
 
-class HomeController final : public Controller {
+class HomeController final : public Controller, public DatabaseManager::Delegate {
+ public:
+
+  explicit HomeController(AppState *appState);
+
+  void onFrame() override;
+
  private:
   AppState *_appState{nullptr};
   HomeControllerState _homeControllerState;
   DatabaseManager _dbManager;
 
- public:
-  explicit HomeController(AppState *appState);
-
-  void onFrame() override;
+  void onSyncSessionPaused() override;
+  void onSyncSessionResumed() override;
+  void onSubscriptionSelectionMyItems() override;
+  void onSubscriptionSelectionAllItems() override;
+  SubscriptionSelection getSubscriptionSelection() override;
 };
 
 #endif

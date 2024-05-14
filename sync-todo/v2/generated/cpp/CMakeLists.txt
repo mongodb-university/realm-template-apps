@@ -8,7 +8,7 @@ Include(FetchContent)
 
 FetchContent_Declare(cpprealm
         GIT_REPOSITORY https://github.com/realm/realm-cpp.git
-        GIT_TAG        v1.0.0
+        GIT_TAG        v1.1.1
 )
 
 FetchContent_Declare(ftxui

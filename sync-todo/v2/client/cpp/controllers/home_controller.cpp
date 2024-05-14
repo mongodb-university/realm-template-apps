@@ -12,7 +12,7 @@ ftxui::Component VWrap(const std::string& name, const ftxui::Component& componen
 }
 
 HomeController::HomeController(AppState *appState): Controller(ftxui::Container::Vertical({})), _appState(appState),
-                                                    _dbManager(_appState, &_homeControllerState) {
+                                                    _dbManager(this, _appState) {
   auto user = _appState->app->get_current_user();
   auto userId = user->identifier();
 
@@ -59,7 +59,8 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
 
   auto homeControllerButtonView = Renderer(optionsLayout, [=] {
     return vbox(
-        hbox(toggleOfflineModeButton->Render(),
+        hbox(
+             toggleOfflineModeButton->Render() | size(ftxui::HEIGHT, ftxui::EQUAL, 10),
              ftxui::separator(),
              toggleSubscriptionsButton->Render(),
              ftxui::separator(),
@@ -67,7 +68,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
              logoutButton->Render(),
              ftxui::separator(),
              quitButton->Render()
-             ) | ftxui::border | ftxui::center | size(ftxui::WIDTH, ftxui::GREATER_THAN, 100)) ;
+             ) | ftxui::border | ftxui::center | size(ftxui::WIDTH, ftxui::EQUAL, 100)) ;
   });
 
   // Accept user inputs and create new items in the database.
@@ -90,7 +91,7 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
     ftxui::Elements tasks;
     // If the user has toggled the checkbox to hide completed tasks, show only the incomplete task list.
     // Otherwise, show all items.
-    for (auto &item: itemList) {
+    for (auto const &item: itemList) {
       std::string completionString = (item.isComplete) ? " Complete " : " Incomplete ";
       std::string mineOrNot = (item.owner_id == userId) ? "   Mine " : " Theirs ";
       auto taskRow = ftxui::hbox({
@@ -190,4 +191,28 @@ HomeController::HomeController(AppState *appState): Controller(ftxui::Container:
 void HomeController::onFrame() {
   // Refresh the database to show new items that have synced in the background.
   _dbManager.refreshDatabase();
+}
+
+void HomeController::onSyncSessionPaused() {
+  _homeControllerState.offlineModeSelection = OfflineModeSelection::offlineModeEnabled;
+  _homeControllerState.offlineModeLabel = "Go Online";
+}
+
+void HomeController::onSyncSessionResumed() {
+  _homeControllerState.offlineModeSelection = OfflineModeSelection::offlineModeDisabled;
+  _homeControllerState.offlineModeLabel = "Go Offline";
+}
+
+void HomeController::onSubscriptionSelectionMyItems() {
+  _homeControllerState.subscriptionSelection = SubscriptionSelection::myItems;
+  _homeControllerState.subscriptionSelectionLabel = "Switch to All";
+}
+
+void HomeController::onSubscriptionSelectionAllItems() {
+  _homeControllerState.subscriptionSelection = SubscriptionSelection::allItems;
+  _homeControllerState.subscriptionSelectionLabel = "Switch to Mine";
+}
+
+SubscriptionSelection HomeController::getSubscriptionSelection() {
+  return _homeControllerState.subscriptionSelection;
 }

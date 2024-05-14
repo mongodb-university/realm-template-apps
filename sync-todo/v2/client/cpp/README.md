@@ -1,8 +1,5 @@
 # C++ Template App
 
-> [!NOTE]  
-> This is a Preview release of the C++ template app.
-
 A todo list application built with the [Atlas Device SDK for C++](https://www.mongodb.com/docs/realm/sdk/cpp/) and [Atlas Device Sync](https://www.mongodb.com/docs/atlas/app-services/sync/).
 
 This app uses a terminal UI built with [FTXUI](https://github.com/ArthurSonzogni/FTXUI).
@@ -85,6 +82,13 @@ This app uses CMake to manage dependencies. You must have CMake installed to use
 ## Issues
 
 Please report issues with the template at https://github.com/mongodb-university/realm-template-apps/issues/new
+
+### Known Issues
+
+If the error modal displays, and you move your mouse over the item  list in the terminal prior to dismissing the error 
+modal, the UI rendering breaks. This is related to limitations with the FTXUI library. If this occurs, quit the app 
+using `ctrl + c`, and re-run it. You can avoid this issue by using the enter key to press the `Dismiss` button in the
+error modal before moving the mouse.
 
 ## Structure
 
