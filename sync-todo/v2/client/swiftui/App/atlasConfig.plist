@@ -5,6 +5,6 @@
 	<key>baseUrl</key>
 	<string>https://services.cloud.mongodb.com</string>
 	<key>appId</key>
-	<string>todo-sync-pcmwt</string>
+	<string>application-0-dmxjdbc</string>
 </dict>
 </plist>
