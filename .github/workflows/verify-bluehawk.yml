@@ -1,0 +1,21 @@
+name: Verify Bluehawk Was Run
+
+on: pull_request
+
+jobs:
+  check-bluehawk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure Bluehawk Script Was Run
+        working-directory: sync-todo/v2
+        run: |
+          dir1=client/
+          dir2=generated/
+          if [ `diff $dir1 $dir2 | grep -c 'Only'` == 0 ]
+          then 
+            echo "Passed"
+          else 
+            echo "Fail -- one or more files exist in /client that aren't in /generated."
+            exit 1
+          fi
