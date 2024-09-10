@@ -2,8 +2,17 @@
 
 A todo list application built with the [.NET SDK](https://www.mongodb.com/docs/realm/sdk/dotnet/) and [Atlas Device Sync](https://www.mongodb.com/docs/atlas/app-services/sync/).
 
-You can follow along with the [MAUI Tutorial](https://www.mongodb.com/docs/atlas/app-services/tutorial/dotnet/) to see how to build, modify, and 
+You can follow along with the [MAUI Tutorial](https://www.mongodb.com/docs/atlas/app-services/tutorial/dotnet/) to see how to build, modify, and
 run this template app.
+
+> [!WARNING]
+> As of September 2024, Atlas Device SDKs are deprecated. Atlas Device SDKs
+> will reach end-of-life and will no longer be maintained by MongoDB on
+> September 30, 2025.
+>
+> The template app in this repository should only be used as a reference for
+> the on-device database and not to create a new app based on Device Sync.
+> Refer to the [deprecation page](https://www.mongodb.com/docs/atlas/device-sdks/>deprecation/) for details.
 
 ## Configuration
 
@@ -20,9 +29,9 @@ You will need to change the value of `appId` value with your App Services App ID
 
 ### Using the Atlas App Services UI
 
-The easiest way to use this template app is to log on to [Atlas App Services](https://services.cloud.mongodb.com) and click the **Create App From Template** button. Choose 
-**Real Time Sync**, and then follow the prompts. While the backend app is being 
-created, you can download this MAUI template app pre-configured for your new 
+The easiest way to use this template app is to log on to [Atlas App Services](https://services.cloud.mongodb.com) and click the **Create App From Template** button. Choose
+**Real Time Sync**, and then follow the prompts. While the backend app is being
+created, you can download this MAUI template app pre-configured for your new
 app.
 
 ### Cloning from GitHub
@@ -40,7 +49,7 @@ above instructions.
 ### Download the Client as a Zip File
 
 If you have downloaded this client as a .zip file from the Atlas App Services
-UI, the App ID should have been automatically set in the `atlasConfig.json` file, 
+UI, the App ID should have been automatically set in the `atlasConfig.json` file,
 so there is no need to set it manually.
 
 ## Issues

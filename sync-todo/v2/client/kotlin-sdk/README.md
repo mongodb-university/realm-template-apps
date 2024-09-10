@@ -1,5 +1,14 @@
 # Realm Kotlin SDK Template App
 
+> [!WARNING]
+> As of September 2024, Atlas Device SDKs are deprecated. Atlas Device SDKs
+> will reach end-of-life and will no longer be maintained by MongoDB on
+> September 30, 2025.
+>
+> The template app in this repository should only be used as a reference for
+> the on-device database and not to create a new app based on Device Sync.
+> Refer to the [deprecation page](https://www.mongodb.com/docs/atlas/device-sdks/>deprecation/) for details.
+
 ## Configuration
 
 Ensure `app/src/main/res/values/atlasConfig.xml` exists and contains the following properties:
@@ -10,9 +19,9 @@ Ensure `app/src/main/res/values/atlasConfig.xml` exists and contains the followi
 
 ### Using the Atlas App Services UI
 
-The easiest way to use this template app is to log on to [Atlas App Services](https://services.cloud.mongodb.com) and click the **Create App From Template** button. Choose 
-**Real Time Sync**, and then follow the prompts. While the backend app is being 
-created, you can download this Kotlin template app pre-configured for your new 
+The easiest way to use this template app is to log on to [Atlas App Services](https://services.cloud.mongodb.com) and click the **Create App From Template** button. Choose
+**Real Time Sync**, and then follow the prompts. While the backend app is being
+created, you can download this Kotlin template app pre-configured for your new
 app.
 
 ### Cloning from GitHub

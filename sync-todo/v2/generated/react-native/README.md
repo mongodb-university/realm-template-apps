@@ -5,6 +5,15 @@ A todo list application built with the [React Native SDK](https://www.mongodb.co
 You can follow along with the [React Native Tutorial](https://www.mongodb.com/docs/atlas/app-services/tutorial/react-native/) to see how to build, modify, and
 run this template app.
 
+> [!WARNING]
+> As of September 2024, Atlas Device SDKs are deprecated. Atlas Device SDKs
+> will reach end-of-life and will no longer be maintained by MongoDB on
+> September 30, 2025.
+>
+> The template app in this repository should only be used as a reference for
+> the on-device database and not to create a new app based on Device Sync.
+> Refer to the [deprecation page](https://www.mongodb.com/docs/atlas/device-sdks/>deprecation/) for details.
+
 ## Prerequisites
 
 - Make sure your system is setup to run a React Native application by following the [setup guide](https://reactnative.dev/docs/environment-setup)
