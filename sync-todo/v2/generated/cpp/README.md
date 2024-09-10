@@ -11,6 +11,7 @@ This app uses a terminal UI built with [FTXUI](https://github.com/ArthurSonzogni
 >
 > The template app in this repository should only be used as a reference for
 > the on-device database and not to create a new app based on Device Sync.
+> Refer to the [deprecation page](https://www.mongodb.com/docs/atlas/device-sdks/>deprecation/) for details.
 
 ## Configuration
 

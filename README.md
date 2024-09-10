@@ -14,6 +14,7 @@ For bucket access, consult the Realm docs team.
 >
 > The template apps in this repository should only be used as a reference for
 > the on-device database and not to create a new app based on Device Sync.
+> Refer to the [deprecation page](https://www.mongodb.com/docs/atlas/device-sdks/>deprecation/) for details.
 
 ## Lay of the Land
 
