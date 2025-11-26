@@ -1,4 +1,9 @@
-# realm-template-apps
+> [!Warning]
+> Atlas App Services has reached its end-of-life status and is no longer actively supported by MongoDB.
+
+<del>
+
+  # realm-template-apps
 
 This is the main repo for all MongoDB App Services & Realm template starter app
 clients and backend configurations.
@@ -143,3 +148,4 @@ Many of the template source directories now follow this structure:
   viewed on an artifact repo.
 - **realm-template.{json|xml|plist}:** Copied after bluehawking to the client(s)
   in the generated directory. This scrubs the app ID used in development.
+
